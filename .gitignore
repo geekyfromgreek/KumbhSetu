@@ -121,9 +121,17 @@ stitch_design/
 stitch_design/*
 stitch_kumbh_setu_civic_platform/
 
-# Local Test Selfies (Not committed to repo)
+# Local Test Selfies & Scratch
 tests/test_selfies/
 backend/tests/test_selfies/
-
-
-
+*.pyc
+**/__pycache__/
+sync_mobile.py
+check_escapes.py
+fix_all_navigation.py
+inject_i18n.py
+.system_generated/
+scratch/
+*.swp
+*.bak
+*.tmp
