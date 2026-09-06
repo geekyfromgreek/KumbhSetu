@@ -182,17 +182,17 @@
   <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
     <a href="marketplace.html?category=stay" class="shrink-0 h-9 px-3 rounded-full bg-primary/10 text-primary border border-primary/20 font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-primary/20">
       <span class="material-symbols-outlined text-[18px]">bed</span>
-      <span>Local Stays &amp; Dharamshalas</span>
+      <span>Contact Stays &amp; Dharamshalas</span>
     </a>
     <a href="marketplace.html?category=bazaar" class="shrink-0 h-9 px-3 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-secondary-container">
       <span class="material-symbols-outlined text-[18px]">storefront</span>
       <span>Local Bazaar &amp; Puja Stalls</span>
     </a>
-    <a href="marketplace.html?category=guides" class="shrink-0 h-9 px-3 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-tertiary-container">
-      <span class="material-symbols-outlined text-[18px]">person_pin_circle</span>
-      <span>Local Guides</span>
+    <a href="guide_detail.html?id=guide-anand-joshi" class="shrink-0 h-9 px-3 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-bold flex items-center gap-1.5 active:scale-95 transition-transform shadow-sm">
+      <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+      <span>Book Registered Guide ✓</span>
     </a>
-    <button onclick="openKumbhRoadmapModal()" class="shrink-0 h-9 px-3 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform shadow-sm">
+    <button onclick="openKumbhRoadmapModal()" class="shrink-0 h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform">
       <span class="material-symbols-outlined text-[18px]">route</span>
       <span>Holy Ghats Roadmap</span>
     </button>
@@ -201,8 +201,8 @@
       <span>Annakshetra &amp; Food</span>
     </a>
     <a href="fare_board.html" class="shrink-0 h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-primary hover:text-on-primary">
-      <span class="material-symbols-outlined text-[18px]">electric_rickshaw</span>
-      <span>Pre-Paid Transit &amp; Fares</span>
+      <span class="material-symbols-outlined text-[18px]">call</span>
+      <span>Call Rides &amp; Fare Guide</span>
     </a>
   </div>
 </div>
@@ -220,14 +220,14 @@
 <div class="w-11 h-11 rounded-lg bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
 <span class="material-symbols-outlined text-[24px]">hotel</span>
 </div>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-semibold">Verified Stays</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-semibold">Direct Contact</span>
 </div>
 <div>
 <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Hotel &amp; Ashram Stays</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">Dharamshalas, ashrams, budget hotels &amp; tent cities with verified rates.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">Dharamshalas, ashrams, budget hotels &amp; tent cities (call directly).</p>
 </div>
 <div class="mt-space-md pt-space-xs flex items-center text-primary font-label-md text-label-md font-semibold gap-1">
-<span>Find Stays</span>
+<span>Contact Stays</span>
 <span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
 </div>
 </a>
@@ -614,7 +614,7 @@ Helpline: 1800-233-0202
 
   async function loadFactChecks() {
     try {
-      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/reports/fact-checks');
+      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '/api/v1/reports/fact-checks');
       if (!res.ok) return;
       const data = await res.json();
       if (data && data.fact_checks && data.fact_checks.length > 0) {
@@ -666,7 +666,7 @@ Helpline: 1800-233-0202
     }
 
     try {
-      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/reports/fact-checks/report-rumor', {
+      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '/api/v1/reports/fact-checks/report-rumor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ claim_text: txt, category: 'Crowd & Ghats' })

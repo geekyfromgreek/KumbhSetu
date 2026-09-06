@@ -301,9 +301,10 @@
         <span>Simhastha Municipal RTO Advisory 2027</span>
       </div>
       <p class="text-on-surface-variant leading-relaxed">
+        • <strong>Call &amp; Stand Hire Only:</strong> Rides and taxis cannot be booked inside this app. Pilgrims can call authorized ride stands or drivers directly using the "Call Stand" buttons below, or hire directly at RTO booths.<br/>
         • <strong>Meter Compliance:</strong> Auto Rickshaws within Nashik city limits must charge strictly according to calibrated meter tariffs (₹26 base + ₹16.50/km).<br/>
         • <strong>Night Surcharge (12:00 AM – 05:00 AM):</strong> Maximum 25% surcharge applicable over regular daytime fare.<br/>
-        • <strong>Zero Overcharging Tolerance:</strong> In case of meter refusal or demanding arbitrary prices, tap <strong>Report Overcharging</strong> or dial <strong>RTO Toll-Free 1800-233-1048</strong>.
+        • <strong>Zero Overcharging Tolerance:</strong> In case of meter refusal or demanding arbitrary prices, tap <strong>Report Overcharge</strong> or dial <strong>RTO Toll-Free 1800-233-1048</strong>.
       </p>
     </div>
 
@@ -829,13 +830,17 @@
               <span class="leading-snug"><strong>Surge Watch:</strong> Unauthorized stands at peak hours demand ₹${unauthorizedSurge}+. Insist on meter reading or RTO rate card.</span>
             </div>
 
-            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Verified RTO Tariff 2027</span>
-              <button onclick="openPrefilledReport('Auto Rickshaw (Private)', ${autoFare})" class="text-primary font-bold hover:underline cursor-pointer flex items-center gap-0.5">
+            <div class="flex items-center gap-2 pt-1 border-t border-surface-container">
+              <a href="tel:+912532465100" class="flex-1 h-9 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 border border-outline-variant/30 active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-[16px] text-primary">call</span>
+                <span>Call Auto Stand / Owner</span>
+              </a>
+              <button onclick="openPrefilledReport('Auto Rickshaw (Private)', ${autoFare})" class="h-9 px-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-bold text-xs flex items-center justify-center gap-1 cursor-pointer">
                 <span class="material-symbols-outlined text-xs">campaign</span>
-                <span>Report Overcharging</span>
+                <span>Report</span>
               </button>
             </div>
+            <span class="text-[10px] text-on-surface-variant text-center block">Direct call &amp; on-site hire only • No in-app ride booking</span>
           </div>
         `);
       }
@@ -877,10 +882,17 @@
               </div>
             </div>
 
-            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Standard Kumbh Corridor Stage</span>
-              <button onclick="openPrefilledReport('Shared Auto (Seat)', ${sharedSeatFare})" class="text-primary font-bold hover:underline cursor-pointer">Report Fare</button>
+            <div class="flex items-center gap-2 pt-1 border-t border-surface-container">
+              <a href="tel:+912532512000" class="flex-1 h-9 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 border border-outline-variant/30 active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+                <span>Call Shared Stand</span>
+              </a>
+              <button onclick="openPrefilledReport('Shared Auto (Seat)', ${sharedSeatFare})" class="h-9 px-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-bold text-xs flex items-center justify-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-xs">campaign</span>
+                <span>Report</span>
+              </button>
             </div>
+            <span class="text-[10px] text-on-surface-variant text-center block">Board at official stand • No in-app booking</span>
           </div>
         `);
       }
@@ -922,8 +934,8 @@
             </div>
 
             <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Electronic Smart Ticket & UPI accepted</span>
-              <span class="text-primary font-semibold">NMC Citylink Connect</span>
+              <span>Electronic Smart Ticket &amp; UPI accepted</span>
+              <span class="text-primary font-semibold">Board at Bus Stop</span>
             </div>
           </div>
         `);
@@ -941,7 +953,7 @@
                 </div>
                 <div>
                   <h3 class="font-bold text-sm text-on-surface">E-Rickshaw (Green Zone Feeder)</h3>
-                  <p class="text-xs text-on-surface-variant truncate max-w-[210px] sm:max-w-xs">Ghats & Inner Corridor Feeder</p>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[210px] sm:max-w-xs">Ghats &amp; Inner Corridor Feeder</p>
                 </div>
               </div>
               <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase">Zero Emission</span>
@@ -958,10 +970,17 @@
               </div>
             </div>
 
-            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Free for senior citizens age 75+</span>
-              <span class="text-green-700 font-bold">✓ Zero Smoke Zone</span>
+            <div class="flex items-center gap-2 pt-1 border-t border-surface-container">
+              <a href="tel:+912532513511" class="flex-1 h-9 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 border border-outline-variant/30 active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-[16px] text-green-700">call</span>
+                <span>Call Green Zone Stand</span>
+              </a>
+              <button onclick="openPrefilledReport('E-Rickshaw', ${erickshawFare})" class="h-9 px-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-bold text-xs flex items-center justify-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-xs">campaign</span>
+                <span>Report</span>
+              </button>
             </div>
+            <span class="text-[10px] text-on-surface-variant text-center block">Hail at Ghat or Call Stand • No in-app booking</span>
           </div>
         `);
       }
@@ -997,10 +1016,17 @@
               </div>
             </div>
 
-            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Luggage & highway toll included</span>
-              <button onclick="openPrefilledReport('Kumbh Cab / Taxi', ${cabFare})" class="text-primary font-bold hover:underline cursor-pointer">Report Cab Price</button>
+            <div class="flex items-center gap-2 pt-1 border-t border-surface-container">
+              <a href="tel:+912532575555" class="flex-1 h-9 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 border border-outline-variant/30 active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-[16px] text-amber-800">call</span>
+                <span>Call Taxi Stand / Owner</span>
+              </a>
+              <button onclick="openPrefilledReport('Kumbh Cab / Taxi', ${cabFare})" class="h-9 px-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-bold text-xs flex items-center justify-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-xs">campaign</span>
+                <span>Report</span>
+              </button>
             </div>
+            <span class="text-[10px] text-on-surface-variant text-center block">Call Taxi Stand directly • No in-app ride booking</span>
           </div>
         `);
       }

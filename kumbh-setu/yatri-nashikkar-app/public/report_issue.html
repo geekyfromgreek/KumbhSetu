@@ -393,7 +393,7 @@
     const fullDesc = `Location: ${location || 'Ramkund Area'}. Demanded Price: ₹${demanded || 'Disputed'}. Notes: ${description || 'Pilgrim reported overcharging / civic tariff violation'}`;
 
     try {
-      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/reports/', {
+      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '/api/v1/reports/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -406,7 +406,7 @@
       });
 
       if (issueType.toLowerCase().includes('false') || issueType.toLowerCase().includes('rumor')) {
-        fetch((window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/reports/fact-checks/report-rumor', {
+        fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '/api/v1/reports/fact-checks/report-rumor', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ claim_text: `${location}: ${description}`, category: category })

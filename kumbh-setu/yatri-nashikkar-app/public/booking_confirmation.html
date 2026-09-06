@@ -233,11 +233,23 @@
     alertBox.classList.add('hidden');
   }
 
-  // Populate from query params
+  // Populate from query params & localStorage
   (function() {
     const p = new URLSearchParams(window.location.search);
+    const type = p.get('type');
+    const token = p.get('token');
     const name = p.get('name');
     const price = p.get('price');
+    const slot = p.get('slot');
+    const date = p.get('date');
+    const party = p.get('party');
+    const meeting = p.get('meeting');
+
+    if (token) {
+      const tokenEl = document.querySelector('.font-headline-lg.text-on-surface.font-bold');
+      if (tokenEl) tokenEl.textContent = '#' + decodeURIComponent(token);
+    }
+
     if (name) {
       const el = document.getElementById('booking-vendor-name');
       if (el) el.textContent = decodeURIComponent(name);
@@ -245,6 +257,70 @@
     if (price) {
       const pel = document.getElementById('booking-vendor-price');
       if (pel) pel.textContent = decodeURIComponent(price);
+    }
+
+    if (type === 'guide') {
+      const pageTitle = document.querySelector('header h1');
+      if (pageTitle) pageTitle.textContent = 'Guide Booking Confirmed';
+
+      const statusTag = document.querySelector('.bg-secondary-fixed');
+      if (statusTag) {
+        statusTag.className = 'bg-green-100 text-green-800 px-space-sm py-space-xs rounded-full flex items-center gap-1 shadow-sm font-bold text-xs';
+        statusTag.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span><span>Booking Confirmed</span>';
+      }
+
+      const serviceTag = document.querySelector('.font-label-sm.text-on-surface-variant.tracking-wider');
+      if (serviceTag) serviceTag.textContent = 'Official Registered Guide Booking';
+
+      // Update Dates of Stay -> Tour Slot
+      const dateBox = document.querySelectorAll('.bg-surface-container-low .bg-surface-container-lowest')[0];
+      if (dateBox) {
+        dateBox.innerHTML = `
+          <div class="flex items-center gap-1.5 text-on-surface-variant">
+            <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+            <span class="font-label-sm text-label-sm">Tour Date &amp; Slot</span>
+          </div>
+          <p class="font-headline-sm text-sm text-on-surface mt-1 font-bold">${date ? decodeURIComponent(date) : 'Today'}</p>
+          <span class="font-body-sm text-[11px] text-on-surface-variant line-clamp-2">${slot ? decodeURIComponent(slot) : 'Panchavati Heritage Circuit'}</span>
+        `;
+      }
+
+      // Update Room & Yatris -> Yatris & Guide Badge
+      const partyBox = document.querySelectorAll('.bg-surface-container-low .bg-surface-container-lowest')[1];
+      if (partyBox) {
+        partyBox.innerHTML = `
+          <div class="flex items-center gap-1.5 text-on-surface-variant">
+            <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+            <span class="font-label-sm text-label-sm">Registered Guide</span>
+          </div>
+          <p class="font-headline-sm text-sm text-on-surface mt-1 font-bold">Govt Reg #MH-15</p>
+          <span class="font-body-sm text-[11px] text-on-surface-variant">${party ? decodeURIComponent(party) : '2 Persons'} · Verified</span>
+        `;
+      }
+
+      // Add meeting point selfie verification callout
+      const noteBox = document.querySelector('.bg-secondary-fixed\\/50');
+      if (noteBox) {
+        noteBox.className = 'bg-primary/10 border border-primary/20 p-space-sm rounded-lg flex items-start gap-space-xs';
+        noteBox.innerHTML = `
+          <span class="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5">verified</span>
+          <div class="text-xs text-on-surface leading-snug">
+            <strong>Only Service Bookable In-App:</strong> Your local guide booking is registered on the municipal portal. Meet your guide at <em>${meeting ? decodeURIComponent(meeting) : 'Ramkund Main Ghat'}</em> and verify their official selfie.
+          </div>
+        `;
+      }
+    } else {
+      // Non-guide: Direct contact notice
+      const noteBox = document.querySelector('.bg-secondary-fixed\\/50');
+      if (noteBox) {
+        noteBox.className = 'bg-surface-container-high border border-outline-variant/40 p-space-sm rounded-lg flex items-start gap-space-xs';
+        noteBox.innerHTML = `
+          <span class="material-symbols-outlined text-tertiary text-[20px] shrink-0 mt-0.5">phone_in_talk</span>
+          <div class="text-xs text-on-surface leading-snug">
+            <strong>Direct Contact Token:</strong> Stays, shops, and rides cannot be booked in-app. Call or visit the establishment directly and quote reference <em>${token ? '#' + decodeURIComponent(token) : '#KS-27-8910'}</em>.
+          </div>
+        `;
+      }
     }
   })();
 </script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html"><span class="material-symbols-outlined text-[22px]">temple_hindu</span><span class="font-label-sm text-label-sm leading-tight">Home</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="marketplace" href="marketplace.html"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm leading-tight">Market</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html"><span class="material-symbols-outlined text-[22px]">campaign</span><span class="font-label-sm text-label-sm leading-tight">Report</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html"><span class="material-symbols-outlined text-[22px]">emergency</span><span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="fare-board" href="fare_board.html"><span class="material-symbols-outlined text-[22px]">electric_rickshaw</span><span class="font-label-sm text-label-sm leading-tight">Fares</span></a></div></nav><script src="i18n.js"></script>

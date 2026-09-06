@@ -1,7 +1,7 @@
 /**
  * KumbhSetu (कुंभसेतु) — Complete Trilingual Translation Engine
  * Official Languages: English (en), Marathi (mr / मराठी), Hindi (hi / हिंदी)
- * Covers all 23 screens with 1713+ verified entries and dynamic pattern matching.
+ * Covers all 23 screens with 1736+ verified entries and dynamic pattern matching.
  */
 
 (function () {
@@ -1239,8 +1239,8 @@
     "en": "Number of Yatris:"
   },
   "Number of Yatris": {
-    "mr": "यात्री संख्या",
-    "hi": "तीर्थयात्रियों की संख्या",
+    "mr": "यात्रेकरूंची संख्या",
+    "hi": "यात्रियों की संख्या",
     "en": "Number of Yatris"
   },
   "Estimated Waiting Time:": {
@@ -8572,6 +8572,121 @@
     "mr": "२२% क्षमता",
     "hi": "२२% क्षमता",
     "en": "22% capacity"
+  },
+  "Book Registered Guide": {
+    "mr": "नोंदणीकृत मार्गदर्शक बुक करा",
+    "hi": "पंजीकृत गाइड बुक करें",
+    "en": "Book Registered Guide"
+  },
+  "Book Registered Guide ✓": {
+    "mr": "नोंदणीकृत मार्गदर्शक बुक करा ✓",
+    "hi": "पंजीकृत गाइड बुक करें ✓",
+    "en": "Book Registered Guide ✓"
+  },
+  "Book Registered Local Guide": {
+    "mr": "नोंदणीकृत स्थानिक मार्गदर्शक बुक करा",
+    "hi": "पंजीकृत स्थानीय गाइड बुक करें",
+    "en": "Book Registered Local Guide"
+  },
+  "Official In-App Bookable Service": {
+    "mr": "अधिकृत इन-अॅप बुकिंग सेवा",
+    "hi": "आधिकारिक इन-ऐप बुकिंग सेवा",
+    "en": "Official In-App Bookable Service"
+  },
+  "Book This Registered Guide Now": {
+    "mr": "हा नोंदणीकृत मार्गदर्शक आता बुक करा",
+    "hi": "यह पंजीकृत गाइड अभी बुक करें",
+    "en": "Book This Registered Guide Now"
+  },
+  "Direct Contact & Booking Policy": {
+    "mr": "थेट संपर्क व बुकिंग नियम",
+    "hi": "सीधा संपर्क एवं बुकिंग नीति",
+    "en": "Direct Contact & Booking Policy"
+  },
+  "Direct Contact Only": {
+    "mr": "केवळ थेट संपर्क",
+    "hi": "केवल सीधा संपर्क",
+    "en": "Direct Contact Only"
+  },
+  "Call Auto Stand / Owner": {
+    "mr": "रिक्षा स्टँड / चालकाला कॉल करा",
+    "hi": "ऑटो स्टैंड / चालक को कॉल करें",
+    "en": "Call Auto Stand / Owner"
+  },
+  "Call Auto Stand / Driver": {
+    "mr": "रिक्षा स्टँड / चालकाला कॉल करा",
+    "hi": "ऑटो स्टैंड / चालक को कॉल करें",
+    "en": "Call Auto Stand / Driver"
+  },
+  "Call Shared Stand": {
+    "mr": "शेअर रिक्षा स्टँडला कॉल करा",
+    "hi": "शेयर ऑटो स्टैंड को कॉल करें",
+    "en": "Call Shared Stand"
+  },
+  "Call Green Zone Stand": {
+    "mr": "ग्रीन झोन स्टँडला कॉल करा",
+    "hi": "ग्रीन जोन स्टैंड को कॉल करें",
+    "en": "Call Green Zone Stand"
+  },
+  "Call Taxi Stand / Owner": {
+    "mr": "टॅक्सी स्टँड / चालकाला कॉल करा",
+    "hi": "टैक्सी स्टैंड / मालिक को कॉल करें",
+    "en": "Call Taxi Stand / Owner"
+  },
+  "Direct call & on-site hire only • No in-app ride booking": {
+    "mr": "केवळ थेट कॉल व प्रत्यक्ष भाडे • अॅपमधून बुकिंग नाही",
+    "hi": "केवल सीधा कॉल और मौके पर किराया • ऐप में बुकिंग नहीं",
+    "en": "Direct call & on-site hire only • No in-app ride booking"
+  },
+  "Contact Stays & Dharamshalas": {
+    "mr": "धर्मशाळा व निवास थेट संपर्क",
+    "hi": "धर्मशाला एवं निवास सीधा संपर्क",
+    "en": "Contact Stays & Dharamshalas"
+  },
+  "Call Rides & Fare Guide": {
+    "mr": "वाहतूक कॉल व भाडे तक्ता",
+    "hi": "सवारी कॉल एवं किराया गाइड",
+    "en": "Call Rides & Fare Guide"
+  },
+  "Contact Stays": {
+    "mr": "निवास संपर्क",
+    "hi": "निवास संपर्क",
+    "en": "Contact Stays"
+  },
+  "Guide Booking Confirmed": {
+    "mr": "मार्गदर्शक बुकिंग निश्चित झाली",
+    "hi": "गाइड बुकिंग पक्की हुई",
+    "en": "Guide Booking Confirmed"
+  },
+  "Official Registered Guide Booking": {
+    "mr": "शासकीय नोंदणीकृत मार्गदर्शक बुकिंग",
+    "hi": "आधिकारिक पंजीकृत गाइड बुकिंग",
+    "en": "Official Registered Guide Booking"
+  },
+  "Select Tour Date": {
+    "mr": "दर्शनाची तारीख निवडा",
+    "hi": "दर्शन की तारीख चुनें",
+    "en": "Select Tour Date"
+  },
+  "Tour Package & Time Slot": {
+    "mr": "दर्शन पॅकेज व वेळ निवडा",
+    "hi": "दर्शन पैकेज एवं समय चुनें",
+    "en": "Tour Package & Time Slot"
+  },
+  "Guide Language": {
+    "mr": "मार्गदर्शकाची भाषा",
+    "hi": "गाइड की भाषा",
+    "en": "Guide Language"
+  },
+  "Total Guide Fee": {
+    "mr": "एकूण मार्गदर्शक शुल्क",
+    "hi": "कुल गाइड शुल्क",
+    "en": "Total Guide Fee"
+  },
+  "Confirm Guide Booking": {
+    "mr": "मार्गदर्शक बुकिंग निश्चित करा",
+    "hi": "गाइड बुकिंग पक्की करें",
+    "en": "Confirm Guide Booking"
   }
 };
 

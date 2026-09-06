@@ -246,6 +246,14 @@
 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
 </button>
 </div>
+<!-- Direct Contact Policy Banner -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/40 flex items-start gap-2.5 text-xs text-on-surface-variant">
+  <span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">phone_in_talk</span>
+  <div class="leading-relaxed">
+    <strong class="text-on-surface font-semibold">Direct Contact Only:</strong>
+    Stays, stalls, and rides cannot be booked in-app. Contact the establishment directly via WhatsApp, Call, or Navigate to visit on-site.
+  </div>
+</div>
 </div>
 <!-- Sticky Bottom Dual Action Bar -->
 <div class="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md pb-safe px-layout-margin-mobile pt-3 pb-3 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
@@ -508,7 +516,7 @@
     }
 
     if (id && !imgParam) {
-      fetch(`${window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + ''}/api/v1/marketplace/listings/${id}`)
+      fetch(`${window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + ''}/api/v1/marketplace/listings/${id}`)
         .then(r => r.json())
         .then(item => {
           if (item.name) {
