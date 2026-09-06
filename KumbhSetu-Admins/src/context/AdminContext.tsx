@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage } from '@/lib/safeStorage';
 import {
-  AdminOfficer,
   AdminRouteFare,
   AdminCommodityPrice,
   AdminBazaarShop,
@@ -9,6 +8,7 @@ import {
   AdminGrievanceTicket,
 } from '@/types/admin';
 import { DBA_PROVISIONED_ACCOUNTS, DBAAdminAccount } from '@/constants/roles';
+import { AdminSupabaseService } from '@/services/supabaseService';
 
 interface AdminContextType {
   // Authentication & DBA Provisioning
@@ -23,31 +23,31 @@ interface AdminContextType {
   activeTab: 'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances';
   setActiveTab: (tab: 'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances') => void;
 
-  // Transit Routes Management (God Mode - Starts 100% clean)
+  // Transit Routes Management
   routes: AdminRouteFare[];
   addRoute: (route: Omit<AdminRouteFare, 'id' | 'updatedAt' | 'updatedBy'>) => Promise<void>;
   updateRoute: (route: AdminRouteFare) => Promise<void>;
   deleteRoute: (id: string) => Promise<void>;
 
-  // Commodity Ceiling Rates (God Mode - Starts 100% clean)
+  // Commodity Ceiling Rates
   commodities: AdminCommodityPrice[];
   addCommodity: (item: Omit<AdminCommodityPrice, 'id' | 'updatedAt'>) => Promise<void>;
   updateCommodity: (item: AdminCommodityPrice) => Promise<void>;
   deleteCommodity: (id: string) => Promise<void>;
 
-  // Local Bazaar Merchants (God Mode - Starts 100% clean)
+  // Local Bazaar Merchants
   shops: AdminBazaarShop[];
   addShop: (shop: Omit<AdminBazaarShop, 'id' | 'registrationDate'>) => Promise<void>;
   updateShopStatus: (id: string, status: AdminBazaarShop['status'], warningInc?: boolean) => Promise<void>;
   deleteShop: (id: string) => Promise<void>;
 
-  // Fact-Check & Rumor Buster Dispatcher (God Mode - Starts 100% clean)
+  // Fact-Check & Rumor Buster Dispatcher
   factChecks: AdminFactCheck[];
   addFactCheck: (fc: Omit<AdminFactCheck, 'id' | 'timestamp' | 'reachCount'>) => Promise<void>;
   updateFactCheckStatus: (id: string, status: AdminFactCheck['status'], clarificationText: string) => Promise<void>;
   deleteFactCheck: (id: string) => Promise<void>;
 
-  // Grievance Enforcement & Overcharging Desk (God Mode - Starts 100% clean)
+  // Grievance Enforcement & Overcharging Desk
   tickets: AdminGrievanceTicket[];
   addTicket: (t: Omit<AdminGrievanceTicket, 'id' | 'token' | 'timestamp'>) => Promise<void>;
   updateTicketStatus: (
@@ -57,7 +57,8 @@ interface AdminContextType {
     penalty?: number
   ) => Promise<void>;
 
-  // Dashboard Stats
+  // Refresh & Stats
+  refreshAll: () => Promise<void>;
   stats: {
     activeRoutesCount: number;
     pendingGrievancesCount: number;
@@ -84,14 +85,13 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances'>('dashboard');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // STRICT CLEAN SLATE - ZERO PRE-FILLED DATA
   const [routes, setRoutes] = useState<AdminRouteFare[]>([]);
   const [commodities, setCommodities] = useState<AdminCommodityPrice[]>([]);
   const [shops, setShops] = useState<AdminBazaarShop[]>([]);
   const [factChecks, setFactChecks] = useState<AdminFactCheck[]>([]);
   const [tickets, setTickets] = useState<AdminGrievanceTicket[]>([]);
 
-  // Load stored admin records on startup
+  // Load state and sync with Supabase
   useEffect(() => {
     const loadState = async () => {
       try {
@@ -103,12 +103,12 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
           savedFC,
           savedTickets,
         ] = await Promise.all([
-          AsyncStorage.getItem(STORAGE_KEYS.AUTH_USER),
-          AsyncStorage.getItem(STORAGE_KEYS.ROUTES),
-          AsyncStorage.getItem(STORAGE_KEYS.COMMODITIES),
-          AsyncStorage.getItem(STORAGE_KEYS.SHOPS),
-          AsyncStorage.getItem(STORAGE_KEYS.FACTCHECKS),
-          AsyncStorage.getItem(STORAGE_KEYS.TICKETS),
+          safeStorage.getItem(STORAGE_KEYS.AUTH_USER),
+          safeStorage.getItem(STORAGE_KEYS.ROUTES),
+          safeStorage.getItem(STORAGE_KEYS.COMMODITIES),
+          safeStorage.getItem(STORAGE_KEYS.SHOPS),
+          safeStorage.getItem(STORAGE_KEYS.FACTCHECKS),
+          safeStorage.getItem(STORAGE_KEYS.TICKETS),
         ]);
 
         if (savedAuth) {
@@ -121,6 +121,9 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         if (savedShops) setShops(JSON.parse(savedShops));
         if (savedFC) setFactChecks(JSON.parse(savedFC));
         if (savedTickets) setTickets(JSON.parse(savedTickets));
+
+        // Fetch live data from Supabase
+        await fetchLiveAdminData();
       } catch (err) {
         console.warn('Error loading AdminContext state:', err);
       } finally {
@@ -129,7 +132,51 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     };
 
     loadState();
+
+    // Subscribe to realtime changes
+    const sub = AdminSupabaseService.subscribeToAll(() => {
+      fetchLiveAdminData();
+    });
+
+    return () => {
+      sub.unsubscribe();
+    };
   }, []);
+
+  const fetchLiveAdminData = async () => {
+    try {
+      const [liveRoutes, liveComm, liveShops, liveFC, liveTickets] = await Promise.all([
+        AdminSupabaseService.fetchRoutes(),
+        AdminSupabaseService.fetchCommodities(),
+        AdminSupabaseService.fetchShops(),
+        AdminSupabaseService.fetchFactChecks(),
+        AdminSupabaseService.fetchGrievances(),
+      ]);
+
+      if (liveRoutes) {
+        setRoutes(liveRoutes);
+        safeStorage.setItem(STORAGE_KEYS.ROUTES, JSON.stringify(liveRoutes));
+      }
+      if (liveComm) {
+        setCommodities(liveComm);
+        safeStorage.setItem(STORAGE_KEYS.COMMODITIES, JSON.stringify(liveComm));
+      }
+      if (liveShops) {
+        setShops(liveShops);
+        safeStorage.setItem(STORAGE_KEYS.SHOPS, JSON.stringify(liveShops));
+      }
+      if (liveFC) {
+        setFactChecks(liveFC);
+        safeStorage.setItem(STORAGE_KEYS.FACTCHECKS, JSON.stringify(liveFC));
+      }
+      if (liveTickets) {
+        setTickets(liveTickets);
+        safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(liveTickets));
+      }
+    } catch (e) {
+      console.warn('Admin fetchLiveAdminData error:', e);
+    }
+  };
 
   // LOGIN AUTHENTICATION (Username: Gaurang, Password: pass123)
   const login = (usernameOrEmail: string, pass: string): { success: boolean; message?: string } => {
@@ -145,7 +192,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     if (matched) {
       setCurrentUser(matched);
       setIsAuthenticated(true);
-      AsyncStorage.setItem(STORAGE_KEYS.AUTH_USER, JSON.stringify(matched));
+      safeStorage.setItem(STORAGE_KEYS.AUTH_USER, JSON.stringify(matched));
       return { success: true };
     }
 
@@ -158,63 +205,75 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     setCurrentUser(null);
     setIsAuthenticated(false);
-    await AsyncStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+    await safeStorage.removeItem(STORAGE_KEYS.AUTH_USER);
   };
 
   // ROUTE FARES CRUD
   const addRoute = async (route: Omit<AdminRouteFare, 'id' | 'updatedAt' | 'updatedBy'>) => {
+    const officerName = currentUser ? currentUser.name : 'Authorized Admin';
+    const serverId = await AdminSupabaseService.insertRoute(route, officerName);
+
     const newRoute: AdminRouteFare = {
       ...route,
-      id: `rt_${Date.now()}`,
+      id: serverId || `rt_${Date.now()}`,
       updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      updatedBy: currentUser ? currentUser.name : 'Authorized Admin',
+      updatedBy: officerName,
     };
     const updated = [newRoute, ...routes];
     setRoutes(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.ROUTES, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.ROUTES, JSON.stringify(updated));
   };
 
   const updateRoute = async (route: AdminRouteFare) => {
+    const officerName = currentUser ? currentUser.name : 'Authorized Admin';
+    await AdminSupabaseService.updateRoute(route, officerName);
+
     const enriched: AdminRouteFare = {
       ...route,
       updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      updatedBy: currentUser ? currentUser.name : 'Authorized Admin',
+      updatedBy: officerName,
     };
     const updated = routes.map((r: AdminRouteFare) => (r.id === enriched.id ? enriched : r));
     setRoutes(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.ROUTES, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.ROUTES, JSON.stringify(updated));
   };
 
   const deleteRoute = async (id: string) => {
+    await AdminSupabaseService.deleteRoute(id);
     const updated = routes.filter((r: AdminRouteFare) => r.id !== id);
     setRoutes(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.ROUTES, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.ROUTES, JSON.stringify(updated));
   };
 
   // COMMODITY RATES CRUD
   const addCommodity = async (item: Omit<AdminCommodityPrice, 'id' | 'updatedAt'>) => {
+    const serverId = await AdminSupabaseService.insertCommodity(item);
+
     const newItem: AdminCommodityPrice = {
       ...item,
-      id: `cmd_${Date.now()}`,
+      id: serverId || `cmd_${Date.now()}`,
       updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
     const updated = [newItem, ...commodities];
     setCommodities(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.COMMODITIES, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.COMMODITIES, JSON.stringify(updated));
   };
 
   const updateCommodity = async (item: AdminCommodityPrice) => {
+    await AdminSupabaseService.updateCommodity(item);
+
     const updated = commodities.map((c: AdminCommodityPrice) =>
       c.id === item.id ? { ...item, updatedAt: 'Just Now' } : c
     );
     setCommodities(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.COMMODITIES, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.COMMODITIES, JSON.stringify(updated));
   };
 
   const deleteCommodity = async (id: string) => {
+    await AdminSupabaseService.deleteCommodity(id);
     const updated = commodities.filter((c: AdminCommodityPrice) => c.id !== id);
     setCommodities(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.COMMODITIES, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.COMMODITIES, JSON.stringify(updated));
   };
 
   // BAZAAR SHOPS CRUD
@@ -226,7 +285,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     };
     const updated = [newShop, ...shops];
     setShops(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.SHOPS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.SHOPS, JSON.stringify(updated));
   };
 
   const updateShopStatus = async (
@@ -234,38 +293,45 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     status: AdminBazaarShop['status'],
     warningInc: boolean = false
   ) => {
+    const isApproved = status === 'APPROVED';
+    await AdminSupabaseService.updateShopStatus(id, isApproved);
+
     const updated = shops.map((s: AdminBazaarShop) => {
       if (s.id === id) {
         return {
           ...s,
           status,
-          isVerified: status === 'APPROVED',
+          isVerified: isApproved,
           warningCount: warningInc ? s.warningCount + 1 : s.warningCount,
         };
       }
       return s;
     });
     setShops(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.SHOPS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.SHOPS, JSON.stringify(updated));
   };
 
   const deleteShop = async (id: string) => {
+    await AdminSupabaseService.deleteShop(id);
     const updated = shops.filter((s: AdminBazaarShop) => s.id !== id);
     setShops(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.SHOPS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.SHOPS, JSON.stringify(updated));
   };
 
   // FACT CHECKS CRUD
   const addFactCheck = async (fc: Omit<AdminFactCheck, 'id' | 'timestamp' | 'reachCount'>) => {
+    const officerTitle = currentUser ? currentUser.roleTitle : 'Mela Administration';
+    const serverId = await AdminSupabaseService.insertFactCheck(fc, officerTitle);
+
     const newFc: AdminFactCheck = {
       ...fc,
-      id: `fc_${Date.now()}`,
+      id: serverId || `fc_${Date.now()}`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       reachCount: 1,
     };
     const updated = [newFc, ...factChecks];
     setFactChecks(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.FACTCHECKS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.FACTCHECKS, JSON.stringify(updated));
   };
 
   const updateFactCheckStatus = async (
@@ -273,26 +339,30 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     status: AdminFactCheck['status'],
     clarificationText: string
   ) => {
+    const officerTitle = currentUser ? currentUser.roleTitle : 'Mela Administration';
+    await AdminSupabaseService.updateFactCheckStatus(id, status, clarificationText, officerTitle);
+
     const updated = factChecks.map((f: AdminFactCheck) => {
       if (f.id === id) {
         return {
           ...f,
           status,
           officialClarification: clarificationText,
-          verifiedBy: currentUser ? currentUser.roleTitle : 'Mela Administration',
+          verifiedBy: officerTitle,
           reachCount: f.reachCount + 1,
         };
       }
       return f;
     });
     setFactChecks(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.FACTCHECKS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.FACTCHECKS, JSON.stringify(updated));
   };
 
   const deleteFactCheck = async (id: string) => {
+    await AdminSupabaseService.deleteFactCheck(id);
     const updated = factChecks.filter((f: AdminFactCheck) => f.id !== id);
     setFactChecks(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.FACTCHECKS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.FACTCHECKS, JSON.stringify(updated));
   };
 
   // GRIEVANCES DESK
@@ -305,7 +375,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     };
     const updated = [newTicket, ...tickets];
     setTickets(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(updated));
   };
 
   const updateTicketStatus = async (
@@ -314,12 +384,15 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     actionSummary?: string,
     penalty?: number
   ) => {
+    const officerName = currentUser ? currentUser.name : 'Enforcement Squad';
+    await AdminSupabaseService.updateGrievanceStatus(id, status, actionSummary, penalty, officerName);
+
     const updated = tickets.map((t: AdminGrievanceTicket) => {
       if (t.id === id) {
         return {
           ...t,
           status,
-          assignedOfficer: currentUser ? currentUser.name : t.assignedOfficer,
+          assignedOfficer: officerName,
           actionSummary: actionSummary || t.actionSummary,
           penaltyAmount: penalty !== undefined ? penalty : t.penaltyAmount,
         };
@@ -327,7 +400,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       return t;
     });
     setTickets(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(updated));
   };
 
   // Dynamic Dashboard Stats
@@ -374,6 +447,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         tickets,
         addTicket,
         updateTicketStatus,
+        refreshAll: fetchLiveAdminData,
         stats,
       }}
     >

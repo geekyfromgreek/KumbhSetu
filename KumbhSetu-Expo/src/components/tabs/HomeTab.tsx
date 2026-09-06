@@ -17,7 +17,7 @@ import { KumbhColors } from '@/constants/colors';
 
 export const HomeTab: React.FC = () => {
   const insets = useSafeAreaInsets();
-  const { user, t, setActiveTab, setIsMapModalOpen, setIsLangModalOpen, currentLangMeta } = useApp();
+  const { user, t, setActiveTab, setIsMapModalOpen, setIsLangModalOpen, currentLangMeta, logoutUser } = useApp();
 
   return (
     <ScrollView
@@ -42,14 +42,23 @@ export const HomeTab: React.FC = () => {
           </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.langBtn}
-          onPress={() => setIsLangModalOpen(true)}
-          activeOpacity={0.8}>
-          <Ionicons name="globe-outline" size={14} color={KumbhColors.templeDark} />
-          <Text style={styles.langText}>{currentLangMeta.nativeName}</Text>
-          <Ionicons name="chevron-down" size={12} color="#64748B" />
-        </TouchableOpacity>
+        <View style={styles.topActionBtns}>
+          <TouchableOpacity
+            style={styles.langBtn}
+            onPress={() => setIsLangModalOpen(true)}
+            activeOpacity={0.8}>
+            <Ionicons name="globe-outline" size={14} color={KumbhColors.templeDark} />
+            <Text style={styles.langText}>{currentLangMeta.nativeName}</Text>
+            <Ionicons name="chevron-down" size={12} color="#64748B" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={logoutUser}
+            activeOpacity={0.8}>
+            <Ionicons name="log-out-outline" size={15} color={KumbhColors.textMuted} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* HERO BANNER */}
@@ -190,6 +199,11 @@ const styles = StyleSheet.create({
     color: KumbhColors.textMuted,
     fontFamily: 'Poppins_400Regular',
   },
+  topActionBtns: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   langBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -205,6 +219,16 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Poppins_600SemiBold',
     color: KumbhColors.templeBrown,
+  },
+  logoutBtn: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   heroPilgrimCard: {
     backgroundColor: KumbhColors.primary,

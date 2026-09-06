@@ -1,5 +1,6 @@
 export interface MarketplaceItem {
   id: string;
+  merchantId?: string;
   name: { [lang: string]: string };
   category: 'chivda' | 'food' | 'puja' | 'grapes' | 'stay';
   categoryLabel: { [lang: string]: string };
@@ -9,6 +10,7 @@ export interface MarketplaceItem {
   unit: string;
   rating: number;
   reviewCount: number;
+  isOpenNow?: boolean;
   isGovtVerified: boolean;
   phone: string;
   description: { [lang: string]: string };

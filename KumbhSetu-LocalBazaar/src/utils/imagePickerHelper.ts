@@ -77,11 +77,17 @@ export const pickImageFromGallery = async (): Promise<string | null> => {
       mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.8,
+      quality: 0.6,
+      base64: true,
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      return result.assets[0].uri;
+      const asset = result.assets[0];
+      if (asset.base64) {
+        const mime = asset.mimeType || 'image/jpeg';
+        return `data:${mime};base64,${asset.base64}`;
+      }
+      return asset.uri;
     }
     return null;
   } catch (error) {
@@ -100,11 +106,17 @@ export const takePhotoWithCamera = async (): Promise<string | null> => {
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.8,
+      quality: 0.6,
+      base64: true,
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      return result.assets[0].uri;
+      const asset = result.assets[0];
+      if (asset.base64) {
+        const mime = asset.mimeType || 'image/jpeg';
+        return `data:${mime};base64,${asset.base64}`;
+      }
+      return asset.uri;
     }
     return null;
   } catch (error) {

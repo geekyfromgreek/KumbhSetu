@@ -1,15 +1,15 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
+import { safeStorage } from '@/lib/safeStorage';
 import { TRANSLATIONS, TranslationDictionary, SUPPORTED_LANGUAGES, LanguageMeta } from '@/constants/languages';
-import { INITIAL_RUMORS, RumorFactCheck, UserComplaint, EMERGENCY_CONTACTS } from '@/data/complaintsAndRumorsData';
-import { INITIAL_REVIEWS, ShopReview } from '@/data/marketplaceData';
+import { INITIAL_RUMORS, RumorFactCheck, UserComplaint } from '@/data/complaintsAndRumorsData';
+import { INITIAL_REVIEWS, ShopReview, MarketplaceItem } from '@/data/marketplaceData';
 import {
   RouteFare,
   StandardPriceItem,
   INITIAL_ROUTE_FARES,
   INITIAL_STANDARD_PRICES,
 } from '@/data/fareData';
+import { SupabaseService } from '@/services/supabaseService';
 
 export interface UserProfile {
   name: string;
@@ -56,14 +56,21 @@ interface AppContextType {
   updateStandardPrice: (updatedItem: StandardPriceItem) => Promise<void>;
   resetStandardPricesToDefault: () => Promise<void>;
 
+  // Complaints / Grievances
   complaints: UserComplaint[];
   addComplaint: (category: string, vehicleOrShop: string, location: string, standardAmt: string, chargedAmt: string) => Promise<UserComplaint>;
 
+  // Fact checks & rumors
   rumors: RumorFactCheck[];
   submitRumorForCheck: (claimText: string) => void;
 
+  // Marketplace & Stores
+  marketplaceItems: MarketplaceItem[];
+  refreshMarketplace: () => Promise<void>;
+  sendMerchantInquiry: (merchantId: string, message: string, itemId?: string) => Promise<boolean>;
+
   reviews: ShopReview[];
-  addShopReview: (shopId: string, rating: number, comment: string) => void;
+  addShopReview: (shopId: string, rating: number, comment: string, merchantId?: string) => Promise<void>;
 }
 
 const STORAGE_KEYS = {
@@ -73,6 +80,7 @@ const STORAGE_KEYS = {
   REVIEWS: '@kumbhsetu_reviews_v3',
   ROUTE_FARES: '@kumbhsetu_route_fares_v3',
   STANDARD_PRICES: '@kumbhsetu_standard_prices_v3',
+  MARKETPLACE: '@kumbhsetu_marketplace_v3',
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -87,11 +95,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   // Admin Mode state
   const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
-  const adminPin = '1008'; // Official Kumbh RTO administration PIN
+  const adminPin = '1008';
 
   // Route fares and standard pricing state
   const [routeFares, setRouteFares] = useState<RouteFare[]>(INITIAL_ROUTE_FARES);
   const [standardPrices, setStandardPrices] = useState<StandardPriceItem[]>(INITIAL_STANDARD_PRICES);
+  const [marketplaceItems, setMarketplaceItems] = useState<MarketplaceItem[]>([]);
 
   const [complaints, setComplaints] = useState<UserComplaint[]>([]);
   const [rumors, setRumors] = useState<RumorFactCheck[]>(INITIAL_RUMORS);
@@ -108,33 +117,27 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           savedReviews,
           savedFares,
           savedPrices,
+          savedMarketplace,
         ] = await Promise.all([
-          AsyncStorage.getItem(STORAGE_KEYS.USER),
-          AsyncStorage.getItem(STORAGE_KEYS.LANG),
-          AsyncStorage.getItem(STORAGE_KEYS.COMPLAINTS),
-          AsyncStorage.getItem(STORAGE_KEYS.REVIEWS),
-          AsyncStorage.getItem(STORAGE_KEYS.ROUTE_FARES),
-          AsyncStorage.getItem(STORAGE_KEYS.STANDARD_PRICES),
+          safeStorage.getItem(STORAGE_KEYS.USER),
+          safeStorage.getItem(STORAGE_KEYS.LANG),
+          safeStorage.getItem(STORAGE_KEYS.COMPLAINTS),
+          safeStorage.getItem(STORAGE_KEYS.REVIEWS),
+          safeStorage.getItem(STORAGE_KEYS.ROUTE_FARES),
+          safeStorage.getItem(STORAGE_KEYS.STANDARD_PRICES),
+          safeStorage.getItem(STORAGE_KEYS.MARKETPLACE),
         ]);
 
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
-        }
-        if (savedLang) {
-          setLanguageState(savedLang);
-        }
-        if (savedComplaints) {
-          setComplaints(JSON.parse(savedComplaints));
-        }
-        if (savedReviews) {
-          setReviews(JSON.parse(savedReviews));
-        }
-        if (savedFares) {
-          setRouteFares(JSON.parse(savedFares));
-        }
-        if (savedPrices) {
-          setStandardPrices(JSON.parse(savedPrices));
-        }
+        if (savedUser) setUser(JSON.parse(savedUser));
+        if (savedLang) setLanguageState(savedLang);
+        if (savedComplaints) setComplaints(JSON.parse(savedComplaints));
+        if (savedReviews) setReviews(JSON.parse(savedReviews));
+        if (savedFares) setRouteFares(JSON.parse(savedFares));
+        if (savedPrices) setStandardPrices(JSON.parse(savedPrices));
+        if (savedMarketplace) setMarketplaceItems(JSON.parse(savedMarketplace));
+
+        // Attempt live fetch from Supabase
+        fetchLiveSupabaseData();
       } catch (err) {
         console.warn('Error loading stored AppContext data:', err);
       } finally {
@@ -143,7 +146,60 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
 
     initialize();
+
+    // Subscribe to realtime updates
+    const tariffSub = SupabaseService.subscribeToTariffs(() => {
+      fetchLiveTariffs();
+    });
+    const rumorSub = SupabaseService.subscribeToFactChecks(() => {
+      fetchLiveFactChecks();
+    });
+    const merchantSub = SupabaseService.subscribeToMerchants(() => {
+      fetchLiveMarketplace();
+    });
+
+    return () => {
+      tariffSub.unsubscribe();
+      rumorSub.unsubscribe();
+      merchantSub.unsubscribe();
+    };
   }, []);
+
+  const fetchLiveTariffs = async () => {
+    const fares = await SupabaseService.fetchRouteFares();
+    if (fares && fares.length > 0) {
+      setRouteFares(fares);
+      safeStorage.setItem(STORAGE_KEYS.ROUTE_FARES, JSON.stringify(fares));
+    }
+    const prices = await SupabaseService.fetchCommodityPrices();
+    if (prices && prices.length > 0) {
+      setStandardPrices(prices);
+      safeStorage.setItem(STORAGE_KEYS.STANDARD_PRICES, JSON.stringify(prices));
+    }
+  };
+
+  const fetchLiveFactChecks = async () => {
+    const liveRumors = await SupabaseService.fetchFactChecks();
+    if (liveRumors && liveRumors.length > 0) {
+      setRumors(liveRumors);
+    }
+  };
+
+  const fetchLiveMarketplace = async () => {
+    const liveItems = await SupabaseService.fetchMarketplaceItems();
+    if (liveItems) {
+      setMarketplaceItems(liveItems);
+      safeStorage.setItem(STORAGE_KEYS.MARKETPLACE, JSON.stringify(liveItems));
+    }
+  };
+
+  const fetchLiveSupabaseData = async () => {
+    await Promise.all([
+      fetchLiveTariffs(),
+      fetchLiveFactChecks(),
+      fetchLiveMarketplace(),
+    ]);
+  };
 
   const registerUser = async (name: string, phone: string, dob: string) => {
     const newProfile: UserProfile = {
@@ -154,17 +210,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       registeredAt: new Date().toISOString(),
     };
     setUser(newProfile);
-    await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newProfile));
+    await safeStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newProfile));
   };
 
   const logoutUser = async () => {
     setUser(null);
-    await AsyncStorage.removeItem(STORAGE_KEYS.USER);
+    await safeStorage.removeItem(STORAGE_KEYS.USER);
   };
 
   const setLanguage = async (newLang: string) => {
     setLanguageState(newLang);
-    await AsyncStorage.setItem(STORAGE_KEYS.LANG, newLang);
+    await safeStorage.setItem(STORAGE_KEYS.LANG, newLang);
   };
 
   const verifyAdminPin = (enteredPin: string): boolean => {
@@ -199,7 +255,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setRouteFares(updatedList);
-    await AsyncStorage.setItem(STORAGE_KEYS.ROUTE_FARES, JSON.stringify(updatedList));
+    await safeStorage.setItem(STORAGE_KEYS.ROUTE_FARES, JSON.stringify(updatedList));
   };
 
   const addRouteFare = async (newFare: RouteFare) => {
@@ -208,7 +264,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const resetRouteFaresToDefault = async () => {
     setRouteFares(INITIAL_ROUTE_FARES);
-    await AsyncStorage.setItem(STORAGE_KEYS.ROUTE_FARES, JSON.stringify(INITIAL_ROUTE_FARES));
+    await safeStorage.setItem(STORAGE_KEYS.ROUTE_FARES, JSON.stringify(INITIAL_ROUTE_FARES));
   };
 
   const updateStandardPrice = async (updatedItem: StandardPriceItem) => {
@@ -222,12 +278,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     );
 
     setStandardPrices(updatedList);
-    await AsyncStorage.setItem(STORAGE_KEYS.STANDARD_PRICES, JSON.stringify(updatedList));
+    await safeStorage.setItem(STORAGE_KEYS.STANDARD_PRICES, JSON.stringify(updatedList));
   };
 
   const resetStandardPricesToDefault = async () => {
     setStandardPrices(INITIAL_STANDARD_PRICES);
-    await AsyncStorage.setItem(STORAGE_KEYS.STANDARD_PRICES, JSON.stringify(INITIAL_STANDARD_PRICES));
+    await safeStorage.setItem(STORAGE_KEYS.STANDARD_PRICES, JSON.stringify(INITIAL_STANDARD_PRICES));
   };
 
   const addComplaint = async (
@@ -252,7 +308,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     const updated = [newComplaint, ...complaints];
     setComplaints(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.COMPLAINTS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.COMPLAINTS, JSON.stringify(updated));
+
+    // Also sync to Supabase backend in background
+    SupabaseService.submitGrievance({
+      category,
+      vehicleOrShop,
+      location,
+      standardAmt,
+      chargedAmt,
+      reporterName: user?.name,
+      reporterPhone: user?.phone,
+    });
+
     return newComplaint;
   };
 
@@ -268,19 +336,32 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       claimSource: `${user?.name || 'तीर्थयात्री'} द्वारा भेजी गई सूचना`,
       status: 'under_review',
       officialClarification: {
-        hi: 'यह सूचना कुंभ प्रशासन व पुलिस कंट्रोल रूम को सत्यापन के लिए भेज दी गई है।',
-        mr: 'ही माहिती कुंभ प्रशासन आणि पोलीस नियंत्रण कक्षाकडे तपासणीसाठी पाठवण्यात आली आहे.',
+        hi: 'यह सूचना कुंभ प्रशासन व कुंभवीर ग्राउंड टीम को सत्यापन के लिए भेज दी गई है।',
+        mr: 'ही माहिती कुंभ प्रशासन आणि कुंभवीर ग्राउंड पथकाकडे तपासणीसाठी पाठवण्यात आली आहे.',
         gu: 'આ માહિતી તપાસ માટે મોકલવામાં આવી છે.',
-        en: 'This report has been forwarded to the Mela Control Room for real-time verification.',
+        en: 'This report has been forwarded to KumbhVeer Volunteers and Admin for real-time ground check.',
       },
-      verifiedBy: 'कुंभ कंट्रोल रूम टीम (जांच जारी)',
+      verifiedBy: 'कुंभ कंट्रोल रूम व कुंभवीर',
       timestamp: 'अभी-अभी (Just Now)',
     };
 
     setRumors([newRumor, ...rumors]);
+
+    // Send to Supabase
+    SupabaseService.submitRumor(claimText, user?.name);
   };
 
-  const addShopReview = async (shopId: string, rating: number, comment: string) => {
+  const sendMerchantInquiry = async (merchantId: string, message: string, itemId?: string): Promise<boolean> => {
+    return SupabaseService.sendMerchantInquiry({
+      merchantId,
+      itemId,
+      pilgrimName: user?.name || 'Pilgrim',
+      pilgrimPhone: user?.phone || '',
+      message,
+    });
+  };
+
+  const addShopReview = async (shopId: string, rating: number, comment: string, merchantId?: string) => {
     const newRev: ShopReview = {
       id: `rev_${Date.now()}`,
       shopId,
@@ -291,7 +372,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
     const updated = [newRev, ...reviews];
     setReviews(updated);
-    await AsyncStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(updated));
+    await safeStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(updated));
+
+    // Submit to Supabase
+    const targetMerchantId = merchantId || shopId;
+    if (targetMerchantId) {
+      await SupabaseService.submitShopReview(targetMerchantId, rating, comment, user?.name);
+      fetchLiveMarketplace();
+    }
   };
 
   const currentLangMeta =
@@ -330,6 +418,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         addComplaint,
         rumors,
         submitRumorForCheck,
+        marketplaceItems,
+        refreshMarketplace: fetchLiveMarketplace,
+        sendMerchantInquiry,
         reviews,
         addShopReview,
       }}>

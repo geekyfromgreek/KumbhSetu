@@ -21,15 +21,28 @@ export const RegistrationScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { registerUser, t, setIsLangModalOpen, currentLangMeta, setLanguage } = useApp();
 
+  const [authMode, setAuthMode] = useState<'register' | 'login'>('register');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [dob, setDob] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
-  const handleRegister = async () => {
+  const handleSubmit = async () => {
+    if (authMode === 'login') {
+      if (!phone.trim() || phone.trim().length < 10) {
+        setErrorMessage('Please enter a valid 10-digit registered mobile number');
+        return;
+      }
+      setErrorMessage('');
+      // Sign in pilgrim
+      await registerUser(name.trim() || `Pilgrim ${phone.slice(-4)}`, phone.trim(), dob.trim() || '01/01/1990');
+      return;
+    }
+
+    // Registration Mode
     if (!name.trim() || !phone.trim() || !dob.trim()) {
-      setErrorMessage(t.fillAllFields);
+      setErrorMessage(t.fillAllFields || 'Please fill all required fields');
       return;
     }
 
@@ -77,11 +90,45 @@ export const RegistrationScreen: React.FC = () => {
           <Text style={styles.welcomePillText}>{t.welcome}</Text>
         </View>
 
-        {/* Minimal Registration Form */}
+        {/* Auth Card */}
         <View style={styles.card}>
+          
+          {/* Mode Switcher: Register / Sign In */}
+          <View style={styles.modeTabs}>
+            <TouchableOpacity
+              style={[styles.modeTab, authMode === 'register' && styles.modeTabActive]}
+              onPress={() => {
+                setAuthMode('register');
+                setErrorMessage('');
+              }}
+              activeOpacity={0.8}>
+              <Text style={[styles.modeTabText, authMode === 'register' && styles.modeTabTextActive]}>
+                New Pilgrim
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.modeTab, authMode === 'login' && styles.modeTabActive]}
+              onPress={() => {
+                setAuthMode('login');
+                setErrorMessage('');
+              }}
+              activeOpacity={0.8}>
+              <Text style={[styles.modeTabText, authMode === 'login' && styles.modeTabTextActive]}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>{t.regTitle}</Text>
-            <Text style={styles.cardDesc}>{t.regSubtitle}</Text>
+            <Text style={styles.cardTitle}>
+              {authMode === 'register' ? t.regTitle : 'Pilgrim Sign In'}
+            </Text>
+            <Text style={styles.cardDesc}>
+              {authMode === 'register'
+                ? t.regSubtitle
+                : 'Enter your 10-digit mobile number to access your pilgrim pass'}
+            </Text>
 
             {/* Quick 1-tap Language Selector */}
             <View style={styles.quickLangStrip}>
@@ -125,21 +172,23 @@ export const RegistrationScreen: React.FC = () => {
             </View>
           ) : null}
 
-          {/* Field 1: Name */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>{t.fullNameLabel} <Text style={styles.requiredStar}>*</Text></Text>
-            <TextInput
-              style={styles.input}
-              placeholder={t.fullNamePlaceholder}
-              placeholderTextColor={KumbhColors.textMuted}
-              value={name}
-              onChangeText={(text) => {
-                setName(text);
-                if (errorMessage) setErrorMessage('');
-              }}
-              autoCapitalize="words"
-            />
-          </View>
+          {/* Field 1: Name (Only in Register mode) */}
+          {authMode === 'register' && (
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>{t.fullNameLabel} <Text style={styles.requiredStar}>*</Text></Text>
+              <TextInput
+                style={styles.input}
+                placeholder={t.fullNamePlaceholder}
+                placeholderTextColor={KumbhColors.textMuted}
+                value={name}
+                onChangeText={(text) => {
+                  setName(text);
+                  if (errorMessage) setErrorMessage('');
+                }}
+                autoCapitalize="words"
+              />
+            </View>
+          )}
 
           {/* Field 2: Phone */}
           <View style={styles.inputGroup}>
@@ -163,33 +212,37 @@ export const RegistrationScreen: React.FC = () => {
             </View>
           </View>
 
-          {/* Field 3: Actual Date of Birth Selector */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>{t.dobLabel} <Text style={styles.requiredStar}>*</Text></Text>
-            <TouchableOpacity
-              style={[styles.input, styles.datePickerBtn]}
-              onPress={() => setIsDatePickerOpen(true)}
-              activeOpacity={0.75}>
-              <Text style={dob ? styles.dateValueText : styles.datePlaceholderText}>
-                {dob || 'Select Date of Birth (DD/MM/YYYY)'}
-              </Text>
-              <MaterialCommunityIcons name="calendar" size={18} color={KumbhColors.primary} />
-            </TouchableOpacity>
-          </View>
+          {/* Field 3: Actual Date of Birth Selector (Only in Register mode) */}
+          {authMode === 'register' && (
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>{t.dobLabel} <Text style={styles.requiredStar}>*</Text></Text>
+              <TouchableOpacity
+                style={[styles.input, styles.datePickerBtn]}
+                onPress={() => setIsDatePickerOpen(true)}
+                activeOpacity={0.75}>
+                <Text style={dob ? styles.dateValueText : styles.datePlaceholderText}>
+                  {dob || 'Select Date of Birth (DD/MM/YYYY)'}
+                </Text>
+                <MaterialCommunityIcons name="calendar" size={18} color={KumbhColors.primary} />
+              </TouchableOpacity>
+            </View>
+          )}
 
           {/* Submit Button */}
           <TouchableOpacity
             style={styles.submitBtn}
-            onPress={handleRegister}
+            onPress={handleSubmit}
             activeOpacity={0.85}>
-            <Text style={styles.submitBtnText}>{t.registerButton}</Text>
+            <Text style={styles.submitBtnText}>
+              {authMode === 'register' ? t.registerButton : 'Sign In as Pilgrim'}
+            </Text>
             <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
           </TouchableOpacity>
 
           <View style={styles.privacyNote}>
             <Ionicons name="shield-checkmark" size={14} color={KumbhColors.success} />
             <Text style={styles.privacyText}>
-              Direct sign-in without passwords
+              Fast & secure direct access
             </Text>
           </View>
         </View>
@@ -286,17 +339,47 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E2E8F0',
   },
+  modeTabs: {
+    flexDirection: 'row',
+    backgroundColor: '#F1F5F9',
+    borderRadius: 8,
+    padding: 3,
+    marginBottom: 12,
+  },
+  modeTab: {
+    flex: 1,
+    paddingVertical: 7,
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  modeTabActive: {
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  modeTabText: {
+    fontSize: 12,
+    fontFamily: 'Poppins_500Medium',
+    color: KumbhColors.textMuted,
+  },
+  modeTabTextActive: {
+    fontFamily: 'Poppins_700Bold',
+    color: KumbhColors.primaryDark,
+  },
   cardHeader: {
     marginBottom: 14,
     alignItems: 'center',
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontFamily: 'Poppins_700Bold',
     color: KumbhColors.templeDark,
   },
   cardDesc: {
-    fontSize: 12,
+    fontSize: 11.5,
     color: KumbhColors.textMuted,
     fontFamily: 'Poppins_400Regular',
     marginTop: 2,

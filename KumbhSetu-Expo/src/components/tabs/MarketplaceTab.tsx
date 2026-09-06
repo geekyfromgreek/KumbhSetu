@@ -20,7 +20,7 @@ import { KumbhColors } from '@/constants/colors';
 
 export const MarketplaceTab: React.FC = () => {
   const insets = useSafeAreaInsets();
-  const { language, t, reviews, addShopReview } = useApp();
+  const { language, t, reviews, addShopReview, marketplaceItems, sendMerchantInquiry } = useApp();
   const [selectedCat, setSelectedCat] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   
@@ -29,10 +29,10 @@ export const MarketplaceTab: React.FC = () => {
   const [userComment, setUserComment] = useState<string>('');
   const [isSuccessFeedback, setIsSuccessFeedback] = useState<boolean>(false);
 
-  const filteredItems = MARKETPLACE_ITEMS.filter((item) => {
+  const filteredItems = (marketplaceItems || []).filter((item) => {
     const matchesCat = selectedCat === 'all' || item.category === selectedCat;
-    const nameStr = (item.name[language] || item.name.hi || item.name.en).toLowerCase();
-    const shopStr = item.shopName.toLowerCase();
+    const nameStr = (item.name[language] || item.name.hi || item.name.en || '').toLowerCase();
+    const shopStr = (item.shopName || '').toLowerCase();
     const query = searchQuery.toLowerCase().trim();
     const matchesSearch = !query || nameStr.includes(query) || shopStr.includes(query);
     return matchesCat && matchesSearch;
@@ -48,9 +48,14 @@ export const MarketplaceTab: React.FC = () => {
     Linking.openURL(`https://wa.me/${cleanPhone}?text=${message}`);
   };
 
-  const handleSubmitReview = () => {
+  const handleSubmitReview = async () => {
     if (!ratingModalItem) return;
-    addShopReview(ratingModalItem.id, userRating, userComment);
+    await addShopReview(
+      ratingModalItem.id,
+      userRating,
+      userComment,
+      ratingModalItem.merchantId || ratingModalItem.id
+    );
     setIsSuccessFeedback(true);
     setTimeout(() => {
       setIsSuccessFeedback(false);
@@ -155,11 +160,24 @@ export const MarketplaceTab: React.FC = () => {
                   
                   {/* Header Row */}
                   <View style={styles.cardHeader}>
-                    {item.badgeText ? (
-                      <View style={styles.customBadge}>
-                        <Text style={styles.customBadgeText}>{item.badgeText}</Text>
-                      </View>
-                    ) : <View />}
+                    <View style={styles.badgeGroup}>
+                      {item.isOpenNow !== false ? (
+                        <View style={styles.openNowBadge}>
+                          <View style={styles.greenDot} />
+                          <Text style={styles.openNowText}>OPEN</Text>
+                        </View>
+                      ) : (
+                        <View style={styles.closedBadge}>
+                          <Text style={styles.closedText}>CLOSED</Text>
+                        </View>
+                      )}
+
+                      {item.badgeText ? (
+                        <View style={styles.customBadge}>
+                          <Text style={styles.customBadgeText}>{item.badgeText}</Text>
+                        </View>
+                      ) : null}
+                    </View>
 
                     <TouchableOpacity
                       style={styles.ratingPill}
@@ -412,6 +430,46 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 6,
+  },
+  badgeGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  openNowBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#DCFCE7',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+    gap: 4,
+    borderWidth: 1,
+    borderColor: '#86EFAC',
+  },
+  greenDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#16A34A',
+  },
+  openNowText: {
+    fontSize: 9.5,
+    fontFamily: 'Poppins_700Bold',
+    color: '#15803D',
+  },
+  closedBadge: {
+    backgroundColor: '#F1F5F9',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+  },
+  closedText: {
+    fontSize: 9.5,
+    fontFamily: 'Poppins_600SemiBold',
+    color: '#64748B',
   },
   customBadge: {
     backgroundColor: KumbhColors.primarySoft,

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { AdminColors } from '@/constants/colors';
 import { useAdmin } from '@/context/AdminContext';
 import { AdminHeader } from '@/components/AdminHeader';

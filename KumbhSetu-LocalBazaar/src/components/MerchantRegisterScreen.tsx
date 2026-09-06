@@ -24,7 +24,11 @@ import {
 
 export const MerchantRegisterScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
-  const { registerMerchant } = useMerchant();
+  const { registerMerchant, loginMerchant } = useMerchant();
+
+  const [mode, setMode] = useState<'register' | 'login'>('register');
+  const [loginPhone, setLoginPhone] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   // Form Fields
   const [ownerName, setOwnerName] = useState('');
@@ -65,6 +69,20 @@ export const MerchantRegisterScreen: React.FC = () => {
   const handlePickLicenseDoc = async () => {
     const uri = await pickImageFromGallery();
     if (uri) setLicenseDocumentUri(uri);
+  };
+
+  const handleLoginSubmit = async () => {
+    if (!loginPhone.trim() || loginPhone.trim().length < 10) {
+      setErrorMessage('Please enter a valid 10-digit registered mobile number.');
+      return;
+    }
+    setErrorMessage('');
+    setIsLoggingIn(true);
+    const res = await loginMerchant(loginPhone.trim());
+    setIsLoggingIn(false);
+    if (!res.success) {
+      setErrorMessage(res.message || 'Merchant not found.');
+    }
   };
 
   const handleSubmitRegistration = async () => {
@@ -136,10 +154,39 @@ export const MerchantRegisterScreen: React.FC = () => {
             <Ionicons name="storefront" size={28} color={BazaarColors.saffron} />
           </View>
           <Text style={styles.brandTitle}>KumbhSetu Local Bazaar</Text>
-          <Text style={styles.brandSub}>Merchant & Eatery Registration Desk</Text>
+          <Text style={styles.brandSub}>Merchant & Eatery Portal</Text>
           <Text style={styles.brandDesc}>
-            Register your shop, food stall, or bhojanalaya so pilgrims can discover your items, visit your stall, and contact you directly.
+            Register your shop, food stall, or bhojanalaya to list items, set prices, and connect with pilgrims.
           </Text>
+        </View>
+
+        {/* Mode Segmented Tab */}
+        <View style={styles.modeTabs}>
+          <TouchableOpacity
+            style={[styles.modeTab, mode === 'register' && styles.modeTabActive]}
+            onPress={() => {
+              setMode('register');
+              setErrorMessage('');
+            }}
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.modeTabText, mode === 'register' && styles.modeTabTextActive]}>
+              Register New Stall
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.modeTab, mode === 'login' && styles.modeTabActive]}
+            onPress={() => {
+              setMode('login');
+              setErrorMessage('');
+            }}
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.modeTabText, mode === 'login' && styles.modeTabTextActive]}>
+              Sign In Existing Shop
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {errorMessage ? (
@@ -149,9 +196,53 @@ export const MerchantRegisterScreen: React.FC = () => {
           </View>
         ) : null}
 
-        {/* Section 1: Merchant & Business Details */}
-        <View style={styles.card}>
-          <Text style={styles.cardSectionTitle}>1. Business & Owner Profile</Text>
+        {/* SIGN IN FORM */}
+        {mode === 'login' ? (
+          <View style={styles.card}>
+            <Text style={styles.cardSectionTitle}>Merchant Sign In</Text>
+            <Text style={styles.loginCardDesc}>
+              Enter your registered 10-digit mobile number to access your store dashboard and manage your menu.
+            </Text>
+
+            <Text style={styles.inputLabel}>
+              Registered Mobile Number <Text style={styles.reqStar}>*</Text>
+            </Text>
+            <View style={styles.phoneInputRow}>
+              <View style={styles.phonePrefixBadge}>
+                <Text style={styles.phonePrefixText}>+91</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, styles.phoneTextInput]}
+                placeholder="Enter 10-digit phone number"
+                placeholderTextColor={BazaarColors.textMuted}
+                keyboardType="phone-pad"
+                maxLength={10}
+                value={loginPhone}
+                onChangeText={(txt) => {
+                  setLoginPhone(txt.replace(/[^0-9]/g, ''));
+                  if (errorMessage) setErrorMessage('');
+                }}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={[styles.submitBtn, isLoggingIn && { opacity: 0.7 }]}
+              onPress={handleLoginSubmit}
+              activeOpacity={0.85}
+              disabled={isLoggingIn}
+            >
+              <Ionicons name="log-in-outline" size={18} color="#FFFFFF" />
+              <Text style={styles.submitBtnText}>
+                {isLoggingIn ? 'Verifying...' : 'Sign In to Store Dashboard'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          /* REGISTRATION FORM */
+          <>
+            {/* Section 1: Merchant & Business Details */}
+            <View style={styles.card}>
+              <Text style={styles.cardSectionTitle}>1. Business & Owner Profile</Text>
 
           <Text style={styles.inputLabel}>
             Owner / Proprietor Full Name <Text style={styles.reqStar}>*</Text>
@@ -456,6 +547,8 @@ export const MerchantRegisterScreen: React.FC = () => {
           <Ionicons name="checkmark-circle" size={20} color={BazaarColors.white} />
           <Text style={styles.registerBtnText}>Complete Registration & Open Stall</Text>
         </TouchableOpacity>
+        </>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -507,6 +600,81 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 6,
     lineHeight: 16,
+  },
+  modeTabs: {
+    flexDirection: 'row',
+    backgroundColor: '#F1F5F9',
+    borderRadius: 8,
+    padding: 3,
+  },
+  modeTab: {
+    flex: 1,
+    paddingVertical: 8,
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  modeTabActive: {
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  modeTabText: {
+    fontSize: 12,
+    fontFamily: 'Poppins_500Medium',
+    color: BazaarColors.textMuted,
+  },
+  modeTabTextActive: {
+    fontFamily: 'Poppins_700Bold',
+    color: BazaarColors.saffronDark,
+  },
+  loginCardDesc: {
+    fontSize: 12,
+    fontFamily: 'Poppins_400Regular',
+    color: BazaarColors.textSecondary,
+    marginBottom: 12,
+    lineHeight: 16,
+  },
+  phoneInputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 14,
+  },
+  phonePrefixBadge: {
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: BazaarColors.cardBorder,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    justifyContent: 'center',
+  },
+  phonePrefixText: {
+    fontSize: 13,
+    fontFamily: 'Poppins_600SemiBold',
+    color: BazaarColors.templeBrown,
+  },
+  phoneTextInput: {
+    flex: 1,
+    marginBottom: 0,
+  },
+  submitBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: BazaarColors.saffron,
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 6,
+  },
+  submitBtnText: {
+    color: '#FFFFFF',
+    fontSize: 13.5,
+    fontFamily: 'Poppins_700Bold',
   },
   errorBanner: {
     flexDirection: 'row',
