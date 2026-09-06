@@ -166,6 +166,10 @@
           <button onclick="resetMapCenter()" title="Center Nashik" class="w-7 h-7 rounded-full bg-surface-container-high hover:bg-primary/20 text-on-surface flex items-center justify-center cursor-pointer transition-transform active:scale-90">
             <span class="material-symbols-outlined text-sm text-primary">refresh</span>
           </button>
+          <!-- Leaflet Map Provider & API Key Button -->
+          <button onclick="openMapKeyModal()" title="Leaflet Map Tile & API Key Settings" class="w-7 h-7 rounded-full bg-surface-container-high hover:bg-primary/20 text-on-surface flex items-center justify-center cursor-pointer transition-transform active:scale-90">
+            <span class="material-symbols-outlined text-sm text-primary">key</span>
+          </button>
         </div>
       </div>
 
@@ -486,12 +490,8 @@
         touchZoom: true
       });
 
-      // CartoDB Voyager Daylight Layer (smooth, highly readable for transit)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a>, OSM',
-        maxZoom: 19,
-        subdomains: 'abcd'
-      }).addTo(map);
+      // Dynamic Tile Layer support (OpenStreetMap, MapTiler, Mapbox)
+      updateMapTileLayer();
 
       // Custom Pickup DivIcon (Green)
       const pickupIcon = L.divIcon({
@@ -1039,11 +1039,142 @@
       closeReportFareModal();
     }
 
+    // Leaflet Tile Layer & API Key Management
+    let currentTileLayer = null;
+
+    function updateMapTileLayer(provider, apiKey) {
+      if (!map) return;
+      if (currentTileLayer) {
+        map.removeLayer(currentTileLayer);
+      }
+      
+      provider = provider || localStorage.getItem('kumbh_map_provider') || 'cartodb';
+      apiKey = apiKey !== undefined ? apiKey : (localStorage.getItem('kumbh_map_api_key') || '');
+
+      if (provider === 'maptiler' && apiKey) {
+        currentTileLayer = L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${apiKey}`, {
+          attribution: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19
+        });
+      } else if (provider === 'mapbox' && apiKey) {
+        currentTileLayer = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${apiKey}`, {
+          attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; OpenStreetMap',
+          maxZoom: 19,
+          tileSize: 512,
+          zoomOffset: -1
+        });
+      } else {
+        // Free, high-performance CartoDB Voyager (No API key required)
+        currentTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a>, OSM',
+          maxZoom: 19,
+          subdomains: 'abcd'
+        });
+      }
+
+      currentTileLayer.addTo(map);
+    }
+
+    function openMapKeyModal() {
+      const modal = document.getElementById('map-key-modal');
+      const providerSel = document.getElementById('map-provider-select');
+      const keyInput = document.getElementById('map-api-key-input');
+      
+      const savedProvider = localStorage.getItem('kumbh_map_provider') || 'cartodb';
+      const savedKey = localStorage.getItem('kumbh_map_api_key') || '';
+      
+      if (providerSel) providerSel.value = savedProvider;
+      if (keyInput) keyInput.value = savedKey;
+      onProviderSelectChange();
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeMapKeyModal() {
+      const modal = document.getElementById('map-key-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function onProviderSelectChange() {
+      const providerSel = document.getElementById('map-provider-select');
+      const box = document.getElementById('api-key-input-box');
+      if (providerSel.value === 'cartodb') {
+        box.classList.add('hidden');
+      } else {
+        box.classList.remove('hidden');
+      }
+    }
+
+    function saveMapApiKey() {
+      const provider = document.getElementById('map-provider-select').value;
+      const key = document.getElementById('map-api-key-input').value.trim();
+
+      if (provider !== 'cartodb' && !key) {
+        alert('Please enter your API Key or Token for this provider.');
+        return;
+      }
+
+      localStorage.setItem('kumbh_map_provider', provider);
+      localStorage.setItem('kumbh_map_api_key', key);
+      updateMapTileLayer(provider, key);
+      alert('Map provider and API Key updated successfully!');
+      closeMapKeyModal();
+    }
+
     // Initialize on window load
     window.addEventListener('DOMContentLoaded', () => {
       initMap();
     });
   </script>
+
+  <!-- Leaflet Map Provider & API Key Modal -->
+  <div id="map-key-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] hidden items-center justify-center p-4">
+    <div class="bg-surface rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-outline-variant/30 text-left">
+      <div class="flex items-center justify-between pb-3 border-b border-surface-container-high mb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">map</span>
+          <h3 class="font-bold text-base text-on-surface">Leaflet Map &amp; API Key</h3>
+        </div>
+        <button onclick="closeMapKeyModal()" class="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+      
+      <div class="space-y-3 text-xs">
+        <div class="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800">
+          <div class="font-bold mb-0.5 flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">check_circle</span>
+            Current Mode: Free CartoDB / OSM (Zero API key needed)
+          </div>
+          <div>Leaflet is open-source and working directly out-of-the-box with free high-speed map tiles.</div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Choose Tile Provider:</label>
+          <select id="map-provider-select" onchange="onProviderSelectChange()" class="w-full p-2 rounded-lg bg-surface-container-low border border-outline-variant/40 text-on-surface text-xs">
+            <option value="cartodb">CartoDB Voyager (Free • No Key Needed)</option>
+            <option value="maptiler">MapTiler (Enter API Key)</option>
+            <option value="mapbox">Mapbox (Enter Access Token)</option>
+          </select>
+        </div>
+
+        <div id="api-key-input-box" class="hidden">
+          <label class="block font-bold text-on-surface mb-1">Enter Your API Key / Token:</label>
+          <input type="text" id="map-api-key-input" placeholder="e.g. MapTiler key or pk.eyJ..." class="w-full p-2 rounded-lg bg-surface-container-lowest border border-outline-variant/50 text-xs font-mono">
+          <p class="text-[11px] text-on-surface-variant mt-1">
+            Need a key? Get one free at <a href="https://cloud.maptiler.com/" target="_blank" class="text-primary underline">cloud.maptiler.com</a> or <a href="https://mapbox.com/" target="_blank" class="text-primary underline">mapbox.com</a>.
+          </p>
+        </div>
+
+        <div class="pt-2 flex gap-2">
+          <button onclick="saveMapApiKey()" class="flex-1 py-2 bg-primary text-on-primary rounded-lg font-bold text-xs shadow-sm hover:opacity-95 cursor-pointer">Save &amp; Apply</button>
+          <button onclick="closeMapKeyModal()" class="px-3 py-2 bg-surface-container text-on-surface-variant rounded-lg font-semibold text-xs cursor-pointer">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="i18n.js"></script>
 </body>
 </html>
