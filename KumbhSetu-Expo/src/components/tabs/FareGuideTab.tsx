@@ -8,20 +8,13 @@ import {
   StyleSheet,
   Modal,
   Alert,
-  Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useApp } from '@/context/AppContext';
-import {
-  TRANSIT_LOCATIONS,
-  TransitLocation,
-  calculateFare,
-  RouteFare,
-  StandardPriceItem,
-} from '@/data/fareData';
+import { RouteFare, StandardPriceItem } from '@/data/fareData';
 import { KumbhColors } from '@/constants/colors';
 
 export const FareGuideTab: React.FC = () => {
@@ -35,27 +28,26 @@ export const FareGuideTab: React.FC = () => {
     verifyAdminPin,
     routeFares,
     updateRouteFare,
+    addRouteFare,
     resetRouteFaresToDefault,
     standardPrices,
     updateStandardPrice,
     resetStandardPricesToDefault,
   } = useApp();
 
-  const [fromLocation, setFromLocation] = useState<TransitLocation | null>(null);
-  const [toLocation, setToLocation] = useState<TransitLocation | null>(null);
-
-  const [fromQuery, setFromQuery] = useState<string>('');
-  const [toQuery, setToQuery] = useState<string>('');
-  const [activePicker, setActivePicker] = useState<'none' | 'from' | 'to'>('none');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
 
   // Admin Pin Auth Modal
   const [isPinModalOpen, setIsPinModalOpen] = useState<boolean>(false);
   const [enteredPin, setEnteredPin] = useState<string>('');
   const [pinError, setPinError] = useState<string>('');
 
-  // Admin Route Fare Edit Modal
+  // Admin Route Fare Create/Edit Modal
   const [isEditRouteModalOpen, setIsEditRouteModalOpen] = useState<boolean>(false);
   const [editingRoute, setEditingRoute] = useState<RouteFare | null>(null);
+  const [editFrom, setEditFrom] = useState<string>('');
+  const [editTo, setEditTo] = useState<string>('');
   const [editSharedAuto, setEditSharedAuto] = useState<string>('');
   const [editPrivateAuto, setEditPrivateAuto] = useState<string>('');
   const [editBus, setEditBus] = useState<string>('');
@@ -71,92 +63,74 @@ export const FareGuideTab: React.FC = () => {
   const [editItemMaxPrice, setEditItemMaxPrice] = useState<string>('');
   const [editItemNotice, setEditItemNotice] = useState<string>('');
 
-  // Admin Master Tariff Sheet Modal
-  const [isMasterListOpen, setIsMasterListOpen] = useState<boolean>(false);
-  const [masterSearchQuery, setMasterSearchQuery] = useState<string>('');
-
-  const fareResult =
-    fromLocation && toLocation
-      ? calculateFare(fromLocation.id, toLocation.id, routeFares)
-      : null;
-
-  const getLocName = (loc: TransitLocation | null) => {
-    if (!loc) return '';
-    return loc.name[language] || loc.name.hi || loc.name.en;
-  };
-
-  const getLocNameById = (locId: string) => {
-    const loc = TRANSIT_LOCATIONS.find((l) => l.id === locId);
-    return loc ? getLocName(loc) : locId;
-  };
-
-  const filteredFromLocations = TRANSIT_LOCATIONS.filter((l) => {
-    const name = (l.name[language] || l.name.hi || l.name.en).toLowerCase();
-    return !fromQuery || name.includes(fromQuery.toLowerCase());
+  // Filter routes based on search query
+  const filteredRoutes = (routeFares || []).filter((r) => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return true;
+    const fromStr = (r.fromName || r.fromId || '').toLowerCase();
+    const toStr = (r.toName || r.toId || '').toLowerCase();
+    const noteStr = (r.trafficNote || '').toLowerCase();
+    return fromStr.includes(q) || toStr.includes(q) || noteStr.includes(q);
   });
 
-  const filteredToLocations = TRANSIT_LOCATIONS.filter((l) => {
-    const name = (l.name[language] || l.name.hi || l.name.en).toLowerCase();
-    return !toQuery || name.includes(toQuery.toLowerCase());
-  });
-
-  const handleSwap = () => {
-    if (!fromLocation && !toLocation) return;
-    const temp = fromLocation;
-    setFromLocation(toLocation);
-    setToLocation(temp);
-  };
-
-  // Open Admin Edit for Current Calculated Route
-  const handleOpenEditCurrentRoute = () => {
-    if (!fareResult || !fromLocation || !toLocation) return;
-    const currentRoute: RouteFare = {
-      id: fareResult.id || `rf_${fromLocation.id}_${toLocation.id}`,
-      fromId: fromLocation.id,
-      toId: toLocation.id,
-      distanceKm: fareResult.distanceKm,
-      sharedAutoPerPerson: fareResult.sharedAutoPerPerson,
-      privateAutoFixed: fareResult.privateAutoFixed,
-      kumbhCityBus: fareResult.kumbhCityBus,
-      taxiCab: fareResult.taxiCab,
-      approxMinutes: fareResult.approxMinutes,
-      trafficNote: fareResult.trafficNote,
-    };
-    prepareRouteEdit(currentRoute);
-  };
-
-  const prepareRouteEdit = (route: RouteFare) => {
-    setEditingRoute(route);
-    setEditSharedAuto(String(route.sharedAutoPerPerson));
-    setEditPrivateAuto(String(route.privateAutoFixed));
-    setEditBus(String(route.kumbhCityBus));
-    setEditTaxi(String(route.taxiCab));
-    setEditDistance(String(route.distanceKm));
-    setEditMinutes(String(route.approxMinutes));
-    setEditNote(route.trafficNote || '');
+  const prepareRouteEdit = (route?: RouteFare) => {
+    if (route) {
+      setEditingRoute(route);
+      setEditFrom(route.fromName || route.fromId || '');
+      setEditTo(route.toName || route.toId || '');
+      setEditSharedAuto(String(route.sharedAutoPerPerson || ''));
+      setEditPrivateAuto(String(route.privateAutoFixed || ''));
+      setEditBus(String(route.kumbhCityBus || ''));
+      setEditTaxi(String(route.taxiCab || ''));
+      setEditDistance(String(route.distanceKm || ''));
+      setEditMinutes(String(route.approxMinutes || ''));
+      setEditNote(route.trafficNote || '');
+    } else {
+      setEditingRoute(null);
+      setEditFrom('');
+      setEditTo('');
+      setEditSharedAuto('20');
+      setEditPrivateAuto('80');
+      setEditBus('15');
+      setEditTaxi('150');
+      setEditDistance('5.0');
+      setEditMinutes('15');
+      setEditNote('Official gazette route');
+    }
     setAdminSaveSuccess(false);
     setIsEditRouteModalOpen(true);
   };
 
   const handleSaveRouteFare = async () => {
-    if (!editingRoute) return;
-    const updated: RouteFare = {
-      ...editingRoute,
+    if (!editFrom.trim() || !editTo.trim()) {
+      Alert.alert('Validation Error', 'Origin and Destination names are required.');
+      return;
+    }
+
+    const fromName = editFrom.trim();
+    const toName = editTo.trim();
+
+    const farePayload: RouteFare = {
+      id: editingRoute?.id || `rf_${Date.now()}`,
+      fromName,
+      toName,
+      fromId: fromName.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+      toId: toName.toLowerCase().replace(/[^a-z0-9]/g, '_'),
       sharedAutoPerPerson: parseFloat(editSharedAuto) || 0,
       privateAutoFixed: parseFloat(editPrivateAuto) || 0,
       kumbhCityBus: parseFloat(editBus) || 0,
       taxiCab: parseFloat(editTaxi) || 0,
       distanceKm: parseFloat(editDistance) || 0,
-      approxMinutes: parseInt(editMinutes, 10) || 0,
-      trafficNote: editNote.trim() || 'प्रशासन द्वारा अद्यतन मार्ग (Admin Updated)',
+      approxMinutes: parseInt(editMinutes, 10) || 15,
+      trafficNote: editNote.trim() || 'प्रशासन द्वारा अधिकृत मार्ग (RTO Approved Route)',
     };
 
-    await updateRouteFare(updated);
+    await updateRouteFare(farePayload);
     setAdminSaveSuccess(true);
     setTimeout(() => {
       setIsEditRouteModalOpen(false);
       setAdminSaveSuccess(false);
-    }, 900);
+    }, 800);
   };
 
   const prepareItemEdit = (item: StandardPriceItem) => {
@@ -188,320 +162,220 @@ export const FareGuideTab: React.FC = () => {
     }
   };
 
-  const handleResetDefaults = () => {
-    Alert.alert(
-      'Reset to Official Fares',
-      'Are you sure you want to restore default government gazette route fares and standard commodity prices?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Restore Defaults',
-          style: 'destructive',
-          onPress: async () => {
-            await resetRouteFaresToDefault();
-            await resetStandardPricesToDefault();
-          },
-        },
-      ]
-    );
-  };
-
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={[
-        styles.scrollContent,
-        { paddingTop: Math.max(insets.top + 8, 16), paddingBottom: 28 },
-      ]}
-      showsVerticalScrollIndicator={false}>
-      {/* Top Banner & Header */}
-      <View style={styles.header}>
+    <View style={styles.container}>
+      {/* Top Header */}
+      <View style={[styles.header, { paddingTop: Math.max(insets.top + 8, 16) }]}>
         <View style={styles.headerTitleRow}>
           <View style={{ flex: 1 }}>
             <Text style={styles.headerTitle}>{t.fareTitle}</Text>
             <Text style={styles.headerSub}>{t.fareSubtitle}</Text>
           </View>
 
-          {/* Admin Mode Toggle / Indicator */}
+          {/* Admin Mode Toggle */}
           <TouchableOpacity
             style={[styles.adminHeaderBtn, isAdminMode && styles.adminHeaderBtnActive]}
             onPress={() => {
               if (isAdminMode) {
-                setIsMasterListOpen(true);
+                prepareRouteEdit();
               } else {
                 setIsPinModalOpen(true);
               }
             }}
             activeOpacity={0.8}>
             <FontAwesome5
-              name={isAdminMode ? 'user-shield' : 'lock'}
+              name={isAdminMode ? 'plus-circle' : 'lock'}
               size={12}
               color={isAdminMode ? '#FFFFFF' : KumbhColors.primaryDark}
             />
             <Text style={[styles.adminHeaderBtnText, isAdminMode && { color: '#FFFFFF' }]}>
-              {isAdminMode ? 'Admin Portal' : 'Admin'}
+              {isAdminMode ? '+ Add Route' : 'Admin'}
             </Text>
           </TouchableOpacity>
+        </View>
+
+        {/* Search Route Input */}
+        <View style={styles.searchBox}>
+          <Ionicons name="search" size={16} color={KumbhColors.textMuted} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search route (e.g. Ramkund, Station, CBS, Trimbak)..."
+            placeholderTextColor={KumbhColors.textMuted}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery ? (
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Ionicons name="close-circle" size={16} color={KumbhColors.textMuted} />
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
 
-      {/* Admin Mode Active Banner */}
-      {isAdminMode && (
-        <View style={styles.adminBanner}>
-          <View style={styles.adminBannerLeft}>
-            <View style={styles.adminBadgeIcon}>
-              <FontAwesome5 name="shield-alt" size={13} color="#FFFFFF" />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.adminBannerTitle}>RTO Admin Authority Mode</Text>
-              <Text style={styles.adminBannerSub}>You can modify route tariffs & commodity ceiling rates</Text>
-            </View>
-          </View>
-          <View style={styles.adminBannerActions}>
-            <TouchableOpacity
-              style={styles.adminManageRoutesBtn}
-              onPress={() => setIsMasterListOpen(true)}>
-              <Text style={styles.adminManageRoutesText}>All Routes ({routeFares.length})</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.adminResetBtn}
-              onPress={handleResetDefaults}>
-              <Ionicons name="refresh" size={12} color="#DC2626" />
-              <Text style={styles.adminResetText}>Reset</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.adminExitBtn}
-              onPress={() => setIsAdminMode(false)}>
-              <Text style={styles.adminExitText}>Exit</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-
-      {/* ROUTE FARE CALCULATOR CARD */}
-      <View style={styles.routeCard}>
-        <View style={styles.routeCardHeader}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-            <Ionicons name="calculator-outline" size={16} color={KumbhColors.primaryDark} />
-            <Text style={styles.routeCardTitle}>{t.selectRoute}</Text>
-          </View>
-          {fareResult ? (
-            <Text style={styles.distanceBadge}>
-              {fareResult.distanceKm} km • ~{fareResult.approxMinutes} mins
-            </Text>
-          ) : null}
-        </View>
-
-        {/* Pickup Field */}
-        <View style={styles.locationSelectorGroup}>
-          <Text style={styles.locationLabel}>{t.fromLocation}:</Text>
-          <TouchableOpacity
-            style={styles.locationButton}
-            onPress={() => setActivePicker(activePicker === 'from' ? 'none' : 'from')}>
-            <Ionicons name="pin" size={14} color={KumbhColors.primary} />
-            <Text
-              style={[
-                styles.locationBtnText,
-                !fromLocation && { color: KumbhColors.textMuted },
-              ]}
-              numberOfLines={1}>
-              {fromLocation ? getLocName(fromLocation) : 'Select origin'}
-            </Text>
-            <Ionicons name="chevron-down" size={14} color="#64748B" />
-          </TouchableOpacity>
-
-          {/* Autocomplete dropdown */}
-          {activePicker === 'from' && (
-            <View style={styles.suggestionsBox}>
-              <TextInput
-                style={styles.suggestionInput}
-                placeholder="Search location..."
-                placeholderTextColor={KumbhColors.textMuted}
-                value={fromQuery}
-                onChangeText={setFromQuery}
-                autoFocus
-              />
-              <ScrollView style={styles.suggestionsList} nestedScrollEnabled>
-                {filteredFromLocations.map((loc) => (
-                  <TouchableOpacity
-                    key={loc.id}
-                    style={styles.suggestionItem}
-                    onPress={() => {
-                      setFromLocation(loc);
-                      setActivePicker('none');
-                      setFromQuery('');
-                    }}>
-                    <Text style={styles.suggText}>{getLocName(loc)}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
-          )}
-        </View>
-
-        {/* Swap Button */}
-        <View style={styles.swapRow}>
-          <View style={styles.swapLine} />
-          <TouchableOpacity style={styles.swapBtn} onPress={handleSwap}>
-            <Ionicons name="swap-vertical" size={14} color={KumbhColors.primaryDark} />
-          </TouchableOpacity>
-          <View style={styles.swapLine} />
-        </View>
-
-        {/* Destination Field */}
-        <View style={styles.locationSelectorGroup}>
-          <Text style={styles.locationLabel}>{t.toLocation}:</Text>
-          <TouchableOpacity
-            style={styles.locationButton}
-            onPress={() => setActivePicker(activePicker === 'to' ? 'none' : 'to')}>
-            <Ionicons name="navigate-circle" size={14} color={KumbhColors.secondary} />
-            <Text
-              style={[
-                styles.locationBtnText,
-                !toLocation && { color: KumbhColors.textMuted },
-              ]}
-              numberOfLines={1}>
-              {toLocation ? getLocName(toLocation) : 'Select destination'}
-            </Text>
-            <Ionicons name="chevron-down" size={14} color="#64748B" />
-          </TouchableOpacity>
-
-          {/* Autocomplete dropdown */}
-          {activePicker === 'to' && (
-            <View style={styles.suggestionsBox}>
-              <TextInput
-                style={styles.suggestionInput}
-                placeholder="Search location..."
-                placeholderTextColor={KumbhColors.textMuted}
-                value={toQuery}
-                onChangeText={setToQuery}
-                autoFocus
-              />
-              <ScrollView style={styles.suggestionsList} nestedScrollEnabled>
-                {filteredToLocations.map((loc) => (
-                  <TouchableOpacity
-                    key={loc.id}
-                    style={styles.suggestionItem}
-                    onPress={() => {
-                      setToLocation(loc);
-                      setActivePicker('none');
-                      setToQuery('');
-                    }}>
-                    <Text style={styles.suggText}>{getLocName(loc)}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
-          )}
-        </View>
-
-        {fareResult ? (
-          <>
-            {/* Route Note & Last Updated */}
-            <View style={styles.routeNoteBox}>
-              <Ionicons name="information-circle" size={15} color={KumbhColors.riverBlueDark} />
+      <ScrollView
+        contentContainerStyle={[styles.scrollContent, { paddingBottom: 32 }]}
+        showsVerticalScrollIndicator={false}>
+        
+        {/* Admin Authority Banner */}
+        {isAdminMode && (
+          <View style={styles.adminBanner}>
+            <View style={styles.adminBannerLeft}>
+              <View style={styles.adminBadgeIcon}>
+                <FontAwesome5 name="shield-alt" size={13} color="#FFFFFF" />
+              </View>
               <View style={{ flex: 1 }}>
-                <Text style={styles.routeNoteText}>{fareResult.trafficNote}</Text>
-                {fareResult.lastUpdatedAt && (
-                  <Text style={styles.routeUpdatedTag}>
-                    Authorized tariff • {fareResult.lastUpdatedAt}
-                  </Text>
-                )}
-              </View>
-            </View>
-
-            {/* FARE OPTIONS GRID */}
-            <View style={styles.fareOptionsGrid}>
-              <View style={styles.fareOptionCard}>
-                <Ionicons name="people" size={16} color={KumbhColors.primary} />
-                <Text style={styles.fareOptionTitle}>{t.sharedAuto}</Text>
-                <Text style={styles.farePriceMain}>₹{fareResult.sharedAutoPerPerson}</Text>
-                <Text style={styles.farePerPerson}>{t.perPerson}</Text>
-              </View>
-
-              <View style={[styles.fareOptionCard, styles.fareOptionCardHighlight]}>
-                <Ionicons name="bus" size={16} color="#16A34A" />
-                <Text style={styles.fareOptionTitle}>{t.kumbhBus}</Text>
-                <Text style={[styles.farePriceMain, { color: '#16A34A' }]}>
-                  ₹{fareResult.kumbhCityBus}
+                <Text style={styles.adminBannerTitle}>RTO Admin Mode Active</Text>
+                <Text style={styles.adminBannerSub}>
+                  Routes and prices created here are live across all Yatri apps.
                 </Text>
-                <Text style={styles.farePerPerson}>{t.perPerson}</Text>
-              </View>
-
-              <View style={styles.fareOptionCard}>
-                <MaterialCommunityIcons name="rickshaw" size={16} color={KumbhColors.primaryDark} />
-                <Text style={styles.fareOptionTitle}>{t.privateAuto}</Text>
-                <Text style={styles.farePriceMain}>₹{fareResult.privateAutoFixed}</Text>
-                <Text style={styles.farePerPerson}>Fixed</Text>
-              </View>
-
-              <View style={styles.fareOptionCard}>
-                <Ionicons name="car" size={16} color={KumbhColors.charcoal} />
-                <Text style={styles.fareOptionTitle}>Taxi / Cab</Text>
-                <Text style={styles.farePriceMain}>₹{fareResult.taxiCab}</Text>
-                <Text style={styles.farePerPerson}>4-Seater</Text>
               </View>
             </View>
-
-            {/* Admin Edit Trigger for this Route */}
-            {isAdminMode && (
+            <View style={styles.adminBannerActions}>
               <TouchableOpacity
-                style={styles.adminEditThisRouteBtn}
-                onPress={handleOpenEditCurrentRoute}
-                activeOpacity={0.85}>
-                <Ionicons name="create-outline" size={15} color="#FFFFFF" />
-                <Text style={styles.adminEditThisRouteText}>Admin: Edit Pricing For This Route</Text>
+                style={styles.adminAddRouteBtn}
+                onPress={() => prepareRouteEdit()}>
+                <Ionicons name="add" size={14} color="#FFFFFF" />
+                <Text style={styles.adminAddRouteText}>New Route</Text>
               </TouchableOpacity>
-            )}
-          </>
-        ) : fromLocation && toLocation ? (
-          <View style={styles.unselectedPrompt}>
-            <Ionicons name="alert-circle-outline" size={28} color={KumbhColors.primary} />
-            <Text style={[styles.unselectedPromptText, { fontFamily: 'Poppins_600SemiBold', color: KumbhColors.templeDark }]}>
-              No official tariff configured for this route yet
-            </Text>
-            <Text style={[styles.unselectedPromptText, { fontSize: 11 }]}>
-              {isAdminMode
-                ? 'As Admin, you can establish the authorized rates for this transit pair now.'
-                : 'Rates will appear once authorized by RTO & Mela Administration.'}
+              <TouchableOpacity
+                style={styles.adminExitBtn}
+                onPress={() => setIsAdminMode(false)}>
+                <Text style={styles.adminExitText}>Exit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
+        {/* SECTION 1: OFFICIAL TRANSIT ROUTES */}
+        <View style={styles.sectionHeaderRow}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <Ionicons name="bus-outline" size={16} color={KumbhColors.primaryDark} />
+            <Text style={styles.sectionTitle}>Official Transit Routes</Text>
+          </View>
+          <View style={styles.countBadge}>
+            <Text style={styles.countBadgeText}>{filteredRoutes.length} Active Routes</Text>
+          </View>
+        </View>
+
+        {filteredRoutes.length === 0 ? (
+          <View style={styles.emptyRoutesCard}>
+            <Ionicons name="map-outline" size={36} color="#94A3B8" />
+            <Text style={styles.emptyTitle}>No Transit Routes Found</Text>
+            <Text style={styles.emptySub}>
+              {searchQuery
+                ? `No active routes matching "${searchQuery}". Try another stop or landmark.`
+                : 'Official transit fares approved by RTO & District Administration will appear here.'}
             </Text>
             {isAdminMode && (
               <TouchableOpacity
-                style={[styles.adminEditThisRouteBtn, { marginTop: 10 }]}
-                onPress={() => {
-                  const newRoute: RouteFare = {
-                    id: `rf_${fromLocation.id}_${toLocation.id}`,
-                    fromId: fromLocation.id,
-                    toId: toLocation.id,
-                    distanceKm: 5.0,
-                    sharedAutoPerPerson: 20,
-                    privateAutoFixed: 80,
-                    kumbhCityBus: 15,
-                    taxiCab: 150,
-                    approxMinutes: 15,
-                    trafficNote: 'नया अधिकृत मार्ग (Newly authorized route)',
-                  };
-                  prepareRouteEdit(newRoute);
-                }}>
-                <Ionicons name="add-circle-outline" size={16} color="#FFFFFF" />
-                <Text style={styles.adminEditThisRouteText}>+ Set Route Tariff as Admin</Text>
+                style={[styles.adminAddRouteBtn, { marginTop: 12, paddingHorizontal: 16 }]}
+                onPress={() => prepareRouteEdit()}>
+                <Ionicons name="add-circle" size={15} color="#FFFFFF" />
+                <Text style={styles.adminAddRouteText}>Create First Route as Admin</Text>
               </TouchableOpacity>
             )}
           </View>
         ) : (
-          <View style={styles.unselectedPrompt}>
-            <Ionicons name="map-outline" size={24} color="#94A3B8" />
-            <Text style={styles.unselectedPromptText}>Select origin and destination to view official rates</Text>
-          </View>
-        )}
-      </View>
+          filteredRoutes.map((route) => {
+            const isSelected = selectedRouteId === route.id;
+            const fromDisplay = route.fromName || route.fromId;
+            const toDisplay = route.toName || route.toId;
 
-      {/* STANDARD COMMODITY RATE INDEX */}
-      <View style={styles.foodSection}>
-        <View style={styles.foodSectionHeader}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.foodSectionTitle}>{t.standardFoodRates}</Text>
-            <Text style={styles.foodSectionSub}>{t.standardRatesNote}</Text>
+            return (
+              <View
+                key={route.id}
+                style={[styles.routeCard, isSelected && styles.routeCardSelected]}>
+                
+                {/* Route Header Row */}
+                <View style={styles.routeTopRow}>
+                  <View style={{ flex: 1 }}>
+                    <View style={styles.routePairBadge}>
+                      <Ionicons name="navigate-circle" size={14} color={KumbhColors.primary} />
+                      <Text style={styles.routeName}>
+                        {fromDisplay} <Text style={{ color: KumbhColors.secondaryDark }}>➔</Text> {toDisplay}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.distancePill}>
+                    <Text style={styles.distancePillText}>
+                      {route.distanceKm} km • ~{route.approxMinutes} min
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Price Breakdown Grid */}
+                <View style={styles.fareOptionsGrid}>
+                  {/* Shared Auto */}
+                  <View style={styles.fareOptionCard}>
+                    <Ionicons name="people" size={15} color={KumbhColors.primary} />
+                    <Text style={styles.fareOptionTitle}>{t.sharedAuto}</Text>
+                    <Text style={styles.farePriceMain}>₹{route.sharedAutoPerPerson}</Text>
+                    <Text style={styles.farePerPerson}>{t.perPerson}</Text>
+                  </View>
+
+                  {/* Kumbh City Bus */}
+                  <View style={[styles.fareOptionCard, styles.fareOptionCardHighlight]}>
+                    <Ionicons name="bus" size={15} color="#16A34A" />
+                    <Text style={styles.fareOptionTitle}>{t.kumbhBus}</Text>
+                    <Text style={[styles.farePriceMain, { color: '#16A34A' }]}>
+                      ₹{route.kumbhCityBus}
+                    </Text>
+                    <Text style={styles.farePerPerson}>{t.perPerson}</Text>
+                  </View>
+
+                  {/* Private Auto */}
+                  <View style={styles.fareOptionCard}>
+                    <MaterialCommunityIcons name="rickshaw" size={15} color={KumbhColors.primaryDark} />
+                    <Text style={styles.fareOptionTitle}>{t.privateAuto}</Text>
+                    <Text style={styles.farePriceMain}>₹{route.privateAutoFixed}</Text>
+                    <Text style={styles.farePerPerson}>Fixed</Text>
+                  </View>
+
+                  {/* Taxi / Cab */}
+                  <View style={styles.fareOptionCard}>
+                    <Ionicons name="car" size={15} color={KumbhColors.charcoal} />
+                    <Text style={styles.fareOptionTitle}>Taxi / Cab</Text>
+                    <Text style={styles.farePriceMain}>₹{route.taxiCab}</Text>
+                    <Text style={styles.farePerPerson}>4-Seater</Text>
+                  </View>
+                </View>
+
+                {/* Advisory Note & Footer */}
+                <View style={styles.routeFooterRow}>
+                  <View style={styles.routeNoteGroup}>
+                    <Ionicons name="shield-checkmark" size={13} color="#16A34A" />
+                    <Text style={styles.routeAdvisoryText} numberOfLines={1}>
+                      {route.trafficNote || 'RTO Authorized Tariff'}
+                    </Text>
+                  </View>
+
+                  {isAdminMode ? (
+                    <TouchableOpacity
+                      style={styles.adminEditBtn}
+                      onPress={() => prepareRouteEdit(route)}>
+                      <Ionicons name="create-outline" size={13} color={KumbhColors.primaryDark} />
+                      <Text style={styles.adminEditText}>Edit</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.reportSmallBtn}
+                      onPress={() => setActiveTab('help')}>
+                      <Text style={styles.reportSmallText}>Report Overcharging</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+
+              </View>
+            );
+          })
+        )}
+
+        {/* SECTION 2: ESSENTIAL COMMODITY RATES */}
+        <View style={[styles.sectionHeaderRow, { marginTop: 18 }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <Ionicons name="pricetags-outline" size={16} color={KumbhColors.primaryDark} />
+            <Text style={styles.sectionTitle}>{t.standardFoodRates}</Text>
           </View>
           {isAdminMode && (
             <View style={styles.adminBadgeSmall}>
@@ -513,7 +387,7 @@ export const FareGuideTab: React.FC = () => {
         <View style={styles.priceItemsList}>
           {standardPrices.length === 0 ? (
             <View style={styles.emptyCommodityBox}>
-              <Ionicons name="pricetags-outline" size={26} color="#94A3B8" />
+              <Ionicons name="receipt-outline" size={24} color="#94A3B8" />
               <Text style={styles.emptyCommodityText}>
                 No official ceiling rates listed yet. Administration will publish regulated item prices.
               </Text>
@@ -563,7 +437,8 @@ export const FareGuideTab: React.FC = () => {
             <Text style={styles.ctaSub}>Submit a direct report to administration enforcement →</Text>
           </View>
         </TouchableOpacity>
-      </View>
+
+      </ScrollView>
 
       {/* ADMIN PIN AUTH MODAL */}
       <Modal visible={isPinModalOpen} transparent animationType="fade">
@@ -611,16 +486,16 @@ export const FareGuideTab: React.FC = () => {
         </View>
       </Modal>
 
-      {/* ADMIN ROUTE FARE EDIT MODAL */}
+      {/* ADMIN ROUTE CREATE / EDIT MODAL */}
       <Modal visible={isEditRouteModalOpen} transparent animationType="slide">
         <View style={styles.modalOverlay}>
           <View style={styles.editRouteModalCard}>
             <View style={styles.editModalHeader}>
               <View>
-                <Text style={styles.editModalTitle}>Update Route Tariff</Text>
-                <Text style={styles.editModalSub}>
-                  {editingRoute ? `${getLocNameById(editingRoute.fromId)} ➔ ${getLocNameById(editingRoute.toId)}` : ''}
+                <Text style={styles.editModalTitle}>
+                  {editingRoute ? 'Edit Route Tariff' : 'Create New Route Tariff'}
                 </Text>
+                <Text style={styles.editModalSub}>Set official ceiling price rates for Yatris</Text>
               </View>
               <TouchableOpacity
                 onPress={() => setIsEditRouteModalOpen(false)}
@@ -630,6 +505,27 @@ export const FareGuideTab: React.FC = () => {
             </View>
 
             <ScrollView style={styles.editFormScroll} showsVerticalScrollIndicator={false}>
+              {/* Origin & Destination Names */}
+              <View style={styles.editFieldFull}>
+                <Text style={styles.editLabel}>Origin Stop / Landmark *</Text>
+                <TextInput
+                  style={styles.editInput}
+                  value={editFrom}
+                  onChangeText={setEditFrom}
+                  placeholder="e.g. Nashik Road Railway Station"
+                />
+              </View>
+
+              <View style={styles.editFieldFull}>
+                <Text style={styles.editLabel}>Destination Stop / Landmark *</Text>
+                <TextInput
+                  style={styles.editInput}
+                  value={editTo}
+                  onChangeText={setEditTo}
+                  placeholder="e.g. Ramkund / Panchavati Ghats"
+                />
+              </View>
+
               <View style={styles.editInputsGrid}>
                 {/* Shared Auto */}
                 <View style={styles.editField}>
@@ -639,7 +535,7 @@ export const FareGuideTab: React.FC = () => {
                     keyboardType="numeric"
                     value={editSharedAuto}
                     onChangeText={setEditSharedAuto}
-                    placeholder="e.g. 30"
+                    placeholder="e.g. 20"
                   />
                 </View>
 
@@ -663,7 +559,7 @@ export const FareGuideTab: React.FC = () => {
                     keyboardType="numeric"
                     value={editPrivateAuto}
                     onChangeText={setEditPrivateAuto}
-                    placeholder="e.g. 140"
+                    placeholder="e.g. 80"
                   />
                 </View>
 
@@ -675,7 +571,7 @@ export const FareGuideTab: React.FC = () => {
                     keyboardType="numeric"
                     value={editTaxi}
                     onChangeText={setEditTaxi}
-                    placeholder="e.g. 250"
+                    placeholder="e.g. 150"
                   />
                 </View>
 
@@ -687,39 +583,39 @@ export const FareGuideTab: React.FC = () => {
                     keyboardType="numeric"
                     value={editDistance}
                     onChangeText={setEditDistance}
-                    placeholder="e.g. 10.5"
+                    placeholder="e.g. 5.5"
                   />
                 </View>
 
                 {/* Approx Minutes */}
                 <View style={styles.editField}>
-                  <Text style={styles.editLabel}>Est. Travel Time (Mins)</Text>
+                  <Text style={styles.editLabel}>Est. Minutes</Text>
                   <TextInput
                     style={styles.editInput}
                     keyboardType="numeric"
                     value={editMinutes}
                     onChangeText={setEditMinutes}
-                    placeholder="e.g. 25"
+                    placeholder="e.g. 20"
                   />
                 </View>
               </View>
 
               {/* Traffic / Route Advisory Note */}
               <View style={styles.editFieldFull}>
-                <Text style={styles.editLabel}>Traffic / Route Advisory</Text>
+                <Text style={styles.editLabel}>Advisory / Route Notes</Text>
                 <TextInput
-                  style={[styles.editInput, { height: 60 }]}
+                  style={[styles.editInput, { height: 50 }]}
                   multiline
                   value={editNote}
                   onChangeText={setEditNote}
-                  placeholder="e.g. 24x7 Direct CityLink Bus Available"
+                  placeholder="e.g. Frequent city bus and shuttle available"
                 />
               </View>
 
               {adminSaveSuccess ? (
                 <View style={styles.saveSuccessBanner}>
                   <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                  <Text style={styles.saveSuccessText}>Tariff updated successfully and persisted!</Text>
+                  <Text style={styles.saveSuccessText}>Tariff saved and synced live!</Text>
                 </View>
               ) : null}
 
@@ -728,7 +624,7 @@ export const FareGuideTab: React.FC = () => {
                 onPress={handleSaveRouteFare}
                 activeOpacity={0.85}>
                 <Ionicons name="save-outline" size={16} color="#FFFFFF" />
-                <Text style={styles.saveRouteBtnText}>Save Tariff Rate</Text>
+                <Text style={styles.saveRouteBtnText}>Save Route Tariff</Text>
               </TouchableOpacity>
             </ScrollView>
           </View>
@@ -784,67 +680,7 @@ export const FareGuideTab: React.FC = () => {
         </View>
       </Modal>
 
-      {/* ADMIN MASTER ALL ROUTES MODAL */}
-      <Modal visible={isMasterListOpen} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.masterListModalCard}>
-            <View style={styles.editModalHeader}>
-              <View>
-                <Text style={styles.editModalTitle}>RTO Tariff Master List</Text>
-                <Text style={styles.editModalSub}>Manage all active official routes ({routeFares.length})</Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => setIsMasterListOpen(false)}
-                style={styles.modalCloseBtn}>
-                <Ionicons name="close" size={18} color="#64748B" />
-              </TouchableOpacity>
-            </View>
-
-            <TextInput
-              style={styles.masterSearchInput}
-              placeholder="Search route (e.g. Trimbak, Station, Ghat)..."
-              placeholderTextColor="#94A3B8"
-              value={masterSearchQuery}
-              onChangeText={setMasterSearchQuery}
-            />
-
-            <ScrollView style={styles.masterListScroll} showsVerticalScrollIndicator={false}>
-              {routeFares
-                .filter((rf) => {
-                  const from = getLocNameById(rf.fromId).toLowerCase();
-                  const to = getLocNameById(rf.toId).toLowerCase();
-                  const q = masterSearchQuery.toLowerCase();
-                  return !q || from.includes(q) || to.includes(q);
-                })
-                .map((rf) => (
-                  <View key={rf.id} style={styles.masterRouteItem}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.masterRoutePair}>
-                        {getLocNameById(rf.fromId)} ➔ {getLocNameById(rf.toId)}
-                      </Text>
-                      <Text style={styles.masterRouteDetails}>
-                        {rf.distanceKm} km • Shared ₹{rf.sharedAutoPerPerson} • Bus ₹{rf.kumbhCityBus} • Auto ₹{rf.privateAutoFixed} • Cab ₹{rf.taxiCab}
-                      </Text>
-                      {rf.lastUpdatedAt && (
-                        <Text style={styles.masterRouteUpdated}>{rf.lastUpdatedAt}</Text>
-                      )}
-                    </View>
-
-                    <TouchableOpacity
-                      style={styles.masterEditBtn}
-                      onPress={() => {
-                        prepareRouteEdit(rf);
-                      }}>
-                      <Ionicons name="create" size={14} color="#FFFFFF" />
-                      <Text style={styles.masterEditText}>Edit</Text>
-                    </TouchableOpacity>
-                  </View>
-                ))}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -853,17 +689,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: KumbhColors.background,
   },
-  scrollContent: {
-    paddingHorizontal: 16,
-  },
   header: {
-    marginBottom: 10,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 16,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
   },
   headerTitleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 8,
+    marginBottom: 8,
   },
   headerTitle: {
     fontSize: 16,
@@ -874,21 +711,20 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: KumbhColors.textMuted,
     fontFamily: 'Poppins_400Regular',
-    marginTop: 1,
   },
   adminHeaderBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    backgroundColor: KumbhColors.primarySoft,
-    borderWidth: 1,
-    borderColor: KumbhColors.primaryLight,
-    paddingHorizontal: 10,
+    backgroundColor: '#FEF3C7',
     paddingVertical: 5,
-    borderRadius: 8,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    gap: 5,
+    borderWidth: 1,
+    borderColor: '#FDE68A',
   },
   adminHeaderBtnActive: {
-    backgroundColor: KumbhColors.primaryDark,
+    backgroundColor: KumbhColors.primary,
     borderColor: KumbhColors.primaryDark,
   },
   adminHeaderBtnText: {
@@ -896,323 +732,278 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_600SemiBold',
     color: KumbhColors.primaryDark,
   },
-  adminBanner: {
-    backgroundColor: '#FEF3C7',
-    borderWidth: 1,
-    borderColor: '#F59E0B',
+  searchBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8FAFC',
     borderRadius: 8,
-    padding: 10,
-    marginBottom: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 6,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 12.5,
+    fontFamily: 'Poppins_400Regular',
+    color: KumbhColors.charcoal,
+  },
+  scrollContent: {
+    padding: 16,
+  },
+  adminBanner: {
+    backgroundColor: '#1E293B',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 14,
   },
   adminBannerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
+    gap: 10,
+    marginBottom: 10,
   },
   adminBadgeIcon: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: '#D97706',
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    backgroundColor: KumbhColors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   adminBannerTitle: {
+    color: '#FFFFFF',
     fontSize: 12,
     fontFamily: 'Poppins_700Bold',
-    color: '#92400E',
   },
   adminBannerSub: {
+    color: '#94A3B8',
     fontSize: 10,
     fontFamily: 'Poppins_400Regular',
-    color: '#B45309',
   },
   adminBannerActions: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 8,
   },
-  adminManageRoutesBtn: {
-    backgroundColor: '#D97706',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  adminManageRoutesText: {
-    color: '#FFFFFF',
-    fontSize: 10.5,
-    fontFamily: 'Poppins_600SemiBold',
-  },
-  adminResetBtn: {
+  adminAddRouteBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 3,
-    backgroundColor: '#FEE2E2',
-    borderWidth: 1,
-    borderColor: '#FCA5A5',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    backgroundColor: KumbhColors.primary,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 6,
+    gap: 4,
   },
-  adminResetText: {
-    color: '#DC2626',
-    fontSize: 10.5,
+  adminAddRouteText: {
+    color: '#FFFFFF',
+    fontSize: 11,
     fontFamily: 'Poppins_600SemiBold',
   },
   adminExitBtn: {
-    backgroundColor: '#F3F4F6',
+    backgroundColor: '#334155',
+    paddingVertical: 5,
     paddingHorizontal: 10,
-    paddingVertical: 4,
     borderRadius: 6,
   },
   adminExitText: {
-    color: '#4B5563',
-    fontSize: 10.5,
+    color: '#CBD5E1',
+    fontSize: 11,
     fontFamily: 'Poppins_500Medium',
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  sectionTitle: {
+    fontSize: 13.5,
+    fontFamily: 'Poppins_700Bold',
+    color: KumbhColors.templeDark,
+  },
+  countBadge: {
+    backgroundColor: '#F1F5F9',
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+  },
+  countBadgeText: {
+    fontSize: 10,
+    fontFamily: 'Poppins_600SemiBold',
+    color: KumbhColors.textSecondary,
+  },
+  emptyRoutesCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  emptyTitle: {
+    fontSize: 13.5,
+    fontFamily: 'Poppins_700Bold',
+    color: KumbhColors.templeBrown,
+    marginTop: 8,
+  },
+  emptySub: {
+    fontSize: 11,
+    color: KumbhColors.textMuted,
+    fontFamily: 'Poppins_400Regular',
+    textAlign: 'center',
+    marginTop: 4,
+    lineHeight: 16,
   },
   routeCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    padding: 14,
+    padding: 12,
     borderWidth: 1,
     borderColor: '#E2E8F0',
-    marginBottom: 14,
+    marginBottom: 10,
   },
-  routeCardHeader: {
+  routeCardSelected: {
+    borderColor: KumbhColors.primary,
+    backgroundColor: '#FFFBEB',
+  },
+  routeTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
   },
-  routeCardTitle: {
+  routePairBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    flexWrap: 'wrap',
+  },
+  routeName: {
     fontSize: 13,
     fontFamily: 'Poppins_700Bold',
     color: KumbhColors.templeDark,
   },
-  distanceBadge: {
-    backgroundColor: '#F8FAFC',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    borderRadius: 6,
+  distancePill: {
+    backgroundColor: '#F1F5F9',
     paddingVertical: 2,
     paddingHorizontal: 6,
-    fontSize: 11,
+    borderRadius: 4,
+  },
+  distancePillText: {
+    fontSize: 10,
     fontFamily: 'Poppins_600SemiBold',
     color: KumbhColors.textSecondary,
   },
-  locationSelectorGroup: {
-    marginBottom: 4,
-  },
-  locationLabel: {
-    fontSize: 11,
-    fontFamily: 'Poppins_600SemiBold',
-    color: KumbhColors.templeBrown,
-    marginBottom: 4,
-  },
-  locationButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F8FAFC',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    gap: 8,
-  },
-  locationBtnText: {
-    flex: 1,
-    fontSize: 12.5,
-    fontFamily: 'Poppins_500Medium',
-    color: KumbhColors.charcoal,
-  },
-  suggestionsBox: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#CBD5E1',
-    marginTop: 4,
-    padding: 6,
-  },
-  suggestionInput: {
-    backgroundColor: '#F8FAFC',
-    borderRadius: 6,
-    padding: 6,
-    fontSize: 12,
-    fontFamily: 'Poppins_400Regular',
-    marginBottom: 4,
-    color: KumbhColors.charcoal,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-  },
-  suggestionsList: {
-    maxHeight: 140,
-  },
-  suggestionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
-    gap: 6,
-  },
-  suggText: {
-    fontSize: 12,
-    fontFamily: 'Poppins_500Medium',
-    color: KumbhColors.templeBrown,
-  },
-  swapRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 2,
-  },
-  swapLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#E2E8F0',
-  },
-  swapBtn: {
-    width: 26,
-    height: 26,
-    borderRadius: 6,
-    backgroundColor: '#F8FAFC',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 8,
-  },
-  routeNoteBox: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: KumbhColors.riverBlueSoft,
-    borderRadius: 6,
-    padding: 8,
-    marginTop: 8,
-    marginBottom: 10,
-    gap: 6,
-  },
-  routeNoteText: {
-    fontSize: 11,
-    fontFamily: 'Poppins_500Medium',
-    color: KumbhColors.riverBlueDark,
-  },
-  routeUpdatedTag: {
-    fontSize: 9.5,
-    fontFamily: 'Poppins_400Regular',
-    color: '#0284C7',
-    marginTop: 2,
-  },
   fareOptionsGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: 6,
-    justifyContent: 'space-between',
+    marginBottom: 10,
   },
   fareOptionCard: {
-    width: '48.5%',
+    flex: 1,
     backgroundColor: '#F8FAFC',
     borderRadius: 8,
     padding: 8,
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: '#E2E8F0',
-    alignItems: 'center',
   },
   fareOptionCardHighlight: {
-    borderColor: KumbhColors.successBorder,
     backgroundColor: '#F0FDF4',
+    borderColor: '#BBF7D0',
   },
   fareOptionTitle: {
-    fontSize: 11,
-    fontFamily: 'Poppins_600SemiBold',
-    color: KumbhColors.templeDark,
-    textAlign: 'center',
+    fontSize: 9.5,
+    fontFamily: 'Poppins_500Medium',
+    color: KumbhColors.textSecondary,
     marginTop: 2,
   },
   farePriceMain: {
-    fontSize: 17,
-    fontFamily: 'Poppins_700Bold',
-    color: KumbhColors.primaryDark,
-    marginTop: 1,
-  },
-  farePerPerson: {
-    fontSize: 9.5,
-    color: KumbhColors.textMuted,
-    fontFamily: 'Poppins_400Regular',
-  },
-  adminEditThisRouteBtn: {
-    backgroundColor: KumbhColors.primaryDark,
-    borderRadius: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    marginTop: 10,
-  },
-  adminEditThisRouteText: {
-    color: '#FFFFFF',
-    fontSize: 11.5,
-    fontFamily: 'Poppins_600SemiBold',
-  },
-  foodSection: {
-    marginTop: 2,
-  },
-  foodSectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  foodSectionTitle: {
     fontSize: 14,
     fontFamily: 'Poppins_700Bold',
     color: KumbhColors.templeDark,
+    marginTop: 1,
   },
-  foodSectionSub: {
-    fontSize: 11,
+  farePerPerson: {
+    fontSize: 8.5,
     color: KumbhColors.textMuted,
     fontFamily: 'Poppins_400Regular',
-    marginTop: 1,
+  },
+  routeFooterRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9',
+  },
+  routeNoteGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    flex: 1,
+  },
+  routeAdvisoryText: {
+    fontSize: 10.5,
+    fontFamily: 'Poppins_500Medium',
+    color: KumbhColors.textSecondary,
+  },
+  reportSmallBtn: {
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+  },
+  reportSmallText: {
+    fontSize: 10,
+    fontFamily: 'Poppins_600SemiBold',
+    color: KumbhColors.secondaryDark,
+  },
+  adminEditBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FEF3C7',
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    gap: 4,
+  },
+  adminEditText: {
+    fontSize: 10,
+    fontFamily: 'Poppins_600SemiBold',
+    color: KumbhColors.primaryDark,
   },
   adminBadgeSmall: {
     backgroundColor: '#FEF3C7',
-    borderWidth: 1,
-    borderColor: '#F59E0B',
-    borderRadius: 4,
-    paddingHorizontal: 6,
     paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
   },
   adminBadgeSmallText: {
     fontSize: 9.5,
     fontFamily: 'Poppins_600SemiBold',
-    color: '#92400E',
+    color: KumbhColors.primaryDark,
   },
   priceItemsList: {
-    gap: 6,
-    marginBottom: 12,
-  },
-  priceItemCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    padding: 10,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#E2E8F0',
+    overflow: 'hidden',
+  },
+  priceItemCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
   },
   priceItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
     flex: 1,
   },
   itemTextCol: {
-    flex: 1,
+    gap: 2,
   },
   itemName: {
     fontSize: 12.5,
@@ -1237,13 +1028,25 @@ const styles = StyleSheet.create({
     color: KumbhColors.textMuted,
     fontFamily: 'Poppins_400Regular',
   },
+  emptyCommodityBox: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  emptyCommodityText: {
+    fontSize: 11,
+    color: KumbhColors.textMuted,
+    fontFamily: 'Poppins_400Regular',
+    textAlign: 'center',
+    marginTop: 4,
+  },
   reportOverchargeCta: {
-    backgroundColor: KumbhColors.danger,
-    borderRadius: 8,
-    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    backgroundColor: '#DC2626',
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 14,
+    gap: 10,
   },
   ctaTextBox: {
     flex: 1,
@@ -1254,56 +1057,43 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_700Bold',
   },
   ctaSub: {
-    color: '#FECACA',
+    color: '#FEE2E2',
     fontSize: 10,
     fontFamily: 'Poppins_400Regular',
-    marginTop: 1,
-  },
-  unselectedPrompt: {
-    paddingVertical: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  unselectedPromptText: {
-    fontSize: 12,
-    fontFamily: 'Poppins_500Medium',
-    color: KumbhColors.textMuted,
-    textAlign: 'center',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.55)',
+    backgroundColor: 'rgba(15, 23, 42, 0.6)',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
   },
   pinModalCard: {
     width: '100%',
-    maxWidth: 360,
+    maxWidth: 320,
     backgroundColor: '#FFFFFF',
-    borderRadius: 14,
+    borderRadius: 12,
     padding: 20,
     alignItems: 'center',
   },
   pinIconCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: KumbhColors.primarySoft,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#FEF3C7',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
   },
   pinModalTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Poppins_700Bold',
     color: KumbhColors.templeDark,
   },
   pinModalSub: {
     fontSize: 11,
-    fontFamily: 'Poppins_400Regular',
     color: KumbhColors.textMuted,
+    fontFamily: 'Poppins_400Regular',
     textAlign: 'center',
     marginTop: 4,
     marginBottom: 14,
@@ -1311,240 +1101,145 @@ const styles = StyleSheet.create({
   pinInput: {
     width: '100%',
     backgroundColor: '#F8FAFC',
-    borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: '#E2E8F0',
+    borderRadius: 8,
     padding: 10,
     textAlign: 'center',
-    fontSize: 16,
-    fontFamily: 'Poppins_700Bold',
+    fontSize: 14,
+    fontFamily: 'Poppins_600SemiBold',
     color: KumbhColors.charcoal,
-    letterSpacing: 4,
   },
   pinErrorText: {
     color: '#DC2626',
-    fontSize: 11,
+    fontSize: 10.5,
     fontFamily: 'Poppins_500Medium',
     marginTop: 6,
   },
   pinBtnRow: {
     flexDirection: 'row',
-    gap: 10,
-    marginTop: 16,
+    gap: 8,
+    marginTop: 14,
     width: '100%',
   },
   pinCancelBtn: {
     flex: 1,
+    paddingVertical: 8,
+    borderRadius: 6,
     backgroundColor: '#F1F5F9',
-    borderRadius: 8,
-    paddingVertical: 10,
     alignItems: 'center',
   },
   pinCancelText: {
-    fontSize: 12,
+    fontSize: 11,
     fontFamily: 'Poppins_600SemiBold',
     color: '#64748B',
   },
   pinSubmitBtn: {
     flex: 1,
-    backgroundColor: KumbhColors.primaryDark,
-    borderRadius: 8,
-    paddingVertical: 10,
+    paddingVertical: 8,
+    borderRadius: 6,
+    backgroundColor: KumbhColors.primary,
     alignItems: 'center',
   },
   pinSubmitText: {
-    fontSize: 12,
-    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 11,
+    fontFamily: 'Poppins_700Bold',
     color: '#FFFFFF',
   },
   editRouteModalCard: {
     width: '100%',
-    maxWidth: 420,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 14,
-    padding: 18,
+    maxWidth: 380,
     maxHeight: '85%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
   },
   editPriceModalCard: {
     width: '100%',
-    maxWidth: 380,
+    maxWidth: 360,
     backgroundColor: '#FFFFFF',
-    borderRadius: 14,
-    padding: 18,
-  },
-  masterListModalCard: {
-    width: '100%',
-    maxWidth: 440,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 14,
-    padding: 18,
-    maxHeight: '85%',
+    borderRadius: 12,
+    padding: 16,
   },
   editModalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 12,
-    paddingBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
   },
   editModalTitle: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'Poppins_700Bold',
     color: KumbhColors.templeDark,
   },
   editModalSub: {
     fontSize: 11,
-    fontFamily: 'Poppins_500Medium',
-    color: KumbhColors.primary,
-    marginTop: 1,
+    color: KumbhColors.textMuted,
+    fontFamily: 'Poppins_400Regular',
   },
   modalCloseBtn: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#F1F5F9',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 4,
   },
   editFormScroll: {
-    maxHeight: 380,
+    maxHeight: 400,
   },
   editInputsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
-    justifyContent: 'space-between',
+    gap: 8,
+    marginBottom: 8,
   },
   editField: {
     width: '48%',
-    marginBottom: 10,
   },
   editFieldFull: {
     width: '100%',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   editLabel: {
-    fontSize: 11,
+    fontSize: 10.5,
     fontFamily: 'Poppins_600SemiBold',
-    color: KumbhColors.templeBrown,
-    marginBottom: 4,
+    color: KumbhColors.charcoal,
+    marginBottom: 3,
   },
   editInput: {
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: '#E2E8F0',
     borderRadius: 6,
-    paddingHorizontal: 8,
     paddingVertical: 6,
-    fontSize: 12.5,
-    fontFamily: 'Poppins_500Medium',
+    paddingHorizontal: 8,
+    fontSize: 12,
+    fontFamily: 'Poppins_400Regular',
     color: KumbhColors.charcoal,
   },
   saveSuccessBanner: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: '#F0FDF4',
-    borderWidth: 1,
-    borderColor: '#86EFAC',
-    borderRadius: 6,
+    backgroundColor: '#DCFCE7',
     padding: 8,
-    marginBottom: 10,
+    borderRadius: 6,
+    marginBottom: 8,
   },
   saveSuccessText: {
+    color: '#15803D',
     fontSize: 11,
     fontFamily: 'Poppins_600SemiBold',
-    color: '#16A34A',
   },
   saveRouteBtn: {
-    backgroundColor: KumbhColors.primaryDark,
-    borderRadius: 8,
-    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: KumbhColors.primary,
+    borderRadius: 6,
+    paddingVertical: 9,
     gap: 6,
     marginTop: 4,
   },
   saveRouteBtnText: {
     color: '#FFFFFF',
-    fontSize: 12.5,
-    fontFamily: 'Poppins_700Bold',
-  },
-  masterSearchInput: {
-    backgroundColor: '#F8FAFC',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#CBD5E1',
-    padding: 8,
-    fontSize: 12,
-    fontFamily: 'Poppins_400Regular',
-    color: KumbhColors.charcoal,
-    marginBottom: 10,
-  },
-  masterListScroll: {
-    maxHeight: 340,
-  },
-  masterRouteItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#F8FAFC',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    padding: 10,
-    marginBottom: 8,
-    gap: 8,
-  },
-  masterRoutePair: {
     fontSize: 12,
     fontFamily: 'Poppins_700Bold',
-    color: KumbhColors.templeDark,
-  },
-  masterRouteDetails: {
-    fontSize: 10.5,
-    fontFamily: 'Poppins_500Medium',
-    color: KumbhColors.textSecondary,
-    marginTop: 2,
-  },
-  masterRouteUpdated: {
-    fontSize: 9,
-    fontFamily: 'Poppins_400Regular',
-    color: '#0284C7',
-    marginTop: 2,
-  },
-  emptyCommodityBox: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    padding: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    marginBottom: 10,
-  },
-  emptyCommodityText: {
-    fontSize: 11,
-    fontFamily: 'Poppins_400Regular',
-    color: KumbhColors.textMuted,
-    textAlign: 'center',
-  },
-  masterEditBtn: {
-    backgroundColor: KumbhColors.primaryDark,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 6,
-  },
-  masterEditText: {
-    color: '#FFFFFF',
-    fontSize: 10.5,
-    fontFamily: 'Poppins_600SemiBold',
   },
 });

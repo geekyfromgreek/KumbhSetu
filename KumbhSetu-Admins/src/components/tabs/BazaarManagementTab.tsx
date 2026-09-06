@@ -283,48 +283,49 @@ export const BazaarManagementTab: React.FC = () => {
                   </View>
                 </View>
 
-                {/* Quick Actions */}
+                {/* Authority Actions */}
                 <View style={styles.authorityActionsRow}>
-                  {shop.status !== 'APPROVED' && (
+                  {shop.status !== 'APPROVED' ? (
                     <TouchableOpacity
                       style={[styles.quickStatusBtn, { backgroundColor: AdminColors.successSoft, borderColor: AdminColors.successBorder }]}
                       onPress={() => updateShopStatus(shop.id, 'APPROVED')}
                     >
-                      <Ionicons name="checkmark-circle" size={12} color={AdminColors.emerald} />
-                      <Text style={[styles.quickStatusBtnText, { color: AdminColors.emerald }]}>
-                        Pass Audit
+                      <Ionicons name="checkmark-circle" size={13} color={AdminColors.emerald} />
+                      <Text style={[styles.quickStatusBtnText, { color: AdminColors.emerald, fontWeight: '700' }]}>
+                        Approve & Verify
                       </Text>
                     </TouchableOpacity>
-                  )}
-
-                  {shop.status !== 'FLAGGED_OVERCHARGING' && (
-                    <TouchableOpacity
-                      style={[styles.quickStatusBtn, { backgroundColor: AdminColors.warningSoft, borderColor: AdminColors.warningBorder }]}
-                      onPress={() => updateShopStatus(shop.id, 'FLAGGED_OVERCHARGING', true)}
-                    >
-                      <Ionicons name="warning" size={12} color={AdminColors.warning} />
-                      <Text style={[styles.quickStatusBtnText, { color: AdminColors.warning }]}>
-                        Flag Warning
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-
-                  {shop.status !== 'SUSPENDED' && (
+                  ) : (
                     <TouchableOpacity
                       style={[styles.quickStatusBtn, { backgroundColor: AdminColors.dangerSoft, borderColor: AdminColors.dangerBorder }]}
                       onPress={() => {
-                        Alert.alert('Suspend Stall', `Suspend stall for ${shop.shopName}?`, [
+                        Alert.alert('Reject / Suspend Stall', `Revoke approval for ${shop.shopName}? It will be hidden from the Yatri app.`, [
                           { text: 'Cancel', style: 'cancel' },
-                          { text: 'Suspend', style: 'destructive', onPress: () => updateShopStatus(shop.id, 'SUSPENDED') },
+                          { text: 'Reject', style: 'destructive', onPress: () => updateShopStatus(shop.id, 'SUSPENDED') },
                         ]);
                       }}
                     >
-                      <Ionicons name="ban" size={12} color={AdminColors.danger} />
+                      <Ionicons name="close-circle" size={13} color={AdminColors.danger} />
                       <Text style={[styles.quickStatusBtnText, { color: AdminColors.danger }]}>
-                        Suspend
+                        Reject / Revoke
                       </Text>
                     </TouchableOpacity>
                   )}
+
+                  <TouchableOpacity
+                    style={[styles.quickStatusBtn, { backgroundColor: '#FEE2E2', borderColor: '#FCA5A5' }]}
+                    onPress={() => {
+                      Alert.alert('Delete Stall Permanently', `Delete ${shop.shopName}? This cannot be undone.`, [
+                        { text: 'Cancel', style: 'cancel' },
+                        { text: 'Delete', style: 'destructive', onPress: () => deleteShop(shop.id) },
+                      ]);
+                    }}
+                  >
+                    <Ionicons name="trash-outline" size={13} color={AdminColors.danger} />
+                    <Text style={[styles.quickStatusBtnText, { color: AdminColors.danger }]}>
+                      Delete Stall
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             );

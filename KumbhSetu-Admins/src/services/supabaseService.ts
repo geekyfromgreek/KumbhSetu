@@ -36,12 +36,12 @@ export const AdminSupabaseService = {
           fromName: parts[0]?.trim() || row.route_name,
           toName: parts[1]?.trim() || row.route_name,
           distanceKm: Number(row.distance_km) || 5,
-          sharedAutoPerPerson: Math.round(stdRate * 0.4) || 20,
+          sharedAutoPerPerson: Number(row.shared_auto_rate) || Math.round(stdRate * 0.4) || 20,
           privateAutoFixed: stdRate,
-          kumbhCityBus: Math.round(stdRate * 0.25) || 15,
+          kumbhCityBus: Number(row.bus_rate) || Math.round(stdRate * 0.25) || 15,
           taxiCab: Number(row.night_rate) || Math.round(stdRate * 1.8) || 120,
-          approxMinutes: Math.round((Number(row.distance_km) || 5) * 4) || 20,
-          trafficNote: row.vehicle_type ? `Vehicle: ${row.vehicle_type}` : 'Standard flow',
+          approxMinutes: Number(row.approx_minutes) || Math.round((Number(row.distance_km) || 5) * 4) || 20,
+          trafficNote: row.traffic_note || (row.vehicle_type ? `Vehicle: ${row.vehicle_type}` : 'Standard flow'),
           status: 'ACTIVE',
           updatedAt: new Date(row.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           updatedBy: row.approved_by || 'RTO Nashik',
@@ -55,7 +55,33 @@ export const AdminSupabaseService = {
 
   async insertRoute(route: Omit<AdminRouteFare, 'id' | 'updatedAt' | 'updatedBy'>, officerName: string): Promise<string | null> {
     try {
+      // First try inserting with all extended columns
       const { data, error } = await supabase
+        .from('tariff_routes')
+        .insert([
+          {
+            route_name: `${route.fromName} ➔ ${route.toName}`,
+            vehicle_type: 'Auto Rickshaw',
+            standard_rate: route.privateAutoFixed,
+            distance_km: route.distanceKm,
+            night_rate: route.taxiCab,
+            shared_auto_rate: route.sharedAutoPerPerson,
+            bus_rate: route.kumbhCityBus,
+            approx_minutes: route.approxMinutes,
+            traffic_note: route.trafficNote,
+            approved_by: officerName || 'RTO Authority',
+          },
+        ])
+        .select('id')
+        .single();
+
+      if (!error && data?.id) {
+        return data.id;
+      }
+
+      // If error (e.g. column not yet in schema cache), retry with core columns
+      console.warn('[AdminSupabase insertRoute]: Retrying with core columns fallback...');
+      const { data: fallbackData, error: fallbackError } = await supabase
         .from('tariff_routes')
         .insert([
           {
@@ -70,11 +96,11 @@ export const AdminSupabaseService = {
         .select('id')
         .single();
 
-      if (error) {
-        console.warn('[AdminSupabase insertRoute Error]:', error.message);
+      if (fallbackError) {
+        console.warn('[AdminSupabase insertRoute fallback error]:', fallbackError.message);
         return null;
       }
-      return data?.id || null;
+      return fallbackData?.id || null;
     } catch (e) {
       console.warn('[AdminSupabase insertRoute Exception]:', e);
       return null;
@@ -90,12 +116,31 @@ export const AdminSupabaseService = {
           standard_rate: route.privateAutoFixed,
           distance_km: route.distanceKm,
           night_rate: route.taxiCab,
+          shared_auto_rate: route.sharedAutoPerPerson,
+          bus_rate: route.kumbhCityBus,
+          approx_minutes: route.approxMinutes,
+          traffic_note: route.trafficNote,
           approved_by: officerName || 'RTO Authority',
           updated_at: new Date().toISOString(),
         })
         .eq('id', route.id);
 
-      return !error;
+      if (!error) return true;
+
+      // Fallback update without extended columns
+      const { error: fallbackError } = await supabase
+        .from('tariff_routes')
+        .update({
+          route_name: `${route.fromName} ➔ ${route.toName}`,
+          standard_rate: route.privateAutoFixed,
+          distance_km: route.distanceKm,
+          night_rate: route.taxiCab,
+          approved_by: officerName || 'RTO Authority',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', route.id);
+
+      return !fallbackError;
     } catch (e) {
       console.warn('[AdminSupabase updateRoute Exception]:', e);
       return false;

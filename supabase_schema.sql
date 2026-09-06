@@ -17,13 +17,23 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS public.tariff_routes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     route_name TEXT NOT NULL,
-    vehicle_type TEXT NOT NULL CHECK (vehicle_type IN ('Auto Rickshaw', 'E-Rickshaw', 'Taxi / Cab', 'Bus', 'Boat / Ferry')),
+    vehicle_type TEXT DEFAULT 'Auto Rickshaw',
     standard_rate NUMERIC(10, 2) NOT NULL,
     distance_km NUMERIC(6, 2) DEFAULT 0,
     night_rate NUMERIC(10, 2),
+    shared_auto_rate NUMERIC(10, 2),
+    bus_rate NUMERIC(10, 2),
+    approx_minutes INT DEFAULT 20,
+    traffic_note TEXT,
     approved_by TEXT DEFAULT 'RTO Nashik',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- Ensure all tariff columns exist
+ALTER TABLE public.tariff_routes ADD COLUMN IF NOT EXISTS shared_auto_rate NUMERIC(10, 2);
+ALTER TABLE public.tariff_routes ADD COLUMN IF NOT EXISTS bus_rate NUMERIC(10, 2);
+ALTER TABLE public.tariff_routes ADD COLUMN IF NOT EXISTS approx_minutes INT DEFAULT 20;
+ALTER TABLE public.tariff_routes ADD COLUMN IF NOT EXISTS traffic_note TEXT;
 
 -- ------------------------------------------------------------------------------
 -- 2. ESSENTIAL COMMODITY PRICES (Managed by Admin -> Read by Pilgrims)

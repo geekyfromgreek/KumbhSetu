@@ -7,6 +7,8 @@ export interface TransitLocation {
 
 export interface RouteFare {
   id: string;
+  fromName?: string;
+  toName?: string;
   fromId: string;
   toId: string;
   distanceKm: number;
@@ -125,6 +127,8 @@ export function calculateFare(
   if (fromId === toId) {
     return {
       id: `self_${fromId}`,
+      fromName: fromId,
+      toName: toId,
       fromId,
       toId,
       distanceKm: 0,
@@ -138,19 +142,22 @@ export function calculateFare(
     };
   }
 
-  const matched = customRoutes.find(
-    (r) =>
-      (r.fromId === fromId && r.toId === toId) ||
-      (r.fromId === toId && r.toId === fromId)
-  );
+  const cleanFrom = fromId.toLowerCase().trim();
+  const cleanTo = toId.toLowerCase().trim();
 
-  if (matched) {
-    return {
-      ...matched,
-      fromId,
-      toId,
-    };
-  }
+  const matched = customRoutes.find((r) => {
+    const rFromId = (r.fromId || '').toLowerCase().trim();
+    const rToId = (r.toId || '').toLowerCase().trim();
+    const rFromName = (r.fromName || '').toLowerCase().trim();
+    const rToName = (r.toName || '').toLowerCase().trim();
 
-  return null;
+    return (
+      (rFromId === cleanFrom && rToId === cleanTo) ||
+      (rFromId === cleanTo && rToId === cleanFrom) ||
+      (rFromName && rToName && rFromName.includes(cleanFrom) && rToName.includes(cleanTo)) ||
+      (rFromName && rToName && rFromName.includes(cleanTo) && rToName.includes(cleanFrom))
+    );
+  });
+
+  return matched || null;
 }

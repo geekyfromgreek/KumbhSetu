@@ -47,18 +47,22 @@ export const SupabaseService = {
           : [row.route_name, row.route_name];
 
         const stdRate = Number(row.standard_rate) || 50;
+        const fromName = parts[0]?.trim() || row.route_name;
+        const toName = parts[1]?.trim() || row.route_name;
 
         return {
           id: row.id,
-          fromId: parts[0]?.trim() || 'cbs_bus_stand',
-          toId: parts[1]?.trim() || 'ramkund_panchavati',
+          fromName,
+          toName,
+          fromId: fromName.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+          toId: toName.toLowerCase().replace(/[^a-z0-9]/g, '_'),
           distanceKm: Number(row.distance_km) || 5,
-          sharedAutoPerPerson: Math.round(stdRate * 0.4) || 20,
+          sharedAutoPerPerson: Number(row.shared_auto_rate) || Math.round(stdRate * 0.4) || 20,
           privateAutoFixed: stdRate,
-          kumbhCityBus: Math.round(stdRate * 0.25) || 15,
+          kumbhCityBus: Number(row.bus_rate) || Math.round(stdRate * 0.25) || 15,
           taxiCab: Number(row.night_rate) || Math.round(stdRate * 1.8) || 120,
-          approxMinutes: Math.round((Number(row.distance_km) || 5) * 4) || 20,
-          trafficNote: row.vehicle_type ? `Vehicle: ${row.vehicle_type}` : 'Normal flow',
+          approxMinutes: Number(row.approx_minutes) || Math.round((Number(row.distance_km) || 5) * 4) || 20,
+          trafficNote: row.traffic_note || (row.vehicle_type ? `Vehicle: ${row.vehicle_type}` : 'Official Gazette Fare'),
           lastUpdatedBy: row.approved_by || 'RTO Nashik',
           lastUpdatedAt: new Date(row.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
@@ -115,7 +119,8 @@ export const SupabaseService = {
     try {
       const { data: merchants, error: mError } = await supabase
         .from('merchants')
-        .select('*');
+        .select('*')
+        .eq('is_verified', true);
 
       if (mError) {
         console.warn('[Supabase fetchMarketplaceItems Error]:', mError.message);
@@ -132,6 +137,7 @@ export const SupabaseService = {
       const items: MarketplaceItem[] = [];
 
       for (const m of merchants) {
+        if (m.is_verified !== true) continue;
         const mItems = catalogItems?.filter((ci: any) => ci.merchant_id === m.id) || [];
         const shopRating = Number(m.rating) || 4.8;
         const shopReviews = Number(m.review_count) || 1;

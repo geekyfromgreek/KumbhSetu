@@ -37,13 +37,22 @@ export const PilgrimViewPreviewTab: React.FC = () => {
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
     >
-      {/* Notice Banner */}
-      <View style={styles.previewNotice}>
-        <Ionicons name="eye-outline" size={16} color={BazaarColors.saffronDark} />
-        <Text style={styles.previewNoticeText}>
-          Live Pilgrim App Preview: This is exactly how your stall appears to pilgrims in the KumbhSetu Local Bazaar directory.
-        </Text>
-      </View>
+      {/* Notice & Admin Status Banner */}
+      {profile.foodLicense?.isVerifiedByAuthority ? (
+        <View style={[styles.previewNotice, { backgroundColor: '#DCFCE7', borderColor: '#86EFAC' }]}>
+          <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
+          <Text style={[styles.previewNoticeText, { color: '#15803D' }]}>
+            Verified & Approved by District Administration: Your stall is active and visible to all pilgrims in KumbhSetu App.
+          </Text>
+        </View>
+      ) : (
+        <View style={[styles.previewNotice, { backgroundColor: '#FEF9C3', borderColor: '#FDE047' }]}>
+          <Ionicons name="time-outline" size={16} color="#CA8A04" />
+          <Text style={[styles.previewNoticeText, { color: '#A16207' }]}>
+            Pending Admin Verification: Your stall will be visible to pilgrims once approved by Kumbh Mela Administration in the Admin Portal.
+          </Text>
+        </View>
+      )}
 
       {/* Pilgrim Marketplace Listing Card */}
       <View style={styles.storeCard}>
