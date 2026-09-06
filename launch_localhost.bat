@@ -28,7 +28,7 @@ echo.
 
 :: 2. Start Backend in separate window
 echo [2/3] Launching FastAPI Backend on port 8000...
-start "KumbhSetu-Backend-8000" cmd /k "cd /d "%BACKEND_DIR%" && echo Installing dependencies if needed... && python -m pip install -q -r requirements.txt && echo Starting FastAPI uvicorn server... && python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+start "KumbhSetu-Backend-8000" cmd /k "cd /d "%BACKEND_DIR%" && echo Starting FastAPI uvicorn server... && python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
 
 :: Give backend a moment to initialize
 timeout /t 3 /nobreak >nul
@@ -49,13 +49,13 @@ echo.
 echo =====================================================================
 echo   KumbhSetu Full-Stack is now running!
 echo   -------------------------------------------------------------
-echo   * Frontend Web UI : http://localhost:3000/
+echo   * Frontend Web UI : http://localhost:3000/yatri_home.html
 echo   * Backend API     : http://localhost:8000/
 echo   * API Docs        : http://localhost:8000/docs
 echo =====================================================================
 echo.
-echo Opening browser to http://localhost:3000/ ...
-start http://localhost:3000/
+echo Opening browser to http://localhost:3000/yatri_home.html ...
+start http://localhost:3000/yatri_home.html
 
 echo.
 echo Leave this window or the spawned windows open while using the app.

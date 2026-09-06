@@ -16,7 +16,9 @@ echo ""
 if ! command -v python3 &> /dev/null; then
     echo "[ERROR] python3 is not installed or not in PATH."
     exit 1
-# 0. Free busy ports if previously running
+fi
+
+# 2. Free busy ports if previously running
 fuser -k 8000/tcp 2>/dev/null || true
 fuser -k 3000/tcp 2>/dev/null || true
 sleep 1
@@ -60,9 +62,9 @@ echo ""
 
 # Try opening browser if command exists
 if command -v xdg-open &> /dev/null; then
-    xdg-open "http://localhost:3000/" > /dev/null 2>&1 || true
+    xdg-open "http://localhost:3000/yatri_home.html" > /dev/null 2>&1 || true
 elif command -v open &> /dev/null; then
-    open "http://localhost:3000/" > /dev/null 2>&1 || true
+    open "http://localhost:3000/yatri_home.html" > /dev/null 2>&1 || true
 fi
 
 echo "Press [CTRL+C] to stop all servers."
