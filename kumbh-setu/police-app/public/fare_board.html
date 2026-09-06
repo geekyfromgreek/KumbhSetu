@@ -7,6 +7,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -57,6 +62,36 @@
     }
     .marigold-divider::before { margin-right: 8px; }
     .marigold-divider::after { margin-left: 8px; }
+
+    /* Leaflet Z-Index adjustments to prevent clipping fixed headers */
+    #fare-map .leaflet-pane { z-index: 10 !important; }
+    #fare-map .leaflet-top, #fare-map .leaflet-bottom { z-index: 20 !important; }
+    .leaflet-control-zoom {
+      border: none !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+      border-radius: 12px !important;
+      overflow: hidden;
+    }
+    .leaflet-control-zoom a {
+      background: #ffffff !important;
+      color: #a03b00 !important;
+      font-weight: bold !important;
+      border-bottom: 1px solid #f0edf4 !important;
+    }
+
+    /* Custom Pin Pulse Animation */
+    @keyframes pulse-pin {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+    .pin-pulse {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      animation: pulse-pin 2s infinite ease-out;
+    }
   </style>
 </head>
 <body class="bg-surface text-on-surface h-full font-sans antialiased overflow-x-hidden">
@@ -64,7 +99,7 @@
   <!-- Fixed Header -->
   <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-surface/90 backdrop-blur-xl border-b border-primary/20 shadow-sm pt-safe">
     <div class="flex items-center gap-2">
-      <a href="yatri_home.html" class="p-1 text-on-surface">
+      <a href="yatri_home.html" class="p-1 text-on-surface hover:text-primary transition-colors cursor-pointer" aria-label="Back to Home">
         <span class="material-symbols-outlined text-[24px]">arrow_back</span>
       </a>
       <div class="flex items-center gap-1.5">
@@ -81,7 +116,7 @@
         <span>मराठी</span>
         <span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
       </button>
-      <button onclick="openReportFareModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary text-on-primary font-bold text-xs shadow-sm cursor-pointer hover:bg-primary-container">
+      <button onclick="openReportFareModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary text-on-primary font-bold text-xs shadow-sm cursor-pointer hover:bg-primary-container active:scale-95 transition-all">
         <span class="material-symbols-outlined text-sm">add</span>
         <span>Report Price</span>
       </button>
@@ -95,26 +130,110 @@
     <section class="mt-1">
       <div class="flex items-center justify-between">
         <h1 class="text-xl font-bold text-on-surface">Auto, Bus & Transit Fares</h1>
-        <span class="px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-[11px] font-bold">● Live Updates</span>
+        <span class="px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-[11px] font-bold flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
+          Live Route Predictor
+        </span>
       </div>
-      <p class="text-xs text-on-surface-variant mt-0.5">Official RTO tariffs & real-time community reported fares to prevent overcharging.</p>
+      <p class="text-xs text-on-surface-variant mt-0.5">Explore the live map freely, pick any pickup and destination, and get official RTO fare predictions.</p>
     </section>
 
-    <!-- Route Calculator Box -->
+    <!-- Interactive Leaflet Map Card -->
+    <section class="bg-surface-container-lowest rounded-2xl p-3 shadow-sm border border-primary/20 flex flex-col gap-2 relative">
+      
+      <!-- Map Header & Mode Switcher -->
+      <div class="flex items-center justify-between gap-2 flex-wrap pb-1">
+        <div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-primary text-sm">map</span>
+          <span class="text-xs font-bold text-on-surface">Interactive Route Map</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <!-- Set Pickup Toggle -->
+          <button id="btn-mode-pickup" onclick="setSelectionMode('pickup')" class="px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 transition-all bg-surface-container text-on-surface cursor-pointer border border-transparent">
+            <span class="w-2 h-2 rounded-full bg-green-600"></span>
+            <span>Set Pickup</span>
+          </button>
+          <!-- Set Drop-off Toggle -->
+          <button id="btn-mode-drop" onclick="setSelectionMode('drop')" class="px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 transition-all bg-primary text-on-primary shadow-sm cursor-pointer border border-primary">
+            <span class="w-2 h-2 rounded-full bg-white"></span>
+            <span>Set Drop-off</span>
+          </button>
+          <!-- Locate Me Button -->
+          <button onclick="locateUserPosition()" title="My Current Location" class="w-7 h-7 rounded-full bg-surface-container-high hover:bg-primary/20 text-on-surface flex items-center justify-center cursor-pointer transition-transform active:scale-90">
+            <span class="material-symbols-outlined text-sm text-primary">my_location</span>
+          </button>
+          <!-- Reset Center Button -->
+          <button onclick="resetMapCenter()" title="Center Nashik" class="w-7 h-7 rounded-full bg-surface-container-high hover:bg-primary/20 text-on-surface flex items-center justify-center cursor-pointer transition-transform active:scale-90">
+            <span class="material-symbols-outlined text-sm text-primary">refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Map Viewport Container -->
+      <div class="relative w-full rounded-xl overflow-hidden shadow-inner border border-outline-variant/30">
+        <div id="fare-map" class="w-full h-72 sm:h-80 bg-surface-container"></div>
+        
+        <!-- Live Map Interaction Hint Overlay -->
+        <div class="absolute bottom-2 left-2 right-2 bg-surface/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-sm border border-primary/20 text-[11px] flex items-center justify-between pointer-events-none z-20">
+          <div class="flex items-center gap-1 text-on-surface">
+            <span class="material-symbols-outlined text-primary text-xs">touch_app</span>
+            <span id="map-hint-text">Tap anywhere on map to move <strong>Drop-off 🚩</strong></span>
+          </div>
+          <span class="text-[10px] text-on-surface-variant font-medium">Pins are draggable</span>
+        </div>
+      </div>
+
+      <!-- Quick Landmark Chips -->
+      <div class="flex flex-col gap-1 pt-1">
+        <span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Quick Pilgrimage & Transit Hubs (Tap to set)</span>
+        <div class="flex gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+          <button onclick="setQuickLocation('ramkund')" class="hub-chip shrink-0 px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-primary/10 text-on-surface text-[11px] font-semibold border border-outline-variant/20 flex items-center gap-1 cursor-pointer transition-colors">
+            <span>🚩</span><span>Ramkund Ghat</span>
+          </button>
+          <button onclick="setQuickLocation('station')" class="hub-chip shrink-0 px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-primary/10 text-on-surface text-[11px] font-semibold border border-outline-variant/20 flex items-center gap-1 cursor-pointer transition-colors">
+            <span>🚂</span><span>Nashik Rd Stn</span>
+          </button>
+          <button onclick="setQuickLocation('cbs')" class="hub-chip shrink-0 px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-primary/10 text-on-surface text-[11px] font-semibold border border-outline-variant/20 flex items-center gap-1 cursor-pointer transition-colors">
+            <span>🚌</span><span>CBS Bus Stand</span>
+          </button>
+          <button onclick="setQuickLocation('trimbak')" class="hub-chip shrink-0 px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-primary/10 text-on-surface text-[11px] font-semibold border border-outline-variant/20 flex items-center gap-1 cursor-pointer transition-colors">
+            <span>🛕</span><span>Trimbakeshwar</span>
+          </button>
+          <button onclick="setQuickLocation('tapovan')" class="hub-chip shrink-0 px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-primary/10 text-on-surface text-[11px] font-semibold border border-outline-variant/20 flex items-center gap-1 cursor-pointer transition-colors">
+            <span>⛺</span><span>Tapovan Sadhugram</span>
+          </button>
+          <button onclick="setQuickLocation('muktidham')" class="hub-chip shrink-0 px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-primary/10 text-on-surface text-[11px] font-semibold border border-outline-variant/20 flex items-center gap-1 cursor-pointer transition-colors">
+            <span>🛕</span><span>Muktidham</span>
+          </button>
+          <button onclick="setQuickLocation('someshwar')" class="hub-chip shrink-0 px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-primary/10 text-on-surface text-[11px] font-semibold border border-outline-variant/20 flex items-center gap-1 cursor-pointer transition-colors">
+            <span>🌊</span><span>Someshwar</span>
+          </button>
+          <button onclick="setQuickLocation('kalaram')" class="hub-chip shrink-0 px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-primary/10 text-on-surface text-[11px] font-semibold border border-outline-variant/20 flex items-center gap-1 cursor-pointer transition-colors">
+            <span>🏛️</span><span>Kalaram Mandir</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Route Calculator Box (Synced 2-Way with Map) -->
     <section class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-primary/20 relative overflow-hidden">
       <div class="flex items-center gap-3">
         <div class="flex-1 flex flex-col gap-2">
           
           <!-- From -->
           <div class="relative flex items-center">
-            <span class="material-symbols-outlined absolute left-3 text-secondary text-sm pointer-events-none">my_location</span>
-            <select id="calc-from" class="w-full h-11 pl-9 pr-3 bg-surface-container-low text-on-surface rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer" onchange="updateFareCalculations()">
+            <span class="material-symbols-outlined absolute left-3 text-green-700 text-sm pointer-events-none">my_location</span>
+            <select id="calc-from" class="w-full h-11 pl-9 pr-3 bg-surface-container-low text-on-surface rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer" onchange="onDropdownChanged('from')">
+              <option value="ramkund" selected>Ramkund Main Ghat (Panchavati)</option>
               <option value="station">Nashik Road Railway Station</option>
               <option value="cbs">CBS Central Bus Stand</option>
-              <option value="ramkund" selected>Ramkund Main Ghat (Panchavati)</option>
               <option value="trimbak">Trimbakeshwar Temple</option>
               <option value="tapovan">Tapovan Sadhu Gram Hub</option>
               <option value="muktidham">Muktidham Temple</option>
+              <option value="someshwar">Someshwar Waterfalls</option>
+              <option value="kalaram">Shree Kalaram Mandir</option>
+              <option value="custom" id="opt-from-custom" class="hidden">📍 Custom Pinned Location</option>
             </select>
           </div>
 
@@ -125,20 +244,23 @@
           <!-- To -->
           <div class="relative flex items-center">
             <span class="material-symbols-outlined absolute left-3 text-primary text-sm pointer-events-none">pin_drop</span>
-            <select id="calc-to" class="w-full h-11 pl-9 pr-3 bg-surface-container-low text-on-surface rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer" onchange="updateFareCalculations()">
+            <select id="calc-to" class="w-full h-11 pl-9 pr-3 bg-surface-container-low text-on-surface rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer" onchange="onDropdownChanged('to')">
               <option value="trimbak" selected>Trimbakeshwar Temple (28 km)</option>
-              <option value="ramkund">Ramkund Ghat (Panchavati)</option>
+              <option value="ramkund">Ramkund Main Ghat (Panchavati)</option>
+              <option value="station">Nashik Road Railway Station</option>
+              <option value="cbs">CBS Central Bus Stand (4 km)</option>
               <option value="muktidham">Muktidham Temple (9 km)</option>
-              <option value="cbs">CBS Central Stand (4 km)</option>
               <option value="someshwar">Someshwar Waterfalls (11 km)</option>
               <option value="tapovan">Tapovan Sadhu Gram (3.2 km)</option>
+              <option value="kalaram">Shree Kalaram Mandir</option>
+              <option value="custom" id="opt-to-custom" class="hidden">📍 Custom Pinned Location</option>
             </select>
           </div>
 
         </div>
 
         <!-- Swap button -->
-        <button onclick="swapLocations()" class="w-11 h-11 rounded-full bg-primary/10 text-primary hover:bg-primary/20 flex items-center justify-center cursor-pointer transition-transform active:scale-90 shrink-0">
+        <button onclick="swapLocations()" title="Swap Origin and Destination" class="w-11 h-11 rounded-full bg-primary/10 text-primary hover:bg-primary/20 flex items-center justify-center cursor-pointer transition-transform active:scale-90 shrink-0">
           <span class="material-symbols-outlined">sync_alt</span>
         </button>
       </div>
@@ -149,17 +271,18 @@
           <span class="material-symbols-outlined text-secondary text-sm">straighten</span>
           <span id="route-dist-text">Calculated Distance: <strong>28.0 km</strong></span>
         </div>
-        <span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-bold text-[11px]" id="route-time-text">~45 mins travel</span>
+        <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[11px]" id="route-time-text">~45 mins travel</span>
       </div>
     </section>
 
     <!-- Filter Chips -->
     <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
-      <button onclick="filterTransit('all')" id="chip-all" class="transit-chip px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-bold text-xs shadow-sm">All Transit</button>
-      <button onclick="filterTransit('auto')" id="chip-auto" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs">Private Auto</button>
-      <button onclick="filterTransit('shared')" id="chip-shared" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs">Shared Auto</button>
-      <button onclick="filterTransit('bus')" id="chip-bus" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs">City Bus (Citylink)</button>
-      <button onclick="filterTransit('erickshaw')" id="chip-erickshaw" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs">E-Rickshaw</button>
+      <button onclick="filterTransit('all')" id="chip-all" class="transit-chip px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-bold text-xs shadow-sm cursor-pointer">All Transit</button>
+      <button onclick="filterTransit('auto')" id="chip-auto" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs cursor-pointer hover:bg-surface-container">Private Auto</button>
+      <button onclick="filterTransit('shared')" id="chip-shared" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs cursor-pointer hover:bg-surface-container">Shared Auto</button>
+      <button onclick="filterTransit('bus')" id="chip-bus" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs cursor-pointer hover:bg-surface-container">City Bus (Citylink)</button>
+      <button onclick="filterTransit('erickshaw')" id="chip-erickshaw" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs cursor-pointer hover:bg-surface-container">E-Rickshaw</button>
+      <button onclick="filterTransit('cab')" id="chip-cab" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs cursor-pointer hover:bg-surface-container">Kumbh Cab</button>
     </div>
 
     <!-- Live Transit Fare Cards Container -->
@@ -168,15 +291,15 @@
     </div>
 
     <!-- RTO Price Advisory Banner -->
-    <div class="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 text-xs flex flex-col gap-1.5">
+    <div class="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 text-xs flex flex-col gap-1.5 shadow-sm">
       <div class="flex items-center gap-1.5 font-bold text-primary">
         <span class="material-symbols-outlined text-[18px]">verified_user</span>
-        <span>Simhastha Municipal RTO Advisory</span>
+        <span>Simhastha Municipal RTO Advisory 2027</span>
       </div>
-      <p class="text-on-surface-variant">
-        • Auto Rickshaws within city limits must charge by calibrated meter or gazetted rate cards.<br/>
-        • Night charges (12:00 AM – 05:00 AM): 25% extra over regular daytime tariff.<br/>
-        • In case of overcharging, report immediately via <strong>Report Price</strong> or call <strong>RTO Helpline 1800-233-1048</strong>.
+      <p class="text-on-surface-variant leading-relaxed">
+        • <strong>Meter Compliance:</strong> Auto Rickshaws within Nashik city limits must charge strictly according to calibrated meter tariffs (₹26 base + ₹16.50/km).<br/>
+        • <strong>Night Surcharge (12:00 AM – 05:00 AM):</strong> Maximum 25% surcharge applicable over regular daytime fare.<br/>
+        • <strong>Zero Overcharging Tolerance:</strong> In case of meter refusal or demanding arbitrary prices, tap <strong>Report Overcharging</strong> or dial <strong>RTO Toll-Free 1800-233-1048</strong>.
       </p>
     </div>
 
@@ -190,7 +313,7 @@
           <span class="material-symbols-outlined text-xl">payments</span>
           <h3 class="font-bold text-base">Report Transit Price</h3>
         </div>
-        <button onclick="closeReportFareModal()" class="text-on-surface-variant p-1 cursor-pointer">
+        <button onclick="closeReportFareModal()" class="text-on-surface-variant p-1 cursor-pointer hover:text-on-surface">
           <span class="material-symbols-outlined text-lg">close</span>
         </button>
       </div>
@@ -199,37 +322,44 @@
         <div>
           <label class="font-semibold block mb-1">Transit Mode</label>
           <select id="modal-mode" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs">
-            <option value="Auto Rickshaw (Private)">Auto Rickshaw (Private)</option>
+            <option value="Auto Rickshaw (Private)">Auto Rickshaw (Private Metered)</option>
             <option value="Shared Auto (Seat)">Shared Auto (Per Seat)</option>
             <option value="Citylink Bus">Citylink Municipal Bus</option>
-            <option value="E-Rickshaw">E-Rickshaw</option>
+            <option value="E-Rickshaw">E-Rickshaw (Green Zone)</option>
+            <option value="Kumbh Cab / Taxi">Kumbh Cab / Taxi</option>
           </select>
         </div>
 
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="font-semibold block mb-1">From</label>
-            <input type="text" id="modal-from" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs" value="Nashik Station"/>
+            <input type="text" id="modal-from" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs" value="Ramkund Main Ghat"/>
           </div>
           <div>
             <label class="font-semibold block mb-1">To</label>
-            <input type="text" id="modal-to" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs" value="Ramkund Ghat"/>
+            <input type="text" id="modal-to" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs" value="Trimbakeshwar Temple"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-semibold block mb-1">Official RTO Tariff (₹)</label>
+            <input type="text" id="modal-expected" class="w-full h-10 px-3 bg-surface-container-high rounded-lg text-xs font-bold text-green-800" readonly value="₹463"/>
+          </div>
+          <div>
+            <label class="font-semibold block mb-1">Price Demanded / Paid (₹)*</label>
+            <input type="number" id="modal-price" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs font-bold text-primary focus:ring-1 focus:ring-primary" placeholder="e.g. 700"/>
           </div>
         </div>
 
         <div>
-          <label class="font-semibold block mb-1">Price Paid (₹)</label>
-          <input type="number" id="modal-price" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs font-bold" placeholder="e.g. 120"/>
-        </div>
-
-        <div>
-          <label class="font-semibold block mb-1">Auto No. / Driver Name (Optional)</label>
+          <label class="font-semibold block mb-1">Vehicle Plate / Auto Number (Optional)</label>
           <input type="text" id="modal-vehicle" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs" placeholder="e.g. MH-15-AB-1234"/>
         </div>
       </div>
 
       <div class="pt-2 flex gap-2">
-        <button onclick="submitFareReport()" class="w-full h-11 rounded-lg bg-primary text-on-primary font-bold text-xs flex items-center justify-center gap-1 shadow cursor-pointer hover:bg-primary-container">
+        <button onclick="submitFareReport()" class="w-full h-11 rounded-lg bg-primary text-on-primary font-bold text-xs flex items-center justify-center gap-1 shadow cursor-pointer hover:bg-primary-container active:scale-[0.99] transition-transform">
           <span class="material-symbols-outlined text-sm">send</span>
           <span>Submit Community Report</span>
         </button>
@@ -237,67 +367,396 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
-  <nav class="fixed bottom-0 left-0 w-full z-40 bg-surface/95 backdrop-blur-md pb-safe border-t border-outline-variant/30 flex justify-around items-center py-2 px-1">
-    <a href="yatri_home.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3">
-      <span class="material-symbols-outlined text-xl">home</span>
-      <span class="text-[10px] font-medium mt-0.5">Home</span>
-    </a>
-    <a href="fare_board.html" class="flex flex-col items-center text-primary font-bold py-1 px-3">
-      <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">payments</span>
-      <span class="text-[10px] mt-0.5">Fares</span>
-    </a>
-    <a href="marketplace.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3">
-      <span class="material-symbols-outlined text-xl">storefront</span>
-      <span class="text-[10px] font-medium mt-0.5">Market</span>
-    </a>
-    <a href="food_finder.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3">
-      <span class="material-symbols-outlined text-xl">soup_kitchen</span>
-      <span class="text-[10px] font-medium mt-0.5">Food</span>
-    </a>
-    <a href="emergency_sos.html" class="flex flex-col items-center text-secondary hover:text-red-700 transition-colors py-1 px-3">
-      <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">emergency</span>
-      <span class="text-[10px] font-bold mt-0.5">SOS</span>
-    </a>
+  <!-- Bottom Navigation (5 Unified Options) -->
+  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold">
+    <div class="flex items-center justify-around h-16 px-space-xs">
+      <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html">
+        <span class="material-symbols-outlined text-[22px]">temple_hindu</span>
+        <span class="font-label-sm text-label-sm leading-tight">Home</span>
+      </a>
+      <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="marketplace" href="marketplace.html">
+        <span class="material-symbols-outlined text-[22px]">verified</span>
+        <span class="font-label-sm text-label-sm leading-tight">Market</span>
+      </a>
+      <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html">
+        <span class="material-symbols-outlined text-[22px]">campaign</span>
+        <span class="font-label-sm text-label-sm leading-tight">Report</span>
+      </a>
+      <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html">
+        <span class="material-symbols-outlined text-[22px]">emergency</span>
+        <span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span>
+      </a>
+      <a aria-current="page" class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs transition-colors text-primary font-bold" data-path="fare-board" href="fare_board.html">
+        <span class="material-symbols-outlined text-[22px]">electric_rickshaw</span>
+        <span class="font-label-sm text-label-sm leading-tight">Fares</span>
+      </a>
+    </div>
   </nav>
 
   <script>
-    const routeDatabase = {
-      'station_ramkund': { dist: 8.5, time: '22 mins', private: 110, shared: 25, bus: 15, erickshaw: 30 },
-      'station_trimbak': { dist: 38.0, time: '65 mins', private: 480, shared: 160, bus: 45, erickshaw: null },
-      'station_cbs': { dist: 8.0, time: '20 mins', private: 100, shared: 25, bus: 12, erickshaw: 25 },
-      'station_muktidham': { dist: 2.2, time: '6 mins', private: 40, shared: 15, bus: 10, erickshaw: 15 },
-      'station_tapovan': { dist: 9.5, time: '25 mins', private: 130, shared: 30, bus: 18, erickshaw: 35 },
-      'station_someshwar': { dist: 16.0, time: '35 mins', private: 220, shared: 50, bus: 25, erickshaw: null },
-
-      'ramkund_trimbak': { dist: 28.0, time: '45 mins', private: 360, shared: 120, bus: 35, erickshaw: null },
-      'ramkund_cbs': { dist: 3.5, time: '10 mins', private: 50, shared: 15, bus: 10, erickshaw: 15 },
-      'ramkund_muktidham': { dist: 9.2, time: '24 mins', private: 120, shared: 30, bus: 18, erickshaw: 30 },
-      'ramkund_tapovan': { dist: 3.2, time: '8 mins', private: 45, shared: 15, bus: 10, erickshaw: 15 },
-      'ramkund_someshwar': { dist: 8.5, time: '20 mins', private: 120, shared: 30, bus: 15, erickshaw: 25 },
-
-      'cbs_trimbak': { dist: 28.0, time: '45 mins', private: 350, shared: 110, bus: 35, erickshaw: null },
-      'cbs_muktidham': { dist: 9.0, time: '22 mins', private: 120, shared: 30, bus: 18, erickshaw: 30 },
-      'cbs_tapovan': { dist: 5.5, time: '14 mins', private: 75, shared: 20, bus: 12, erickshaw: 20 },
-      'cbs_someshwar': { dist: 7.0, time: '18 mins', private: 95, shared: 25, bus: 15, erickshaw: 25 }
+    // Known Nashik Coordinates & Landmarks Database
+    const LANDMARKS = {
+      'ramkund': { name: 'Ramkund Main Ghat (Panchavati)', lat: 19.9975, lng: 73.7915, distKey: 'ramkund' },
+      'station': { name: 'Nashik Road Railway Station', lat: 19.9547, lng: 73.8340, distKey: 'station' },
+      'cbs': { name: 'CBS Central Bus Stand', lat: 19.9970, lng: 73.7820, distKey: 'cbs' },
+      'trimbak': { name: 'Trimbakeshwar Temple', lat: 19.9320, lng: 73.5315, distKey: 'trimbak' },
+      'tapovan': { name: 'Tapovan Sadhu Gram Hub', lat: 19.9920, lng: 73.8150, distKey: 'tapovan' },
+      'muktidham': { name: 'Muktidham Temple', lat: 19.9480, lng: 73.8410, distKey: 'muktidham' },
+      'someshwar': { name: 'Someshwar Waterfalls', lat: 20.0250, lng: 73.7430, distKey: 'someshwar' },
+      'kalaram': { name: 'Shree Kalaram Mandir', lat: 20.0055, lng: 73.7940, distKey: 'kalaram' }
     };
 
+    // Calibrated Road Distance Matrix for Core Pilgrimage Routes (in km)
+    const ROAD_DISTANCE_MATRIX = {
+      'station_ramkund': 8.5,
+      'station_trimbak': 38.0,
+      'station_cbs': 8.0,
+      'station_muktidham': 2.2,
+      'station_tapovan': 9.5,
+      'station_someshwar': 16.0,
+      'station_kalaram': 9.0,
+
+      'ramkund_trimbak': 28.0,
+      'ramkund_cbs': 3.5,
+      'ramkund_muktidham': 9.2,
+      'ramkund_tapovan': 3.2,
+      'ramkund_someshwar': 8.5,
+      'ramkund_kalaram': 0.9,
+
+      'cbs_trimbak': 28.0,
+      'cbs_muktidham': 9.0,
+      'cbs_tapovan': 5.5,
+      'cbs_someshwar': 7.0,
+      'cbs_kalaram': 3.0
+    };
+
+    let map = null;
+    let pickupMarker = null;
+    let dropMarker = null;
+    let routePolyline = null;
+    let userLocationCircle = null;
+
+    let pickupCoords = [19.9975, 73.7915]; // Ramkund default
+    let dropCoords = [19.9320, 73.5315];   // Trimbak default
+    let pickupName = 'Ramkund Main Ghat (Panchavati)';
+    let dropName = 'Trimbakeshwar Temple';
+    let activeSelection = 'drop'; // 'pickup' or 'drop'
     let activeFilter = 'all';
 
-    function getRouteData(from, to) {
-      if (from === to) return { dist: 0.5, time: '2 mins', private: 25, shared: 10, bus: 10, erickshaw: 10 };
-      const key1 = `${from}_${to}`;
-      const key2 = `${to}_${from}`;
-      return routeDatabase[key1] || routeDatabase[key2] || { dist: 7.5, time: '20 mins', private: 100, shared: 25, bus: 15, erickshaw: 25 };
+    // Haversine formula with calibrated road winding factor (1.28x)
+    function calculateRoadDistance(lat1, lon1, lat2, lon2, key1, key2) {
+      if (key1 && key2) {
+        const pair1 = `${key1}_${key2}`;
+        const pair2 = `${key2}_${key1}`;
+        if (ROAD_DISTANCE_MATRIX[pair1]) return ROAD_DISTANCE_MATRIX[pair1];
+        if (ROAD_DISTANCE_MATRIX[pair2]) return ROAD_DISTANCE_MATRIX[pair2];
+      }
+      const R = 6371; // Earth radius km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const crowDist = R * c;
+      if (crowDist < 0.2) return 0.5;
+      // 1.28x road winding factor for Indian city roads
+      return Math.round(crowDist * 1.28 * 10) / 10;
+    }
+
+    function calculateTravelDuration(distKm) {
+      if (distKm <= 2) return '6 mins';
+      if (distKm <= 5) return `${Math.round(distKm * 2.8 + 2)} mins`;
+      if (distKm <= 12) return `${Math.round(distKm * 2.2 + 4)} mins`;
+      if (distKm <= 22) return `${Math.round(distKm * 1.8 + 6)} mins`;
+      return `${Math.round(distKm * 1.5 + 8)} mins`;
+    }
+
+    // Initialize Leaflet Map
+    function initMap() {
+      const mapContainer = document.getElementById('fare-map');
+      if (!mapContainer || map) return;
+
+      // Center around Nashik - Trimbak region
+      map = L.map('fare-map', {
+        center: [19.965, 73.66],
+        zoom: 11,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        touchZoom: true
+      });
+
+      // CartoDB Voyager Daylight Layer (smooth, highly readable for transit)
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a>, OSM',
+        maxZoom: 19,
+        subdomains: 'abcd'
+      }).addTo(map);
+
+      // Custom Pickup DivIcon (Green)
+      const pickupIcon = L.divIcon({
+        className: 'custom-pickup-pin',
+        html: `
+          <div style="position:relative; width:34px; height:34px;">
+            <div class="pin-pulse" style="background:rgba(22,163,74,0.35);"></div>
+            <div style="position:relative; background-color:#16a34a; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; box-shadow:0 3px 10px rgba(0,0,0,0.35); border:2.5px solid #ffffff; cursor:grab;">
+              <span class="material-symbols-outlined" style="font-size:18px;">my_location</span>
+            </div>
+            <div style="position:absolute; top:-24px; left:50%; transform:translateX(-50%); background:#16a34a; color:white; font-size:10px; font-weight:700; padding:1px 6px; border-radius:10px; white-space:nowrap; pointer-events:none; box-shadow:0 2px 4px rgba(0,0,0,0.25);">Pickup</div>
+          </div>
+        `,
+        iconSize: [34, 34],
+        iconAnchor: [17, 17]
+      });
+
+      // Custom Drop-off DivIcon (Saffron/Primary)
+      const dropIcon = L.divIcon({
+        className: 'custom-drop-pin',
+        html: `
+          <div style="position:relative; width:34px; height:34px;">
+            <div class="pin-pulse" style="background:rgba(160,59,0,0.35);"></div>
+            <div style="position:relative; background-color:#a03b00; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; box-shadow:0 3px 10px rgba(0,0,0,0.35); border:2.5px solid #ffffff; cursor:grab;">
+              <span class="material-symbols-outlined" style="font-size:18px;">location_on</span>
+            </div>
+            <div style="position:absolute; top:-24px; left:50%; transform:translateX(-50%); background:#a03b00; color:white; font-size:10px; font-weight:700; padding:1px 6px; border-radius:10px; white-space:nowrap; pointer-events:none; box-shadow:0 2px 4px rgba(0,0,0,0.25);">Drop-off</div>
+          </div>
+        `,
+        iconSize: [34, 34],
+        iconAnchor: [17, 17]
+      });
+
+      // Add Draggable Pickup Marker
+      pickupMarker = L.marker(pickupCoords, { icon: pickupIcon, draggable: true }).addTo(map);
+      pickupMarker.bindPopup('<b>Pickup Point</b><br/>' + pickupName);
+
+      // Add Draggable Drop-off Marker
+      dropMarker = L.marker(dropCoords, { icon: dropIcon, draggable: true }).addTo(map);
+      dropMarker.bindPopup('<b>Destination Point</b><br/>' + dropName);
+
+      // Pickup Marker Drag Events
+      pickupMarker.on('dragend', function(e) {
+        const latlng = e.target.getLatLng();
+        pickupCoords = [latlng.lat, latlng.lng];
+        pickupName = `Pinned Location (${latlng.lat.toFixed(3)}, ${latlng.lng.toFixed(3)})`;
+        syncDropdownWithCustom('from', pickupName);
+        drawRouteAndComputeFares();
+      });
+
+      // Drop-off Marker Drag Events
+      dropMarker.on('dragend', function(e) {
+        const latlng = e.target.getLatLng();
+        dropCoords = [latlng.lat, latlng.lng];
+        dropName = `Pinned Location (${latlng.lat.toFixed(3)}, ${latlng.lng.toFixed(3)})`;
+        syncDropdownWithCustom('to', dropName);
+        drawRouteAndComputeFares();
+      });
+
+      // Map Free Click Handler
+      map.on('click', function(e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+        if (activeSelection === 'pickup') {
+          pickupCoords = [lat, lng];
+          pickupName = `Pinned Pickup (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
+          pickupMarker.setLatLng(e.latlng);
+          pickupMarker.setPopupContent('<b>Pickup Point</b><br/>' + pickupName);
+          syncDropdownWithCustom('from', pickupName);
+          setSelectionMode('drop'); // switch to destination next for natural user flow
+        } else {
+          dropCoords = [lat, lng];
+          dropName = `Pinned Drop (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
+          dropMarker.setLatLng(e.latlng);
+          dropMarker.setPopupContent('<b>Destination Point</b><br/>' + dropName);
+          syncDropdownWithCustom('to', dropName);
+          setSelectionMode('pickup'); // switch back
+        }
+        drawRouteAndComputeFares();
+      });
+
+      // Draw initial route and display fares
+      drawRouteAndComputeFares();
+    }
+
+    function setSelectionMode(mode) {
+      activeSelection = mode;
+      const btnPickup = document.getElementById('btn-mode-pickup');
+      const btnDrop = document.getElementById('btn-mode-drop');
+      const hintText = document.getElementById('map-hint-text');
+
+      if (mode === 'pickup') {
+        btnPickup.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 transition-all bg-green-700 text-white shadow-sm cursor-pointer border border-green-700';
+        btnDrop.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 transition-all bg-surface-container text-on-surface cursor-pointer border border-transparent';
+        if (hintText) hintText.innerHTML = 'Tap map or drag green pin to set <strong>Pickup 🟢</strong>';
+      } else {
+        btnDrop.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 transition-all bg-primary text-on-primary shadow-sm cursor-pointer border border-primary';
+        btnPickup.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 transition-all bg-surface-container text-on-surface cursor-pointer border border-transparent';
+        if (hintText) hintText.innerHTML = 'Tap map or drag red pin to set <strong>Drop-off 🚩</strong>';
+      }
+    }
+
+    function resetMapCenter() {
+      if (!map) return;
+      if (routePolyline) {
+        map.fitBounds(L.latLngBounds([pickupCoords, dropCoords]), { padding: [45, 45], maxZoom: 15 });
+      } else {
+        map.setView([19.965, 73.66], 11);
+      }
+    }
+
+    function locateUserPosition() {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your device browser.');
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        function(pos) {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          pickupCoords = [lat, lng];
+          pickupName = 'My Live GPS Location';
+          if (pickupMarker) {
+            pickupMarker.setLatLng([lat, lng]);
+            pickupMarker.setPopupContent('<b>Live Location</b><br/>Your GPS location');
+          }
+          if (userLocationCircle) {
+            map.removeLayer(userLocationCircle);
+          }
+          userLocationCircle = L.circle([lat, lng], {
+            radius: Math.max(pos.coords.accuracy || 30, 25),
+            color: '#16a34a',
+            fillColor: '#16a34a',
+            fillOpacity: 0.18
+          }).addTo(map);
+
+          syncDropdownWithCustom('from', '📍 My Live Location');
+          setSelectionMode('drop');
+          drawRouteAndComputeFares();
+        },
+        function(err) {
+          alert('Could not access GPS location. You can tap anywhere freely on the map to set your pickup location!');
+        },
+        { timeout: 8000, enableHighAccuracy: true }
+      );
+    }
+
+    function setQuickLocation(landmarkKey) {
+      const item = LANDMARKS[landmarkKey];
+      if (!item) return;
+
+      if (activeSelection === 'pickup') {
+        pickupCoords = [item.lat, item.lng];
+        pickupName = item.name;
+        if (pickupMarker) pickupMarker.setLatLng(pickupCoords);
+        document.getElementById('calc-from').value = landmarkKey;
+        setSelectionMode('drop');
+      } else {
+        dropCoords = [item.lat, item.lng];
+        dropName = item.name;
+        if (dropMarker) dropMarker.setLatLng(dropCoords);
+        document.getElementById('calc-to').value = landmarkKey;
+        setSelectionMode('pickup');
+      }
+      drawRouteAndComputeFares();
+    }
+
+    function onDropdownChanged(type) {
+      const fromVal = document.getElementById('calc-from').value;
+      const toVal = document.getElementById('calc-to').value;
+
+      if (type === 'from' && LANDMARKS[fromVal]) {
+        pickupCoords = [LANDMARKS[fromVal].lat, LANDMARKS[fromVal].lng];
+        pickupName = LANDMARKS[fromVal].name;
+        if (pickupMarker) pickupMarker.setLatLng(pickupCoords);
+      }
+      if (type === 'to' && LANDMARKS[toVal]) {
+        dropCoords = [LANDMARKS[toVal].lat, LANDMARKS[toVal].lng];
+        dropName = LANDMARKS[toVal].name;
+        if (dropMarker) dropMarker.setLatLng(dropCoords);
+      }
+      drawRouteAndComputeFares();
+    }
+
+    function syncDropdownWithCustom(type, label) {
+      const sel = document.getElementById(`calc-${type}`);
+      const optCustom = document.getElementById(`opt-${type}-custom`);
+      if (optCustom && sel) {
+        optCustom.classList.remove('hidden');
+        optCustom.textContent = label;
+        sel.value = 'custom';
+      }
     }
 
     function swapLocations() {
+      const tempCoords = [...pickupCoords];
+      pickupCoords = [...dropCoords];
+      dropCoords = tempCoords;
+
+      const tempName = pickupName;
+      pickupName = dropName;
+      dropName = tempName;
+
+      if (pickupMarker) pickupMarker.setLatLng(pickupCoords);
+      if (dropMarker) dropMarker.setLatLng(dropCoords);
+
       const fromSel = document.getElementById('calc-from');
       const toSel = document.getElementById('calc-to');
-      const temp = fromSel.value;
+      const tempVal = fromSel.value;
       fromSel.value = toSel.value;
-      toSel.value = temp;
-      updateFareCalculations();
+      toSel.value = tempVal;
+
+      drawRouteAndComputeFares();
+    }
+
+    function drawRouteAndComputeFares() {
+      if (!map) return;
+
+      const fromVal = document.getElementById('calc-from').value;
+      const toVal = document.getElementById('calc-to').value;
+      const k1 = LANDMARKS[fromVal] ? fromVal : null;
+      const k2 = LANDMARKS[toVal] ? toVal : null;
+
+      const dist = calculateRoadDistance(pickupCoords[0], pickupCoords[1], dropCoords[0], dropCoords[1], k1, k2);
+      const timeStr = calculateTravelDuration(dist);
+
+      document.getElementById('route-dist-text').innerHTML = `Calculated Distance: <strong>${dist} km</strong>`;
+      document.getElementById('route-time-text').textContent = `~${timeStr} travel`;
+
+      // Update Modal default fields
+      const modalFrom = document.getElementById('modal-from');
+      const modalTo = document.getElementById('modal-to');
+      if (modalFrom) modalFrom.value = pickupName;
+      if (modalTo) modalTo.value = dropName;
+
+      // Draw route polyline on map
+      if (routePolyline) {
+        map.removeLayer(routePolyline);
+      }
+
+      // Generate a smooth path between points
+      const waypoints = [pickupCoords];
+      // If it's a long route, add intermediate curvature along the road corridor
+      if (dist > 8) {
+        const midLat = (pickupCoords[0] + dropCoords[0]) / 2 + 0.005;
+        const midLng = (pickupCoords[1] + dropCoords[1]) / 2 - 0.004;
+        waypoints.push([midLat, midLng]);
+      }
+      waypoints.push(dropCoords);
+
+      routePolyline = L.polyline(waypoints, {
+        color: '#a03b00',
+        weight: 5,
+        opacity: 0.85,
+        dashArray: '8, 8',
+        lineCap: 'round'
+      }).addTo(map);
+
+      // Fit map viewport comfortably to both points
+      map.fitBounds(L.latLngBounds([pickupCoords, dropCoords]), {
+        padding: [45, 45],
+        maxZoom: 14
+      });
+
+      renderFareCards(dist, timeStr);
     }
 
     function filterTransit(mode) {
@@ -311,157 +770,178 @@
         activeBtn.classList.remove('bg-surface-container-high', 'text-on-surface');
         activeBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
       }
-      renderCards();
+      const fromVal = document.getElementById('calc-from').value;
+      const toVal = document.getElementById('calc-to').value;
+      const k1 = LANDMARKS[fromVal] ? fromVal : null;
+      const k2 = LANDMARKS[toVal] ? toVal : null;
+      const dist = calculateRoadDistance(pickupCoords[0], pickupCoords[1], dropCoords[0], dropCoords[1], k1, k2);
+      const timeStr = calculateTravelDuration(dist);
+      renderFareCards(dist, timeStr);
     }
 
-    function updateFareCalculations() {
-      renderCards();
-    }
-
-    function renderCards() {
-      const from = document.getElementById('calc-from').value;
-      const to = document.getElementById('calc-to').value;
-      const fromName = document.getElementById('calc-from').options[document.getElementById('calc-from').selectedIndex].text;
-      const toName = document.getElementById('calc-to').options[document.getElementById('calc-to').selectedIndex].text;
-      
-      const r = getRouteData(from, to);
-      document.getElementById('route-dist-text').innerHTML = `Calculated Distance: <strong>${r.dist} km</strong>`;
-      document.getElementById('route-time-text').textContent = `~${r.time} travel`;
-
+    function renderFareCards(dist, timeStr) {
       const container = document.getElementById('fare-cards-container');
+      if (!container) return;
+
       const cards = [];
 
-      // 1. Private Auto
+      // 1. Private Auto Rickshaw (Official Nashik RTO 2027 Gazetted Tariff)
+      // Base: ₹26 for first 1.5 km, ₹16.50/km thereafter
+      const autoFare = dist <= 1.5 ? 26 : Math.round(26 + (dist - 1.5) * 16.50);
+      const autoMin = Math.round(autoFare * 0.96);
+      const autoMax = Math.round(autoFare * 1.08);
+      const autoNight = Math.round(autoFare * 1.25);
+      const unauthorizedSurge = Math.round(autoFare * 1.55);
+
       if (activeFilter === 'all' || activeFilter === 'auto') {
-        const minP = Math.round(r.private * 0.95);
-        const maxP = Math.round(r.private * 1.15);
-        const surge = Math.round(r.private * 1.6);
         cards.push(`
           <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-2">
-                <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                   <span class="material-symbols-outlined text-[22px]">electric_rickshaw</span>
                 </div>
                 <div>
                   <h3 class="font-bold text-sm text-on-surface">Auto Rickshaw (Private Hire)</h3>
-                  <p class="text-xs text-on-surface-variant truncate max-w-[220px]">${fromName} ➔ ${toName}</p>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[210px] sm:max-w-xs">${pickupName} ➔ ${dropName}</p>
                 </div>
               </div>
-              <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase flex items-center gap-0.5">
+              <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase flex items-center gap-0.5 shrink-0">
                 <span class="material-symbols-outlined text-[13px]">verified</span> RTO Tariff
               </span>
             </div>
 
             <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
               <div>
-                <span class="text-[11px] text-on-surface-variant block uppercase tracking-wider font-semibold">Official Fair Range</span>
-                <span class="text-lg font-bold text-primary">₹${minP} – ₹${maxP}</span>
-                <span class="text-[11px] text-on-surface-variant ml-1">(Metered ₹25 base + ₹15/km)</span>
+                <span class="text-[10px] text-on-surface-variant block uppercase tracking-wider font-semibold">Metered Tariff Range</span>
+                <span class="text-xl font-extrabold text-primary">₹${autoMin} – ₹${autoMax}</span>
+                <span class="text-[11px] text-on-surface-variant block mt-0.5">(₹26 base for 1.5 km + ₹16.50/km)</span>
               </div>
-              <div class="text-right">
-                <span class="text-[10px] text-on-surface-variant block">Est. Duration</span>
-                <span class="text-xs font-bold text-on-surface">${r.time}</span>
+              <div class="text-right flex flex-col items-end">
+                <span class="text-[10px] text-on-surface-variant block">Travel Duration</span>
+                <span class="text-xs font-bold text-on-surface">${timeStr}</span>
+                <span class="text-[10px] text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded mt-1 border border-amber-200">Night: ₹${autoNight}</span>
               </div>
             </div>
 
-            <div class="p-2 rounded-lg bg-red-50 text-red-900 border border-red-200 text-xs flex items-start gap-1.5">
+            <div class="p-2.5 rounded-lg bg-red-50 text-red-900 border border-red-200 text-xs flex items-start gap-1.5">
               <span class="material-symbols-outlined text-red-700 text-sm mt-0.5 shrink-0">warning</span>
-              <span><strong>Surge Watch:</strong> Unauthorized stands charging ₹${surge}+. Always insist on meter or RTO rate card.</span>
+              <span class="leading-snug"><strong>Surge Watch:</strong> Unauthorized stands at peak hours demand ₹${unauthorizedSurge}+. Insist on meter reading or RTO rate card.</span>
             </div>
 
             <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Reported by 48 Nashikkars • 15m ago</span>
-              <button onclick="openReportFareModal()" class="text-primary font-bold hover:underline">Report Different Price</button>
+              <span>Verified RTO Tariff 2027</span>
+              <button onclick="openPrefilledReport('Auto Rickshaw (Private)', ${autoFare})" class="text-primary font-bold hover:underline cursor-pointer flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-xs">campaign</span>
+                <span>Report Overcharging</span>
+              </button>
             </div>
           </div>
         `);
       }
 
-      // 2. Shared Auto
-      if ((activeFilter === 'all' || activeFilter === 'shared') && r.shared) {
+      // 2. Shared Auto Rickshaw (Seat-Wise)
+      // NMC fixed distance stages: ₹15 (<3km), ₹20 (3-6km), ₹25 (6-10km), ₹35 (10-16km), ₹70 (16-24km), ₹120 (Trimbak 28km)
+      let sharedSeatFare = 20;
+      if (dist <= 3) sharedSeatFare = 15;
+      else if (dist <= 6) sharedSeatFare = 20;
+      else if (dist <= 10) sharedSeatFare = 25;
+      else if (dist <= 16) sharedSeatFare = 35;
+      else if (dist <= 24) sharedSeatFare = 70;
+      else sharedSeatFare = 120;
+
+      if (activeFilter === 'all' || activeFilter === 'shared') {
         cards.push(`
           <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-2">
-                <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
+                <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
                   <span class="material-symbols-outlined text-[22px]">group</span>
                 </div>
                 <div>
                   <h3 class="font-bold text-sm text-on-surface">Shared Auto (Seat-Wise)</h3>
-                  <p class="text-xs text-on-surface-variant truncate max-w-[220px]">${fromName} ➔ ${toName}</p>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[210px] sm:max-w-xs">${pickupName} ➔ ${dropName}</p>
                 </div>
               </div>
-              <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-[10px] font-bold uppercase">Fixed Seat Rate</span>
+              <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-[10px] font-bold uppercase">Fixed Stage Rate</span>
             </div>
 
             <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
               <div>
-                <span class="text-[11px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Price Per Seat</span>
-                <span class="text-lg font-bold text-green-700">₹${r.shared} <span class="text-xs font-normal text-on-surface-variant">/ passenger</span></span>
+                <span class="text-[10px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Price Per Seat</span>
+                <span class="text-xl font-extrabold text-green-700">₹${sharedSeatFare} <span class="text-xs font-normal text-on-surface-variant">/ passenger</span></span>
               </div>
               <div class="text-right">
                 <span class="text-[10px] text-on-surface-variant block">Frequency</span>
-                <span class="text-xs font-bold text-on-surface">Every 3-5 mins</span>
+                <span class="text-xs font-bold text-on-surface">Every 3–5 mins</span>
               </div>
             </div>
 
             <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Confirmed at Stand #04 (Panchavati Circle)</span>
-              <span class="text-green-700 font-bold">✓ 92 Community Confirmations</span>
+              <span>Standard Kumbh Corridor Stage</span>
+              <button onclick="openPrefilledReport('Shared Auto (Seat)', ${sharedSeatFare})" class="text-primary font-bold hover:underline cursor-pointer">Report Fare</button>
             </div>
           </div>
         `);
       }
 
-      // 3. City Bus
-      if ((activeFilter === 'all' || activeFilter === 'bus') && r.bus) {
+      // 3. Citylink Municipal Bus (NMC)
+      // NMC Official Stages: ₹10 (0-4km), ₹15 (4-8km), ₹20 (8-14km), ₹25 (14-20km), ₹35 (20km+)
+      let busFare = 15;
+      if (dist <= 4) busFare = 10;
+      else if (dist <= 8) busFare = 15;
+      else if (dist <= 14) busFare = 20;
+      else if (dist <= 20) busFare = 25;
+      else busFare = 35;
+
+      if (activeFilter === 'all' || activeFilter === 'bus') {
         cards.push(`
           <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-2">
-                <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                   <span class="material-symbols-outlined text-[22px]">directions_bus</span>
                 </div>
                 <div>
                   <h3 class="font-bold text-sm text-on-surface">Citylink Municipal Bus (NMC)</h3>
-                  <p class="text-xs text-on-surface-variant truncate max-w-[220px]">Route 101 / 104 • ${fromName} ➔ ${toName}</p>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[210px] sm:max-w-xs">${pickupName} ➔ ${dropName}</p>
                 </div>
               </div>
-              <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase">Government Subsidized</span>
+              <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase">Govt Subsidized</span>
             </div>
 
             <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
               <div>
-                <span class="text-[11px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Ticket</span>
-                <span class="text-lg font-bold text-primary">₹${r.bus} <span class="text-xs font-normal text-on-surface-variant">/ ticket</span></span>
+                <span class="text-[10px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Ticket</span>
+                <span class="text-xl font-extrabold text-primary">₹${busFare} <span class="text-xs font-normal text-on-surface-variant">/ passenger</span></span>
               </div>
               <div class="text-right">
-                <span class="text-[10px] text-on-surface-variant block">Air-Conditioned</span>
-                <span class="text-xs font-bold text-on-surface">₹${r.bus + 10}</span>
+                <span class="text-[10px] text-on-surface-variant block">AC Bus Express</span>
+                <span class="text-xs font-bold text-on-surface">₹${busFare + 10}</span>
               </div>
             </div>
 
             <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Electronic Smart Card & UPI accepted</span>
-              <span class="text-primary font-bold">Citylink Timetable Active</span>
+              <span>Electronic Smart Ticket & UPI accepted</span>
+              <span class="text-primary font-semibold">NMC Citylink Connect</span>
             </div>
           </div>
         `);
       }
 
-      // 4. E-Rickshaw
-      if ((activeFilter === 'all' || activeFilter === 'erickshaw') && r.erickshaw) {
+      // 4. E-Rickshaw (Green Ghats Corridor Feeder)
+      if ((activeFilter === 'all' || activeFilter === 'erickshaw') && dist <= 8) {
+        const erickshawFare = dist <= 2.5 ? 15 : 20;
         cards.push(`
           <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-2">
-                <div class="w-10 h-10 rounded-xl bg-green-100 text-green-800 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-xl bg-green-100 text-green-800 flex items-center justify-center shrink-0">
                   <span class="material-symbols-outlined text-[22px]">eco</span>
                 </div>
                 <div>
-                  <h3 class="font-bold text-sm text-on-surface">E-Rickshaw (Green Zone Transit)</h3>
-                  <p class="text-xs text-on-surface-variant truncate max-w-[220px]">Pedestrian Corridor • ${fromName} ➔ ${toName}</p>
+                  <h3 class="font-bold text-sm text-on-surface">E-Rickshaw (Green Zone Feeder)</h3>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[210px] sm:max-w-xs">Ghats & Inner Corridor Feeder</p>
                 </div>
               </div>
               <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase">Zero Emission</span>
@@ -469,18 +949,57 @@
 
             <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
               <div>
-                <span class="text-[11px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Fare</span>
-                <span class="text-lg font-bold text-green-800">₹${r.erickshaw} <span class="text-xs font-normal text-on-surface-variant">/ seat</span></span>
+                <span class="text-[10px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Fare</span>
+                <span class="text-xl font-extrabold text-green-800">₹${erickshawFare} <span class="text-xs font-normal text-on-surface-variant">/ seat</span></span>
               </div>
               <div class="text-right">
-                <span class="text-[10px] text-on-surface-variant block">Permitted In</span>
-                <span class="text-xs font-bold text-green-800">Zone Green Only</span>
+                <span class="text-[10px] text-on-surface-variant block">Inner Ring</span>
+                <span class="text-xs font-bold text-green-800">Pedestrian Feeder</span>
               </div>
             </div>
 
             <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
-              <span>Senior citizens & Divyang assisted</span>
-              <span class="text-green-700 font-bold">✓ Free for age 75+</span>
+              <span>Free for senior citizens age 75+</span>
+              <span class="text-green-700 font-bold">✓ Zero Smoke Zone</span>
+            </div>
+          </div>
+        `);
+      }
+
+      // 5. Kumbh Cab / App Taxi (Ola / Uber / Kumbh Taxi)
+      // ₹100 base (first 4 km), ₹21/km thereafter
+      const cabFare = Math.round(dist <= 4 ? 100 : 100 + (dist - 4) * 21);
+      if (activeFilter === 'all' || activeFilter === 'cab') {
+        cards.push(`
+          <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[22px]">local_taxi</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-on-surface">Kumbh Cab / AC Taxi</h3>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[210px] sm:max-w-xs">Hatchback / Sedan • ${pickupName} ➔ ${dropName}</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold uppercase">Dedicated AC</span>
+            </div>
+
+            <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] text-on-surface-variant block uppercase tracking-wider font-semibold">Estimated Cab Tariff</span>
+                <span class="text-xl font-extrabold text-on-surface">₹${cabFare} – ₹${Math.round(cabFare * 1.15)}</span>
+                <span class="text-[11px] text-on-surface-variant block mt-0.5">(₹100 base for 4 km + ₹21/km)</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-on-surface-variant block">Comfort</span>
+                <span class="text-xs font-bold text-on-surface">4 Passengers</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
+              <span>Luggage & highway toll included</span>
+              <button onclick="openPrefilledReport('Kumbh Cab / Taxi', ${cabFare})" class="text-primary font-bold hover:underline cursor-pointer">Report Cab Price</button>
             </div>
           </div>
         `);
@@ -489,30 +1008,42 @@
       container.innerHTML = cards.join('');
     }
 
+    function openPrefilledReport(modeName, expectedFare) {
+      document.getElementById('modal-mode').value = modeName;
+      document.getElementById('modal-from').value = pickupName;
+      document.getElementById('modal-to').value = dropName;
+      document.getElementById('modal-expected').value = `₹${expectedFare}`;
+      openReportFareModal();
+    }
+
     function openReportFareModal() {
-      document.getElementById('reportPriceModal').classList.remove('hidden');
-      document.getElementById('reportPriceModal').classList.add('flex');
+      const modal = document.getElementById('reportPriceModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
     }
 
     function closeReportFareModal() {
-      document.getElementById('reportPriceModal').classList.add('hidden');
-      document.getElementById('reportPriceModal').classList.remove('flex');
+      const modal = document.getElementById('reportPriceModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     }
 
     function submitFareReport() {
       const mode = document.getElementById('modal-mode').value;
       const price = document.getElementById('modal-price').value;
       if (!price) {
-        alert('Please enter price paid');
+        alert('Please enter price charged or demanded.');
         return;
       }
-      alert(`Thank you! Your community price report of ₹${price} for ${mode} has been submitted to KumbhSetu fair pricing ledger.`);
+      alert(`Thank you! Your community price report of ₹${price} for ${mode} has been submitted to KumbhSetu fair pricing ledger to protect fellow yatris.`);
       closeReportFareModal();
     }
 
-    // Initialize
-    updateFareCalculations();
+    // Initialize on window load
+    window.addEventListener('DOMContentLoaded', () => {
+      initMap();
+    });
   </script>
-<script src="i18n.js"></script>
+  <script src="i18n.js"></script>
 </body>
 </html>

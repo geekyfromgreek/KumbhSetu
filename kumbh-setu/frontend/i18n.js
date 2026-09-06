@@ -1293,6 +1293,26 @@
         "hi": "किराया बोर्ड",
         "en": "Fare Board"
     },
+    "Fares": {
+        "mr": "दर फलक",
+        "hi": "किराया",
+        "en": "Fares"
+    },
+    "Set Pickup": {
+        "mr": "सुरुवात निवडा",
+        "hi": "पिकअप चुनें",
+        "en": "Set Pickup"
+    },
+    "Set Destination": {
+        "mr": "गंतव्य निवडा",
+        "hi": "गंतव्य चुनें",
+        "en": "Set Destination"
+    },
+    "My Location": {
+        "mr": "माझे स्थान",
+        "hi": "मेरा स्थान",
+        "en": "My Location"
+    },
     "RTO Gazetted Rates 2027": {
         "mr": "आरटीओ अधिकृत राजपत्र दर २०२७",
         "hi": "आरटीओ आधिकारिक राजपत्र दर २०२७",
