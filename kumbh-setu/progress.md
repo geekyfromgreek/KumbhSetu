@@ -1,0 +1,40 @@
+# Kumbh Setu (कुंभसेतु) — Progress Tracker
+Civic Trust & Fair Pricing Platform for Kumbh Mela 2027, Nashik
+
+## Completed
+- [x] **Project Scaffolding**: Structured repo with backend, yatri-nashikkar-app, and police-app.
+- [x] **FastAPI Backend**:
+  - Live on `http://localhost:8000`
+  - 5,441 Real Nashik Listings seeded from dataset (Eateries, Hotels, Auto/Bus, Infrastructure)
+  - Modules: Auth (JWT), Marketplace & Categories, Bookings, Reports, Police Escalations, Vendor Management, Emergency Services
+  - Pricing reference ceilings & surge detection algorithms
+  - SQLite demo mode with pre-seeded demo users & tokens
+- [x] **Frontend (Pixel-Perfect from stitch_kumbh_setu_civic_platform.zip)**:
+  - All 20 screens extracted and mounted directly from the user's exact zip files.
+  - 100% faithful to the PNG designs (Tailwind CSS, Plus Jakarta Sans & Inter fonts, Material Symbols, Google CDN photography, and color tokens).
+  - Wired with bidirectional navigation, real-time filters, issue reporting, and 1-tap police escalation.
+  - Served directly via FastAPI at `http://localhost:8000/` and via standalone `npm start` on port 3000.
+  - Y6: Emergency SOS & Infrastructure locator (one-tap 112/108/100 dialer, ghat advisories, nearest hospitals and police chowkis)
+  - N0: Nashikkar Citizen & Vendor Login with 1-click demo access
+  - N1: Nashikkar Overview Dashboard with Civic Trust Score (98.4%), metrics, and administration notices
+  - N2: Fair Pricing Pledge & Verified Green Badge Certificate generation with printable QR chart
+  - N3: Marketplace Rate Card Management & reference ceiling compliance checker
+  - N4: Live Pilgrim Bookings Queue with accept/reject/complete workflow & dialer
+  - N5: Price Flag Review with 1-tap statutory Police Escalation
+- [x] **Police Terminal App (Expo Router — Standalone)**:
+  - P0: Police Duty Login with Outpost/Sector selector (Ramkund, Panchavati, CBS, Trimbak) & demo bypass
+  - P1: Live Escalations Feed with real-time severity badges, price surge delta indicators, and Quick Dispatch
+  - P2: Investigation Dossier with complainant details, 1-tap call yatri, route patrol, summons notice, and compound fine penalty execution
+  - P3: Case Log & Resolution Archive with search and penalty audit counters
+- [x] **Essential Pilgrim Services (4 Tiles Fully Utilizing Dataset)**:
+  - **Local Market (`marketplace.html`)**: Connects to live backend API serving all 5,441 records (Transport, Hotels/Dharamshalas, Food/Bazaars, Local Guides) with search, price ceiling caps, and links to `listing_detail.html` and `booking_confirmation.html`.
+  - **Food Finder (`food_finder.html`)**: Dynamically loads real Nashik eateries from the dataset + official Annachhatras (Shri Ram, Godavari Satvik, Mahavir Jain), with live category filters ("All", "Free Annachhatra", "Satvik Thali", "Jain", "Budget"), live search, digital meal token generation, and direct navigation.
+  - **Report Issue (`report_issue.html`)**: Connected to backend `POST /api/v1/reports/`, generates real tracked ticket IDs (e.g., `#KS-XXXXX`), records grievance into SQLite, and provides direct link to the Police Escalations dashboard.
+  - **Emergency SOS (`emergency_sos.html`)**: Dynamically fetches from the 2,165 infrastructure points (47 Police Stations & Outposts, 495 Hospitals & Clinics, 79 Ambulances, 10 Fire Stations) with exact distance calculation, 1-tap dialer (`tel:`), and Google Maps navigation.
+
+## Ready for Evaluation
+- Frontend UI (Stitch Pixel-Perfect): Running on `http://localhost:3000/` and `http://localhost:8000/`
+- Backend API: Running on `http://localhost:8000` (`http://localhost:8000/docs`)
+- Yatri-Nashikkar App: Ready for `npx expo start` in `kumbh-setu/yatri-nashikkar-app`
+- Police App: Ready for `npx expo start` in `kumbh-setu/police-app`
+

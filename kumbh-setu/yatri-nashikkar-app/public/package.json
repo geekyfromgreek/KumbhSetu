@@ -1,0 +1,10 @@
+{
+  "name": "kumbh-setu-frontend",
+  "version": "1.0.0",
+  "description": "Kumbh Setu Civic Platform — Pixel-perfect UI matching Stitch PNG specifications",
+  "scripts": {
+    "start": "npx -y serve -p 3000 .",
+    "dev": "npx -y serve -p 3000 .",
+    "serve-python": "python3 -m http.server 3000"
+  }
+}
