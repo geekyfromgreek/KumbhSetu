@@ -49,13 +49,13 @@ echo.
 echo =====================================================================
 echo   KumbhSetu Full-Stack is now running!
 echo   -------------------------------------------------------------
-echo   * Frontend Web UI : http://localhost:3000/yatri_home.html
+echo   * Launch Portal   : http://localhost:3000/index.html
 echo   * Backend API     : http://localhost:8000/
 echo   * API Docs        : http://localhost:8000/docs
 echo =====================================================================
 echo.
-echo Opening browser to http://localhost:3000/yatri_home.html ...
-start http://localhost:3000/yatri_home.html
+echo Opening browser to http://localhost:3000/index.html ...
+start http://localhost:3000/index.html
 
 echo.
 echo Leave this window or the spawned windows open while using the app.

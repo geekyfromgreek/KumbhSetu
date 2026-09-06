@@ -50,11 +50,11 @@ echo ""
 echo "====================================================================="
 echo "  KumbhSetu Full-Stack is now running!"
 echo "  -------------------------------------------------------------"
-echo "  * PC Browser      : http://localhost:3000/yatri_home.html"
-echo "  * Mobile Phone URL: http://${LAN_IP}:3000/yatri_home.html"
+echo "  * Launch Portal   : http://localhost:3000/index.html"
+echo "  * Mobile Phone URL: http://${LAN_IP}:3000/index.html"
 echo "  * Backend API Docs: http://localhost:8000/docs"
 echo "  -------------------------------------------------------------"
-echo "  [📱 Mobile Tip]: Open http://${LAN_IP}:3000/yatri_home.html on your"
+echo "  [📱 Mobile Tip]: Open http://${LAN_IP}:3000/index.html on your"
 echo "  phone's browser (Chrome/Safari) and tap 'Add to Home Screen' to"
 echo "  install the complete standalone Kumbh Setu app with all data!"
 echo "====================================================================="
@@ -62,9 +62,9 @@ echo ""
 
 # Try opening browser if command exists
 if command -v xdg-open &> /dev/null; then
-    xdg-open "http://localhost:3000/yatri_home.html" > /dev/null 2>&1 || true
+    xdg-open "http://localhost:3000/index.html" > /dev/null 2>&1 || true
 elif command -v open &> /dev/null; then
-    open "http://localhost:3000/yatri_home.html" > /dev/null 2>&1 || true
+    open "http://localhost:3000/index.html" > /dev/null 2>&1 || true
 fi
 
 echo "Press [CTRL+C] to stop all servers."
