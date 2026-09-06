@@ -16,7 +16,10 @@ echo ""
 if ! command -v python3 &> /dev/null; then
     echo "[ERROR] python3 is not installed or not in PATH."
     exit 1
-fi
+# 0. Free busy ports if previously running
+fuser -k 8000/tcp 2>/dev/null || true
+fuser -k 3000/tcp 2>/dev/null || true
+sleep 1
 
 echo "[1/3] Starting FastAPI Backend on port 8000..."
 cd "$BACKEND_DIR"
