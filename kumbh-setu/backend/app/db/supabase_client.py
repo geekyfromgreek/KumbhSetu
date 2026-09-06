@@ -127,6 +127,33 @@ def init_db():
             last_active_at TEXT NOT NULL
         );
 
+        CREATE TABLE IF NOT EXISTS fact_checks (
+            id TEXT PRIMARY KEY,
+            claim_text TEXT NOT NULL,
+            verdict TEXT NOT NULL,
+            pib_case_number TEXT,
+            priority TEXT DEFAULT 'HIGH',
+            category TEXT DEFAULT 'Crowd & Ghats',
+            debunk_explanation TEXT NOT NULL,
+            official_source_url TEXT,
+            reported_count INTEGER DEFAULT 1,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS volunteer_rewards (
+            id TEXT PRIMARY KEY,
+            volunteer_name TEXT NOT NULL,
+            phone_number TEXT,
+            college_name TEXT NOT NULL,
+            points INTEGER DEFAULT 0,
+            tier TEXT DEFAULT 'Kumbhveer Sevak',
+            audits_completed INTEGER DEFAULT 0,
+            voucher_credits_inr INTEGER DEFAULT 0,
+            badges TEXT,
+            created_at TEXT NOT NULL
+        );
+
         CREATE TABLE IF NOT EXISTS vendors (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,

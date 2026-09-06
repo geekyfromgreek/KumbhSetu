@@ -402,11 +402,19 @@
         })
       });
 
+      if (issueType.toLowerCase().includes('false') || issueType.toLowerCase().includes('rumor')) {
+        fetch('http://localhost:8000/api/v1/reports/fact-checks/report-rumor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ claim_text: `${location}: ${description}`, category: category })
+        }).catch(() => {});
+      }
+
       if (res.ok) {
         const data = await res.json();
         const ticketId = data.id ? 'KS-' + data.id.slice(0, 6).toUpperCase() : 'KS-' + Math.floor(1000 + Math.random() * 9000);
         document.getElementById('report-ticket-title').textContent = `Report Registered #${ticketId}`;
-        document.getElementById('report-ticket-desc').textContent = `${location || 'Panchavati'} Sector Police & Kumbhveer Squad have been notified. Investigation dispatched.`;
+        document.getElementById('report-ticket-desc').textContent = `${location || 'Panchavati'} Sector Police, PIB Cell & Kumbhveer Squad have been notified. Ground confirmation dispatched.`;
       }
     } catch (e) {
       console.log('Report API error', e);

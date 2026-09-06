@@ -43,9 +43,57 @@
 </button>
 <button class="cat-pill shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors" data-cat="guides">
 <span class="material-symbols-outlined text-[16px]">badge</span>
-<span>Civic Guides</span>
+<span>Local Guides</span>
 </button>
 </div>
+
+<!-- Pre-Paid Rickshaw Fair Fare & Distance Estimator -->
+<div class="px-layout-margin-mobile pt-space-xs">
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm border border-primary/20 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">electric_rickshaw</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">Rickshaw Fare &amp; Distance Estimator</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-bold text-[10px] uppercase">RTO Gazetted</span>
+</div>
+
+<div class="grid grid-cols-2 gap-2 text-xs">
+<div>
+<label class="font-label-sm text-[11px] text-on-surface-variant block mb-0.5">Pickup Location</label>
+<select id="calc-origin" class="w-full h-9 px-2 rounded-lg bg-surface-container-low text-on-surface border border-outline-variant/40 text-xs focus:outline-none focus:border-primary" onchange="calculateRickshawFare()">
+<option value="station">Nashik Road Station</option>
+<option value="cbs">CBS Bus Stand</option>
+<option value="tapovan">Tapovan Sadhu Gram</option>
+<option value="ramkund" selected>Ramkund Main Ghat</option>
+</select>
+</div>
+
+<div>
+<label class="font-label-sm text-[11px] text-on-surface-variant block mb-0.5">Destination</label>
+<select id="calc-dest" class="w-full h-9 px-2 rounded-lg bg-surface-container-low text-on-surface border border-outline-variant/40 text-xs focus:outline-none focus:border-primary" onchange="calculateRickshawFare()">
+<option value="trimbak">Trimbakeshwar Temple (28 km)</option>
+<option value="ramkund">Ramkund Ghat (Panchavati)</option>
+<option value="muktidham" selected>Muktidham Temple (9 km)</option>
+<option value="cbs">CBS Central Stand (4 km)</option>
+<option value="someshwar">Someshwar Waterfall (11 km)</option>
+</select>
+</div>
+</div>
+
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low mt-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-[16px] text-secondary">straighten</span>
+<span id="calc-dist-label">Est. Distance: <strong>9.2 km</strong></span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-xs text-on-surface-variant font-medium">Fair Fare Cap:</span>
+<span class="font-headline-sm text-headline-sm font-bold text-primary" id="calc-fare-val">₹140</span>
+</div>
+</div>
+</div>
+</div>
+
 <!-- Main Feed Area -->
 <div class="px-layout-margin-mobile py-space-sm flex flex-col gap-space-md" id="listing-container">
 <!-- Card 1: Rickshaw Route -->
@@ -485,11 +533,12 @@
               </p>
             </div>
           </div>
-          <div class="flex items-center gap-space-xs py-1 px-2.5 rounded-lg bg-surface-container-low text-on-surface">
-            <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="font-label-md text-label-md font-semibold text-primary">${statusText}</span>
+          <div class="flex items-center justify-between gap-space-xs py-1 px-2.5 rounded-lg bg-surface-container-low text-on-surface">
+            <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+              <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+              <span class="font-label-md text-label-md font-semibold text-primary truncate">${statusText}</span>
             </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-green-100 text-green-800 shrink-0">In Stock • Open</span>
           </div>
           <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
             <div class="flex flex-col pl-space-2xs">
@@ -672,6 +721,47 @@
         }, 250);
       });
     }
+
+    window.calculateRickshawFare = function() {
+      const orig = document.getElementById('calc-origin').value;
+      const dest = document.getElementById('calc-dest').value;
+
+      const distances = {
+        'station_trimbak': { km: 38.0, fare: 480, shared: 160 },
+        'station_ramkund': { km: 9.5, fare: 140, shared: 30 },
+        'station_muktidham': { km: 2.2, fare: 50, shared: 15 },
+        'station_cbs': { km: 8.5, fare: 120, shared: 25 },
+        'station_someshwar': { km: 16.0, fare: 230, shared: 50 },
+
+        'cbs_trimbak': { km: 28.0, fare: 360, shared: 120 },
+        'cbs_ramkund': { km: 3.5, fare: 60, shared: 20 },
+        'cbs_muktidham': { km: 9.0, fare: 130, shared: 30 },
+        'cbs_cbs': { km: 0.5, fare: 30, shared: 10 },
+        'cbs_someshwar': { km: 9.0, fare: 130, shared: 30 },
+
+        'tapovan_trimbak': { km: 31.0, fare: 400, shared: 130 },
+        'tapovan_ramkund': { km: 2.8, fare: 50, shared: 15 },
+        'tapovan_muktidham': { km: 11.0, fare: 160, shared: 35 },
+        'tapovan_cbs': { km: 5.5, fare: 90, shared: 20 },
+        'tapovan_someshwar': { km: 12.5, fare: 180, shared: 40 },
+
+        'ramkund_trimbak': { km: 29.5, fare: 380, shared: 120 },
+        'ramkund_ramkund': { km: 0.8, fare: 30, shared: 10 },
+        'ramkund_muktidham': { km: 9.2, fare: 140, shared: 30 },
+        'ramkund_cbs': { km: 3.5, fare: 60, shared: 20 },
+        'ramkund_someshwar': { km: 9.8, fare: 145, shared: 35 }
+      };
+
+      const key = `${orig}_${dest}`;
+      const data = distances[key] || { km: 8.0, fare: 120, shared: 25 };
+
+      const distLabel = document.getElementById('calc-dist-label');
+      const fareVal = document.getElementById('calc-fare-val');
+      if (distLabel) distLabel.innerHTML = `Est. Distance: <strong>${data.km} km</strong> (₹${data.shared}/seat shared)`;
+      if (fareVal) fareVal.textContent = `₹${data.fare}`;
+    };
+
+    calculateRickshawFare();
   })();
 </script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html"><span class="material-symbols-outlined text-[22px]">temple_hindu</span><span class="font-label-sm text-label-sm leading-tight">Home</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs transition-colors text-primary font-bold" data-path="marketplace" href="marketplace.html"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm leading-tight">Market</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html"><span class="material-symbols-outlined text-[22px]">campaign</span><span class="font-label-sm text-label-sm leading-tight">Report</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html"><span class="material-symbols-outlined text-[22px]">emergency</span><span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span></a></div></nav><script src="i18n.js"></script>
 </body></html>

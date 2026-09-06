@@ -198,6 +198,87 @@
 </div>
 </div>
 </div>
+<!-- PIB Fact-Check & Rumor Buster (Truth & Trust) -->
+<div class="px-layout-margin-mobile py-space-xs">
+<div class="bg-gradient-to-r from-blue-900 to-indigo-950 text-white rounded-xl p-space-md shadow-md border border-blue-400/30 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-blue-500/30 border border-blue-400/50 text-[10px] font-mono font-bold uppercase tracking-wider text-blue-200">PIB FACT CHECK • सत्यमेव जयते</span>
+<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+</div>
+<span class="font-label-sm text-[11px] text-blue-200 font-medium">Govt Fact Cell</span>
+</div>
+
+<div class="flex items-start gap-2 pt-1" id="pib-fact-display">
+<span class="material-symbols-outlined text-green-400 text-[20px] shrink-0 mt-0.5">verified_user</span>
+<div class="min-w-0">
+<p class="font-label-md text-label-md font-bold text-white line-clamp-1" id="pib-claim-title">PIB BUSTS: Ramkund bridge is NOT closed, bathing is normal</p>
+<p class="font-body-sm text-[12px] text-blue-100/90 line-clamp-2 mt-0.5" id="pib-claim-desc">Viral WhatsApp rumor debunked. Structural safety certified by Nashik Municipal Corp & Police CCTV Zone A-1.</p>
+</div>
+</div>
+
+<div class="flex items-center justify-between pt-2 border-t border-blue-800/60 mt-1">
+<button onclick="openRumorModal()" class="text-xs text-blue-200 hover:text-white font-semibold flex items-center gap-1 cursor-pointer">
+<span class="material-symbols-outlined text-[15px]">flag</span> Report a Suspicious Rumor
+</button>
+<button onclick="viewAllFactChecksModal()" class="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white font-label-sm text-[11px] font-bold shadow-sm cursor-pointer flex items-center gap-0.5">
+<span>View All Verified News</span>
+<span class="material-symbols-outlined text-[13px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+
+<!-- Modal: PIB Verified Truth Feed -->
+<div id="pibFactModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+<div class="bg-surface-container-lowest text-on-surface rounded-2xl max-w-lg w-full p-6 shadow-2xl flex flex-col gap-3 max-h-[85vh] overflow-y-auto">
+<div class="flex items-center justify-between border-b border-surface-container pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]">verified</span>
+<h3 class="font-headline-sm text-headline-sm font-bold">PIB Fact-Check &amp; Truth Feed</h3>
+</div>
+<button onclick="closeModal('pibFactModal')" class="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div id="pib-feed-list" class="flex flex-col gap-2.5 py-1">
+<!-- Dynamic Fact Checks loaded from API -->
+</div>
+<div class="pt-2 border-t border-surface-container flex gap-2">
+<button onclick="openRumorModal(); closeModal('pibFactModal');" class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 shadow">
+<span class="material-symbols-outlined text-[18px]">campaign</span>
+<span>Report a Rumor / Fake News</span>
+</button>
+</div>
+</div>
+</div>
+
+<!-- Modal: Report Rumor Form -->
+<div id="reportRumorModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+<div class="bg-surface-container-lowest text-on-surface rounded-2xl max-w-md w-full p-6 shadow-2xl flex flex-col gap-3">
+<div class="flex items-center justify-between border-b border-surface-container pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[24px]">flag</span>
+<h3 class="font-headline-sm text-headline-sm font-bold">Submit Suspicious Claim</h3>
+</div>
+<button onclick="closeModal('reportRumorModal')" class="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<p class="font-body-sm text-xs text-on-surface-variant">
+Paste the WhatsApp message, video link, or verbal claim you heard. We forward high-priority claims immediately to the PIB &amp; Police Ground Cell.
+</p>
+<textarea id="rumorTextInput" rows="4" placeholder="e.g. Someone is claiming on WhatsApp that Godavari water level is unsafe and ghats are closed..." class="w-full p-3 rounded-lg bg-surface-container-low text-on-surface border border-outline-variant/60 text-sm focus:outline-none focus:border-primary"></textarea>
+<div class="flex gap-2 pt-2">
+<button onclick="closeModal('reportRumorModal')" class="flex-1 h-11 rounded-lg bg-surface-container-high font-label-md text-label-md text-on-surface">Cancel</button>
+<button onclick="submitRumorAction()" class="flex-1 h-11 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold flex items-center justify-center gap-1 shadow">
+<span class="material-symbols-outlined text-[18px]">send</span>
+<span>Submit to PIB</span>
+</button>
+</div>
+</div>
+</div>
+
 <!-- Institutional Endorsement & Civic Guarantee Banner -->
 <div class="px-layout-margin-mobile pt-space-xs pb-space-lg">
 <div class="bg-surface-container rounded-xl p-space-md shadow-sm">
@@ -227,5 +308,104 @@
 </div>
 </div>
 </div>
-</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-16 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs transition-colors text-primary font-bold" data-path="home" href="yatri_home.html"><span class="material-symbols-outlined text-[22px]">temple_hindu</span><span class="font-label-sm text-label-sm leading-tight">Home</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="marketplace" href="marketplace.html"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm leading-tight">Market</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html"><span class="material-symbols-outlined text-[22px]">campaign</span><span class="font-label-sm text-label-sm leading-tight">Report</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html"><span class="material-symbols-outlined text-[22px]">emergency</span><span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span></a></div></nav><script src="i18n.js"></script>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-16 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs transition-colors text-primary font-bold" data-path="home" href="yatri_home.html"><span class="material-symbols-outlined text-[22px]">temple_hindu</span><span class="font-label-sm text-label-sm leading-tight">Home</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="marketplace" href="marketplace.html"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm leading-tight">Market</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html"><span class="material-symbols-outlined text-[22px]">campaign</span><span class="font-label-sm text-label-sm leading-tight">Report</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html"><span class="material-symbols-outlined text-[22px]">emergency</span><span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span></a></div></nav><script>
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.add('hidden');
+      el.classList.remove('flex');
+    }
+  }
+
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.remove('hidden');
+      el.classList.add('flex');
+    }
+  }
+
+  function openRumorModal() {
+    openModal('reportRumorModal');
+  }
+
+  let factChecksCache = [];
+
+  async function loadFactChecks() {
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/reports/fact-checks');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.fact_checks && data.fact_checks.length > 0) {
+        factChecksCache = data.fact_checks;
+        const top = data.fact_checks[0];
+        document.getElementById('pib-claim-title').textContent = `${top.verdict}: ${top.claim_text}`;
+        document.getElementById('pib-claim-desc').textContent = top.debunk_explanation;
+      }
+    } catch (e) {
+      console.log('Fact checks live fallback', e);
+    }
+  }
+
+  function viewAllFactChecksModal() {
+    const list = document.getElementById('pib-feed-list');
+    if (!list) return;
+
+    if (factChecksCache.length > 0) {
+      list.innerHTML = factChecksCache.map(fc => {
+        const isBusted = fc.verdict.includes('BUSTED') || fc.verdict.includes('FAKE') || fc.verdict.includes('SCAM');
+        const badgeColor = isBusted ? 'bg-red-100 text-red-800 border-red-200' : 'bg-green-100 text-green-800 border-green-200';
+        return `
+        <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${badgeColor}">
+              ${fc.verdict}
+            </span>
+            <span class="text-[11px] font-mono text-on-surface-variant font-semibold">${fc.pib_case_number || 'PIB-2026'}</span>
+          </div>
+          <p class="font-headline-sm text-sm font-bold text-on-surface mt-0.5">"${fc.claim_text}"</p>
+          <p class="font-body-sm text-xs text-on-surface-variant bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
+            <strong>Official Fact:</strong> ${fc.debunk_explanation}
+          </p>
+          <div class="flex items-center justify-between text-[11px] text-outline pt-1">
+            <span>Category: ${fc.category || 'Public Safety'}</span>
+            <a href="${fc.official_source_url || '#'}" target="_blank" class="text-primary font-semibold hover:underline">PIB Portal Link →</a>
+          </div>
+        </div>
+        `;
+      }).join('');
+    } else {
+      list.innerHTML = '<p class="text-xs text-on-surface-variant">Loading verified claims from PIB cell...</p>';
+    }
+
+    openModal('pibFactModal');
+  }
+
+  async function submitRumorAction() {
+    const txt = document.getElementById('rumorTextInput').value.trim();
+    if (!txt) {
+      alert('Please enter the rumor or claim text first.');
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/reports/fact-checks/report-rumor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ claim_text: txt, category: 'Crowd & Ghats' })
+      });
+      const data = await res.json();
+      closeModal('reportRumorModal');
+      document.getElementById('rumorTextInput').value = '';
+      alert(`Claim submitted! Case ref: ${data.pib_case_number}. Forwarded to PIB Ground Cell & Police Admin.`);
+      loadFactChecks();
+    } catch (e) {
+      closeModal('reportRumorModal');
+      alert('Claim submitted to local queue (Demo active).');
+    }
+  }
+
+  loadFactChecks();
+</script>
+<script src="i18n.js"></script>
 </body></html>
