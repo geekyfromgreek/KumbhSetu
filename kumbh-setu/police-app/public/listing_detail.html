@@ -493,9 +493,10 @@
     }
     if (price) {
       const decodedPrice = decodeURIComponent(price);
+      const isBazaarOrRange = (cat && (cat.toLowerCase().includes('bazaar') || cat.toLowerCase().includes('stall') || cat.toLowerCase().includes('shopping') || cat.toLowerCase().includes('food') || cat.toLowerCase().includes('eatery'))) || decodedPrice.includes('–') || decodedPrice.includes('-');
       document.getElementById('detail-price-val').textContent = decodedPrice;
-      document.getElementById('detail-price-label').textContent = 'Official Fair Rate';
-      document.getElementById('detail-price-unit').textContent = 'per item / kit';
+      document.getElementById('detail-price-label').textContent = isBazaarOrRange ? 'Estimated Fair Range (अंदाजे दर)' : 'Municipal Gazette Cap';
+      document.getElementById('detail-price-unit').textContent = isBazaarOrRange ? 'reference range (no fixed cap)' : 'statutory ceiling';
     }
 
     if (descParam) {

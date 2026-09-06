@@ -195,12 +195,12 @@
       </div>
     </div>
 
-    <!-- 6. Biometric Face Scan Capture (Computer Vision) -->
-    <div class="flex flex-col gap-2 p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
+    <!-- 6. Guide Only: Biometric Selfie Verification (Live Camera AR) -->
+    <div id="guide-camera-section" class="flex flex-col gap-2 p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
       <div class="flex items-center justify-between">
         <span class="font-label-md text-on-surface font-semibold flex items-center gap-1">
-          <span class="material-symbols-outlined text-primary text-[18px]">face</span>
-          <span>6. Face Biometric Embedding Scan</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">photo_camera_front</span>
+          <span>6. Live Selfie Identity Verification (Guide Only)</span>
         </span>
         <span id="reg-face-status" class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[11px] font-bold">
           Ready to Scan
@@ -211,7 +211,7 @@
         <video id="reg-video" class="w-full h-full object-cover hidden" autoplay playsinline muted></video>
         <div id="reg-cam-placeholder" class="flex flex-col items-center gap-1 text-on-surface-variant p-4 text-center">
           <span class="material-symbols-outlined text-4xl text-primary">camera_front</span>
-          <span class="font-label-sm text-xs font-medium">Click "Open Camera" to capture 128-d face embedding for on-site person-to-person match</span>
+          <span class="font-label-sm text-xs font-medium">Click "Open Camera" to capture selfie identity vector for AR certified badge</span>
         </div>
         <div id="reg-cam-reticle" class="hidden absolute inset-0 border-2 border-primary/60 rounded-lg pointer-events-none flex items-center justify-center">
           <div class="w-24 h-28 border-2 border-primary rounded-full animate-pulse"></div>
@@ -224,9 +224,33 @@
           <span>Open Camera</span>
         </button>
         <button type="button" onclick="computeRegEmbeddings()" id="btn-compute-face" class="flex-1 py-2 rounded-lg bg-primary text-on-primary font-label-sm text-xs font-bold hover:bg-primary-container flex items-center justify-center gap-1 shadow-sm cursor-pointer">
-          <span class="material-symbols-outlined text-sm">fingerprint</span>
-          <span>Match Face &amp; Govt ID</span>
+          <span class="material-symbols-outlined text-sm">verified</span>
+          <span>Verify Selfie Identity</span>
         </button>
+      </div>
+    </div>
+
+    <!-- 6B. Kumbhveer / Vendor / Citizen: Standard Photo & Document Upload (No Camera Required) -->
+    <div id="general-photo-upload-section" class="hidden flex flex-col gap-2 p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
+      <div class="flex items-center justify-between">
+        <span class="font-label-md text-on-surface font-semibold flex items-center gap-1">
+          <span class="material-symbols-outlined text-primary text-[18px]">add_photo_alternate</span>
+          <span id="general-upload-title">6. Profile & Verification Photo Upload</span>
+        </span>
+        <span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-[11px] font-bold">
+          File Upload
+        </span>
+      </div>
+
+      <div class="p-4 bg-surface-container-lowest rounded-lg border border-dashed border-outline-variant/50 flex flex-col items-center gap-2 text-center">
+        <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-primary overflow-hidden" id="general-photo-preview">
+          <span class="material-symbols-outlined text-3xl text-outline">account_circle</span>
+        </div>
+        <div>
+          <span class="font-label-sm text-xs font-bold text-on-surface block" id="upload-label-sub">Upload Photo or ID Document</span>
+          <span class="text-[11px] text-on-surface-variant">Select image from gallery or documents (No live camera needed)</span>
+        </div>
+        <input type="file" id="general-file-input" accept="image/*" onchange="previewGeneralPhoto(this)" class="text-xs text-on-surface-variant file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-on-primary hover:file:opacity-90 cursor-pointer"/>
       </div>
     </div>
 
@@ -309,8 +333,45 @@
     const roleMap = { guide: 'Local Guide', vendor: 'Civic Vendor', kumbhveer: 'Kumbhveer Volunteer', nashikkar: 'Nashik Resident' };
     if (roleIndicator) roleIndicator.textContent = roleMap[role] || role;
 
+    // Toggle Guide Camera vs General Photo Upload
+    const guideCam = document.getElementById('guide-camera-section');
+    const generalUpload = document.getElementById('general-photo-upload-section');
+    const regBanner = document.getElementById('reg-banner-text');
+    const uploadLabel = document.getElementById('upload-label-sub');
+
+    if (role === 'guide') {
+      if (guideCam) guideCam.classList.remove('hidden');
+      if (generalUpload) generalUpload.classList.add('hidden');
+      if (regBanner) regBanner.innerHTML = 'Register with <strong>Email ID, Password, Govt ID & Live Camera Selfie Identity Verification</strong>.';
+    } else {
+      if (guideCam) guideCam.classList.add('hidden');
+      if (generalUpload) generalUpload.classList.remove('hidden');
+      if (role === 'kumbhveer') {
+        if (regBanner) regBanner.innerHTML = 'Kumbhveer student volunteers register with <strong>Student ID & Profile Photo Upload</strong> (No live camera required).';
+        if (uploadLabel) uploadLabel.textContent = 'Upload Student ID / Photo';
+      } else if (role === 'vendor') {
+        if (regBanner) regBanner.innerHTML = 'Civic Vendors register with <strong>Stall License & Stall Photo Upload</strong> (No live camera required).';
+        if (uploadLabel) uploadLabel.textContent = 'Upload Stall / Product Photo';
+      } else {
+        if (regBanner) regBanner.innerHTML = 'Nashik residents register with <strong>Address Proof & Photo Upload</strong> (No live camera required).';
+        if (uploadLabel) uploadLabel.textContent = 'Upload Citizen ID / Photo';
+      }
+    }
+
     fillDemoCredentials();
     localStorage.setItem('kumbhsetu_nashikkar_role', role);
+  }
+
+  function previewGeneralPhoto(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('general-photo-preview').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover"/>`;
+        capturedSelfieBase64 = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+      showToast('Photo selected and ready for upload');
+    }
   }
 
   async function handleSupabaseLogin() {
@@ -347,6 +408,10 @@
     setTimeout(() => {
       if (currentRole === 'guide') {
         window.location.href = 'bookings_queue.html?role=guide';
+      } else if (currentRole === 'vendor') {
+        window.location.href = 'marketplace_management.html';
+      } else if (currentRole === 'kumbhveer') {
+        window.location.href = 'vendor_registration.html';
       } else {
         window.location.href = 'nashikkar_overview.html';
       }
@@ -510,6 +575,10 @@
     setTimeout(() => {
       if (currentRole === 'guide') {
         window.location.href = 'bookings_queue.html?role=guide';
+      } else if (currentRole === 'vendor') {
+        window.location.href = 'marketplace_management.html';
+      } else if (currentRole === 'kumbhveer') {
+        window.location.href = 'vendor_registration.html';
       } else {
         window.location.href = 'nashikkar_overview.html';
       }
@@ -530,7 +599,12 @@
     }
   }
 
-  // Initialize
-  selectRole('guide');
+  // Initialize from URL param or default to guide
+  const urlRole = new URLSearchParams(window.location.search).get('role');
+  if (urlRole && ['guide', 'vendor', 'kumbhveer', 'nashikkar'].includes(urlRole)) {
+    selectRole(urlRole);
+  } else {
+    selectRole('guide');
+  }
 </script></main><script src="i18n.js"></script>
 </body></html>
