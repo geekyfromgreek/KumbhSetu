@@ -9,17 +9,24 @@ Civic Trust & Fair Pricing Platform for Kumbh Mela 2027, Nashik
   - Modules: Auth (JWT), Marketplace & Categories, Bookings, Reports, Police Escalations, Vendor Management, Emergency Services
   - Pricing reference ceilings & surge detection algorithms
   - SQLite demo mode with pre-seeded demo users & tokens
+- [x] **Selfie Identity Verification Module (DeepFace + Supabase pgvector)**:
+  - Service: `backend/app/services/deepface_service.py` with `generate_embedding()` (Facenet) and `compare_embeddings()` (cosine metric comparison with default threshold `0.68`).
+  - Endpoints in `backend/app/api/verification.py`:
+    - `POST /api/v1/verification/guide/register`: Extracts mathematical embedding vector, stores in database column, and immediately deletes temporary file in a `try/finally` block.
+    - `POST /api/v1/verification/guide/{guide_id}/verify-booking-selfie`: Evaluates booking-time selfie against registered guide embedding, rate-limited against brute-force probing, returns boolean `identity_confirmed`.
+  - Privacy Architecture: Raw selfie photos are NEVER permanently stored. Embeddings and similarity scores are kept internal.
+  - **Note on One-Time Setup**: DeepFace automatically downloads model weights (`Facenet`) on its initial invocation. This is an expected one-time background download step and not a build or runtime failure.
 - [x] **Frontend (Pixel-Perfect from stitch_kumbh_setu_civic_platform.zip)**:
   - All 20 screens extracted and mounted directly from the user's exact zip files.
   - 100% faithful to the PNG designs (Tailwind CSS, Plus Jakarta Sans & Inter fonts, Material Symbols, Google CDN photography, and color tokens).
   - Wired with bidirectional navigation, real-time filters, issue reporting, and 1-tap police escalation.
   - Served directly via FastAPI at `http://localhost:8000/` and via standalone `npm start` on port 3000.
   - Y6: Emergency SOS & Infrastructure locator (one-tap 112/108/100 dialer, ghat advisories, nearest hospitals and police chowkis)
-  - N0: Nashikkar Citizen & Vendor Login with 1-click demo access
+  - N0: Nashikkar Citizen & Vendor Login with 1-click demo access + New Registration tab with face biometric scan
   - N1: Nashikkar Overview Dashboard with Civic Trust Score (98.4%), metrics, and administration notices
   - N2: Fair Pricing Pledge & Verified Green Badge Certificate generation with printable QR chart
   - N3: Marketplace Rate Card Management & reference ceiling compliance checker
-  - N4: Live Pilgrim Bookings Queue with accept/reject/complete workflow & dialer
+  - N4: Live Pilgrim Bookings Queue with accept/reject/complete workflow & dialer + guide operations desk
   - N5: Price Flag Review with 1-tap statutory Police Escalation
 - [x] **Police Terminal App (Expo Router — Standalone)**:
   - P0: Police Duty Login with Outpost/Sector selector (Ramkund, Panchavati, CBS, Trimbak) & demo bypass
@@ -37,4 +44,3 @@ Civic Trust & Fair Pricing Platform for Kumbh Mela 2027, Nashik
 - Backend API: Running on `http://localhost:8000` (`http://localhost:8000/docs`)
 - Yatri-Nashikkar App: Ready for `npx expo start` in `kumbh-setu/yatri-nashikkar-app`
 - Police App: Ready for `npx expo start` in `kumbh-setu/police-app`
-

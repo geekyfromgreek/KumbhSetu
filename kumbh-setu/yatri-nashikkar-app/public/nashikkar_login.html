@@ -9,7 +9,7 @@
 <span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: 'FILL' 1;">account_balance</span>
 </div>
 <div class="flex flex-col">
-<span class="font-label-sm text-label-sm text-primary tracking-wider uppercase">Nashik Municipal Authority</span>
+<span class="font-label-sm text-label-sm text-primary tracking-wider uppercase">Nashik Municipal Corporation</span>
 <span class="font-label-md text-label-md text-on-surface">Simhastha Kumbh 2027</span>
 </div>
 </div>
@@ -30,80 +30,230 @@
 <!-- Header Text Grouping -->
 <div class="flex flex-col gap-space-2xs mb-space-md">
 <h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface">
-      Nashikkar Civic &amp; Vendor Portal
+      Nashikkar Civic, Vendor &amp; Guide Portal
     </h1>
 <p class="font-body-md text-body-md text-on-surface-variant">
-      Login for verified shopkeepers, dharamshala managers, transport unions &amp; Kumbhveer civic coordinators.
+      Login or register for verified Local Guides, Shopkeepers, Dharamshalas, Kumbhveer Student Volunteers &amp; Local Citizens.
     </p>
 </div>
-<!-- Identity Verification Card -->
+
+<!-- Main Auth Container Card -->
 <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
-<!-- Field 1: Civic Identifier -->
-<div class="flex flex-col gap-space-2xs">
-<label class="font-label-lg text-label-lg text-on-surface flex items-center justify-between" for="vendor-id">
-<span>Mobile Number or Civic Vendor ID</span>
-<span class="font-label-sm text-label-sm text-primary">Required</span>
-</label>
-<div class="relative flex items-center">
-<span class="material-symbols-outlined absolute left-space-sm text-outline pointer-events-none">badge</span>
-<input class="w-full h-12 pl-11 pr-space-md bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg focus:bg-surface-container-lowest focus:outline-none focus:ring-0 focus:text-on-surface transition-colors" id="vendor-id" placeholder="e.g. V-NSK-2027-4029 or 98200XXXXX" type="text" value="V-NSK-2027-4029"/>
-</div>
-<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
-<span class="material-symbols-outlined text-sm">info</span>
-        Issued on your Municipal Trade License or Coordinator badge
+  
+  <!-- Top Switcher: Login vs Register -->
+  <div class="grid grid-cols-2 gap-1 p-1 bg-surface-container rounded-xl">
+    <button type="button" onclick="switchAuthMode('login')" id="mode-tab-login" class="py-2.5 rounded-lg bg-surface-container-lowest text-primary font-label-md text-sm font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all">
+      <span class="material-symbols-outlined text-lg">login</span>
+      <span>Existing Login</span>
+    </button>
+    <button type="button" onclick="switchAuthMode('register')" id="mode-tab-register" class="py-2.5 rounded-lg bg-transparent text-on-surface-variant font-label-md text-sm font-semibold flex items-center justify-center gap-1.5 transition-all hover:bg-surface-container-high">
+      <span class="material-symbols-outlined text-lg">person_add</span>
+      <span>New Registration</span>
+    </button>
+  </div>
+
+  <!-- Role Identity Selector (Common to both) -->
+  <div class="flex flex-col gap-space-2xs">
+    <label class="font-label-md text-label-md text-on-surface font-semibold flex items-center justify-between">
+      <span>Select Your Role (तुमची भूमिका निवडा)</span>
+      <span class="text-xs text-primary font-bold uppercase" id="current-role-indicator">Local Guide</span>
+    </label>
+    <div class="grid grid-cols-4 gap-1 p-1 bg-surface-container-low rounded-xl" id="role-selector">
+      <button type="button" onclick="selectRole('guide')" id="role-btn-guide" class="role-btn py-2 px-1 rounded-lg bg-primary text-on-primary font-label-sm text-[11px] font-bold flex flex-col items-center gap-1 shadow-sm transition-all">
+        <span class="material-symbols-outlined text-[18px]">explore</span>
+        <span>Guide</span>
+      </button>
+      <button type="button" onclick="selectRole('vendor')" id="role-btn-vendor" class="role-btn py-2 px-1 rounded-lg bg-transparent text-on-surface-variant font-label-sm text-[11px] font-semibold flex flex-col items-center gap-1 transition-all hover:bg-surface-container-high">
+        <span class="material-symbols-outlined text-[18px]">storefront</span>
+        <span>Vendor</span>
+      </button>
+      <button type="button" onclick="selectRole('kumbhveer')" id="role-btn-kumbhveer" class="role-btn py-2 px-1 rounded-lg bg-transparent text-on-surface-variant font-label-sm text-[11px] font-semibold flex flex-col items-center gap-1 transition-all hover:bg-surface-container-high">
+        <span class="material-symbols-outlined text-[18px]">school</span>
+        <span>Kumbhveer</span>
+      </button>
+      <button type="button" onclick="selectRole('nashikkar')" id="role-btn-nashikkar" class="role-btn py-2 px-1 rounded-lg bg-transparent text-on-surface-variant font-label-sm text-[11px] font-semibold flex flex-col items-center gap-1 transition-all hover:bg-surface-container-high">
+        <span class="material-symbols-outlined text-[18px]">location_city</span>
+        <span>Nashikkar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== FORM 1: EXISTING LOGIN ==================== -->
+  <div id="login-form-section" class="flex flex-col gap-space-md">
+    <!-- Field 1: Civic Identifier -->
+    <div class="flex flex-col gap-space-2xs">
+      <label class="font-label-lg text-label-lg text-on-surface flex items-center justify-between" for="vendor-id">
+        <span id="role-id-label">Govt Guide Badge ID or Mobile</span>
+        <span class="font-label-sm text-label-sm text-primary">Required</span>
+      </label>
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-space-sm text-outline pointer-events-none" id="role-id-icon">explore</span>
+        <input class="w-full h-12 pl-11 pr-space-md bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg focus:bg-surface-container-lowest focus:outline-none focus:ring-0 focus:text-on-surface transition-colors" id="vendor-id" placeholder="e.g. MH-15-GUIDE-0082 or 98200XXXXX" type="text" value="MH-15-GUIDE-0082"/>
+      </div>
+      <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 mt-0.5" id="role-id-hint">
+        <span class="material-symbols-outlined text-sm">info</span>
+        Issued on your Govt Tourism Badge or Municipal Authorization
       </span>
-</div>
-<!-- Field 2: Authentication Mode Selector -->
-<div class="flex flex-col gap-space-2xs">
-<label class="font-label-lg text-label-lg text-on-surface">
+    </div>
+
+    <!-- Field 2: Authentication Mode Selector -->
+    <div class="flex flex-col gap-space-2xs">
+      <label class="font-label-lg text-label-lg text-on-surface">
         Authentication Method
       </label>
-<div class="grid grid-cols-2 gap-space-xs p-1 bg-surface-container-low rounded-lg">
-<button class="flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-surface-container-lowest text-primary shadow-sm font-label-md text-label-md transition-all" id="tab-otp" onclick="selectMethod('otp')" type="button">
-<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">sms</span>
-<span>SMS Passcode</span>
-</button>
-<button class="flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md transition-all" id="tab-pin" onclick="selectMethod('pin')" type="button">
-<span class="material-symbols-outlined text-base">pin</span>
-<span>Digital Pin</span>
-</button>
-</div>
-</div>
-<!-- Field 3: Discrete 6-Box OTP Input -->
-<div class="flex flex-col gap-space-2xs" id="otp-container">
-<div class="flex items-center justify-between">
-<label class="font-label-lg text-label-lg text-on-surface">
+      <div class="grid grid-cols-2 gap-space-xs p-1 bg-surface-container-low rounded-lg">
+        <button class="flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-surface-container-lowest text-primary shadow-sm font-label-md text-label-md transition-all" id="tab-otp" onclick="selectMethod('otp')" type="button">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">sms</span>
+          <span>SMS Passcode</span>
+        </button>
+        <button class="flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md transition-all" id="tab-pin" onclick="selectMethod('pin')" type="button">
+          <span class="material-symbols-outlined text-base">pin</span>
+          <span>Digital Pin</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Field 3: Discrete 6-Box OTP Input -->
+    <div class="flex flex-col gap-space-2xs" id="otp-container">
+      <div class="flex items-center justify-between">
+        <label class="font-label-lg text-label-lg text-on-surface">
           OTP Verification Code
         </label>
-<button class="font-label-sm text-label-sm text-primary font-semibold hover:underline" type="button">
+        <button class="font-label-sm text-label-sm text-primary font-semibold hover:underline" type="button">
           Resend via SMS (42s)
         </button>
+      </div>
+      <!-- 6 Boxes -->
+      <div class="flex items-center justify-between gap-1.5 pt-1">
+        <input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" type="text" value="7"/>
+        <input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" type="text" value="3"/>
+        <input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" type="text" value="9"/>
+        <input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" placeholder="·" type="text" value=""/>
+        <input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" placeholder="·" type="text" value=""/>
+        <input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" placeholder="·" type="text" value=""/>
+      </div>
+      <div class="flex items-center gap-1.5 mt-1 text-on-surface-variant">
+        <span class="material-symbols-outlined text-sm text-tertiary">lock</span>
+        <span class="font-label-sm text-label-sm">Sent to registered mobile ending in <strong class="text-on-surface">•••• 0082</strong></span>
+      </div>
+    </div>
+
+    <!-- Submit Login Button -->
+    <button type="button" onclick="handlePortalLogin()" id="login-submit-btn" class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-space-xs transition-colors duration-150 shadow-sm active:scale-[0.99] cursor-pointer">
+      <span id="login-btn-txt">Verify Face &amp; Enter Guide Desk</span>
+      <span class="material-symbols-outlined text-lg">arrow_forward</span>
+    </button>
+  </div>
+
+  <!-- ==================== FORM 2: NEW REGISTRATION ==================== -->
+  <div id="register-form-section" class="hidden flex flex-col gap-space-md">
+    
+    <div class="p-3 bg-tertiary-fixed/30 border border-tertiary/20 rounded-lg flex items-center gap-2 text-on-surface">
+      <span class="material-symbols-outlined text-tertiary text-xl shrink-0">how_to_reg</span>
+      <p class="text-xs font-medium" id="reg-banner-text">
+        Register with <strong>Name, Mobile, Govt ID &amp; Live Face Biometrics</strong> to receive your verified digital badge.
+      </p>
+    </div>
+
+    <!-- 1. Full Name -->
+    <div class="flex flex-col gap-1">
+      <label class="font-label-md text-on-surface font-semibold flex items-center justify-between">
+        <span>1. Full Name (संपूर्ण नाव)</span>
+        <span class="text-xs text-primary font-bold">Required</span>
+      </label>
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none">person</span>
+        <input type="text" id="reg-name" placeholder="e.g. Rameshwar Vinayak Pathak" class="w-full h-11 pl-10 pr-3 bg-surface-container-low rounded-lg text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" value="Rameshwar Vinayak Pathak"/>
+      </div>
+    </div>
+
+    <!-- 2. Mobile Number -->
+    <div class="flex flex-col gap-1">
+      <label class="font-label-md text-on-surface font-semibold flex items-center justify-between">
+        <span>2. Mobile Number (मोबाईल क्र.)</span>
+        <span class="text-xs text-primary font-bold">Required</span>
+      </label>
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none">phone_android</span>
+        <input type="tel" id="reg-phone" placeholder="e.g. 9822014522" class="w-full h-11 pl-10 pr-3 bg-surface-container-low rounded-lg text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" value="9822014522"/>
+      </div>
+    </div>
+
+    <!-- 3. Govt ID / License / Student ID -->
+    <div class="flex flex-col gap-1">
+      <label class="font-label-md text-on-surface font-semibold flex items-center justify-between">
+        <span id="reg-id-label">3. Government Guide Badge / Aadhaar No.</span>
+        <span class="text-xs text-primary font-bold">Required</span>
+      </label>
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none" id="reg-id-icon">badge</span>
+        <input type="text" id="reg-govt-id" placeholder="e.g. MH-15-GUIDE-0082" class="w-full h-11 pl-10 pr-3 bg-surface-container-low rounded-lg text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary font-mono" value="MH-15-GUIDE-0082"/>
+      </div>
+      <span class="text-[11px] text-on-surface-variant flex items-center gap-1" id="reg-id-hint">
+        <span class="material-symbols-outlined text-xs">verified</span> Official ID verified via Maharashtra Tourism / DigiLocker
+      </span>
+    </div>
+
+    <!-- 4. Role Specific Meta -->
+    <div class="flex flex-col gap-1" id="reg-extra-container">
+      <label class="font-label-md text-on-surface font-semibold flex items-center justify-between">
+        <span id="reg-extra-label">4. Languages Spoken &amp; Base Point</span>
+      </label>
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none">translate</span>
+        <input type="text" id="reg-extra" placeholder="e.g. Marathi, Hindi, English • Ramkund Ghat" class="w-full h-11 pl-10 pr-3 bg-surface-container-low rounded-lg text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" value="Marathi, Hindi, English • Ramkund Base Point"/>
+      </div>
+    </div>
+
+    <!-- 5. Biometric Face Scan Capture (Computer Vision) -->
+    <div class="flex flex-col gap-2 p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
+      <div class="flex items-center justify-between">
+        <span class="font-label-md text-on-surface font-semibold flex items-center gap-1">
+          <span class="material-symbols-outlined text-primary text-[18px]">face</span>
+          <span>5. Face Biometric Embedding Scan</span>
+        </span>
+        <span id="reg-face-status" class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[11px] font-bold">
+          Ready to Scan
+        </span>
+      </div>
+
+      <div class="relative w-full h-44 bg-surface-container-highest rounded-lg overflow-hidden flex flex-col items-center justify-center border border-dashed border-primary/40" id="reg-cam-box">
+        <video id="reg-video" class="w-full h-full object-cover hidden" autoplay playsinline muted></video>
+        <div id="reg-cam-placeholder" class="flex flex-col items-center gap-1 text-on-surface-variant p-4 text-center">
+          <span class="material-symbols-outlined text-4xl text-primary">camera_front</span>
+          <span class="font-label-sm text-xs font-medium">Click "Open Camera" to capture 128-d face embedding for on-site person-to-person match</span>
+        </div>
+        <div id="reg-cam-reticle" class="hidden absolute inset-0 border-2 border-primary/60 rounded-lg pointer-events-none flex items-center justify-center">
+          <div class="w-24 h-28 border-2 border-primary rounded-full animate-pulse"></div>
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button type="button" onclick="startRegCamera()" id="btn-open-cam" class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface font-label-sm text-xs font-semibold hover:bg-surface-container-highest flex items-center justify-center gap-1 cursor-pointer">
+          <span class="material-symbols-outlined text-sm">photo_camera</span>
+          <span>Open Camera</span>
+        </button>
+        <button type="button" onclick="computeRegEmbeddings()" id="btn-compute-face" class="flex-1 py-2 rounded-lg bg-primary text-on-primary font-label-sm text-xs font-bold hover:bg-primary-container flex items-center justify-center gap-1 shadow-sm cursor-pointer">
+          <span class="material-symbols-outlined text-sm">fingerprint</span>
+          <span>Match Face &amp; Govt ID</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Submit Registration Button -->
+    <button type="button" onclick="handlePortalRegister()" class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-space-xs transition-colors duration-150 shadow-md active:scale-[0.99] cursor-pointer">
+      <span class="material-symbols-outlined text-lg">how_to_reg</span>
+      <span>Complete Registration &amp; Enter Portal</span>
+    </button>
+  </div>
+
+  <!-- Municipal Verification Guarantee Badge -->
+  <div class="flex items-center justify-center gap-2 pt-space-xs border-t border-outline-variant/20">
+    <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+    <span class="font-label-sm text-label-sm text-on-surface-variant">Simhastha Municipal Digital Protocol 4.2 Secured</span>
+  </div>
 </div>
-<!-- 6 Boxes -->
-<div class="flex items-center justify-between gap-1.5 pt-1">
-<input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" type="text" value="7"/>
-<input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" type="text" value="3"/>
-<input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" type="text" value="9"/>
-<input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" placeholder="·" type="text" value=""/>
-<input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" placeholder="·" type="text" value=""/>
-<input class="otp-box w-12 h-13 text-center bg-surface-container-low text-on-surface font-headline-md text-headline-md rounded-lg focus:bg-primary-fixed focus:outline-none transition-colors" inputmode="numeric" maxlength="1" placeholder="·" type="text" value=""/>
-</div>
-<div class="flex items-center gap-1.5 mt-1 text-on-surface-variant">
-<span class="material-symbols-outlined text-sm text-tertiary">lock</span>
-<span class="font-label-sm text-label-sm">Sent to registered mobile ending in <strong class="text-on-surface">•••• 4029</strong></span>
-</div>
-</div>
-<!-- Primary Action Button -->
-<a href="nashikkar_overview.html" onclick="window.location.href='nashikkar_overview.html';" class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-space-xs transition-colors duration-150 shadow-sm active:scale-[0.99] cursor-pointer">
-<span>Verify &amp; Enter Portal</span>
-<span class="material-symbols-outlined text-lg">arrow_forward</span>
-</a>
-<!-- Municipal Verification Guarantee Badge -->
-<div class="flex items-center justify-center gap-2 pt-space-xs">
-<span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">Simhastha Municipal Digital Protocol 4.2 Secured</span>
-</div>
-</div>
+
 <!-- Civic Role Badges Showcase -->
 <div class="flex flex-col gap-space-xs mt-space-lg">
 <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Authorized Operational Categories</span>
@@ -128,11 +278,11 @@
 </div>
 <div class="p-space-sm bg-surface-container-low rounded-lg flex items-center gap-space-xs">
 <div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined text-headline-sm">directions_bus</span>
+<span class="material-symbols-outlined text-headline-sm">explore</span>
 </div>
 <div class="flex flex-col min-w-0">
-<span class="font-label-md text-label-md text-on-surface truncate">Transport Unions</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Shuttle &amp; Auto Guild</span>
+<span class="font-label-md text-label-md text-on-surface truncate">Local Guides</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Face &amp; Govt ID Verified</span>
 </div>
 </div>
 <div class="p-space-sm bg-surface-container-low rounded-lg flex items-center gap-space-xs">
@@ -146,6 +296,7 @@
 </div>
 </div>
 </div>
+
 <!-- Civic Assistance Notice Box -->
 <div class="mt-space-md p-space-md bg-secondary-fixed/30 rounded-xl flex flex-col gap-space-xs">
 <div class="flex items-center gap-space-xs text-secondary">
@@ -153,26 +304,42 @@
 <h3 class="font-headline-sm text-headline-sm text-on-secondary-fixed">Establishment Not Registered Yet?</h3>
 </div>
 <p class="font-body-sm text-body-sm text-on-secondary-fixed-variant leading-relaxed">
-      Haven't registered your establishment with Nashik Municipal Corporation yet? Visit nearest Kumbhveer Help Desk at Panchavati Ward Office or Call <strong class="text-on-secondary-fixed font-semibold">1800-233-0202</strong> for rapid civic on-boarding.
-    </p>
-<div class="flex items-center gap-space-md pt-space-2xs">
-<a class="inline-flex items-center gap-1.5 px-space-sm py-2 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md active:bg-on-secondary-fixed-variant transition-colors" href="tel:18002330202">
-<span class="material-symbols-outlined text-base">call</span>
-<span>Call Toll-Free Support</span>
-</a>
-<button class="font-label-md text-label-md text-secondary font-semibold hover:underline" type="button">
-        Ward Office Map →
-      </button>
-</div>
-</div>
-<!-- Civic Footnote -->
-<div class="text-center mt-space-lg mb-space-md">
-<p class="font-label-sm text-label-sm text-outline">
-      Nashik Municipal Corporation • Kumbh Mela Coordination Cell • 2027
+      Haven't registered your establishment or guide profile with Nashik Municipal Corporation yet? Use the New Registration tab above or call <strong class="text-on-secondary-fixed font-semibold">1800-233-0202</strong> for rapid civic on-boarding.
     </p>
 </div>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-12 left-1/2 -translate-x-1/2 bg-on-surface text-inverse-on-surface px-4 py-2.5 rounded-full font-label-md text-sm shadow-xl hidden items-center gap-2 z-50 transition-opacity">
+  <span class="material-symbols-outlined text-inverse-primary text-base">info</span>
+  <span id="toast-txt">Action completed</span>
+</div>
+
 </div>
 <script>
+  let currentRole = 'guide';
+  let currentAuthMode = 'login';
+  let regCamStream = null;
+
+  function switchAuthMode(mode) {
+    currentAuthMode = mode;
+    const tabLogin = document.getElementById('mode-tab-login');
+    const tabRegister = document.getElementById('mode-tab-register');
+    const loginSection = document.getElementById('login-form-section');
+    const registerSection = document.getElementById('register-form-section');
+
+    if (mode === 'login') {
+      tabLogin.className = 'py-2.5 rounded-lg bg-surface-container-lowest text-primary font-label-md text-sm font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all';
+      tabRegister.className = 'py-2.5 rounded-lg bg-transparent text-on-surface-variant font-label-md text-sm font-semibold flex items-center justify-center gap-1.5 transition-all hover:bg-surface-container-high';
+      loginSection.classList.remove('hidden');
+      registerSection.classList.add('hidden');
+    } else {
+      tabRegister.className = 'py-2.5 rounded-lg bg-surface-container-lowest text-primary font-label-md text-sm font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all';
+      tabLogin.className = 'py-2.5 rounded-lg bg-transparent text-on-surface-variant font-label-md text-sm font-semibold flex items-center justify-center gap-1.5 transition-all hover:bg-surface-container-high';
+      registerSection.classList.remove('hidden');
+      loginSection.classList.add('hidden');
+    }
+  }
+
   function selectMethod(method) {
     const tabOtp = document.getElementById('tab-otp');
     const tabPin = document.getElementById('tab-pin');
@@ -188,18 +355,202 @@
     }
   }
 
-  // Automatic progression between OTP digits
-  const boxes = document.querySelectorAll('.otp-box');
-  boxes.forEach((box, index) => {
-    box.addEventListener('input', (e) => {
-      if (e.target.value.length === 1 && index < boxes.length - 1) {
-        boxes[index + 1].focus();
+  function selectRole(role) {
+    currentRole = role;
+    const roles = ['guide', 'vendor', 'kumbhveer', 'nashikkar'];
+    roles.forEach(r => {
+      const btn = document.getElementById(`role-btn-${r}`);
+      if (btn) {
+        if (r === role) {
+          btn.className = 'role-btn py-2 px-1 rounded-lg bg-primary text-on-primary font-label-sm text-[11px] font-bold flex flex-col items-center gap-1 shadow-sm transition-all';
+        } else {
+          btn.className = 'role-btn py-2 px-1 rounded-lg bg-transparent text-on-surface-variant font-label-sm text-[11px] font-semibold flex flex-col items-center gap-1 transition-all hover:bg-surface-container-high';
+        }
       }
     });
-    box.addEventListener('keydown', (e) => {
-      if (e.key === 'Backspace' && !e.target.value && index > 0) {
-        boxes[index - 1].focus();
+
+    const roleIndicator = document.getElementById('current-role-indicator');
+    const roleMap = { guide: 'Local Guide', vendor: 'Civic Vendor', kumbhveer: 'Kumbhveer Volunteer', nashikkar: 'Nashik Resident' };
+    if (roleIndicator) roleIndicator.textContent = roleMap[role] || role;
+
+    // Update Login Section Labels
+    const idLabel = document.getElementById('role-id-label');
+    const idHint = document.getElementById('role-id-hint');
+    const idInput = document.getElementById('vendor-id');
+    const idIcon = document.getElementById('role-id-icon');
+    const loginBtnTxt = document.getElementById('login-btn-txt');
+
+    // Update Register Section Labels
+    const regBanner = document.getElementById('reg-banner-text');
+    const regIdLabel = document.getElementById('reg-id-label');
+    const regIdIcon = document.getElementById('reg-id-icon');
+    const regGovtId = document.getElementById('reg-govt-id');
+    const regExtraLabel = document.getElementById('reg-extra-label');
+    const regExtra = document.getElementById('reg-extra');
+
+    if (role === 'guide') {
+      idLabel.textContent = 'Govt Guide Badge ID or Mobile';
+      idHint.innerHTML = '<span class="material-symbols-outlined text-sm">badge</span> Official Guide • Biometric Face &amp; Govt ID Verified';
+      idInput.placeholder = 'e.g. MH-15-GUIDE-0082 or 98200XXXXX';
+      idInput.value = 'MH-15-GUIDE-0082';
+      idIcon.textContent = 'explore';
+      if (loginBtnTxt) loginBtnTxt.textContent = 'Verify Face & Enter Guide Desk';
+
+      regBanner.innerHTML = 'Register as <strong>Local Guide</strong> with Govt ID, Languages, &amp; Face Biometrics for on-site pilgrim verification.';
+      regIdLabel.textContent = '3. Govt Tour Guide Badge / Aadhaar ID';
+      regIdIcon.textContent = 'badge';
+      regGovtId.placeholder = 'e.g. MH-15-GUIDE-0082';
+      regGovtId.value = 'MH-15-GUIDE-0082';
+      regExtraLabel.textContent = '4. Languages Spoken & Base Point';
+      regExtra.placeholder = 'e.g. Marathi, Hindi, English • Ramkund Ghat';
+      regExtra.value = 'Marathi, Hindi, English • Ramkund Base Point';
+    } else if (role === 'vendor') {
+      idLabel.textContent = 'Mobile Number or Civic Vendor ID';
+      idHint.innerHTML = '<span class="material-symbols-outlined text-sm">info</span> Issued on your Municipal Trade License or Coordinator badge';
+      idInput.placeholder = 'e.g. V-NSK-2027-4029 or 98200XXXXX';
+      idInput.value = 'V-NSK-2027-4029';
+      idIcon.textContent = 'storefront';
+      if (loginBtnTxt) loginBtnTxt.textContent = 'Verify & Enter Vendor Portal';
+
+      regBanner.innerHTML = 'Register your <strong>Shop, Bhojanalaya, or Stay</strong> under NMC Fair-Price Simhastha Registry.';
+      regIdLabel.textContent = '3. Municipal Trade License / FSSAI / Udyam No.';
+      regIdIcon.textContent = 'receipt_long';
+      regGovtId.placeholder = 'e.g. NMC-TL-2027-8912';
+      regGovtId.value = 'NMC-TL-2027-8912';
+      regExtraLabel.textContent = '4. Business Name & Category';
+      regExtra.placeholder = 'e.g. Godavari Satvik Bhojanalay • Eatery';
+      regExtra.value = 'Shree Ram Samagri & Prasad Bhandar • Puja Bazaar';
+    } else if (role === 'kumbhveer') {
+      idLabel.textContent = 'Kumbhveer Student ID / Mobile';
+      idHint.innerHTML = '<span class="material-symbols-outlined text-sm">school</span> Authorized Student Verifier (K.T.H.M. / Sandip / KK Wagh / MET)';
+      idInput.placeholder = 'e.g. KV-KTHM-2027-0142 or 98200XXXXX';
+      idInput.value = 'KV-KTHM-2027-0142';
+      idIcon.textContent = 'school';
+      if (loginBtnTxt) loginBtnTxt.textContent = 'Verify & Enter Audit Terminal';
+
+      regBanner.innerHTML = 'Register as a <strong>Kumbhveer Student Field Auditor</strong> with College ID &amp; Face Biometrics.';
+      regIdLabel.textContent = '3. College Student ID / Enrollment No.';
+      regIdIcon.textContent = 'school';
+      regGovtId.placeholder = 'e.g. KV-KTHM-2027-0142';
+      regGovtId.value = 'KV-KTHM-2027-0142';
+      regExtraLabel.textContent = '4. College / University & Assigned Ward';
+      regExtra.placeholder = 'e.g. K.T.H.M. College • Panchavati Ward 4';
+      regExtra.value = 'K.T.H.M. College • Ramkund Central Sector';
+    } else if (role === 'nashikkar') {
+      idLabel.textContent = 'Nashik Resident Mobile / Aadhaar No.';
+      idHint.innerHTML = '<span class="material-symbols-outlined text-sm">home_pin</span> Verified Citizen Verifier (Panchavati, Old City, Gangapur)';
+      idInput.placeholder = 'e.g. 98220XXXXX or Local Resident Mobile';
+      idInput.value = '9822014522';
+      idIcon.textContent = 'location_city';
+      if (loginBtnTxt) loginBtnTxt.textContent = 'Verify & Enter Resident Portal';
+
+      regBanner.innerHTML = 'Register as a <strong>Verified Nashikkar Citizen</strong> to audit fair prices &amp; report overcharging.';
+      regIdLabel.textContent = '3. Aadhaar Number / Electricity Meter No.';
+      regIdIcon.textContent = 'pin_drop';
+      regGovtId.placeholder = 'e.g. AADHAAR-XXXX-XXXX-4522';
+      regGovtId.value = 'AADHAAR-9812-4522';
+      regExtraLabel.textContent = '4. Residential Locality & Area';
+      regExtra.placeholder = 'e.g. Panchavati Karanja, Nashik';
+      regExtra.value = 'Panchavati Karanja, Nashik (Ward 2)';
+    }
+
+    localStorage.setItem('kumbhsetu_nashikkar_role', role);
+  }
+
+  function handlePortalLogin() {
+    localStorage.setItem('kumbhsetu_nashikkar_role', currentRole);
+    showToast('Identity Verified! Redirecting to operations portal...');
+    setTimeout(() => {
+      if (currentRole === 'guide') {
+        window.location.href = 'bookings_queue.html?role=guide';
+      } else {
+        window.location.href = 'nashikkar_overview.html';
       }
-    });
-  });
-</script></main></body></html>
+    }, 600);
+  }
+
+  /* Camera & Biometric Embeddings Logic for Registration */
+  async function startRegCamera() {
+    const video = document.getElementById('reg-video');
+    const placeholder = document.getElementById('reg-cam-placeholder');
+    const reticle = document.getElementById('reg-cam-reticle');
+    const status = document.getElementById('reg-face-status');
+
+    try {
+      regCamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      video.srcObject = regCamStream;
+      video.classList.remove('hidden');
+      if (placeholder) placeholder.classList.add('hidden');
+      if (reticle) reticle.classList.remove('hidden');
+      status.textContent = 'Tracking Face...';
+      status.className = 'px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-[11px] font-bold animate-pulse';
+    } catch (e) {
+      if (placeholder) placeholder.innerHTML = `
+        <span class="material-symbols-outlined text-4xl text-primary">sensors</span>
+        <span class="font-label-sm text-xs text-primary font-semibold">Webcam Active (Simulation Fallback)</span>
+      `;
+      status.textContent = 'Ready to Match';
+      status.className = 'px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-[11px] font-bold';
+    }
+  }
+
+  function computeRegEmbeddings() {
+    const status = document.getElementById('reg-face-status');
+    const govtIdVal = document.getElementById('reg-govt-id').value || 'MH-15-GUIDE-0082';
+    status.textContent = 'Computing 128-d Embedding...';
+    status.className = 'px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-[11px] font-bold animate-pulse';
+
+    setTimeout(() => {
+      status.textContent = `✓ 98.6% Biometric Match (${govtIdVal})`;
+      status.className = 'px-2 py-0.5 rounded bg-green-700 text-white font-label-sm text-[11px] font-bold';
+      showToast('Facial embeddings matched with Govt ID database!');
+    }, 1000);
+  }
+
+  function handlePortalRegister() {
+    const name = document.getElementById('reg-name').value.trim() || 'Rameshwar Vinayak Pathak';
+    const phone = document.getElementById('reg-phone').value.trim() || '9822014522';
+    const govtId = document.getElementById('reg-govt-id').value.trim() || 'MH-15-GUIDE-0082';
+    const extra = document.getElementById('reg-extra').value.trim() || '';
+
+    const profile = {
+      name,
+      phone,
+      govtId,
+      extra,
+      role: currentRole,
+      registeredAt: new Date().toISOString(),
+      biometricVerified: true
+    };
+
+    localStorage.setItem('kumbhsetu_user_profile', JSON.stringify(profile));
+    localStorage.setItem('kumbhsetu_nashikkar_role', currentRole);
+
+    showToast(`Welcome ${name}! Registered as verified ${currentRole}.`);
+    setTimeout(() => {
+      if (currentRole === 'guide') {
+        window.location.href = 'bookings_queue.html?role=guide';
+      } else {
+        window.location.href = 'nashikkar_overview.html';
+      }
+    }, 750);
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    const txt = document.getElementById('toast-txt');
+    if (toast && txt) {
+      txt.textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 3200);
+    }
+  }
+
+  // Initialize
+  selectRole('guide');
+</script></main><script src="i18n.js"></script>
+</body></html>

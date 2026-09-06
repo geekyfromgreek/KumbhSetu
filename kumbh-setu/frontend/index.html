@@ -146,14 +146,9 @@
 </div>
 <script>
   function setLang(btn, langCode) {
-    const parent = document.getElementById('lang-switch-group');
-    if (!parent) return;
-    const buttons = parent.querySelectorAll('.lang-btn');
-    buttons.forEach(b => {
-      b.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
-      b.classList.add('text-on-surface-variant');
-    });
-    btn.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
-    btn.classList.remove('text-on-surface-variant');
+    if (window.KumbhI18n) {
+      window.KumbhI18n.setLanguage(langCode);
+    }
   }
-</script></main></body></html>
+</script></main><script src="i18n.js"></script>
+</body></html>

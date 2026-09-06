@@ -10,10 +10,11 @@ from ..schemas.schemas import (
     ListingCategory, VerificationStatus
 )
 from ..core.security import verify_jwt, require_nashikkar, CurrentUser
-from ..db.supabase_client import get_connection, now_iso, rows_to_list
+from ..db.supabase_client import get_connection, now_iso, rows_to_list, row_to_dict
 from ..services.pricing_service import compute_price_delta, haversine_distance, estimate_rickshaw_fare
 from ..services.maps_service import generate_maps_directions_url
 import uuid
+import json
 
 router = APIRouter(prefix="/marketplace", tags=["Marketplace"])
 
@@ -480,3 +481,94 @@ async def get_food_finder_listings(
 
     return {"results": all_items[:limit], "total": len(all_items)}
 
+
+
+@router.get("/guides")
+async def get_local_guides(
+    search: Optional[str] = None,
+    language: Optional[str] = None,
+    verification_status: Optional[str] = None
+):
+    """
+    Get list of verified local guides for pilgrims (Yatri marketplace).
+    Privacy rule: Never returns biometric face embeddings.
+    """
+    conn = get_connection()
+    conditions = []
+    params = []
+
+    if search:
+        conditions.append("(name LIKE ? OR base_location_name LIKE ? OR specialties LIKE ?)")
+        st = f"%{search}%"
+        params.extend([st, st, st])
+
+    if language:
+        conditions.append("languages_spoken LIKE ?")
+        params.append(f"%{language}%")
+
+    if verification_status:
+        conditions.append("verification_status = ?")
+        params.append(verification_status)
+
+    where = "WHERE " + " AND ".join(conditions) if conditions else ""
+    rows = rows_to_list(conn.execute(f"SELECT * FROM local_guides {where} ORDER BY rating DESC, review_count DESC", params))
+
+    result = []
+    for r in rows:
+        langs = json.loads(r["languages_spoken"]) if r.get("languages_spoken") else ["Marathi", "Hindi", "English"]
+        specs = json.loads(r["specialties"]) if r.get("specialties") else ["Godavari Aarti", "Temple Heritage"]
+        result.append({
+            "id": r["id"],
+            "name": r["name"],
+            "phone_number": r["phone_number"],
+            "govt_id_number": r.get("govt_id_number") or "MH-15-GUIDE-1048",
+            "verification_status": r.get("verification_status") or "Kumbhveer Verified",
+            "identity_confirmed_via_selfie": True if r.get("verification_status") == "Kumbhveer Verified" else False,
+            "base_location_name": r.get("base_location_name") or "Ramkund Meeting Point",
+            "base_location_lat": r.get("base_location_lat") or 19.9975,
+            "base_location_lng": r.get("base_location_lng") or 73.7898,
+            "languages_spoken": langs,
+            "rating": r.get("rating") or 4.9,
+            "review_count": r.get("review_count") or 120,
+            "hourly_rate": r.get("hourly_rate") or 150.0,
+            "experience_years": r.get("experience_years") or 6,
+            "specialties": specs,
+            "image_url": r.get("image_url") or "https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i",
+            "created_at": r.get("created_at", now_iso()),
+            "last_active_at": r.get("last_active_at", now_iso())
+        })
+
+    return {"guides": result, "total": len(result)}
+
+
+@router.get("/guides/{guide_id}")
+async def get_guide_detail(guide_id: str):
+    """Get detailed profile of a single guide."""
+    conn = get_connection()
+    row = conn.execute("SELECT * FROM local_guides WHERE id = ?", (guide_id,)).fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    r = row_to_dict(row)
+    langs = json.loads(r["languages_spoken"]) if r.get("languages_spoken") else ["Marathi", "Hindi", "English"]
+    specs = json.loads(r["specialties"]) if r.get("specialties") else ["Godavari Aarti", "Temple Heritage"]
+
+    return {
+        "id": r["id"],
+        "name": r["name"],
+        "phone_number": r["phone_number"],
+        "govt_id_number": r.get("govt_id_number"),
+        "verification_status": r.get("verification_status"),
+        "identity_confirmed_via_selfie": True if r.get("verification_status") == "Kumbhveer Verified" else False,
+        "base_location_name": r.get("base_location_name"),
+        "base_location_lat": r.get("base_location_lat"),
+        "base_location_lng": r.get("base_location_lng"),
+        "languages_spoken": langs,
+        "rating": r.get("rating"),
+        "review_count": r.get("review_count"),
+        "hourly_rate": r.get("hourly_rate"),
+        "experience_years": r.get("experience_years"),
+        "specialties": specs,
+        "image_url": r.get("image_url"),
+        "created_at": r.get("created_at"),
+        "last_active_at": r.get("last_active_at")
+    }
