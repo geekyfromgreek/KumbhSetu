@@ -10,6 +10,7 @@ import {
   INITIAL_STANDARD_PRICES,
 } from '@/data/fareData';
 import { SupabaseService } from '@/services/supabaseService';
+import { INITIAL_SNAN_MUHURATS, SnanMuhurat } from '@/data/snanData';
 
 export interface UserProfile {
   name: string;
@@ -38,6 +39,9 @@ interface AppContextType {
 
   isMapModalOpen: boolean;
   setIsMapModalOpen: (open: boolean) => void;
+
+  // Auspicious Snan Muhurats
+  snanMuhurats: SnanMuhurat[];
 
   // Admin Mode for Route Fares & Standard Prices
   isAdminMode: boolean;
@@ -81,7 +85,9 @@ const STORAGE_KEYS = {
   ROUTE_FARES: '@kumbhsetu_route_fares_v3',
   STANDARD_PRICES: '@kumbhsetu_standard_prices_v3',
   MARKETPLACE: '@kumbhsetu_marketplace_v3',
+  SNAN_MUHURATS: '@kumbhsetu_snan_muhurats_v3',
 };
+
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -101,6 +107,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [routeFares, setRouteFares] = useState<RouteFare[]>(INITIAL_ROUTE_FARES);
   const [standardPrices, setStandardPrices] = useState<StandardPriceItem[]>(INITIAL_STANDARD_PRICES);
   const [marketplaceItems, setMarketplaceItems] = useState<MarketplaceItem[]>([]);
+  const [snanMuhurats, setSnanMuhurats] = useState<SnanMuhurat[]>(INITIAL_SNAN_MUHURATS);
 
   const [complaints, setComplaints] = useState<UserComplaint[]>([]);
   const [rumors, setRumors] = useState<RumorFactCheck[]>(INITIAL_RUMORS);
@@ -118,6 +125,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           savedFares,
           savedPrices,
           savedMarketplace,
+          savedSnan,
         ] = await Promise.all([
           safeStorage.getItem(STORAGE_KEYS.USER),
           safeStorage.getItem(STORAGE_KEYS.LANG),
@@ -126,6 +134,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           safeStorage.getItem(STORAGE_KEYS.ROUTE_FARES),
           safeStorage.getItem(STORAGE_KEYS.STANDARD_PRICES),
           safeStorage.getItem(STORAGE_KEYS.MARKETPLACE),
+          safeStorage.getItem(STORAGE_KEYS.SNAN_MUHURATS),
         ]);
 
         if (savedUser) setUser(JSON.parse(savedUser));
@@ -135,6 +144,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         if (savedFares) setRouteFares(JSON.parse(savedFares));
         if (savedPrices) setStandardPrices(JSON.parse(savedPrices));
         if (savedMarketplace) setMarketplaceItems(JSON.parse(savedMarketplace));
+        if (savedSnan) setSnanMuhurats(JSON.parse(savedSnan));
 
         // Attempt live fetch from Supabase
         fetchLiveSupabaseData();
@@ -157,11 +167,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const merchantSub = SupabaseService.subscribeToMerchants(() => {
       fetchLiveMarketplace();
     });
+    const snanSub = SupabaseService.subscribeToSnanMuhurats(() => {
+      fetchLiveSnanMuhurats();
+    });
 
     return () => {
       tariffSub.unsubscribe();
       rumorSub.unsubscribe();
       merchantSub.unsubscribe();
+      snanSub.unsubscribe();
     };
   }, []);
 
@@ -193,13 +207,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const fetchLiveSnanMuhurats = async () => {
+    const liveSnan = await SupabaseService.fetchSnanMuhurats();
+    if (liveSnan && liveSnan.length > 0) {
+      setSnanMuhurats(liveSnan);
+      safeStorage.setItem(STORAGE_KEYS.SNAN_MUHURATS, JSON.stringify(liveSnan));
+    }
+  };
+
   const fetchLiveSupabaseData = async () => {
     await Promise.all([
       fetchLiveTariffs(),
       fetchLiveFactChecks(),
       fetchLiveMarketplace(),
+      fetchLiveSnanMuhurats(),
     ]);
   };
+
 
   const registerUser = async (name: string, phone: string, dob: string) => {
     const newProfile: UserProfile = {
@@ -403,6 +427,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setIsLangModalOpen,
         isMapModalOpen,
         setIsMapModalOpen,
+        snanMuhurats,
         isAdminMode,
         setIsAdminMode,
         adminPin,
@@ -424,6 +449,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         reviews,
         addShopReview,
       }}>
+
       {children}
     </AppContext.Provider>
   );

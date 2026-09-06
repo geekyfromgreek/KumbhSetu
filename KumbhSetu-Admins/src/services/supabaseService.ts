@@ -5,7 +5,9 @@ import {
   AdminBazaarShop,
   AdminFactCheck,
   AdminGrievanceTicket,
+  AdminSnanMuhurat,
 } from '@/types/admin';
+
 
 export const AdminSupabaseService = {
   // --------------------------------------------------------------------------
@@ -448,6 +450,120 @@ export const AdminSupabaseService = {
   },
 
   // --------------------------------------------------------------------------
+  // 6. SHAHI SNAN & MUHURAT SCHEDULE
+  // --------------------------------------------------------------------------
+  async fetchSnanMuhurats(): Promise<AdminSnanMuhurat[] | null> {
+    try {
+      const { data, error } = await supabase
+        .from('snan_muhurats')
+        .select('*')
+        .order('order_num', { ascending: true });
+
+      if (error) {
+        // Table not created yet in Supabase schema cache
+        return null;
+      }
+      if (!data || data.length === 0) return null;
+
+      return data.map((row: any) => ({
+        id: String(row.id),
+        title: row.title,
+        titleHi: row.title_hi || row.title,
+        titleMr: row.title_mr || row.title,
+        snanDate: row.snan_date || row.date,
+        muhuratTime: row.muhurat_time,
+        ghatLocation: row.ghat_location,
+        importance: row.importance || '',
+        crowdLevel: row.crowd_level || 'High',
+        isMajor: row.is_major !== false,
+        orderNum: Number(row.order_num) || 0,
+        updatedAt: row.updated_at ? new Date(row.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : undefined,
+      }));
+    } catch (e) {
+      return null;
+    }
+  },
+
+
+  async insertSnanMuhurat(snan: Omit<AdminSnanMuhurat, 'id' | 'updatedAt'>): Promise<string | null> {
+    try {
+      const { data, error } = await supabase
+        .from('snan_muhurats')
+        .insert([{
+          title: snan.title,
+          title_hi: snan.titleHi || snan.title,
+          title_mr: snan.titleMr || snan.title,
+          snan_date: snan.snanDate,
+          muhurat_time: snan.muhuratTime,
+          ghat_location: snan.ghatLocation,
+          importance: snan.importance,
+          crowd_level: snan.crowdLevel,
+          is_major: snan.isMajor,
+          order_num: snan.orderNum,
+        }])
+        .select('id')
+        .single();
+
+      if (error) {
+        console.warn('[AdminSupabase insertSnanMuhurat Error]:', error.message);
+        return null;
+      }
+      return data?.id || null;
+    } catch (e) {
+      console.warn('[AdminSupabase insertSnanMuhurat Exception]:', e);
+      return null;
+    }
+  },
+
+  async updateSnanMuhurat(snan: AdminSnanMuhurat): Promise<boolean> {
+    try {
+      const { error } = await supabase
+        .from('snan_muhurats')
+        .update({
+          title: snan.title,
+          title_hi: snan.titleHi || snan.title,
+          title_mr: snan.titleMr || snan.title,
+          snan_date: snan.snanDate,
+          muhurat_time: snan.muhuratTime,
+          ghat_location: snan.ghatLocation,
+          importance: snan.importance,
+          crowd_level: snan.crowdLevel,
+          is_major: snan.isMajor,
+          order_num: snan.orderNum,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', snan.id);
+
+      if (error) {
+        console.warn('[AdminSupabase updateSnanMuhurat Error]:', error.message);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.warn('[AdminSupabase updateSnanMuhurat Exception]:', e);
+      return false;
+    }
+  },
+
+  async deleteSnanMuhurat(id: string): Promise<boolean> {
+    try {
+      const { error } = await supabase
+        .from('snan_muhurats')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.warn('[AdminSupabase deleteSnanMuhurat Error]:', error.message);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.warn('[AdminSupabase deleteSnanMuhurat Exception]:', e);
+      return false;
+    }
+  },
+
+  // --------------------------------------------------------------------------
   // REALTIME SUBSCRIPTIONS
   // --------------------------------------------------------------------------
   subscribeToAll(callback: () => void) {
@@ -458,6 +574,8 @@ export const AdminSupabaseService = {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'merchants' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'incidents_and_grievances' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'fact_checks_and_rumors' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'snan_muhurats' }, callback)
       .subscribe();
   },
 };
+

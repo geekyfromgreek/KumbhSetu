@@ -1,144 +1,188 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useAdmin } from '@/context/AdminContext';
 import { AdminColors } from '@/constants/colors';
+import { SnanScheduleModal } from '@/components/SnanScheduleModal';
 
 export const DashboardOverviewTab: React.FC = () => {
-  const { stats, setActiveTab, routes, shops, factChecks, tickets } = useAdmin();
+  const { stats, setActiveTab, routes, shops, factChecks, tickets, snanMuhurats } = useAdmin();
+  const [isSnanModalOpen, setIsSnanModalOpen] = useState<boolean>(false);
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* 4 Metric Summary Cards */}
-      <View style={styles.statsGrid}>
-        {/* Metric 1: Tariffs */}
+    <>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Special Shahi Snan Banner Card */}
         <TouchableOpacity
-          style={styles.statCard}
-          onPress={() => setActiveTab('tariffs')}
-          activeOpacity={0.75}
+          style={styles.snanBannerCard}
+          onPress={() => setIsSnanModalOpen(true)}
+          activeOpacity={0.85}
         >
-          <View style={[styles.statIconBox, { backgroundColor: AdminColors.primarySoft }]}>
-            <FontAwesome5 name="route" size={15} color={AdminColors.saffron} />
+          <View style={styles.snanBannerLeft}>
+            <View style={styles.snanIconBox}>
+              <MaterialCommunityIcons name="water-outline" size={20} color="#FFFFFF" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <View style={styles.snanBadgeRow}>
+                <Text style={styles.snanBadgeText}>AUSPICIOUS TIMINGS</Text>
+                <Text style={styles.snanCountBadge}>{snanMuhurats.length} Dates</Text>
+              </View>
+              <Text style={styles.snanBannerTitle}>Shahi Snan & Muhurat Schedule</Text>
+              <Text style={styles.snanBannerSub}>
+                Manage official royal bathing windows, ghat locations & crowd advisories
+              </Text>
+            </View>
           </View>
-          <Text style={styles.statCount}>{stats.activeRoutesCount}</Text>
-          <Text style={styles.statTitle}>Route Tariffs</Text>
-          <Text style={styles.statAction}>Manage →</Text>
+          <Ionicons name="chevron-forward" size={18} color="#FFFFFF" />
         </TouchableOpacity>
 
-        {/* Metric 2: Bazaar */}
-        <TouchableOpacity
-          style={styles.statCard}
-          onPress={() => setActiveTab('bazaar')}
-          activeOpacity={0.75}
-        >
-          <View style={[styles.statIconBox, { backgroundColor: AdminColors.successSoft }]}>
-            <FontAwesome5 name="store" size={15} color={AdminColors.emerald} />
-          </View>
-          <Text style={styles.statCount}>{stats.approvedShopsCount}</Text>
-          <Text style={styles.statTitle}>Bazaar Stalls</Text>
-          <Text style={[styles.statAction, { color: AdminColors.emerald }]}>Manage →</Text>
-        </TouchableOpacity>
-
-        {/* Metric 3: Fact-Check */}
-        <TouchableOpacity
-          style={styles.statCard}
-          onPress={() => setActiveTab('factcheck')}
-          activeOpacity={0.75}
-        >
-          <View style={[styles.statIconBox, { backgroundColor: AdminColors.warningSoft }]}>
-            <FontAwesome5 name="shield-alt" size={15} color={AdminColors.warning} />
-          </View>
-          <Text style={styles.statCount}>{stats.openRumorsCount}</Text>
-          <Text style={styles.statTitle}>Rumor Reports</Text>
-          <Text style={[styles.statAction, { color: AdminColors.warning }]}>Review →</Text>
-        </TouchableOpacity>
-
-        {/* Metric 4: Grievances */}
-        <TouchableOpacity
-          style={styles.statCard}
-          onPress={() => setActiveTab('grievances')}
-          activeOpacity={0.75}
-        >
-          <View style={[styles.statIconBox, { backgroundColor: AdminColors.dangerSoft }]}>
-            <FontAwesome5 name="gavel" size={15} color={AdminColors.danger} />
-          </View>
-          <Text style={styles.statCount}>{stats.pendingGrievancesCount}</Text>
-          <Text style={styles.statTitle}>Complaints</Text>
-          <Text style={[styles.statAction, { color: AdminColors.danger }]}>Enforce →</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Direct Management Actions */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Management Modules</Text>
-
-        <View style={styles.actionGrid}>
+        {/* 4 Metric Summary Cards */}
+        <View style={styles.statsGrid}>
+          {/* Metric 1: Tariffs */}
           <TouchableOpacity
-            style={styles.actionBtn}
+            style={styles.statCard}
             onPress={() => setActiveTab('tariffs')}
             activeOpacity={0.75}
           >
-            <View style={[styles.actionIcon, { backgroundColor: AdminColors.primarySoft }]}>
-              <FontAwesome5 name="route" size={16} color={AdminColors.saffron} />
+            <View style={[styles.statIconBox, { backgroundColor: AdminColors.primarySoft }]}>
+              <FontAwesome5 name="route" size={15} color={AdminColors.saffron} />
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.actionBtnTitle}>Transit Tariffs & Price Caps</Text>
-              <Text style={styles.actionBtnDesc}>Set mandated fares and commodity ceilings</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            <Text style={styles.statCount}>{stats.activeRoutesCount}</Text>
+            <Text style={styles.statTitle}>Route Tariffs</Text>
+            <Text style={styles.statAction}>Manage →</Text>
           </TouchableOpacity>
 
+          {/* Metric 2: Bazaar */}
           <TouchableOpacity
-            style={styles.actionBtn}
+            style={styles.statCard}
             onPress={() => setActiveTab('bazaar')}
             activeOpacity={0.75}
           >
-            <View style={[styles.actionIcon, { backgroundColor: AdminColors.successSoft }]}>
+            <View style={[styles.statIconBox, { backgroundColor: AdminColors.successSoft }]}>
               <FontAwesome5 name="store" size={15} color={AdminColors.emerald} />
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.actionBtnTitle}>Bazaar & Merchant Stalls</Text>
-              <Text style={styles.actionBtnDesc}>Allocate stall numbers and monitor compliance</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            <Text style={styles.statCount}>{stats.approvedShopsCount}</Text>
+            <Text style={styles.statTitle}>Bazaar Stalls</Text>
+            <Text style={[styles.statAction, { color: AdminColors.emerald }]}>Manage →</Text>
           </TouchableOpacity>
 
+          {/* Metric 3: Fact-Check */}
           <TouchableOpacity
-            style={styles.actionBtn}
+            style={styles.statCard}
             onPress={() => setActiveTab('factcheck')}
             activeOpacity={0.75}
           >
-            <View style={[styles.actionIcon, { backgroundColor: AdminColors.warningSoft }]}>
+            <View style={[styles.statIconBox, { backgroundColor: AdminColors.warningSoft }]}>
               <FontAwesome5 name="shield-alt" size={15} color={AdminColors.warning} />
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.actionBtnTitle}>Fact-Check & Rumor Buster</Text>
-              <Text style={styles.actionBtnDesc}>Publish official bulletins and dispel rumors</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            <Text style={styles.statCount}>{stats.openRumorsCount}</Text>
+            <Text style={styles.statTitle}>Rumor Reports</Text>
+            <Text style={[styles.statAction, { color: AdminColors.warning }]}>Review →</Text>
           </TouchableOpacity>
 
+          {/* Metric 4: Grievances */}
           <TouchableOpacity
-            style={styles.actionBtn}
+            style={styles.statCard}
             onPress={() => setActiveTab('grievances')}
             activeOpacity={0.75}
           >
-            <View style={[styles.actionIcon, { backgroundColor: AdminColors.dangerSoft }]}>
+            <View style={[styles.statIconBox, { backgroundColor: AdminColors.dangerSoft }]}>
               <FontAwesome5 name="gavel" size={15} color={AdminColors.danger} />
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.actionBtnTitle}>Grievance Enforcement Desk</Text>
-              <Text style={styles.actionBtnDesc}>Track overcharging and issue squad actions</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            <Text style={styles.statCount}>{stats.pendingGrievancesCount}</Text>
+            <Text style={styles.statTitle}>Complaints</Text>
+            <Text style={[styles.statAction, { color: AdminColors.danger }]}>Enforce →</Text>
           </TouchableOpacity>
         </View>
-      </View>
+
+        {/* Direct Management Actions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Management Modules</Text>
+
+          <View style={styles.actionGrid}>
+            <TouchableOpacity
+              style={styles.actionBtn}
+              onPress={() => setIsSnanModalOpen(true)}
+              activeOpacity={0.75}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: '#FEF3C7' }]}>
+                <MaterialCommunityIcons name="water" size={18} color="#B45309" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.actionBtnTitle}>Shahi Snan & Muhurat Schedule</Text>
+                <Text style={styles.actionBtnDesc}>Update royal bathing dates, ghats & crowd levels</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionBtn}
+              onPress={() => setActiveTab('tariffs')}
+              activeOpacity={0.75}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: AdminColors.primarySoft }]}>
+                <FontAwesome5 name="route" size={16} color={AdminColors.saffron} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.actionBtnTitle}>Transit Tariffs & Price Caps</Text>
+                <Text style={styles.actionBtnDesc}>Set mandated fares and commodity ceilings</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionBtn}
+              onPress={() => setActiveTab('bazaar')}
+              activeOpacity={0.75}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: AdminColors.successSoft }]}>
+                <FontAwesome5 name="store" size={15} color={AdminColors.emerald} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.actionBtnTitle}>Bazaar & Merchant Stalls</Text>
+                <Text style={styles.actionBtnDesc}>Audit, approve, or revoke local stalls</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionBtn}
+              onPress={() => setActiveTab('factcheck')}
+              activeOpacity={0.75}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: AdminColors.warningSoft }]}>
+                <FontAwesome5 name="shield-alt" size={15} color={AdminColors.warning} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.actionBtnTitle}>Fact-Check & Rumor Buster</Text>
+                <Text style={styles.actionBtnDesc}>Publish official bulletins and dispel rumors</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionBtn}
+              onPress={() => setActiveTab('grievances')}
+              activeOpacity={0.75}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: AdminColors.dangerSoft }]}>
+                <FontAwesome5 name="gavel" size={15} color={AdminColors.danger} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.actionBtnTitle}>Grievance Enforcement Desk</Text>
+                <Text style={styles.actionBtnDesc}>Track overcharging and issue squad actions</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={AdminColors.textMuted} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
 
       {/* Database Status / Recent Logs */}
       <View style={styles.section}>
@@ -192,6 +236,12 @@ export const DashboardOverviewTab: React.FC = () => {
         </View>
       </View>
     </ScrollView>
+
+    <SnanScheduleModal
+      visible={isSnanModalOpen}
+      onClose={() => setIsSnanModalOpen(false)}
+    />
+  </>
   );
 };
 
@@ -204,6 +254,63 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 24,
   },
+  snanBannerCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#0F766E', // Divine deep teal / ganga river
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 16,
+  },
+  snanBannerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    flex: 1,
+    paddingRight: 8,
+  },
+  snanIconBox: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  snanBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 2,
+  },
+  snanBadgeText: {
+    fontSize: 9.5,
+    fontFamily: 'Poppins_700Bold',
+    color: '#99F6E4',
+    letterSpacing: 0.5,
+  },
+  snanCountBadge: {
+    fontSize: 9,
+    fontFamily: 'Poppins_600SemiBold',
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    color: '#FFFFFF',
+    paddingVertical: 1,
+    paddingHorizontal: 5,
+    borderRadius: 4,
+  },
+  snanBannerTitle: {
+    fontSize: 13.5,
+    fontFamily: 'Poppins_700Bold',
+    color: '#FFFFFF',
+  },
+  snanBannerSub: {
+    fontSize: 10.5,
+    fontFamily: 'Poppins_400Regular',
+    color: '#CCFBF1',
+    marginTop: 1,
+  },
+
   statsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',

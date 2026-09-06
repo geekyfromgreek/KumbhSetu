@@ -6,9 +6,11 @@ import {
   AdminBazaarShop,
   AdminFactCheck,
   AdminGrievanceTicket,
+  AdminSnanMuhurat,
 } from '@/types/admin';
 import { DBA_PROVISIONED_ACCOUNTS, DBAAdminAccount } from '@/constants/roles';
 import { AdminSupabaseService } from '@/services/supabaseService';
+import { INITIAL_ADMIN_SNAN_MUHURATS } from '@/data/snanData';
 
 interface AdminContextType {
   // Authentication & DBA Provisioning
@@ -57,6 +59,12 @@ interface AdminContextType {
     penalty?: number
   ) => Promise<void>;
 
+  // Shahi Snan & Muhurat Schedule
+  snanMuhurats: AdminSnanMuhurat[];
+  addSnanMuhurat: (snan: Omit<AdminSnanMuhurat, 'id' | 'updatedAt'>) => Promise<void>;
+  updateSnanMuhurat: (snan: AdminSnanMuhurat) => Promise<void>;
+  deleteSnanMuhurat: (id: string) => Promise<void>;
+
   // Refresh & Stats
   refreshAll: () => Promise<void>;
   stats: {
@@ -65,6 +73,7 @@ interface AdminContextType {
     openRumorsCount: number;
     approvedShopsCount: number;
     totalPenaltiesCollected: number;
+    snanDatesCount: number;
   };
 }
 
@@ -75,6 +84,7 @@ const STORAGE_KEYS = {
   SHOPS: '@kumbhadmins_shops_v3',
   FACTCHECKS: '@kumbhadmins_factchecks_v3',
   TICKETS: '@kumbhadmins_tickets_v3',
+  SNAN_MUHURATS: '@kumbhadmins_snan_muhurats_v3',
 };
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -90,6 +100,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const [shops, setShops] = useState<AdminBazaarShop[]>([]);
   const [factChecks, setFactChecks] = useState<AdminFactCheck[]>([]);
   const [tickets, setTickets] = useState<AdminGrievanceTicket[]>([]);
+  const [snanMuhurats, setSnanMuhurats] = useState<AdminSnanMuhurat[]>(INITIAL_ADMIN_SNAN_MUHURATS);
 
   // Load state and sync with Supabase
   useEffect(() => {
@@ -102,6 +113,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
           savedShops,
           savedFC,
           savedTickets,
+          savedSnan,
         ] = await Promise.all([
           safeStorage.getItem(STORAGE_KEYS.AUTH_USER),
           safeStorage.getItem(STORAGE_KEYS.ROUTES),
@@ -109,6 +121,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
           safeStorage.getItem(STORAGE_KEYS.SHOPS),
           safeStorage.getItem(STORAGE_KEYS.FACTCHECKS),
           safeStorage.getItem(STORAGE_KEYS.TICKETS),
+          safeStorage.getItem(STORAGE_KEYS.SNAN_MUHURATS),
         ]);
 
         if (savedAuth) {
@@ -121,6 +134,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         if (savedShops) setShops(JSON.parse(savedShops));
         if (savedFC) setFactChecks(JSON.parse(savedFC));
         if (savedTickets) setTickets(JSON.parse(savedTickets));
+        if (savedSnan) setSnanMuhurats(JSON.parse(savedSnan));
 
         // Fetch live data from Supabase
         await fetchLiveAdminData();
@@ -132,6 +146,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     };
 
     loadState();
+
 
     // Subscribe to realtime changes
     const sub = AdminSupabaseService.subscribeToAll(() => {
@@ -145,12 +160,13 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchLiveAdminData = async () => {
     try {
-      const [liveRoutes, liveComm, liveShops, liveFC, liveTickets] = await Promise.all([
+      const [liveRoutes, liveComm, liveShops, liveFC, liveTickets, liveSnan] = await Promise.all([
         AdminSupabaseService.fetchRoutes(),
         AdminSupabaseService.fetchCommodities(),
         AdminSupabaseService.fetchShops(),
         AdminSupabaseService.fetchFactChecks(),
         AdminSupabaseService.fetchGrievances(),
+        AdminSupabaseService.fetchSnanMuhurats(),
       ]);
 
       if (liveRoutes) {
@@ -173,10 +189,15 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         setTickets(liveTickets);
         safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(liveTickets));
       }
+      if (liveSnan) {
+        setSnanMuhurats(liveSnan);
+        safeStorage.setItem(STORAGE_KEYS.SNAN_MUHURATS, JSON.stringify(liveSnan));
+      }
     } catch (e) {
       console.warn('Admin fetchLiveAdminData error:', e);
     }
   };
+
 
   // LOGIN AUTHENTICATION (Username: Gaurang, Password: pass123)
   const login = (usernameOrEmail: string, pass: string): { success: boolean; message?: string } => {
@@ -403,6 +424,37 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     await safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(updated));
   };
 
+  // SHAHI SNAN & MUHURAT SCHEDULE CRUD
+  const addSnanMuhurat = async (snan: Omit<AdminSnanMuhurat, 'id' | 'updatedAt'>) => {
+    const serverId = await AdminSupabaseService.insertSnanMuhurat(snan);
+    const newSnan: AdminSnanMuhurat = {
+      ...snan,
+      id: serverId || `snan_${Date.now()}`,
+      updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+    const updated = [...snanMuhurats, newSnan].sort((a, b) => a.orderNum - b.orderNum);
+    setSnanMuhurats(updated);
+    await safeStorage.setItem(STORAGE_KEYS.SNAN_MUHURATS, JSON.stringify(updated));
+  };
+
+  const updateSnanMuhurat = async (snan: AdminSnanMuhurat) => {
+    await AdminSupabaseService.updateSnanMuhurat(snan);
+    const enriched: AdminSnanMuhurat = {
+      ...snan,
+      updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+    const updated = snanMuhurats.map((s) => (s.id === enriched.id ? enriched : s)).sort((a, b) => a.orderNum - b.orderNum);
+    setSnanMuhurats(updated);
+    await safeStorage.setItem(STORAGE_KEYS.SNAN_MUHURATS, JSON.stringify(updated));
+  };
+
+  const deleteSnanMuhurat = async (id: string) => {
+    await AdminSupabaseService.deleteSnanMuhurat(id);
+    const updated = snanMuhurats.filter((s) => s.id !== id);
+    setSnanMuhurats(updated);
+    await safeStorage.setItem(STORAGE_KEYS.SNAN_MUHURATS, JSON.stringify(updated));
+  };
+
   // Dynamic Dashboard Stats
   const stats = {
     activeRoutesCount: routes.filter((r: AdminRouteFare) => r.status === 'ACTIVE').length,
@@ -415,6 +467,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       (acc: number, t: AdminGrievanceTicket) => acc + (t.penaltyAmount || 0),
       0
     ),
+    snanDatesCount: snanMuhurats.length,
   };
 
   return (
@@ -447,6 +500,10 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         tickets,
         addTicket,
         updateTicketStatus,
+        snanMuhurats,
+        addSnanMuhurat,
+        updateSnanMuhurat,
+        deleteSnanMuhurat,
         refreshAll: fetchLiveAdminData,
         stats,
       }}
@@ -454,6 +511,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AdminContext.Provider>
   );
+
 };
 
 export const useAdmin = () => {

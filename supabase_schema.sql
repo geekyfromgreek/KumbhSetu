@@ -193,7 +193,36 @@ CREATE TABLE IF NOT EXISTS public.pilgrim_inquiries (
 );
 
 -- ------------------------------------------------------------------------------
--- 10. REALTIME REPLICATION SETUP (For instant cross-app syncing)
+-- 10. SHAHI SNAN & AUSPICIOUS MUHURATS (Managed by Admin -> Realtime Streamed to Pilgrims)
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.snan_muhurats (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    title_hi TEXT,
+    title_mr TEXT,
+    snan_date TEXT NOT NULL,
+    muhurat_time TEXT NOT NULL,
+    ghat_location TEXT NOT NULL,
+    importance TEXT,
+    crowd_level TEXT NOT NULL DEFAULT 'Extreme' CHECK (crowd_level IN ('Moderate', 'High', 'Extreme')),
+    is_major BOOLEAN DEFAULT TRUE,
+    order_num INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Seed Official Shahi Snan Dates
+INSERT INTO public.snan_muhurats (title, title_hi, title_mr, snan_date, muhurat_time, ghat_location, importance, crowd_level, is_major, order_num)
+VALUES
+('1st Shahi Snan (Makar Sankranti)', 'प्रथम शाही स्नान (मकर संक्रांति)', 'पहिला शाही स्नान (मकर संक्रांती)', '14 January 2027', '04:15 AM – 08:30 AM (Brahma Muhurat)', 'Ramkund (Nashik) & Kushavarta (Trimbakeshwar)', 'Opening Royal Holy Dip of Maha Kumbh by all Akhadas followed by Yatris.', 'Extreme', TRUE, 1),
+('2nd Shahi Snan (Mauni Amavasya)', 'द्वितीय शाही स्नान (मौनी अमावस्या)', 'दुसरा शाही स्नान (मौनी अमावस्या)', '06 February 2027', '03:45 AM – 09:15 AM (Amrit Vela)', 'Ramkund, Nashik & Godavari Sangam', 'The Most Auspicious Royal Bathing Day of the 12-Year Kumbh Cycle.', 'Extreme', TRUE, 2),
+('3rd Shahi Snan (Basant Panchami)', 'तृतीय शाही स्नान (बसंत पंचमी)', 'तिसरा शाही स्नान (वसंत पंचमी)', '12 February 2027', '05:00 AM – 10:00 AM', 'Kushavarta Kund (Trimbakeshwar)', 'Sacred Akharas procession dedicated to Lord Shiva and Maa Saraswati.', 'High', TRUE, 3),
+('Maghi Purnima Snan', 'माघी पूर्णिमा पवित्र स्नान', 'माघी पौर्णिमा पवित्र स्नान', '21 February 2027', '04:30 AM – 09:00 AM', 'Ramkund, Nashik', 'Kalpavas Purnahuti & Divine Godavari Aarti Holy Dip.', 'High', FALSE, 4),
+('Maha Shivratri Shahi Snan', 'महाशिवरात्रि महा शाही स्नान', 'महाशिवरात्री महा शाही स्नान', '06 March 2027', '03:30 AM – 11:30 AM (Char Pahar Puja)', 'Trimbakeshwar Jyotirlinga Kushavarta Kund', 'Grand Concluding Royal Snan of Maha Kumbh Nashik–Trimbakeshwar.', 'Extreme', TRUE, 5)
+ON CONFLICT DO NOTHING;
+
+-- ------------------------------------------------------------------------------
+-- 11. REALTIME REPLICATION SETUP (For instant cross-app syncing)
 -- ------------------------------------------------------------------------------
 ALTER PUBLICATION supabase_realtime ADD TABLE public.tariff_routes;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.commodity_prices;
@@ -204,9 +233,10 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.incidents_and_grievances;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.fact_checks_and_rumors;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.volunteer_profiles;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.pilgrim_inquiries;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.snan_muhurats;
 
 -- ------------------------------------------------------------------------------
--- 11. ROW LEVEL SECURITY (RLS) POLICIES - OPEN FOR ANONYMOUS/AUTHENTICATED ACCESS
+-- 12. ROW LEVEL SECURITY (RLS) POLICIES - OPEN FOR ANONYMOUS/AUTHENTICATED ACCESS
 -- ------------------------------------------------------------------------------
 ALTER TABLE public.tariff_routes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.commodity_prices ENABLE ROW LEVEL SECURITY;
@@ -217,6 +247,7 @@ ALTER TABLE public.incidents_and_grievances ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.fact_checks_and_rumors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.volunteer_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pilgrim_inquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.snan_muhurats ENABLE ROW LEVEL SECURITY;
 
 -- Allow unrestricted read & write with the Anon Key for Maha Kumbh client apps
 CREATE POLICY "Allow public all access on tariff_routes" ON public.tariff_routes FOR ALL USING (true) WITH CHECK (true);
@@ -228,9 +259,10 @@ CREATE POLICY "Allow public all access on incidents_and_grievances" ON public.in
 CREATE POLICY "Allow public all access on fact_checks_and_rumors" ON public.fact_checks_and_rumors FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow public all access on volunteer_profiles" ON public.volunteer_profiles FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow public all access on pilgrim_inquiries" ON public.pilgrim_inquiries FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow public all access on snan_muhurats" ON public.snan_muhurats FOR ALL USING (true) WITH CHECK (true);
 
 -- ------------------------------------------------------------------------------
--- 12. STORAGE BUCKET CONFIGURATION FOR 'kumbh-media'
+-- 13. STORAGE BUCKET CONFIGURATION FOR 'kumbh-media'
 -- ------------------------------------------------------------------------------
 INSERT INTO storage.buckets (id, name, public) 
 VALUES ('kumbh-media', 'kumbh-media', true)
@@ -244,3 +276,4 @@ FOR SELECT USING (bucket_id = 'kumbh-media');
 
 CREATE POLICY "Allow public updates to kumbh-media" ON storage.objects 
 FOR UPDATE USING (bucket_id = 'kumbh-media');
+

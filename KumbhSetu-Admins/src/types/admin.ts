@@ -83,3 +83,19 @@ export interface AdminGrievanceTicket {
   actionSummary?: string;
   penaltyAmount?: number;
 }
+
+export interface AdminSnanMuhurat {
+  id: string;
+  title: string;
+  titleHi?: string;
+  titleMr?: string;
+  snanDate: string;
+  muhuratTime: string;
+  ghatLocation: string;
+  importance: string;
+  crowdLevel: 'Moderate' | 'High' | 'Extreme';
+  isMajor: boolean;
+  orderNum: number;
+  updatedAt?: string;
+}
+

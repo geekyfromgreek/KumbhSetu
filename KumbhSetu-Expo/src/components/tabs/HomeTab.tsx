@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -14,12 +14,20 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useApp } from '@/context/AppContext';
 import { KumbhColors } from '@/constants/colors';
+import { SnanScheduleModal } from '@/components/SnanScheduleModal';
 
 export const HomeTab: React.FC = () => {
   const insets = useSafeAreaInsets();
-  const { user, t, setActiveTab, setIsMapModalOpen, setIsLangModalOpen, currentLangMeta, logoutUser } = useApp();
+  const { user, t, setActiveTab, setIsMapModalOpen, setIsLangModalOpen, currentLangMeta, logoutUser, snanMuhurats, language } = useApp();
+  const [isSnanModalOpen, setIsSnanModalOpen] = useState<boolean>(false);
+
+  const nextSnan = snanMuhurats.length > 0 ? snanMuhurats[0] : null;
+  const localizedSnanTitle = nextSnan
+    ? (language === 'hi' && nextSnan.titleHi ? nextSnan.titleHi : language === 'mr' && nextSnan.titleMr ? nextSnan.titleMr : nextSnan.title)
+    : '';
 
   return (
+    <>
     <ScrollView
       style={styles.container}
       contentContainerStyle={[
@@ -75,10 +83,57 @@ export const HomeTab: React.FC = () => {
         </TouchableOpacity>
       </View>
 
+      {/* SHAHI SNAN & MUHURAT STRIP */}
+      {nextSnan && (
+        <TouchableOpacity
+          style={styles.snanLiveCard}
+          onPress={() => setIsSnanModalOpen(true)}
+          activeOpacity={0.85}
+        >
+          <View style={styles.snanLiveHeader}>
+            <View style={styles.snanPillRow}>
+              <View style={styles.royalTag}>
+                <FontAwesome5 name="crown" size={9} color="#B45309" />
+                <Text style={styles.royalTagText}>
+                  {language === 'hi' ? 'शाही स्नान' : language === 'mr' ? 'शाही स्नान' : 'SHAHI SNAN'}
+                </Text>
+              </View>
+              <Text style={styles.snanDateBadge}>{nextSnan.snanDate}</Text>
+            </View>
+
+            <Ionicons name="chevron-forward" size={16} color={KumbhColors.templeBrown} />
+          </View>
+
+          <Text style={styles.snanMainTitle}>{localizedSnanTitle}</Text>
+
+          <View style={styles.snanTimingRow}>
+            <View style={styles.snanTimingItem}>
+              <Ionicons name="time" size={12} color={KumbhColors.riverBlueDark} />
+              <Text style={styles.snanTimingText}>{nextSnan.muhuratTime}</Text>
+            </View>
+            <View style={styles.snanTimingItem}>
+              <Ionicons name="location" size={12} color={KumbhColors.secondaryDark} />
+              <Text style={styles.snanGhatText} numberOfLines={1}>{nextSnan.ghatLocation}</Text>
+            </View>
+          </View>
+
+          <View style={styles.snanFooterAction}>
+            <Text style={styles.snanViewAllText}>
+              {language === 'hi'
+                ? 'सभी 5 शाही स्नान व मुहूर्त वेळा देखें →'
+                : language === 'mr'
+                ? 'सर्व 5 शाही स्नान व मुहूर्त वेळा पहा →'
+                : 'View All 5 Shahi Snan Muhurat Dates →'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
+
       {/* Section Title */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>{t.quickFeatures}</Text>
       </View>
+
 
       {/* Grid of Action Cards */}
       <View style={styles.featuresGrid}>
@@ -157,6 +212,12 @@ export const HomeTab: React.FC = () => {
       </TouchableOpacity>
 
     </ScrollView>
+
+    <SnanScheduleModal
+      visible={isSnanModalOpen}
+      onClose={() => setIsSnanModalOpen(false)}
+    />
+    </>
   );
 };
 
@@ -168,6 +229,97 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
   },
+  snanLiveCard: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#FDE68A',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 14,
+    shadowColor: '#F59E0B',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  snanLiveHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  snanPillRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  royalTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: '#FEF3C7',
+    borderWidth: 1,
+    borderColor: '#FDE68A',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+  },
+  royalTagText: {
+    fontSize: 9.5,
+    fontFamily: 'Poppins_700Bold',
+    color: '#B45309',
+  },
+  snanDateBadge: {
+    fontSize: 10.5,
+    fontFamily: 'Poppins_700Bold',
+    color: KumbhColors.primary,
+    backgroundColor: '#FFFBEB',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+  },
+  snanMainTitle: {
+    fontSize: 13.5,
+    fontFamily: 'Poppins_700Bold',
+    color: KumbhColors.templeDark,
+    marginBottom: 6,
+  },
+  snanTimingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 8,
+  },
+  snanTimingItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    flex: 1,
+  },
+  snanTimingText: {
+    fontSize: 10.5,
+    fontFamily: 'Poppins_500Medium',
+    color: KumbhColors.riverBlueDark,
+    flex: 1,
+  },
+  snanGhatText: {
+    fontSize: 10.5,
+    fontFamily: 'Poppins_500Medium',
+    color: KumbhColors.textSecondary,
+    flex: 1,
+  },
+  snanFooterAction: {
+    borderTopWidth: 1,
+    borderTopColor: '#FEF3C7',
+    paddingTop: 6,
+    marginTop: 2,
+  },
+  snanViewAllText: {
+    fontSize: 11,
+    fontFamily: 'Poppins_600SemiBold',
+    color: KumbhColors.primaryDark,
+  },
+
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -2,6 +2,8 @@ import { supabase } from '@/lib/supabase';
 import { RouteFare, StandardPriceItem } from '@/data/fareData';
 import { RumorFactCheck } from '@/data/complaintsAndRumorsData';
 import { MarketplaceItem } from '@/data/marketplaceData';
+import { SnanMuhurat } from '@/data/snanData';
+
 
 function resolveValidHttpImageUrl(url?: string, category: string = 'food'): string {
   if (url && (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:image/'))) {
@@ -358,6 +360,39 @@ export const SupabaseService = {
     }
   },
 
+  // Fetch Snan Muhurat auspicious timings
+  async fetchSnanMuhurats(): Promise<SnanMuhurat[] | null> {
+    try {
+      const { data, error } = await supabase
+        .from('snan_muhurats')
+        .select('*')
+        .order('order_num', { ascending: true });
+
+      if (error) {
+        // Table not created yet in Supabase schema cache
+        return null;
+      }
+      if (!data || data.length === 0) return null;
+
+      return data.map((row: any) => ({
+        id: String(row.id),
+        title: row.title,
+        titleHi: row.title_hi || row.title,
+        titleMr: row.title_mr || row.title,
+        snanDate: row.snan_date || row.date,
+        muhuratTime: row.muhurat_time,
+        ghatLocation: row.ghat_location,
+        importance: row.importance || '',
+        crowdLevel: row.crowd_level || 'High',
+        isMajor: row.is_major !== false,
+        orderNum: Number(row.order_num) || 0,
+      }));
+    } catch (e) {
+      return null;
+    }
+  },
+
+
   // Realtime Subscriptions
   subscribeToTariffs(callback: () => void) {
     return supabase
@@ -388,4 +423,14 @@ export const SupabaseService = {
       })
       .subscribe();
   },
+
+  subscribeToSnanMuhurats(callback: () => void) {
+    return supabase
+      .channel('public:snan_muhurats')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'snan_muhurats' }, () => {
+        callback();
+      })
+      .subscribe();
+  },
 };
+
