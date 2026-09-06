@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: kumbhsetu-api
+    runtime: python
+    rootDir: kumbh-setu/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SUPABASE_URL
+        value: https://asparwhkzpnnittnhsic.supabase.co
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.9

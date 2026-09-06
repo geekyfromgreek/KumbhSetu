@@ -398,13 +398,15 @@
     const container = document.getElementById('listing-container');
     const searchInput = document.getElementById('marketplace-search');
     let currentCategory = 'all';
-    let currentVerificationFilter = 'all';
-
+    
     const defaultImages = {
       rickshaw_bus: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i',
-      hotel: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB30zpB-hrkYsOuz8hE7UUk4J8kcy65o3ezQbegGiEI79xS4snHA2RnKchpl96NdSGLLV_Hll38YU6O0ZbFdRa5lAF8InAh7hXEHfh10JyK5ZiNtKm_QW_GPZVC1z1I5Pa_2xsyqu1Brj2kbZcESIteGU6mdxOSj_GsF0MSlyqqt9jDbTGcshSxKChZQ9pg-CO1Iieurx6IsfrQI5Jql63SFugU1t0RpihFTU2m5BFKoQHZNVl-ja12',
-      eatery: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB30zpB-hrkYsOuz8hE7UUk4J8kcy65o3ezQbegGiEI79xS4snHA2RnKchpl96NdSGLLV_Hll38YU6O0ZbFdRa5lAF8InAh7hXEHfh10JyK5ZiNtKm_QW_GPZVC1z1I5Pa_2xsyqu1Brj2kbZcESIteGU6mdxOSj_GsF0MSlyqqt9jDbTGcshSxKChZQ9pg-CO1Iieurx6IsfrQI5Jql63SFugU1t0RpihFTU2m5BFKoQHZNVl-ja12',
-      local_guide: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i'
+      hotel: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDBvRtTo8Hc8XLQBeXVsvLQ7pcqJ_HA2X-RJQrU30y8qf6YgAv0nlcA91tQ8GCrWsiqmrMAcyuaFWajfTIPeOK7OifQ43Aj97riZC0x0NOBYDrGN4UN96-2Tm1L1MudxQEvkELSSmfI6qA1A5oftJ7j5KkxyIfChMbQwxlWnvGNTwjvNaNUBTZtnXXWZ0jOOdme9F24AVmd28W_oz9KwIgDZbul_ONeEllS933nzxcb56DUeK6b5GcE',
+      stay: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDBvRtTo8Hc8XLQBeXVsvLQ7pcqJ_HA2X-RJQrU30y8qf6YgAv0nlcA91tQ8GCrWsiqmrMAcyuaFWajfTIPeOK7OifQ43Aj97riZC0x0NOBYDrGN4UN96-2Tm1L1MudxQEvkELSSmfI6qA1A5oftJ7j5KkxyIfChMbQwxlWnvGNTwjvNaNUBTZtnXXWZ0jOOdme9F24AVmd28W_oz9KwIgDZbul_ONeEllS933nzxcb56DUeK6b5GcE',
+      eatery: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGwmbCj0Ifn3BYAPD4K_XCfXdRboK8K6SockZcPrj8Xj1sGzlL_3HAp5KTRa39nFa2oqLx2CIEEzqJ7T_TIB161mqaboBpE-XNlG7SKnK53bMb9R5bNSZ5JSsEU4xM-iWe6xBno0fH76J3wfIIj0aZKFp0jqRRq1uiNjcD6H6SyR98cW5KgVkUAl1v52HL_gVBJ9T9HsPbNNBXV2wLwXa1EuAcHhT8n8mjmOQKuk1rdl7gRQOpkBMR',
+      food: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGwmbCj0Ifn3BYAPD4K_XCfXdRboK8K6SockZcPrj8Xj1sGzlL_3HAp5KTRa39nFa2oqLx2CIEEzqJ7T_TIB161mqaboBpE-XNlG7SKnK53bMb9R5bNSZ5JSsEU4xM-iWe6xBno0fH76J3wfIIj0aZKFp0jqRRq1uiNjcD6H6SyR98cW5KgVkUAl1v52HL_gVBJ9T9HsPbNNBXV2wLwXa1EuAcHhT8n8mjmOQKuk1rdl7gRQOpkBMR',
+      bazaar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBufV6wZdE5eZVXilcgi3tgs27UYY850uRIe7N8zLVo0H_Z6_bXRw5XtPeU25cztl4DOZWkvBX0CND1HQyW9zBGM_ZP48kjBE5XicamQJc2-tZdNXMEHp3X0kiRqky-Bj-pyFWC11cmcwUfT4V-7QFQC5Vr00OxEvvprSFAynqYq_66xPBNFsonQ3x16PWfnjj1u6qA4V6FWvpnOs5M2JCVKyih0mpF5FgvK3sH6bckdAzW-isiXALt',
+      local_guide: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB30zpB-hrkYsOuz8hE7UUk4J8kcy65o3ezQbegGiEI79xS4snHA2RnKchpl96NdSGLLV_Hll38YU6O0ZbFdRa5lAF8InAh7hXEHfh10JyK5ZiNtKm_QW_GPZVC1z1I5Pa_2xsyqu1Brj2kbZcESIteGU6mdxOSj_GsF0MSlyqqt9jDbTGcshSxKChZQ9pg-CO1Iieurx6IsfrQI5Jql63SFugU1t0RpihFTU2m5BFKoQHZNVl-ja12'
     };
 
     // Verification storage helper (like KumbhAarambh)
@@ -558,7 +560,7 @@
     function renderCard(item, index = 0) {
       const cat = item.category || 'eatery';
       const pricing = getPricingInfo(item, index);
-      const imgUrl = defaultImages[cat] || defaultImages.eatery;
+      const imgUrl = item.image_url || defaultImages[cat] || defaultImages.eatery;
       const rating = item.rating ? item.rating.toFixed(1) + ' ★' : '4.6 ★';
       
       const destinationQuery = encodeURIComponent(item.name + ', ' + (item.address || 'Nashik, Maharashtra'));
@@ -654,7 +656,7 @@
       const rating = guide.rating ? guide.rating.toFixed(1) + ' ★' : '4.9 ★';
       const reviews = guide.review_count || 148;
       const languages = Array.isArray(guide.languages_spoken) ? guide.languages_spoken.join(', ') : 'Marathi, Hindi, English';
-      const imgUrl = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i';
+      const imgUrl = guide.image_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i';
       
       const destinationQuery = encodeURIComponent(guide.name + ', ' + (guide.base_location_name || 'Ramkund Ghat, Nashik'));
       const directMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destinationQuery}`;
@@ -667,102 +669,265 @@
       const callUrl = `tel:${rawPhone}`;
       const detailUrl = `guide_detail.html?id=${encodeURIComponent(guide.id)}`;
 
-          const verifiedList = getUserVerifiedItems();
-          const isUserVerified = verifiedList.includes(guide.id);
-          const isSeedVerified = guide.verified !== undefined ? guide.verified : (guide.name.length % 2 === 0);
-          const isVerified = isUserVerified || isSeedVerified;
-          const auditCount = isUserVerified ? 35 : (isSeedVerified ? (18 + (guide.name.length * 5) % 40) : 0);
-          const verifiersList = ['Kumbhveer Omkar Patil (Sandip Univ)', 'Nashikkar Rohan Joshi', 'Kumbhveer Divya Shinde', 'Nashikkar Sneha Deshmukh'];
-          const verifierName = verifiersList[guide.name.length % verifiersList.length];
+      const verifiedList = getUserVerifiedItems();
+      const isUserVerified = verifiedList.includes(guide.id);
+      const isSeedVerified = guide.verified !== undefined ? guide.verified : (guide.name.length % 2 === 0);
+      const isVerified = isUserVerified || isSeedVerified;
+      const auditCount = isUserVerified ? 35 : (isSeedVerified ? (18 + (guide.name.length * 5) % 40) : 0);
+      const verifiersList = ['Kumbhveer Omkar Patil (Sandip Univ)', 'Nashikkar Rohan Joshi', 'Kumbhveer Divya Shinde', 'Nashikkar Sneha Deshmukh'];
+      const verifierName = verifiersList[guide.name.length % verifiersList.length];
 
-          const guideVerifHtml = isVerified
-            ? `<div class="flex items-center justify-between gap-space-xs py-1 px-2.5 rounded-lg bg-green-50 text-green-900 border border-green-200">
-                <div class="flex items-center gap-1.5 min-w-0">
-                  <span class="material-symbols-outlined text-green-700 text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
-                  <span class="font-label-md text-label-md font-bold text-green-800 truncate">✓ Certified Rate (${auditCount} Audits)</span>
-                </div>
-                <span class="text-[10px] text-green-700 font-semibold truncate">by ${verifierName.split(' ')[0]}</span>
-              </div>`
-            : `<div class="flex items-center justify-between gap-space-xs py-1.5 px-2.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200">
-                <div class="flex items-center gap-1.5 min-w-0">
-                  <span class="material-symbols-outlined text-amber-700 text-[18px]">warning</span>
-                  <span class="font-label-md text-label-md font-bold text-amber-800 truncate">⚠️ Unverified Rate • Not Audited</span>
-                </div>
-                <button type="button" onclick="toggleVerifyRate('${guide.id}', event)" class="px-2 py-0.5 rounded bg-amber-600 text-white font-label-sm text-[10px] font-bold shrink-0 hover:bg-amber-700 shadow-sm flex items-center gap-0.5">
-                  <span class="material-symbols-outlined text-xs">how_to_reg</span>
-                  <span>Verify Rate</span>
-                </button>
-              </div>`;
-
-          return `
-          <article class="listing-card bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col transition-all cursor-pointer ${isVerified ? '' : 'border border-amber-200'}" onclick="window.location.href='${detailUrl}'">
-            <div class="relative h-40 w-full bg-surface-container">
-              <img class="w-full h-full object-cover" src="${imgUrl}" alt="${guide.name}"/>
-              <div class="absolute top-space-xs left-space-xs flex items-center gap-1 bg-surface-container-lowest/95 backdrop-blur-sm text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full shadow-sm">
-                <span class="material-symbols-outlined text-[14px]">how_to_reg</span>
-                <span class="uppercase tracking-wider font-semibold">Local Guide</span>
-              </div>
-              <div class="absolute bottom-space-xs right-space-xs bg-surface-container-highest/90 backdrop-blur-sm px-2 py-0.5 rounded font-label-sm text-label-sm text-on-surface">
-                ${rating} (${reviews} reviews)
-              </div>
+      const guideVerifHtml = isVerified
+        ? `<div class="flex items-center justify-between gap-space-xs py-1 px-2.5 rounded-lg bg-green-50 text-green-900 border border-green-200">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="material-symbols-outlined text-green-700 text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+              <span class="font-label-md text-label-md font-bold text-green-800 truncate">✓ Certified Rate (${auditCount} Audits)</span>
             </div>
-            <div class="p-space-sm flex flex-col gap-space-xs">
-              <div class="flex items-start justify-between gap-space-xs">
-                <div class="min-w-0 flex-1">
-                  <h2 class="font-headline-sm text-headline-sm text-on-surface truncate font-bold">${guide.name}</h2>
-                  <p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5 truncate">
-                    <span class="material-symbols-outlined text-[15px] text-outline">translate</span>
-                    <span class="truncate">${languages}</span>
-                  </p>
-                </div>
-              </div>
-              
-              ${guideVerifHtml}
-
-              <div class="flex items-center gap-space-xs py-1.5 px-2.5 rounded-lg bg-primary/10 text-primary">
-                <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">shield_person</span>
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="font-label-md text-label-md font-bold text-primary">Identity Confirmed via Selfie</span>
-                  <span class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">• Govt ID Verified</span>
-                </div>
-              </div>
-              <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
-                <div class="flex flex-col pl-space-2xs">
-                  <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-                    <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span> Listed Rate
-                  </span>
-                  <span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹120 - ₹180 <span class="text-xs font-normal text-on-surface-variant">/ hour</span></span>
-                </div>
-                <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
-                  <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
-                    <span>Status</span>
-                    <span class="${isVerified ? 'text-green-700' : 'text-amber-700'} font-semibold text-xs">${isVerified ? 'Audited' : 'Unverified'}</span>
-                  </span>
-                  <span class="font-label-md text-label-md ${isVerified ? 'text-primary' : 'text-amber-700'} font-bold">${isVerified ? 'Fair Rate' : 'Pending'}</span>
-                </div>
-              </div>
-              <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
-                <span class="material-symbols-outlined text-[16px] text-secondary">pin_drop</span>
-                <span class="truncate">Base: ${guide.base_location_name || 'Ramkund Ghat Base Point (150m)'}</span>
-              </div>
-              <div class="grid grid-cols-3 gap-space-2xs pt-space-xs mt-space-2xs">
-                <a class="w-full h-11 rounded-lg bg-green-700 text-white font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all shadow-sm cursor-pointer hover:bg-green-800" href="${waUrl}" target="_blank" onclick="event.stopPropagation();">
-                  <span class="material-symbols-outlined text-[17px]">chat</span>
-                  <span>WhatsApp</span>
-                </a>
-                <a class="w-full h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all border border-outline-variant/40 cursor-pointer hover:bg-surface-variant" href="${callUrl}" onclick="event.stopPropagation();">
-                  <span class="material-symbols-outlined text-[17px] text-primary">call</span>
-                  <span>Call</span>
-                </a>
-                <button class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-transform shadow-sm cursor-pointer hover:bg-primary-container" onclick="event.stopPropagation(); window.location.href='${detailUrl}'">
-                  <span class="material-symbols-outlined text-[17px]">person</span>
-                  <span>Book Guide</span>
-                </button>
-              </div>
+            <span class="text-[10px] text-green-700 font-semibold truncate">by ${verifierName.split(' ')[0]}</span>
+          </div>`
+        : `<div class="flex items-center justify-between gap-space-xs py-1.5 px-2.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="material-symbols-outlined text-amber-700 text-[18px]">warning</span>
+              <span class="font-label-md text-label-md font-bold text-amber-800 truncate">⚠️ Unverified Rate • Not Audited</span>
             </div>
-          </article>
-          `;
+            <button type="button" onclick="toggleVerifyRate('${guide.id}', event)" class="px-2 py-0.5 rounded bg-amber-600 text-white font-label-sm text-[10px] font-bold shrink-0 hover:bg-amber-700 shadow-sm flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-xs">how_to_reg</span>
+              <span>Verify Rate</span>
+            </button>
+          </div>`;
+
+      return `
+      <article class="listing-card bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col transition-all cursor-pointer ${isVerified ? '' : 'border border-amber-200'}" onclick="window.location.href='${detailUrl}'">
+        <div class="relative h-40 w-full bg-surface-container">
+          <img class="w-full h-full object-cover" src="${imgUrl}" alt="${guide.name}"/>
+          <div class="absolute top-space-xs left-space-xs flex items-center gap-1 bg-surface-container-lowest/95 backdrop-blur-sm text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full shadow-sm">
+            <span class="material-symbols-outlined text-[14px]">how_to_reg</span>
+            <span class="uppercase tracking-wider font-semibold">Local Guide</span>
+          </div>
+          <div class="absolute bottom-space-xs right-space-xs bg-surface-container-highest/90 backdrop-blur-sm px-2 py-0.5 rounded font-label-sm text-label-sm text-on-surface">
+            ${rating} (${reviews} reviews)
+          </div>
+        </div>
+        <div class="p-space-sm flex flex-col gap-space-xs">
+          <div class="flex items-start justify-between gap-space-xs">
+            <div class="min-w-0 flex-1">
+              <h2 class="font-headline-sm text-headline-sm text-on-surface truncate font-bold">${guide.name}</h2>
+              <p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5 truncate">
+                <span class="material-symbols-outlined text-[15px] text-outline">translate</span>
+                <span class="truncate">${languages}</span>
+              </p>
+            </div>
+          </div>
+          
+          ${guideVerifHtml}
+
+          <div class="flex items-center gap-space-xs py-1.5 px-2.5 rounded-lg bg-primary/10 text-primary">
+            <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="font-label-md text-label-md font-bold text-primary">Identity Confirmed via Selfie</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">• Govt ID Verified</span>
+            </div>
+          </div>
+          <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
+            <div class="flex flex-col pl-space-2xs">
+              <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span> Listed Rate
+              </span>
+              <span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹120 - ₹180 <span class="text-xs font-normal text-on-surface-variant">/ hour</span></span>
+            </div>
+            <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
+              <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
+                <span>Status</span>
+                <span class="${isVerified ? 'text-green-700' : 'text-amber-700'} font-semibold text-xs">${isVerified ? 'Audited' : 'Unverified'}</span>
+              </span>
+              <span class="font-label-md text-label-md ${isVerified ? 'text-primary' : 'text-amber-700'} font-bold">${isVerified ? 'Fair Rate' : 'Pending'}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+            <span class="material-symbols-outlined text-[16px] text-secondary">pin_drop</span>
+            <span class="truncate">Base: ${guide.base_location_name || 'Ramkund Ghat Base Point (150m)'}</span>
+          </div>
+          <div class="grid grid-cols-3 gap-space-2xs pt-space-xs mt-space-2xs">
+            <a class="w-full h-11 rounded-lg bg-green-700 text-white font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all shadow-sm cursor-pointer hover:bg-green-800" href="${waUrl}" target="_blank" onclick="event.stopPropagation();">
+              <span class="material-symbols-outlined text-[17px]">chat</span>
+              <span>WhatsApp</span>
+            </a>
+            <a class="w-full h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all border border-outline-variant/40 cursor-pointer hover:bg-surface-variant" href="${callUrl}" onclick="event.stopPropagation();">
+              <span class="material-symbols-outlined text-[17px] text-primary">call</span>
+              <span>Call</span>
+            </a>
+            <button class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-transform shadow-sm cursor-pointer hover:bg-primary-container" onclick="event.stopPropagation(); window.location.href='${detailUrl}'">
+              <span class="material-symbols-outlined text-[17px]">person</span>
+              <span>Book Guide</span>
+            </button>
+          </div>
+        </div>
+      </article>
+      `;
     }
+
+    const curatedBazaarProducts = [
+      {
+        id: 'bz-1',
+        name: 'Shree Ram Holy Ganga Jal & Maha-Puja Samagri Kit',
+        category: 'bazaar',
+        subcategory: 'Puja Samagri & Gangajal',
+        address: 'Stall #24, Ramkund Ghat Marg, Panchavati, Nashik',
+        phone: '02532514411',
+        rating: 4.9,
+        reviews: 142,
+        reference_price: 150,
+        reported_price: 150,
+        verified: true,
+        verified_count: 38,
+        verifier: 'Kumbhveer Divya Shinde (KTHM College)',
+        badge: '✓ Kumbhveer Verified Stall (38)',
+        item_list: 'Copper Lota (तांब्या), Ganga Jal Sealed Brass Flask (गंगाजल), Sandalwood Tika (चंदन), Camphor (कापूर), Hawan Dhoop (धूप), Haldi-Kumkum',
+        stock: 'Fresh Batch In-Stock (85 kits)',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDBvRtTo8Hc8XLQBeXVsvLQ7pcqJ_HA2X-RJQrU30y8qf6YgAv0nlcA91tQ8GCrWsiqmrMAcyuaFWajfTIPeOK7OifQ43Aj97riZC0x0NOBYDrGN4UN96-2Tm1L1MudxQEvkELSSmfI6qA1A5oftJ7j5KkxyIfChMbQwxlWnvGNTwjvNaNUBTZtnXXWZ0jOOdme9F24AVmd28W_oz9KwIgDZbul_ONeEllS933nzxcb56DUeK6b5GcE',
+        description: 'Complete all-in-one Godavari sacred ritual kit with certified sealed Brahmagiri Gangajal, pure copper lota, naturally sourced Mysore chandan, and aromatic camphor.'
+      },
+      {
+        id: 'bz-2',
+        name: 'Panchavati Pure Brass Shiva Kalash & Panchpatra Set',
+        category: 'bazaar',
+        subcategory: 'Brass Craft & Kalash',
+        address: 'Stall #12, Kapaleshwar Mandir Steps, Nashik',
+        phone: '02532518822',
+        rating: 4.8,
+        reviews: 96,
+        reference_price: 250,
+        reported_price: 260,
+        verified: true,
+        verified_count: 24,
+        verifier: 'Nashikkar Rohan Joshi (Panchavati)',
+        badge: '✓ Nashikkar Verified (24)',
+        item_list: 'Hand-carved Pure Brass Shiva Kalash (कलश), Panchpatra with Achmani Spoon (पंचपात्र), Brass Diya (नंदादीप), Handheld Aarti Stand',
+        stock: 'Artisan Direct Workshop Rates (40 units)',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBufV6wZdE5eZVXilcgi3tgs27UYY850uRIe7N8zLVo0H_Z6_bXRw5XtPeU25cztl4DOZWkvBX0CND1HQyW9zBGM_ZP48kjBE5XicamQJc2-tZdNXMEHp3X0kiRqky-Bj-pyFWC11cmcwUfT4V-7QFQC5Vr00OxEvvprSFAynqYq_66xPBNFsonQ3x16PWfnjj1u6qA4V6FWvpnOs5M2JCVKyih0mpF5FgvK3sH6bckdAzW-isiXALt',
+        description: 'Heavy solid brass ritual vessels crafted by fourth-generation Nashik coppersmiths. Resistant to tarnish, includes traditional leaf engraving.'
+      },
+      {
+        id: 'bz-3',
+        name: 'Godavari Lab-Certified 5-Mukhi Rudraksha & Sphatik Mala',
+        category: 'bazaar',
+        subcategory: 'Sacred Beads & Rudraksha',
+        address: 'Stall #08, Sita Gufa Chowk, Panchavati, Nashik',
+        phone: '02532520033',
+        rating: 4.9,
+        reviews: 210,
+        reference_price: 180,
+        reported_price: 180,
+        verified: true,
+        verified_count: 52,
+        verifier: 'Kumbhveer Omkar Patil (Sandip Univ)',
+        badge: '✓ Lab Certified Authentic (52)',
+        item_list: 'Original 5-Mukhi 108+1 Rudraksha Mala (रुद्राक्ष माळ), Pure Tulsi Kanthi Mala (तुळशी माळ), Sphatik Pocket Shivalinga (स्फटिक शिवलिंग)',
+        stock: 'Lab Certificate Included (120 units)',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGwmbCj0Ifn3BYAPD4K_XCfXdRboK8K6SockZcPrj8Xj1sGzlL_3HAp5KTRa39nFa2oqLx2CIEEzqJ7T_TIB161mqaboBpE-XNlG7SKnK53bMb9R5bNSZ5JSsEU4xM-iWe6xBno0fH76J3wfIIj0aZKFp0jqRRq1uiNjcD6H6SyR98cW5KgVkUAl1v52HL_gVBJ9T9HsPbNNBXV2wLwXa1EuAcHhT8n8mjmOQKuk1rdl7gRQOpkBMR',
+        description: 'X-Ray density tested authentic 5-mukhi natural Himalayan Rudraksha beads strung on strong cotton cord. Energized with Trimbakeshwar Mahamrityunjaya chants.'
+      },
+      {
+        id: 'bz-4',
+        name: 'Trimbakeshwar Beaten Pure Copper Tamra-Patra & Diya Set',
+        category: 'bazaar',
+        subcategory: 'Pure Copper Vessels',
+        address: 'Stall #03, Kushavarta Ghat Lane, Trimbakeshwar',
+        phone: '02532588110',
+        rating: 4.8,
+        reviews: 78,
+        reference_price: 320,
+        reported_price: 340,
+        verified: true,
+        verified_count: 19,
+        verifier: 'Kumbhveer Sneha Deshmukh',
+        badge: '✓ Kumbhveer Verified (19)',
+        item_list: '1.2L Pure Hammered Copper Jug, 2 Embossed Copper Tumblers, Heavy Brass Akhand Diya with Glass Chimney',
+        stock: 'Direct Coppersmith Pricing (30 sets)',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBufV6wZdE5eZVXilcgi3tgs27UYY850uRIe7N8zLVo0H_Z6_bXRw5XtPeU25cztl4DOZWkvBX0CND1HQyW9zBGM_ZP48kjBE5XicamQJc2-tZdNXMEHp3X0kiRqky-Bj-pyFWC11cmcwUfT4V-7QFQC5Vr00OxEvvprSFAynqYq_66xPBNFsonQ3x16PWfnjj1u6qA4V6FWvpnOs5M2JCVKyih0mpF5FgvK3sH6bckdAzW-isiXALt',
+        description: 'Ayurvedic grade pure 99.4% copper hammered drinkware set for storing sacred Trimbakeshwar water. Proven health benefits and authentic artisan finish.'
+      },
+      {
+        id: 'bz-5',
+        name: 'Nashik Authentic Prasad Box, Dry Fruit Peda & Agarbatti',
+        category: 'bazaar',
+        subcategory: 'Prasad & Agarbatti',
+        address: 'Stall #31, Tapovan Sadhu Gram Bazar, Nashik',
+        phone: '02532529944',
+        rating: 4.9,
+        reviews: 310,
+        reference_price: 90,
+        reported_price: 90,
+        verified: true,
+        verified_count: 65,
+        verifier: 'Nashik Municipal Corporation Fair Stall Cell',
+        badge: '✓ Subsidized Civic Rate (65)',
+        item_list: '250g Pure Mawa Nashik Peda (पेढा), Dry Fruit Panchamrit Prasad, Cow Ghee Diya Wicks (गाय तुपाची वात), Natural Rose Agarbatti',
+        stock: 'Fresh Daily Stock (200 boxes)',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB30zpB-hrkYsOuz8hE7UUk4J8kcy65o3ezQbegGiEI79xS4snHA2RnKchpl96NdSGLLV_Hll38YU6O0ZbFdRa5lAF8InAh7hXEHfh10JyK5ZiNtKm_QW_GPZVC1z1I5Pa_2xsyqu1Brj2kbZcESIteGU6mdxOSj_GsF0MSlyqqt9jDbTGcshSxKChZQ9pg-CO1Iieurx6IsfrQI5Jql63SFugU1t0RpihFTU2m5BFKoQHZNVl-ja12',
+        description: 'FSSAI certified sacred temple prasad prepared in pure Desi cow ghee. High quality packaging preserving freshness for traveling yatris.'
+      },
+      {
+        id: 'bz-6',
+        name: 'Saffron Handloom Peetambar Dhoti & Angavastram Ritual Set',
+        category: 'bazaar',
+        subcategory: 'Spiritual Handloom Apparel',
+        address: 'Stall #18, Main Godavari Ghat Road, Panchavati',
+        phone: '02532501988',
+        rating: 4.8,
+        reviews: 84,
+        reference_price: 220,
+        reported_price: 220,
+        verified: true,
+        verified_count: 31,
+        verifier: 'Nashikkar Sneha Deshmukh',
+        badge: '✓ Handloom Certified (31)',
+        item_list: '100% Cotton 4-meter Saffron Dhoti (सोवळे), Red Border Uttariya Shawl (उपरणे), Natural Chandan Paste Stick',
+        stock: 'Pure Cotton Handloom (60 sets)',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDBvRtTo8Hc8XLQBeXVsvLQ7pcqJ_HA2X-RJQrU30y8qf6YgAv0nlcA91tQ8GCrWsiqmrMAcyuaFWajfTIPeOK7OifQ43Aj97riZC0x0NOBYDrGN4UN96-2Tm1L1MudxQEvkELSSmfI6qA1A5oftJ7j5KkxyIfChMbQwxlWnvGNTwjvNaNUBTZtnXXWZ0jOOdme9F24AVmd28W_oz9KwIgDZbul_ONeEllS933nzxcb56DUeK6b5GcE',
+        description: 'Traditional Vedic ritual attire made from pure breathable Nashik handloom cotton. Ideal for holy dip bathing at Ramkund and temple sanctum darshan.'
+      },
+      {
+        id: 'bz-7',
+        name: 'Panchavati Ayurvedic Kadha, Triphala & Desi Cow Ghee Pack',
+        category: 'bazaar',
+        subcategory: 'Ayurvedic & Sacred Herbs',
+        address: 'Stall #05, Ayurvedic Seva Sangh Marg, Ganjmal, Nashik',
+        phone: '02532573322',
+        rating: 4.9,
+        reviews: 165,
+        reference_price: 140,
+        reported_price: 150,
+        verified: true,
+        verified_count: 42,
+        verifier: 'Kumbhveer Dr. Amit Kulkarni',
+        badge: '✓ GMP Certified Herbs (42)',
+        item_list: 'Simhastha Immunity Herbal Kadha (आयुष काढा), Organic Triphala Churna (त्रिफळा), 250ml A2 Desi Gir Cow Bilona Ghee',
+        stock: 'Fresh Herb Harvest (75 packs)',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGwmbCj0Ifn3BYAPD4K_XCfXdRboK8K6SockZcPrj8Xj1sGzlL_3HAp5KTRa39nFa2oqLx2CIEEzqJ7T_TIB161mqaboBpE-XNlG7SKnK53bMb9R5bNSZ5JSsEU4xM-iWe6xBno0fH76J3wfIIj0aZKFp0jqRRq1uiNjcD6H6SyR98cW5KgVkUAl1v52HL_gVBJ9T9HsPbNNBXV2wLwXa1EuAcHhT8n8mjmOQKuk1rdl7gRQOpkBMR',
+        description: 'Formulated by certified Nashik Ayurvedic Vaidyas to protect pilgrims against seasonal climate changes during holy river dip. 100% organic.'
+      },
+      {
+        id: 'bz-8',
+        name: 'Godavari Silver-Plated Ram Darbar Coin & Shreem Yantra',
+        category: 'bazaar',
+        subcategory: 'Sacred Mementos & Yantras',
+        address: 'Stall #15, Kalaram Mandir East Gate, Panchavati',
+        phone: '02532516677',
+        rating: 4.8,
+        reviews: 112,
+        reference_price: 199,
+        reported_price: 199,
+        verified: true,
+        verified_count: 28,
+        verifier: 'Nashikkar Rohan Joshi',
+        badge: '✓ Hallmarked Keepsake (28)',
+        item_list: '999 Pure Silver-Plated Simhastha 2027 Commemorative Coin (राम दरबार नाणे), Sacred Brass Shreem Yantra, Velvet Storage Pouch',
+        stock: 'Limited Kumbh Edition (90 units)',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBufV6wZdE5eZVXilcgi3tgs27UYY850uRIe7N8zLVo0H_Z6_bXRw5XtPeU25cztl4DOZWkvBX0CND1HQyW9zBGM_ZP48kjBE5XicamQJc2-tZdNXMEHp3X0kiRqky-Bj-pyFWC11cmcwUfT4V-7QFQC5Vr00OxEvvprSFAynqYq_66xPBNFsonQ3x16PWfnjj1u6qA4V6FWvpnOs5M2JCVKyih0mpF5FgvK3sH6bckdAzW-isiXALt',
+        description: 'Official souvenir commemorating Kumbh Mela Nashik 2027. Beautifully engraved with Lord Ram, Sita, Lakshman, and Hanuman.'
+      }
+    ];
 
     async function loadDatasetListings(cat, query = '') {
       try {
@@ -780,79 +945,18 @@
         }
 
         if (cat === 'bazaar') {
-          // Curated Local Bazaar & Puja Stalls
-          const bazaarItems = [
-            {
-              id: 'bz-1',
-              name: 'Shree Ram Puja Samagri & Gangajal Bhandar',
-              category: 'bazaar',
-              address: 'Stall #24, Ramkund Ghat Marg, Panchavati, Nashik',
-              phone: '02532514411',
-              rating: 4.9,
-              reference_price: 150,
-              verified: true,
-              verified_count: 32,
-              verifier: 'Kumbhveer Divya Shinde (KTHM College)',
-              badge: '✓ Kumbhveer Verified Stall (32)',
-              item_list: 'Copper Lota, Ganga Jal Brass Flask, Sandalwood, Camphor, Dhoop',
-              stock: 'Fresh Stock Available'
-            },
-            {
-              id: 'bz-2',
-              name: 'Panchavati Brass Kalash & Copper Works',
-              category: 'bazaar',
-              address: 'Stall #12, Kapaleshwar Mandir Steps, Nashik',
-              phone: '02532518822',
-              rating: 4.8,
-              reference_price: 250,
-              verified: false,
-              verified_count: 0,
-              verifier: 'Community Pending',
-              badge: '⚠️ Unverified Stall • Check Rate',
-              item_list: 'Hand-carved Shiva Kalash, Panchpatra, Brass Diya, Aarti Stand',
-              stock: 'Direct Workshop Rates'
-            },
-            {
-              id: 'bz-3',
-              name: 'Godavari Traditional Handicrafts & Rudraksha Kendra',
-              category: 'bazaar',
-              address: 'Stall #08, Sita Gufa Chowk, Panchavati, Nashik',
-              phone: '02532520033',
-              rating: 4.9,
-              reference_price: 180,
-              verified: true,
-              verified_count: 48,
-              verifier: 'Nashikkar Rohan Joshi (Panchavati Resident)',
-              badge: '✓ Nashikkar Verified (48)',
-              item_list: 'Original 5-Mukhi Rudraksha, Tulsi Mala, Saffron Cloth, Sphatik Shivalinga',
-              stock: 'Lab Tested Beads'
-            },
-            {
-              id: 'bz-4',
-              name: 'Nashik Dholak, Agarbatti & Prasad Mandir Stall',
-              category: 'bazaar',
-              address: 'Stall #31, Tapovan Sadhu Gram Bazar, Nashik',
-              phone: '02532529944',
-              rating: 4.7,
-              reference_price: 90,
-              verified: false,
-              verified_count: 0,
-              verifier: 'Community Pending',
-              badge: '⚠️ Unverified Rate • Pilgrim Rep.',
-              item_list: 'Dry Fruits Prasad, Pure Cow Ghee Diya, Bhakti Dhun Audio, Agarbatti Box',
-              stock: 'Subsidized Pilgrim Pack'
-            }
-          ];
+          const filtered = query 
+            ? curatedBazaarProducts.filter(p => p.name.toLowerCase().includes(query.toLowerCase()) || p.item_list.toLowerCase().includes(query.toLowerCase()) || p.address.toLowerCase().includes(query.toLowerCase()))
+            : curatedBazaarProducts;
 
-          container.innerHTML = bazaarItems.map((bz, bzIdx) => {
+          container.innerHTML = filtered.map((bz, bzIdx) => {
             const rawPhone = bz.phone || '02532514411';
             const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
             const waPhone = cleanPhone.startsWith('91') ? cleanPhone : ('91' + (cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone));
-            const waText = encodeURIComponent(`Namaste, I am inquiring about ${bz.name} (${bz.address}) via KumbhSetu Simhastha Portal.`);
+            const waText = encodeURIComponent(`Namaste, I want to order/inquire about "${bz.name}" (Listed at ₹${bz.reference_price}) from ${bz.address} via KumbhSetu.`);
             const waUrl = `https://wa.me/${waPhone}?text=${waText}`;
             const callUrl = `tel:${rawPhone}`;
-            const dest = encodeURIComponent(bz.name + ', ' + bz.address);
-            const detailUrl = `listing_detail.html?id=${encodeURIComponent(bz.id)}&name=${encodeURIComponent(bz.name)}&price=₹${bz.reference_price}&category=bazaar&address=${encodeURIComponent(bz.address)}&verified=${bz.verified ? '1' : '0'}`;
+            const detailUrl = `listing_detail.html?id=${encodeURIComponent(bz.id)}&name=${encodeURIComponent(bz.name)}&price=₹${bz.reference_price}&category=bazaar&address=${encodeURIComponent(bz.address)}&verified=${bz.verified ? '1' : '0'}&img=${encodeURIComponent(bz.img)}&desc=${encodeURIComponent(bz.description)}&items=${encodeURIComponent(bz.item_list)}&phone=${encodeURIComponent(bz.phone)}&stock=${encodeURIComponent(bz.stock)}`;
 
             const verifiedList = getUserVerifiedItems();
             const isUserVerified = verifiedList.includes(bz.id);
@@ -864,7 +968,7 @@
                     <span class="material-symbols-outlined text-green-700 text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
                     <span class="font-label-md text-label-md font-bold text-green-800 truncate">${isUserVerified ? '✓ Verified by You' : bz.badge}</span>
                   </div>
-                  <span class="text-[10px] text-green-700 font-semibold truncate">• ${bz.stock}</span>
+                  <span class="text-[10px] text-green-700 font-semibold truncate">• ${bz.stock.split(' ')[0]}</span>
                 </div>`
               : `<div class="flex items-center justify-between gap-space-xs py-1.5 px-2.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200">
                   <div class="flex items-center gap-1.5 min-w-0">
@@ -879,14 +983,14 @@
 
             return `
             <article class="listing-card bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col transition-all cursor-pointer ${isVerified ? '' : 'border border-amber-200'}" onclick="window.location.href='${detailUrl}'" data-category="bazaar">
-              <div class="relative h-36 w-full bg-surface-container">
-                <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i" alt="${bz.name}"/>
+              <div class="relative h-44 w-full bg-surface-container">
+                <img class="w-full h-full object-cover" src="${bz.img}" alt="${bz.name}"/>
                 <div class="absolute top-space-xs left-space-xs flex items-center gap-1 bg-surface-container-lowest/95 backdrop-blur-sm text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full shadow-sm">
-                  <span class="material-symbols-outlined text-[14px]">${isVerified ? 'verified' : 'help'}</span>
-                  <span class="uppercase tracking-wider font-semibold">Local Bazaar</span>
+                  <span class="material-symbols-outlined text-[14px]">storefront</span>
+                  <span class="uppercase tracking-wider font-semibold">${bz.subcategory}</span>
                 </div>
                 <div class="absolute bottom-space-xs right-space-xs bg-surface-container-highest/90 backdrop-blur-sm px-2 py-0.5 rounded font-label-sm text-label-sm text-on-surface">
-                  ${bz.rating} ★ • ${isVerified ? 'Verified' : 'Unverified'}
+                  ${bz.rating} ★ (${bz.reviews} reviews)
                 </div>
               </div>
               <div class="p-space-sm flex flex-col gap-space-xs">
@@ -905,20 +1009,20 @@
                 <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
                   <div class="flex flex-col pl-space-2xs">
                     <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[13px] text-tertiary">sell</span> Listed Range
+                      <span class="material-symbols-outlined text-[13px] text-tertiary">sell</span> Official Fair Cap
                     </span>
-                    <span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹50 - ₹${bz.reference_price * 2}</span>
+                    <span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹${bz.reference_price} <span class="text-xs font-normal text-on-surface-variant">fixed rate</span></span>
                   </div>
                   <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
                     <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
-                      <span>Status</span>
-                      <span class="${isVerified ? 'text-green-700' : 'text-amber-700'} font-semibold text-xs">${isVerified ? 'Verified' : 'Unverified'}</span>
+                      <span>Inventory</span>
+                      <span class="text-green-700 font-semibold text-xs">Ready</span>
                     </span>
-                    <span class="font-headline-sm text-headline-sm ${isVerified ? 'text-primary' : 'text-amber-700'} font-bold text-xs truncate">${isVerified ? 'Fair Cap' : 'Pilgrim Rep.'}</span>
+                    <span class="font-label-md text-label-md text-primary font-bold truncate">${bz.stock.split(' ')[0]} ${bz.stock.split(' ')[1] || ''}</span>
                   </div>
                 </div>
-                <div class="text-xs text-on-surface-variant line-clamp-1">
-                  <strong>Featured:</strong> ${bz.item_list}
+                <div class="text-xs text-on-surface-variant line-clamp-2 bg-surface-container-low p-2 rounded-lg">
+                  <strong class="text-on-surface">Includes:</strong> ${bz.item_list}
                 </div>
                 <div class="grid grid-cols-3 gap-space-2xs pt-space-xs mt-space-2xs">
                   <a class="w-full h-11 rounded-lg bg-green-700 text-white font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all shadow-sm cursor-pointer hover:bg-green-800" href="${waUrl}" target="_blank" onclick="event.stopPropagation();">
@@ -929,9 +1033,9 @@
                     <span class="material-symbols-outlined text-[17px] text-primary">call</span>
                     <span>Call</span>
                   </a>
-                  <button class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-transform shadow-sm cursor-pointer hover:bg-primary-container" onclick="event.stopPropagation(); window.open('https://maps.google.com/?q=${dest}', '_blank')">
-                    <span class="material-symbols-outlined text-[17px]">explore</span>
-                    <span>Navigate</span>
+                  <button class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-transform shadow-sm cursor-pointer hover:bg-primary-container" onclick="event.stopPropagation(); window.location.href='${detailUrl}'">
+                    <span class="material-symbols-outlined text-[17px]">inventory_2</span>
+                    <span>View Stall</span>
                   </button>
                 </div>
               </div>
