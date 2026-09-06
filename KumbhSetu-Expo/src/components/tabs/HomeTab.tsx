@@ -24,7 +24,7 @@ export const HomeTab: React.FC = () => {
       style={styles.container}
       contentContainerStyle={[
         styles.scrollContent,
-        { paddingTop: Math.max(insets.top + 12, 20), paddingBottom: Math.max(insets.bottom + 80, 90) }
+        { paddingTop: Math.max(insets.top + 8, 16), paddingBottom: 28 }
       ]}
       showsVerticalScrollIndicator={false}>
       

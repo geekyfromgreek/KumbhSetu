@@ -95,8 +95,8 @@ export const ComplaintsAndSafetyTab: React.FC = () => {
         contentContainerStyle={[
           styles.scrollContent,
           {
-            paddingTop: Math.max(insets.top + 12, 24),
-            paddingBottom: Math.max(insets.bottom + 80, 90),
+            paddingTop: Math.max(insets.top + 8, 16),
+            paddingBottom: 28,
           },
         ]}
         keyboardShouldPersistTaps="handled"

@@ -100,14 +100,10 @@ export const KumbhBottomNav: React.FC = () => {
 
 const styles = StyleSheet.create({
   navContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#E2E8F0',
-    paddingTop: 6,
+    paddingTop: 8,
     paddingHorizontal: 8,
   },
   navInner: {
@@ -121,16 +117,16 @@ const styles = StyleSheet.create({
   tabButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 5,
+    paddingVertical: 6,
     paddingHorizontal: 8,
-    borderRadius: 8,
+    borderRadius: 10,
     flex: 1,
     minHeight: 48,
   },
   iconWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 2,
+    marginBottom: 3,
   },
   tabLabel: {
     fontSize: 11,

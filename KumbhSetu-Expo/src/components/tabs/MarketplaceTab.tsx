@@ -64,7 +64,7 @@ export const MarketplaceTab: React.FC = () => {
     <View style={styles.container}>
       
       {/* Top Banner Header */}
-      <View style={[styles.header, { paddingTop: Math.max(insets.top + 12, 20) }]}>
+      <View style={[styles.header, { paddingTop: Math.max(insets.top + 8, 16) }]}>
         <View style={styles.headerTitleRow}>
           <View>
             <Text style={styles.headerTitle}>{t.marketTitle}</Text>
@@ -121,7 +121,7 @@ export const MarketplaceTab: React.FC = () => {
       <ScrollView
         contentContainerStyle={[
           styles.productList,
-          { paddingBottom: Math.max(insets.bottom + 80, 90) }
+          { paddingBottom: 28 }
         ]}
         showsVerticalScrollIndicator={false}>
         
