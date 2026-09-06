@@ -111,10 +111,48 @@ Prices shown are vendor-declared and indicative community ranges. Administration
   const searchInput = document.getElementById('food-search-input');
   const chips = document.querySelectorAll('.filter-chip');
 
-  function getFoodPricing(item) {
+  function getUserVerifiedFood() {
+    try {
+      return JSON.parse(localStorage.getItem('kumbh_verified_food_list') || '[]');
+    } catch (e) { return []; }
+  }
+
+  window.toggleVerifyFood = function(itemId, event) {
+    if (event) event.stopPropagation();
+    const verifiedList = getUserVerifiedFood();
+    const isAlready = verifiedList.includes(itemId);
+    let updated = [];
+    if (isAlready) {
+      updated = verifiedList.filter(id => id !== itemId);
+    } else {
+      updated = [...verifiedList, itemId];
+    }
+    localStorage.setItem('kumbh_verified_food_list', JSON.stringify(updated));
+    showToast('Food rate & cleanliness status verified by your ID!');
+    loadFoodListings(currentFilter, currentSearch);
+  };
+
+  function getFoodPricing(item, idx = 0) {
     const name = (item.name || '').toLowerCase();
     const tag = (item.tag || '').toLowerCase();
     const priceNum = item.price_num !== undefined ? item.price_num : (item.reference_price ? Math.round(item.reference_price) : 0);
+    const verifiedList = getUserVerifiedFood();
+
+    // Random verifiers list referencing KumbhAarambh pattern
+    const verifiersList = [
+      'Kumbhveer Divya Shinde (KTHM College)',
+      'Nashikkar Rohan Joshi (Panchavati)',
+      'Kumbhveer Omkar Patil (Sandip Univ)',
+      'Nashikkar Sneha Deshmukh (Gangapur Rd)',
+      'Volunteer Sachin Kulkarni (Ramghat Seva)',
+      'Nashikkar Amit Shirode (Old Nashik)'
+    ];
+    const verifier = verifiersList[idx % verifiersList.length];
+
+    const isUserVerified = verifiedList.includes(item.id || ('food-' + idx));
+    const isSeedVerified = item.verified !== undefined ? item.verified : (idx % 2 === 0);
+    const isVerified = isUserVerified || isSeedVerified;
+    const verifiedCount = isUserVerified ? (isSeedVerified ? 45 : 1) : (isSeedVerified ? (18 + (idx * 9) % 50) : 0);
 
     // Free Annakshetra / Bhandara
     if (priceNum === 0 || tag.includes('free') || name.includes('annachhatra') || name.includes('annakshetra') || name.includes('bhandara') || name.includes('langar') || name.includes('prasad')) {
@@ -124,11 +162,14 @@ Prices shown are vendor-declared and indicative community ranges. Administration
         priceDisplay: 'Free / ऐच्छिक दान',
         unit: 'Zero Fee',
         badge: 'Free Bhandara',
-        verified: 'Kumbhveer Verified Free Kitchen'
+        isVerified,
+        verifiedCount,
+        verifier,
+        verified: isVerified ? `✓ Verified Free Kitchen (${verifiedCount})` : '⚠️ Unverified Kitchen • Check Timings'
       };
     }
 
-    // Specific Thali (e.g. ₹200 per thali or ₹60-₹120)
+    // Specific Thali
     if (name.includes('thali') || name.includes('meal') || name.includes('bhojanalay') || tag.includes('satvik') || tag.includes('jain') || tag.includes('budget')) {
       const price = priceNum > 0 ? priceNum : 200;
       return {
@@ -137,19 +178,25 @@ Prices shown are vendor-declared and indicative community ranges. Administration
         priceDisplay: '₹' + price,
         unit: '/ thali',
         badge: 'Satvik Thali',
-        verified: 'Kumbhveer & Pilgrim Verified'
+        isVerified,
+        verifiedCount,
+        verifier,
+        verified: isVerified ? `✓ Verified Rate (${verifiedCount} Audits)` : '⚠️ Unverified Rate • Pilgrim Rep.'
       };
     }
 
-    // Perishables, fruits, prasad items, snacks -> Show Listed Range (₹100 - ₹300)
+    // Perishables, fruits, prasad items, snacks
     if (name.includes('fruit') || name.includes('sweet') || name.includes('dry') || name.includes('snack') || name.includes('store') || name.includes('bhandar')) {
       return {
         isRange: true,
         label: 'Listed Range',
-        priceDisplay: '₹100 - ₹300',
+        priceDisplay: '₹80 - ₹250',
         unit: 'per kg / box',
         badge: 'Fair Category',
-        verified: 'Fair Price Verified by Kumbhveer'
+        isVerified,
+        verifiedCount,
+        verifier,
+        verified: isVerified ? `✓ Bazaar Rate Verified (${verifiedCount})` : '⚠️ Unverified Stall'
       };
     }
 
@@ -160,34 +207,46 @@ Prices shown are vendor-declared and indicative community ranges. Administration
       label: 'Listed Price',
       priceDisplay: '₹' + defaultPrice,
       unit: '/ meal',
-      badge: 'Verified Eatery',
-      verified: 'Kumbhveer Verified'
+      badge: 'Eatery Spot',
+      isVerified,
+      verifiedCount,
+      verifier,
+      verified: isVerified ? `✓ Verified (${verifiedCount})` : '⚠️ Unverified Rate'
     };
   }
 
-  function renderFoodCard(item) {
-    const verifiedBadge = item.fssai || 'NMC Verified';
-    const pricing = getFoodPricing(item);
+  function renderFoodCard(item, idx = 0) {
+    const verifiedBadge = item.fssai || 'NMC Registered';
+    const pricing = getFoodPricing(item, idx);
+    const itemId = item.id || ('food-' + idx);
+    const img = item.image_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPy65HKHOOD5fA1oSMSlzp1msM7KFEgCgzedSG1AY7Afi1GzVQc9kaE_AuOa12yir7ZK5OjNgLXtHvl6xu5Rn3X-UTTs-mB-TpQvmUQ9wRVBfzZNP6tuIdo-KrzuShXK1EM2PKsP9y4mJXnNmVokvGu7kvYCLjvYDOsZqHcK4J3TrW0aPFuYloX8l9vHjjo4PKvc2ZRF7txuQecAoMyESnnKE8c5HNMFOFRMTTVuzvxvkl7h7QWmYr';
     
-    // Direct destination URL for Google Maps to travel straight there
     const destinationQuery = encodeURIComponent(item.name + ', ' + (item.address || 'Ramkund, Panchavati, Nashik, Maharashtra'));
-        const rawPhone = item.phone || '02532575555';
+    const directMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destinationQuery}`;
+    const rawPhone = item.phone || '02532575555';
     const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
     const waPhone = cleanPhone.startsWith('91') ? cleanPhone : ('91' + (cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone));
     const waText = encodeURIComponent(`Namaste, I am inquiring about ${item.name} (${item.address || 'Nashik'}) via KumbhSetu Simhastha Portal.`);
     const waUrl = `https://wa.me/${waPhone}?text=${waText}`;
     const callUrl = `tel:${rawPhone}`;
 
+    const verifTagHtml = pricing.isVerified
+      ? `<span class="bg-green-700 text-white font-label-sm text-[11px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm font-semibold">
+          <span class="material-symbols-outlined text-[14px]">verified</span>
+          ${pricing.verified}
+        </span>`
+      : `<span class="bg-amber-600 text-white font-label-sm text-[11px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm font-semibold">
+          <span class="material-symbols-outlined text-[14px]">warning</span>
+          ${pricing.verified}
+        </span>`;
+
     return `
-    <div class="food-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm transition-all" data-category="${item.tag}">
+    <div class="food-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm transition-all ${pricing.isVerified ? '' : 'border border-amber-200'}" data-category="${item.tag}">
       <div class="relative w-full h-40 rounded-lg overflow-hidden bg-surface-container">
         <img class="w-full h-full object-cover" src="${img}" alt="${item.name}"/>
         <div class="absolute top-2 left-2 flex flex-col gap-1 items-start">
-          <span class="bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
-            <span class="material-symbols-outlined text-[14px]">verified</span>
-            ${pricing.verified}
-          </span>
-          <span class="bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+          ${verifTagHtml}
+          <span class="bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[11px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
             <span class="material-symbols-outlined text-[14px]">restaurant</span>
             ${verifiedBadge}
           </span>
@@ -214,6 +273,23 @@ Prices shown are vendor-declared and indicative community ranges. Administration
           <span class="font-label-sm text-label-sm text-on-surface-variant">${item.hygiene || 'Hygiene A+'}</span>
         </div>
       </div>
+      
+      <!-- Verifier Name / Community Badge -->
+      <div class="flex items-center justify-between gap-space-xs py-1 px-2.5 rounded-lg ${pricing.isVerified ? 'bg-green-50 text-green-900 border border-green-200' : 'bg-amber-50 text-amber-900 border border-amber-200'}">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="material-symbols-outlined ${pricing.isVerified ? 'text-green-700' : 'text-amber-700'} text-[18px]" style="font-variation-settings: 'FILL' 1;">${pricing.isVerified ? 'verified' : 'help'}</span>
+          <span class="font-label-md text-label-md font-bold ${pricing.isVerified ? 'text-green-800' : 'text-amber-800'} truncate">${pricing.isVerified ? `Audited by ${pricing.verifier}` : 'Community Reported • Unverified'}</span>
+        </div>
+        ${pricing.isVerified ? `
+          <span class="text-[10px] text-green-700 font-semibold shrink-0">• Rate Audited</span>
+        ` : `
+          <button type="button" onclick="toggleVerifyFood('${itemId}', event)" class="px-2 py-0.5 rounded bg-amber-600 text-white font-label-sm text-[10px] font-bold shrink-0 hover:bg-amber-700 shadow-sm flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-xs">how_to_reg</span>
+            <span>Verify Rate</span>
+          </button>
+        `}
+      </div>
+
       <div class="bg-surface-container p-space-xs rounded-lg flex flex-col gap-1">
         <div class="flex items-center justify-between text-on-surface">
           <span class="font-label-sm text-label-sm flex items-center gap-1 text-on-surface-variant">
@@ -240,7 +316,7 @@ Prices shown are vendor-declared and indicative community ranges. Administration
           <span class="font-label-sm text-label-sm font-semibold text-on-surface">${rawPhone}</span>
         </div>
       </div>
-      <!-- Direct Contact & Navigation Actions (No Pass) -->
+      <!-- Direct Contact & Navigation Actions -->
       <div class="grid grid-cols-3 gap-space-2xs pt-1">
         <a class="h-11 rounded-lg bg-green-700 text-white font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all shadow-sm cursor-pointer hover:bg-green-800" href="${waUrl}" target="_blank">
           <span class="material-symbols-outlined text-[17px]">chat</span>
@@ -257,6 +333,7 @@ Prices shown are vendor-declared and indicative community ranges. Administration
       </div>
     </div>
     `;
+  }
 
   async function loadFoodListings(tag = 'all', search = '') {
     try {
@@ -330,44 +407,18 @@ Prices shown are vendor-declared and indicative community ranges. Administration
     });
   }
 
-  // Booking Modal Logic
-  let pax = 2;
-  const modal = document.getElementById('booking-modal');
-  const modalTitle = document.getElementById('modal-title');
-  const paxElem = document.getElementById('pax-count');
-
-  function handleTokenModal(placeName) {
-    modalTitle.textContent = placeName + ' - Digital Pass';
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  }
-
-  function closeTokenModal() {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-
-  function adjustCount(change) {
-    pax = Math.max(1, Math.min(8, pax + change));
-    paxElem.textContent = pax;
-  }
-
-  function confirmBooking() {
-    const tokenCode = 'KS-PRASAD-' + Math.floor(1000 + Math.random() * 9000);
-    closeTokenModal();
-    showToast(`Digital Pass #${tokenCode} generated! Confirmation sent via SMS.`);
-  }
-
   function showToast(msg) {
     const toast = document.getElementById('toast');
     const toastText = document.getElementById('toast-text');
-    toastText.textContent = msg;
-    toast.classList.remove('hidden');
-    toast.classList.add('flex');
-    setTimeout(() => {
-      toast.classList.add('hidden');
-      toast.classList.remove('flex');
-    }, 3200);
+    if (toast && toastText) {
+      toastText.textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 3200);
+    }
   }
 </script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html"><span class="material-symbols-outlined text-[22px]">temple_hindu</span><span class="font-label-sm text-label-sm leading-tight">Home</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs transition-colors text-on-surface-variant" data-path="marketplace" href="marketplace.html"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm leading-tight">Market</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html"><span class="material-symbols-outlined text-[22px]">campaign</span><span class="font-label-sm text-label-sm leading-tight">Report</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html"><span class="material-symbols-outlined text-[22px]">emergency</span><span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span></a></div></nav><script src="i18n.js"></script>
 </body></html>

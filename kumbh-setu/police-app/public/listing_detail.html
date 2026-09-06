@@ -63,37 +63,42 @@
         Panchavati Sector 4 · <strong class="text-on-surface">850 meters from Ramkund Ghat</strong> (7 min walk)
       </p>
 </div>
-<!-- Kumbhveer Verification Card with Interactive Tooltip Modal -->
-<div class="relative bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<!-- Verification Card with Interactive Tooltip Modal -->
+<div class="relative bg-surface-container-lowest rounded-xl p-space-md shadow-sm" id="detail-verification-card">
 <div class="flex items-start justify-between gap-space-sm">
 <div class="flex items-center gap-space-xs">
-<div class="w-9 h-9 rounded-full bg-tertiary-fixed flex items-center justify-center flex-shrink-0">
-<span class="material-symbols-outlined text-on-tertiary-fixed text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed flex items-center justify-center flex-shrink-0" id="detail-verif-icon-bg">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-[20px]" id="detail-verif-icon" style="font-variation-settings: 'FILL' 1;">verified</span>
 </div>
 <div>
 <div class="flex items-center gap-1">
-<span class="font-label-lg text-label-lg text-on-surface font-bold">Kumbhveer Verified</span>
-<span class="text-primary-container material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold" id="detail-verif-title">Kumbhveer Verified</span>
+<span class="text-primary-container material-symbols-outlined text-[16px]" id="detail-verif-check">check_circle</span>
 </div>
-<p class="font-label-sm text-label-sm text-on-surface-variant">In-person municipal inspection complete</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant" id="detail-verif-subtitle">In-person municipal inspection complete</p>
 </div>
 </div>
-<button aria-label="Learn more about verification" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant flex items-center" id="verification-info-toggle">
-<span class="material-symbols-outlined text-[20px]">help_outline</span>
-</button>
+<div class="flex items-center gap-1">
+  <button type="button" id="detail-verify-action-btn" onclick="verifyCurrentDetailItem()" class="hidden px-2.5 py-1 rounded-lg bg-primary text-on-primary font-label-sm text-xs font-bold hover:bg-primary-container transition-all shadow-sm">
+    Verify Rate
+  </button>
+  <button aria-label="Learn more about verification" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant flex items-center" id="verification-info-toggle">
+    <span class="material-symbols-outlined text-[20px]">help_outline</span>
+  </button>
+</div>
 </div>
 <!-- Popover Explanation Container -->
 <div class="mt-space-sm bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-space-2xs text-on-surface" id="verification-popover">
 <div class="flex items-center justify-between">
-<span class="font-label-md text-label-md font-semibold text-primary flex items-center gap-1">
+<span class="font-label-md text-label-md font-semibold text-primary flex items-center gap-1" id="detail-popover-title">
 <span class="material-symbols-outlined text-[16px]">assignment_turned_in</span> What does Verified mean?
-          </span>
-<span class="font-label-sm text-label-sm text-outline">12 Feb 2027</span>
+</span>
+<span class="font-label-sm text-label-sm text-outline">Feb 2027</span>
 </div>
-<p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
-          A certified student <strong>Kumbhveer volunteer</strong> visited this premises in person, validated municipal registration certificates, inspected potable water filtration (TDS &lt; 140), and logged authorized tariff caps directly to the Kumbh Setu fair pricing ledger.
-        </p>
-<div class="flex flex-col gap-1.5 mt-1 pt-space-xs border-t border-surface-variant/40">
+<p class="font-body-sm text-body-sm text-on-surface leading-relaxed" id="detail-popover-body">
+  A certified student <strong>Kumbhveer volunteer</strong> or local <strong>Nashikkar citizen</strong> visited this premises in person, validated municipal registration certificates, inspected fair rates, and logged authorized tariff caps directly to the Kumbh Setu fair pricing ledger.
+</p>
+<div class="flex flex-col gap-1.5 mt-1 pt-space-xs border-t border-surface-variant/40" id="detail-verif-names-box">
   <div class="flex items-center gap-space-xs">
     <div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-[10px] font-bold shrink-0">KV</div>
     <span class="font-label-sm text-label-sm text-on-surface">Field-audited by <strong>Kumbhveer Divya Shinde</strong> (K.T.H.M. College)</span>
@@ -330,6 +335,76 @@
     window.location.href = 'report_issue.html';
   }
 
+  let currentDetailId = '';
+
+  function verifyCurrentDetailItem() {
+    if (!currentDetailId) return;
+    try {
+      const list = JSON.parse(localStorage.getItem('kumbh_verified_items_list') || '[]');
+      if (!list.includes(currentDetailId)) {
+        list.push(currentDetailId);
+        localStorage.setItem('kumbh_verified_items_list', JSON.stringify(list));
+      }
+      applyVerifiedState(true);
+      const toast = document.getElementById('booking-toast');
+      const toastMsg = document.getElementById('toast-message');
+      if (toast && toastMsg) {
+        toastMsg.textContent = 'Rate successfully verified & registered by your Nashikkar/Kumbhveer ID!';
+        toast.classList.remove('-translate-y-28');
+        toast.classList.add('translate-y-0');
+        setTimeout(() => {
+          toast.classList.remove('translate-y-0');
+          toast.classList.add('-translate-y-28');
+        }, 3000);
+      }
+    } catch (e) {}
+  }
+
+  function applyVerifiedState(isVerified) {
+    const card = document.getElementById('detail-verification-card');
+    const title = document.getElementById('detail-verif-title');
+    const subtitle = document.getElementById('detail-verif-subtitle');
+    const icon = document.getElementById('detail-verif-icon');
+    const check = document.getElementById('detail-verif-check');
+    const btn = document.getElementById('detail-verify-action-btn');
+    const namesBox = document.getElementById('detail-verif-names-box');
+    const iconBg = document.getElementById('detail-verif-icon-bg');
+
+    if (isVerified) {
+      if (card) {
+        card.classList.remove('border', 'border-amber-300', 'bg-amber-50/40');
+      }
+      if (title) title.textContent = 'Kumbhveer & Nashikkar Verified';
+      if (subtitle) subtitle.textContent = 'In-person municipal inspection & rate audit complete';
+      if (icon) {
+        icon.textContent = 'verified';
+        icon.className = 'material-symbols-outlined text-green-800 text-[20px]';
+      }
+      if (iconBg) {
+        iconBg.className = 'w-9 h-9 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0';
+      }
+      if (check) check.classList.remove('hidden');
+      if (btn) btn.classList.add('hidden');
+      if (namesBox) namesBox.classList.remove('hidden');
+    } else {
+      if (card) {
+        card.classList.add('border', 'border-amber-300', 'bg-amber-50/40');
+      }
+      if (title) title.textContent = '⚠️ Unverified Rate (Community Reported)';
+      if (subtitle) subtitle.textContent = 'Field verification pending • Rate submitted by pilgrim community';
+      if (icon) {
+        icon.textContent = 'warning';
+        icon.className = 'material-symbols-outlined text-amber-800 text-[20px]';
+      }
+      if (iconBg) {
+        iconBg.className = 'w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0';
+      }
+      if (check) check.classList.add('hidden');
+      if (btn) btn.classList.remove('hidden');
+      if (namesBox) namesBox.classList.add('hidden');
+    }
+  }
+
   // Dynamic Dataset details loader
   (function() {
     const params = new URLSearchParams(window.location.search);
@@ -338,6 +413,16 @@
     const price = params.get('price');
     const cat = params.get('category');
     const address = params.get('address');
+    const verifiedParam = params.get('verified');
+    currentDetailId = id || 'detail-item-1';
+
+    let isVerified = verifiedParam === '1';
+    try {
+      const list = JSON.parse(localStorage.getItem('kumbh_verified_items_list') || '[]');
+      if (list.includes(currentDetailId)) isVerified = true;
+    } catch (e) {}
+
+    applyVerifiedState(isVerified);
 
     if (name) {
       const decodedName = decodeURIComponent(name);
@@ -355,7 +440,7 @@
       if (callBtn) callBtn.href = `tel:${rawPhone}`;
     }
     if (address) document.getElementById('detail-address').textContent = decodeURIComponent(address);
-    if (cat) document.getElementById('detail-category').textContent = 'Civic Verified ' + decodeURIComponent(cat).toUpperCase();
+    if (cat) document.getElementById('detail-category').textContent = (isVerified ? 'Civic Verified ' : 'Community ') + decodeURIComponent(cat).toUpperCase();
     if (price) {
       const decodedPrice = decodeURIComponent(price);
       document.getElementById('detail-price-val').textContent = decodedPrice;
@@ -384,7 +469,7 @@
             if (callBtn) callBtn.href = `tel:${rawPhone}`;
           }
           if (item.address) document.getElementById('detail-address').textContent = item.address;
-          if (item.subcategory) document.getElementById('detail-category').textContent = 'Verified ' + item.subcategory;
+          if (item.subcategory) document.getElementById('detail-category').textContent = (isVerified ? 'Verified ' : 'Community ') + item.subcategory;
           if (item.reference_price && !price) {
             document.getElementById('detail-price-val').textContent = '₹' + Math.round(item.reference_price);
           }
