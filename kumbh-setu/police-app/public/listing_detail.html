@@ -414,6 +414,11 @@
     const cat = params.get('category');
     const address = params.get('address');
     const verifiedParam = params.get('verified');
+    const imgParam = params.get('img');
+    const descParam = params.get('desc');
+    const itemsParam = params.get('items');
+    const stockParam = params.get('stock');
+    const phoneParam = params.get('phone');
     currentDetailId = id || 'detail-item-1';
 
     let isVerified = verifiedParam === '1';
@@ -424,6 +429,43 @@
 
     applyVerifiedState(isVerified);
 
+    // Update gallery images if custom image passed
+    if (imgParam) {
+      const decodedImg = decodeURIComponent(imgParam);
+      const galleryTrack = document.getElementById('gallery-track');
+      if (galleryTrack) {
+        galleryTrack.innerHTML = `
+          <div class="min-w-full h-72 relative flex-shrink-0">
+            <img class="w-full h-full object-cover" src="${decodedImg}" alt="${name || 'Product'}"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-black/20"></div>
+            <div class="absolute bottom-3 left-4">
+              <span class="px-space-xs py-space-2xs rounded-full bg-surface/90 text-on-surface font-label-sm text-label-sm shadow-sm flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">inventory_2</span> Product &amp; Packaging
+              </span>
+            </div>
+          </div>
+          <div class="min-w-full h-72 relative flex-shrink-0">
+            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBufV6wZdE5eZVXilcgi3tgs27UYY850uRIe7N8zLVo0H_Z6_bXRw5XtPeU25cztl4DOZWkvBX0CND1HQyW9zBGM_ZP48kjBE5XicamQJc2-tZdNXMEHp3X0kiRqky-Bj-pyFWC11cmcwUfT4V-7QFQC5Vr00OxEvvprSFAynqYq_66xPBNFsonQ3x16PWfnjj1u6qA4V6FWvpnOs5M2JCVKyih0mpF5FgvK3sH6bckdAzW-isiXALt" alt="Stall View"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-black/20"></div>
+            <div class="absolute bottom-3 left-4">
+              <span class="px-space-xs py-space-2xs rounded-full bg-surface/90 text-on-surface font-label-sm text-label-sm shadow-sm flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">storefront</span> Verified Stall Display
+              </span>
+            </div>
+          </div>
+          <div class="min-w-full h-72 relative flex-shrink-0">
+            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBvRtTo8Hc8XLQBeXVsvLQ7pcqJ_HA2X-RJQrU30y8qf6YgAv0nlcA91tQ8GCrWsiqmrMAcyuaFWajfTIPeOK7OifQ43Aj97riZC0x0NOBYDrGN4UN96-2Tm1L1MudxQEvkELSSmfI6qA1A5oftJ7j5KkxyIfChMbQwxlWnvGNTwjvNaNUBTZtnXXWZ0jOOdme9F24AVmd28W_oz9KwIgDZbul_ONeEllS933nzxcb56DUeK6b5GcE" alt="Holy Dip View"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-black/20"></div>
+            <div class="absolute bottom-3 left-4">
+              <span class="px-space-xs py-space-2xs rounded-full bg-surface/90 text-on-surface font-label-sm text-label-sm shadow-sm flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">verified</span> Authentic Certificate &amp; Seal
+              </span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
     if (name) {
       const decodedName = decodeURIComponent(name);
       document.getElementById('detail-name').textContent = decodedName;
@@ -431,26 +473,37 @@
       const destQuery = encodeURIComponent(decodedName + ', ' + (address ? decodeURIComponent(address) : 'Nashik, Maharashtra'));
       if (navBtn) navBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${destQuery}`;
 
-      const rawPhone = params.get('phone') || '02532575555';
+      const rawPhone = phoneParam ? decodeURIComponent(phoneParam) : (params.get('phone') || '02532514411');
       const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
       const waPhone = cleanPhone.startsWith('91') ? cleanPhone : ('91' + (cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone));
       const waBtn = document.getElementById('detail-wa-btn');
-      if (waBtn) waBtn.href = `https://wa.me/${waPhone}?text=${encodeURIComponent('Namaste! Inquiring via KumbhSetu for ' + decodedName + ' (Nashik 2027)')}`;
+      const orderTxt = `Namaste! I would like to order "${decodedName}" (Price: ${price || 'Listed'}) via KumbhSetu Simhastha 2027 Portal. Please confirm stock and delivery/pickup point.`;
+      if (waBtn) waBtn.href = `https://wa.me/${waPhone}?text=${encodeURIComponent(orderTxt)}`;
       const callBtn = document.getElementById('detail-call-btn');
       if (callBtn) callBtn.href = `tel:${rawPhone}`;
     }
+
     if (address) document.getElementById('detail-address').textContent = decodeURIComponent(address);
-    if (cat) document.getElementById('detail-category').textContent = (isVerified ? 'Civic Verified ' : 'Community ') + decodeURIComponent(cat).toUpperCase();
+    if (cat) {
+      const decodedCat = decodeURIComponent(cat).toUpperCase();
+      document.getElementById('detail-category').textContent = (isVerified ? 'Civic Verified ' : 'Community ') + (decodedCat === 'BAZAAR' ? 'Puja & Handicrafts Stall' : decodedCat);
+    }
     if (price) {
       const decodedPrice = decodeURIComponent(price);
       document.getElementById('detail-price-val').textContent = decodedPrice;
-      if (decodedPrice.includes('Range') || decodedPrice.includes('-')) {
-        document.getElementById('detail-price-label').textContent = 'Vendor Listed Range';
-        document.getElementById('detail-price-unit').textContent = 'estimated';
+      document.getElementById('detail-price-label').textContent = 'Official Fair Rate';
+      document.getElementById('detail-price-unit').textContent = 'per item / kit';
+    }
+
+    if (descParam) {
+      const decodedDesc = decodeURIComponent(descParam);
+      const popBody = document.getElementById('detail-popover-body');
+      if (popBody) {
+        popBody.innerHTML = `<strong>Item Overview:</strong> ${decodedDesc}<br/><br/><strong>Package Contents:</strong> ${itemsParam ? decodeURIComponent(itemsParam) : 'Complete ritual kit'}`;
       }
     }
 
-    if (id) {
+    if (id && !imgParam) {
       fetch(`http://localhost:8000/api/v1/marketplace/listings/${id}`)
         .then(r => r.json())
         .then(item => {

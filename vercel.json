@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "buildCommand": "",
+  "outputDirectory": "kumbh-setu/frontend",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://kumbhsetu-api.onrender.com/api/$1"
+    },
+    {
+      "src": "/docs",
+      "dest": "https://kumbhsetu-api.onrender.com/docs"
+    },
+    {
+      "src": "/openapi.json",
+      "dest": "https://kumbhsetu-api.onrender.com/openapi.json"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
+}

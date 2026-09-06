@@ -1,0 +1,47 @@
+{
+  "name": "Kumbh Setu - Simhastha 2027",
+  "short_name": "KumbhSetu",
+  "description": "Unified Civic, Transit, Marketplace & AI Verification Mobile App for Kumbh Mela 2027",
+  "start_url": "/yatri_home.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B0F19",
+  "theme_color": "#EA580C",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "navigation", "shopping", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Marketplace",
+      "url": "/marketplace.html",
+      "description": "Puja Samagri & Verified Local Vendors"
+    },
+    {
+      "name": "Fare Board",
+      "url": "/fare_board.html",
+      "description": "Transit Estimator & RTO Rate Card"
+    },
+    {
+      "name": "Emergency SOS",
+      "url": "/emergency_sos.html",
+      "description": "Police & Medical SOS"
+    },
+    {
+      "name": "Food Finder",
+      "url": "/food_finder.html",
+      "description": "Annadanam & Verified Bhojanalayas"
+    }
+  ]
+}

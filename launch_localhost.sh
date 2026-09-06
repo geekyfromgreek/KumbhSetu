@@ -16,7 +16,10 @@ echo ""
 if ! command -v python3 &> /dev/null; then
     echo "[ERROR] python3 is not installed or not in PATH."
     exit 1
-fi
+# 0. Free busy ports if previously running
+fuser -k 8000/tcp 2>/dev/null || true
+fuser -k 3000/tcp 2>/dev/null || true
+sleep 1
 
 echo "[1/3] Starting FastAPI Backend on port 8000..."
 cd "$BACKEND_DIR"
@@ -38,13 +41,20 @@ fi
 
 sleep 1
 
+# Detect LAN IP
+LAN_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "localhost")
+
 echo ""
 echo "====================================================================="
 echo "  KumbhSetu Full-Stack is now running!"
 echo "  -------------------------------------------------------------"
-echo "  * Frontend Web UI : http://localhost:3000/"
-echo "  * Backend API     : http://localhost:8000/"
-echo "  * API Docs        : http://localhost:8000/docs"
+echo "  * PC Browser      : http://localhost:3000/yatri_home.html"
+echo "  * Mobile Phone URL: http://${LAN_IP}:3000/yatri_home.html"
+echo "  * Backend API Docs: http://localhost:8000/docs"
+echo "  -------------------------------------------------------------"
+echo "  [📱 Mobile Tip]: Open http://${LAN_IP}:3000/yatri_home.html on your"
+echo "  phone's browser (Chrome/Safari) and tap 'Add to Home Screen' to"
+echo "  install the complete standalone Kumbh Setu app with all data!"
 echo "====================================================================="
 echo ""
 

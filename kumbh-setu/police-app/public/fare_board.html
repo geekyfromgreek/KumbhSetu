@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Real-Time Fare Board & Transit Rates - Kumbh Setu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#a03b00",
+            "primary-container": "#c64f0e",
+            "on-primary": "#ffffff",
+            "secondary": "#9e4041",
+            "secondary-container": "#fd8a88",
+            "tertiary": "#7b541a",
+            "tertiary-fixed": "#ffddb5",
+            "surface": "#fbf8ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f5f2f9",
+            "surface-container": "#f0edf4",
+            "surface-container-high": "#eae7ee",
+            "surface-container-highest": "#e4e1e8",
+            "on-surface": "#1b1b20",
+            "on-surface-variant": "#584239",
+            "outline": "#8c7167",
+            "outline-variant": "#e0c0b4"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @layer base {
+      html, body { width: 100vw; margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .marigold-divider {
+      position: relative;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .marigold-divider::before, .marigold-divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px dashed rgba(160, 59, 0, 0.25);
+    }
+    .marigold-divider::before { margin-right: 8px; }
+    .marigold-divider::after { margin-left: 8px; }
+  </style>
+</head>
+<body class="bg-surface text-on-surface h-full font-sans antialiased overflow-x-hidden">
+  
+  <!-- Fixed Header -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-surface/90 backdrop-blur-xl border-b border-primary/20 shadow-sm pt-safe">
+    <div class="flex items-center gap-2">
+      <a href="yatri_home.html" class="p-1 text-on-surface">
+        <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+      </a>
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-primary text-[24px]">electric_rickshaw</span>
+        <div class="flex flex-col">
+          <span class="font-bold text-sm text-primary leading-tight">कुंभ सेतू • Fare Board</span>
+          <span class="text-[10px] text-on-surface-variant uppercase tracking-wider">RTO Gazetted Rates 2027</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="openReportFareModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary text-on-primary font-bold text-xs shadow-sm cursor-pointer hover:bg-primary-container">
+        <span class="material-symbols-outlined text-sm">add</span>
+        <span>Report Price</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="pt-20 pb-28 px-4 max-w-2xl mx-auto min-h-screen flex flex-col gap-4">
+    
+    <!-- Title & Subtitle -->
+    <section class="mt-1">
+      <div class="flex items-center justify-between">
+        <h1 class="text-xl font-bold text-on-surface">Auto, Bus & Transit Fares</h1>
+        <span class="px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-[11px] font-bold">● Live Updates</span>
+      </div>
+      <p class="text-xs text-on-surface-variant mt-0.5">Official RTO tariffs & real-time community reported fares to prevent overcharging.</p>
+    </section>
+
+    <!-- Route Calculator Box -->
+    <section class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-primary/20 relative overflow-hidden">
+      <div class="flex items-center gap-3">
+        <div class="flex-1 flex flex-col gap-2">
+          
+          <!-- From -->
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-secondary text-sm pointer-events-none">my_location</span>
+            <select id="calc-from" class="w-full h-11 pl-9 pr-3 bg-surface-container-low text-on-surface rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer" onchange="updateFareCalculations()">
+              <option value="station">Nashik Road Railway Station</option>
+              <option value="cbs">CBS Central Bus Stand</option>
+              <option value="ramkund" selected>Ramkund Main Ghat (Panchavati)</option>
+              <option value="trimbak">Trimbakeshwar Temple</option>
+              <option value="tapovan">Tapovan Sadhu Gram Hub</option>
+              <option value="muktidham">Muktidham Temple</option>
+            </select>
+          </div>
+
+          <div class="marigold-divider my-0.5">
+            <span class="material-symbols-outlined text-primary text-[14px]">swap_vert</span>
+          </div>
+
+          <!-- To -->
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-primary text-sm pointer-events-none">pin_drop</span>
+            <select id="calc-to" class="w-full h-11 pl-9 pr-3 bg-surface-container-low text-on-surface rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer" onchange="updateFareCalculations()">
+              <option value="trimbak" selected>Trimbakeshwar Temple (28 km)</option>
+              <option value="ramkund">Ramkund Ghat (Panchavati)</option>
+              <option value="muktidham">Muktidham Temple (9 km)</option>
+              <option value="cbs">CBS Central Stand (4 km)</option>
+              <option value="someshwar">Someshwar Waterfalls (11 km)</option>
+              <option value="tapovan">Tapovan Sadhu Gram (3.2 km)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Swap button -->
+        <button onclick="swapLocations()" class="w-11 h-11 rounded-full bg-primary/10 text-primary hover:bg-primary/20 flex items-center justify-center cursor-pointer transition-transform active:scale-90 shrink-0">
+          <span class="material-symbols-outlined">sync_alt</span>
+        </button>
+      </div>
+
+      <!-- Distance summary ribbon -->
+      <div class="mt-3 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-xs text-on-surface-variant">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-secondary text-sm">straighten</span>
+          <span id="route-dist-text">Calculated Distance: <strong>28.0 km</strong></span>
+        </div>
+        <span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-bold text-[11px]" id="route-time-text">~45 mins travel</span>
+      </div>
+    </section>
+
+    <!-- Filter Chips -->
+    <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+      <button onclick="filterTransit('all')" id="chip-all" class="transit-chip px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-bold text-xs shadow-sm">All Transit</button>
+      <button onclick="filterTransit('auto')" id="chip-auto" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs">Private Auto</button>
+      <button onclick="filterTransit('shared')" id="chip-shared" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs">Shared Auto</button>
+      <button onclick="filterTransit('bus')" id="chip-bus" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs">City Bus (Citylink)</button>
+      <button onclick="filterTransit('erickshaw')" id="chip-erickshaw" class="transit-chip px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-xs">E-Rickshaw</button>
+    </div>
+
+    <!-- Live Transit Fare Cards Container -->
+    <div id="fare-cards-container" class="flex flex-col gap-3">
+      <!-- Dynamic Fare Cards populated by JS -->
+    </div>
+
+    <!-- RTO Price Advisory Banner -->
+    <div class="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 text-xs flex flex-col gap-1.5">
+      <div class="flex items-center gap-1.5 font-bold text-primary">
+        <span class="material-symbols-outlined text-[18px]">verified_user</span>
+        <span>Simhastha Municipal RTO Advisory</span>
+      </div>
+      <p class="text-on-surface-variant">
+        • Auto Rickshaws within city limits must charge by calibrated meter or gazetted rate cards.<br/>
+        • Night charges (12:00 AM – 05:00 AM): 25% extra over regular daytime tariff.<br/>
+        • In case of overcharging, report immediately via <strong>Report Price</strong> or call <strong>RTO Helpline 1800-233-1048</strong>.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Report Price Modal -->
+  <div id="reportPriceModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-surface-container-lowest text-on-surface rounded-2xl max-w-md w-full p-5 shadow-2xl flex flex-col gap-3">
+      <div class="flex items-center justify-between border-b border-surface-container pb-2.5">
+        <div class="flex items-center gap-1.5 text-primary">
+          <span class="material-symbols-outlined text-xl">payments</span>
+          <h3 class="font-bold text-base">Report Transit Price</h3>
+        </div>
+        <button onclick="closeReportFareModal()" class="text-on-surface-variant p-1 cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-2.5 text-xs">
+        <div>
+          <label class="font-semibold block mb-1">Transit Mode</label>
+          <select id="modal-mode" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs">
+            <option value="Auto Rickshaw (Private)">Auto Rickshaw (Private)</option>
+            <option value="Shared Auto (Seat)">Shared Auto (Per Seat)</option>
+            <option value="Citylink Bus">Citylink Municipal Bus</option>
+            <option value="E-Rickshaw">E-Rickshaw</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-semibold block mb-1">From</label>
+            <input type="text" id="modal-from" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs" value="Nashik Station"/>
+          </div>
+          <div>
+            <label class="font-semibold block mb-1">To</label>
+            <input type="text" id="modal-to" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs" value="Ramkund Ghat"/>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-semibold block mb-1">Price Paid (₹)</label>
+          <input type="number" id="modal-price" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs font-bold" placeholder="e.g. 120"/>
+        </div>
+
+        <div>
+          <label class="font-semibold block mb-1">Auto No. / Driver Name (Optional)</label>
+          <input type="text" id="modal-vehicle" class="w-full h-10 px-3 bg-surface-container-low rounded-lg text-xs" placeholder="e.g. MH-15-AB-1234"/>
+        </div>
+      </div>
+
+      <div class="pt-2 flex gap-2">
+        <button onclick="submitFareReport()" class="w-full h-11 rounded-lg bg-primary text-on-primary font-bold text-xs flex items-center justify-center gap-1 shadow cursor-pointer hover:bg-primary-container">
+          <span class="material-symbols-outlined text-sm">send</span>
+          <span>Submit Community Report</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="fixed bottom-0 left-0 w-full z-40 bg-surface/95 backdrop-blur-md pb-safe border-t border-outline-variant/30 flex justify-around items-center py-2 px-1">
+    <a href="yatri_home.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3">
+      <span class="material-symbols-outlined text-xl">home</span>
+      <span class="text-[10px] font-medium mt-0.5">Home</span>
+    </a>
+    <a href="fare_board.html" class="flex flex-col items-center text-primary font-bold py-1 px-3">
+      <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">payments</span>
+      <span class="text-[10px] mt-0.5">Fares</span>
+    </a>
+    <a href="marketplace.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3">
+      <span class="material-symbols-outlined text-xl">storefront</span>
+      <span class="text-[10px] font-medium mt-0.5">Market</span>
+    </a>
+    <a href="food_finder.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3">
+      <span class="material-symbols-outlined text-xl">soup_kitchen</span>
+      <span class="text-[10px] font-medium mt-0.5">Food</span>
+    </a>
+    <a href="emergency_sos.html" class="flex flex-col items-center text-secondary hover:text-red-700 transition-colors py-1 px-3">
+      <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">emergency</span>
+      <span class="text-[10px] font-bold mt-0.5">SOS</span>
+    </a>
+  </nav>
+
+  <script>
+    const routeDatabase = {
+      'station_ramkund': { dist: 8.5, time: '22 mins', private: 110, shared: 25, bus: 15, erickshaw: 30 },
+      'station_trimbak': { dist: 38.0, time: '65 mins', private: 480, shared: 160, bus: 45, erickshaw: null },
+      'station_cbs': { dist: 8.0, time: '20 mins', private: 100, shared: 25, bus: 12, erickshaw: 25 },
+      'station_muktidham': { dist: 2.2, time: '6 mins', private: 40, shared: 15, bus: 10, erickshaw: 15 },
+      'station_tapovan': { dist: 9.5, time: '25 mins', private: 130, shared: 30, bus: 18, erickshaw: 35 },
+      'station_someshwar': { dist: 16.0, time: '35 mins', private: 220, shared: 50, bus: 25, erickshaw: null },
+
+      'ramkund_trimbak': { dist: 28.0, time: '45 mins', private: 360, shared: 120, bus: 35, erickshaw: null },
+      'ramkund_cbs': { dist: 3.5, time: '10 mins', private: 50, shared: 15, bus: 10, erickshaw: 15 },
+      'ramkund_muktidham': { dist: 9.2, time: '24 mins', private: 120, shared: 30, bus: 18, erickshaw: 30 },
+      'ramkund_tapovan': { dist: 3.2, time: '8 mins', private: 45, shared: 15, bus: 10, erickshaw: 15 },
+      'ramkund_someshwar': { dist: 8.5, time: '20 mins', private: 120, shared: 30, bus: 15, erickshaw: 25 },
+
+      'cbs_trimbak': { dist: 28.0, time: '45 mins', private: 350, shared: 110, bus: 35, erickshaw: null },
+      'cbs_muktidham': { dist: 9.0, time: '22 mins', private: 120, shared: 30, bus: 18, erickshaw: 30 },
+      'cbs_tapovan': { dist: 5.5, time: '14 mins', private: 75, shared: 20, bus: 12, erickshaw: 20 },
+      'cbs_someshwar': { dist: 7.0, time: '18 mins', private: 95, shared: 25, bus: 15, erickshaw: 25 }
+    };
+
+    let activeFilter = 'all';
+
+    function getRouteData(from, to) {
+      if (from === to) return { dist: 0.5, time: '2 mins', private: 25, shared: 10, bus: 10, erickshaw: 10 };
+      const key1 = `${from}_${to}`;
+      const key2 = `${to}_${from}`;
+      return routeDatabase[key1] || routeDatabase[key2] || { dist: 7.5, time: '20 mins', private: 100, shared: 25, bus: 15, erickshaw: 25 };
+    }
+
+    function swapLocations() {
+      const fromSel = document.getElementById('calc-from');
+      const toSel = document.getElementById('calc-to');
+      const temp = fromSel.value;
+      fromSel.value = toSel.value;
+      toSel.value = temp;
+      updateFareCalculations();
+    }
+
+    function filterTransit(mode) {
+      activeFilter = mode;
+      document.querySelectorAll('.transit-chip').forEach(btn => {
+        btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+        btn.classList.add('bg-surface-container-high', 'text-on-surface');
+      });
+      const activeBtn = document.getElementById(`chip-${mode}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-surface-container-high', 'text-on-surface');
+        activeBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+      }
+      renderCards();
+    }
+
+    function updateFareCalculations() {
+      renderCards();
+    }
+
+    function renderCards() {
+      const from = document.getElementById('calc-from').value;
+      const to = document.getElementById('calc-to').value;
+      const fromName = document.getElementById('calc-from').options[document.getElementById('calc-from').selectedIndex].text;
+      const toName = document.getElementById('calc-to').options[document.getElementById('calc-to').selectedIndex].text;
+      
+      const r = getRouteData(from, to);
+      document.getElementById('route-dist-text').innerHTML = `Calculated Distance: <strong>${r.dist} km</strong>`;
+      document.getElementById('route-time-text').textContent = `~${r.time} travel`;
+
+      const container = document.getElementById('fare-cards-container');
+      const cards = [];
+
+      // 1. Private Auto
+      if (activeFilter === 'all' || activeFilter === 'auto') {
+        const minP = Math.round(r.private * 0.95);
+        const maxP = Math.round(r.private * 1.15);
+        const surge = Math.round(r.private * 1.6);
+        cards.push(`
+          <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[22px]">electric_rickshaw</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-on-surface">Auto Rickshaw (Private Hire)</h3>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[220px]">${fromName} ➔ ${toName}</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-[13px]">verified</span> RTO Tariff
+              </span>
+            </div>
+
+            <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
+              <div>
+                <span class="text-[11px] text-on-surface-variant block uppercase tracking-wider font-semibold">Official Fair Range</span>
+                <span class="text-lg font-bold text-primary">₹${minP} – ₹${maxP}</span>
+                <span class="text-[11px] text-on-surface-variant ml-1">(Metered ₹25 base + ₹15/km)</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-on-surface-variant block">Est. Duration</span>
+                <span class="text-xs font-bold text-on-surface">${r.time}</span>
+              </div>
+            </div>
+
+            <div class="p-2 rounded-lg bg-red-50 text-red-900 border border-red-200 text-xs flex items-start gap-1.5">
+              <span class="material-symbols-outlined text-red-700 text-sm mt-0.5 shrink-0">warning</span>
+              <span><strong>Surge Watch:</strong> Unauthorized stands charging ₹${surge}+. Always insist on meter or RTO rate card.</span>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
+              <span>Reported by 48 Nashikkars • 15m ago</span>
+              <button onclick="openReportFareModal()" class="text-primary font-bold hover:underline">Report Different Price</button>
+            </div>
+          </div>
+        `);
+      }
+
+      // 2. Shared Auto
+      if ((activeFilter === 'all' || activeFilter === 'shared') && r.shared) {
+        cards.push(`
+          <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[22px]">group</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-on-surface">Shared Auto (Seat-Wise)</h3>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[220px]">${fromName} ➔ ${toName}</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-[10px] font-bold uppercase">Fixed Seat Rate</span>
+            </div>
+
+            <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
+              <div>
+                <span class="text-[11px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Price Per Seat</span>
+                <span class="text-lg font-bold text-green-700">₹${r.shared} <span class="text-xs font-normal text-on-surface-variant">/ passenger</span></span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-on-surface-variant block">Frequency</span>
+                <span class="text-xs font-bold text-on-surface">Every 3-5 mins</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
+              <span>Confirmed at Stand #04 (Panchavati Circle)</span>
+              <span class="text-green-700 font-bold">✓ 92 Community Confirmations</span>
+            </div>
+          </div>
+        `);
+      }
+
+      // 3. City Bus
+      if ((activeFilter === 'all' || activeFilter === 'bus') && r.bus) {
+        cards.push(`
+          <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[22px]">directions_bus</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-on-surface">Citylink Municipal Bus (NMC)</h3>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[220px]">Route 101 / 104 • ${fromName} ➔ ${toName}</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase">Government Subsidized</span>
+            </div>
+
+            <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
+              <div>
+                <span class="text-[11px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Ticket</span>
+                <span class="text-lg font-bold text-primary">₹${r.bus} <span class="text-xs font-normal text-on-surface-variant">/ ticket</span></span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-on-surface-variant block">Air-Conditioned</span>
+                <span class="text-xs font-bold text-on-surface">₹${r.bus + 10}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
+              <span>Electronic Smart Card & UPI accepted</span>
+              <span class="text-primary font-bold">Citylink Timetable Active</span>
+            </div>
+          </div>
+        `);
+      }
+
+      // 4. E-Rickshaw
+      if ((activeFilter === 'all' || activeFilter === 'erickshaw') && r.erickshaw) {
+        cards.push(`
+          <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-green-100 text-green-800 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[22px]">eco</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-on-surface">E-Rickshaw (Green Zone Transit)</h3>
+                  <p class="text-xs text-on-surface-variant truncate max-w-[220px]">Pedestrian Corridor • ${fromName} ➔ ${toName}</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-green-100 text-green-800 text-[10px] font-bold uppercase">Zero Emission</span>
+            </div>
+
+            <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between">
+              <div>
+                <span class="text-[11px] text-on-surface-variant block uppercase tracking-wider font-semibold">Standard Fare</span>
+                <span class="text-lg font-bold text-green-800">₹${r.erickshaw} <span class="text-xs font-normal text-on-surface-variant">/ seat</span></span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-on-surface-variant block">Permitted In</span>
+                <span class="text-xs font-bold text-green-800">Zone Green Only</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container">
+              <span>Senior citizens & Divyang assisted</span>
+              <span class="text-green-700 font-bold">✓ Free for age 75+</span>
+            </div>
+          </div>
+        `);
+      }
+
+      container.innerHTML = cards.join('');
+    }
+
+    function openReportFareModal() {
+      document.getElementById('reportPriceModal').classList.remove('hidden');
+      document.getElementById('reportPriceModal').classList.add('flex');
+    }
+
+    function closeReportFareModal() {
+      document.getElementById('reportPriceModal').classList.add('hidden');
+      document.getElementById('reportPriceModal').classList.remove('flex');
+    }
+
+    function submitFareReport() {
+      const mode = document.getElementById('modal-mode').value;
+      const price = document.getElementById('modal-price').value;
+      if (!price) {
+        alert('Please enter price paid');
+        return;
+      }
+      alert(`Thank you! Your community price report of ₹${price} for ${mode} has been submitted to KumbhSetu fair pricing ledger.`);
+      closeReportFareModal();
+    }
+
+    // Initialize
+    updateFareCalculations();
+  </script>
+<script src="i18n.js"></script>
+</body>
+</html>

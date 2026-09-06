@@ -19,8 +19,14 @@ class Settings(BaseSettings):
     # Supabase
     SUPABASE_URL: str = ""
     SUPABASE_ANON_KEY: str = ""
+    SUPABASE_KEY: str = ""
     SUPABASE_SERVICE_KEY: str = ""
+    SUPABASE_SERVICE_ROLE_KEY: str = ""
     SUPABASE_JWT_SECRET: str = ""
+
+    # Server
+    HOST: str = "0.0.0.0"
+    PORT: int = 8000
 
     # Database (SQLite fallback for demo)
     DATABASE_URL: str = "sqlite:///./kumbhsetu_demo.db"
@@ -54,6 +60,7 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = True
+        extra = "ignore"
 
 
 @lru_cache()

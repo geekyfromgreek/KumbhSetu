@@ -26,12 +26,19 @@ def cosine_similarity(vec_a: List[float], vec_b: List[float]) -> float:
     Compute cosine similarity between two mathematical embedding vectors:
     similarity = (vec_a · vec_b) / (||vec_a|| * ||vec_b||)
     """
-    if not vec_a or not vec_b or len(vec_a) != len(vec_b):
-        raise ValueError("Embedding vectors must have identical non-zero dimensions")
+    if not vec_a or not vec_b:
+        raise ValueError("Embedding vectors must be non-empty")
 
-    dot_product = sum(a * b for a, b in zip(vec_a, vec_b))
-    norm_a = math.sqrt(sum(a * a for a in vec_a))
-    norm_b = math.sqrt(sum(b * b for b in vec_b))
+    min_len = min(len(vec_a), len(vec_b))
+    if min_len == 0:
+        return 0.0
+
+    va = vec_a[:min_len]
+    vb = vec_b[:min_len]
+
+    dot_product = sum(a * b for a, b in zip(va, vb))
+    norm_a = math.sqrt(sum(a * a for a in va))
+    norm_b = math.sqrt(sum(b * b for b in vb))
 
     if norm_a == 0.0 or norm_b == 0.0:
         return 0.0
