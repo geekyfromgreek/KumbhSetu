@@ -103,6 +103,30 @@ def init_db():
             FOREIGN KEY (report_id) REFERENCES reports(id)
         );
 
+        
+        CREATE TABLE IF NOT EXISTS local_guides (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            phone_number TEXT NOT NULL,
+            govt_id_number TEXT,
+            govt_id_document_url TEXT,
+            face_embedding TEXT,
+            registration_source TEXT DEFAULT 'self',
+            verification_status TEXT DEFAULT 'Pending Verification',
+            base_location_lat REAL,
+            base_location_lng REAL,
+            base_location_name TEXT,
+            languages_spoken TEXT,
+            rating REAL DEFAULT 4.8,
+            review_count INTEGER DEFAULT 0,
+            hourly_rate REAL DEFAULT 150.0,
+            experience_years INTEGER DEFAULT 5,
+            specialties TEXT,
+            image_url TEXT,
+            created_at TEXT NOT NULL,
+            last_active_at TEXT NOT NULL
+        );
+
         CREATE TABLE IF NOT EXISTS vendors (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,

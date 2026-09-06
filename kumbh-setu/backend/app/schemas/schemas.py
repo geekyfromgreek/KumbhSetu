@@ -289,3 +289,63 @@ class DashboardStats(BaseModel):
     total_listings: int = 0
     reports_new: int = 0
     reports_resolved: int = 0
+
+
+# ─── Local Guides & Selfie Verification Schemas ──────────
+
+class GuideRegistration(BaseModel):
+    name: str = Field(..., min_length=2, max_length=150)
+    phone_number: str = Field(..., min_length=10, max_length=20)
+    govt_id_number: str = Field(..., min_length=4, max_length=50)
+    govt_id_document_url: Optional[str] = None
+    registration_source: Optional[str] = "self"
+    base_location_name: Optional[str] = "Ramkund Main Ghat"
+    base_location_lat: Optional[float] = 19.9975
+    base_location_lng: Optional[float] = 73.7898
+    languages_spoken: list[str] = ["Marathi", "Hindi", "English"]
+    hourly_rate: Optional[float] = 150.0
+    experience_years: Optional[int] = 5
+    specialties: list[str] = ["Temple History", "Aarti Guidance"]
+    image_url: Optional[str] = None
+    selfie_base64: Optional[str] = None
+
+
+class GuideResponse(BaseModel):
+    id: str
+    name: str
+    phone_number: str
+    govt_id_number: Optional[str] = None
+    govt_id_document_url: Optional[str] = None
+    registration_source: str = "self"
+    verification_status: str = "Kumbhveer Verified"
+    base_location_name: Optional[str] = "Ramkund Main Ghat"
+    base_location_lat: Optional[float] = 19.9975
+    base_location_lng: Optional[float] = 73.7898
+    languages_spoken: list[str] = []
+    rating: float = 4.8
+    review_count: int = 0
+    hourly_rate: float = 150.0
+    experience_years: int = 5
+    specialties: list[str] = []
+    image_url: Optional[str] = None
+    created_at: str
+    last_active_at: str
+
+
+class GuideListResponse(BaseModel):
+    guides: list[GuideResponse]
+    total: int
+
+
+class GuideBookingVerification(BaseModel):
+    selfie_base64: Optional[str] = None
+
+
+class GuideBookingVerificationResponse(BaseModel):
+    identity_confirmed: bool
+    similarity_score: Optional[float] = None
+    threshold: float = 0.68
+    guide_id: str
+    guide_name: str
+    message: str
+    reason: Optional[str] = None
