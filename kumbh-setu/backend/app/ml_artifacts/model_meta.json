@@ -1,0 +1,53 @@
+{
+  "feature_order": [
+    "day_index",
+    "hour",
+    "day_of_week",
+    "is_snan_day",
+    "days_to_snan",
+    "crowd_index",
+    "category",
+    "issue_type",
+    "is_safety_issue",
+    "latitude",
+    "longitude",
+    "zone",
+    "dist_to_ghat_km",
+    "reference_price",
+    "charged_price",
+    "price_delta_percent",
+    "gouge_ratio",
+    "vendor_prior_reports",
+    "vendor_prior_penalties",
+    "vendor_age_days",
+    "verification_status",
+    "distinct_reporters",
+    "reporter_type",
+    "report_channel",
+    "language",
+    "payment_mode",
+    "weather",
+    "has_photo",
+    "has_receipt",
+    "response_time_min"
+  ],
+  "class_order": [
+    "Critical",
+    "High",
+    "Low",
+    "Medium"
+  ],
+  "score_weights": {
+    "Critical": 1.0,
+    "High": 0.85,
+    "Low": 0.15,
+    "Medium": 0.55
+  },
+  "dbscan": {
+    "eps_m": 120,
+    "min_samples": 50,
+    "metric": "haversine"
+  },
+  "total_reports": 100000,
+  "total_clusters": 17
+}

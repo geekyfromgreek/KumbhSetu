@@ -10,3 +10,6 @@ deepface>=0.0.93
 tf-keras>=2.16.0
 numpy>=1.26.0
 pgvector>=0.3.0
+scikit-learn>=1.4.0
+xgboost>=2.0.0
+scipy>=1.11.0

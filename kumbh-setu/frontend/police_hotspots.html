@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#EA580C">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>KumbhSetu — Police AI Hotspot Radar & Live Triage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0B0F19; color: #F1F5F9; }
+    .radar-pulse {
+      position: relative;
+    }
+    .radar-pulse::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      border: 2px solid #EF4444;
+      animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 0.9; }
+      80%, 100% { transform: scale(2.4); opacity: 0; }
+    }
+    #map { height: 380px; width: 100%; border-radius: 1rem; z-index: 10; }
+    .leaflet-popup-content-wrapper {
+      background: #1E293B;
+      color: #F8FAFC;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .leaflet-popup-tip { background: #1E293B; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-20">
+
+  <!-- Top Police Command Bar -->
+  <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 px-4 py-3 shadow-md">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="police_escalations.html" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-red-400 bg-red-950/60 border border-red-800/60 px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
+              Live ML Radar
+            </span>
+            <span class="text-xs text-slate-400 font-mono">DBSCAN + XGBoost</span>
+          </div>
+          <h1 class="text-base font-bold text-white leading-tight">Enforcement Hotspots & Live Incident Triage</h1>
+        </div>
+      </div>
+
+      <!-- Live Stream Status Toggle -->
+      <div class="flex items-center gap-2">
+        <button id="toggleStreamBtn" onclick="toggleSimulation()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-sm transition-colors">
+          <span class="material-symbols-outlined text-[16px]" id="streamIcon">sensors</span>
+          <span id="streamStatusText">Simulation Active</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Container -->
+  <main class="max-w-6xl mx-auto w-full px-4 pt-4 space-y-4">
+
+    <!-- Overview Stat Tiles -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+        <span class="text-xs text-slate-400 font-medium">Discovered Hotspots</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span class="text-2xl font-bold text-white" id="statHotspots">17</span>
+          <span class="text-xs text-emerald-400 font-mono">ε=120m Haversine</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+        <span class="text-xs text-slate-400 font-medium">Total Triaged Reports</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span class="text-2xl font-bold text-white">100,000</span>
+          <span class="text-xs text-slate-400">Nashik Dataset</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+        <span class="text-xs text-slate-400 font-medium">Top Enforcement Priority</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span class="text-2xl font-bold text-red-400" id="statTopPriority">74.87</span>
+          <span class="text-xs text-red-300 truncate max-w-[120px]">Ramkund Lane</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+        <span class="text-xs text-slate-400 font-medium">Auto Patrol Routing</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span class="text-2xl font-bold text-amber-400">KNN k=15</span>
+          <span class="text-xs text-slate-400">O(log n) real-time</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map & Hotspots Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      
+      <!-- Interactive Leaflet Radar Map (7 Cols) -->
+      <div class="lg:col-span-7 bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex flex-col gap-2">
+        <div class="flex items-center justify-between px-1">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-orange-400 text-[18px]">radar</span>
+            <h2 class="text-sm font-bold text-white">DBSCAN Spatial Hotspots Map</h2>
+          </div>
+          <span class="text-xs text-slate-400">Circle radius = 95th percentile spread</span>
+        </div>
+        <div id="map" class="shadow-inner"></div>
+        <div class="flex flex-wrap items-center gap-3 pt-1 text-[11px] text-slate-400 px-1">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Priority &gt; 50 (Critical)</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Priority 30–50 (High)</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Priority &lt; 30 (Moderate)</span>
+        </div>
+      </div>
+
+      <!-- Priority Leaderboard (5 Cols) -->
+      <div class="lg:col-span-5 bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-2">
+          <h2 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-red-400 text-[18px]">local_fire_department</span>
+            Patrol Priority Leaderboard
+          </h2>
+          <span class="text-[11px] font-mono text-slate-400">√Volume × Severity</span>
+        </div>
+
+        <div id="hotspotList" class="overflow-y-auto max-h-[340px] space-y-2 pr-1 scrollbar-thin">
+          <div class="text-center py-8 text-slate-500 text-xs">Loading discovered DBSCAN hotspots...</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Live Simulation Stream Feed -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
+          <h2 class="text-sm font-bold text-white">Live Overcharging & Civic Incident Stream (Simulated via admin_reports.csv)</h2>
+        </div>
+        <span class="text-xs text-slate-400 font-mono" id="simCount">Inflow: 1 event / 2.5s</span>
+      </div>
+
+      <div id="incidentStream" class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+        <!-- Live incident items injected here -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Dispatch Modal -->
+  <div id="dispatchModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-5 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-red-400 text-[24px]">local_police</span>
+          <h3 class="font-bold text-white text-base">Rapid Patrol Dispatch</h3>
+        </div>
+        <button onclick="closeDispatchModal()" class="text-slate-400 hover:text-white">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="bg-slate-800/80 p-3 rounded-xl space-y-1">
+          <div class="text-slate-400">Target Hotspot:</div>
+          <div id="modalHotspotName" class="text-white font-bold text-sm">Ramkund Approach Lane</div>
+          <div id="modalHotspotMeta" class="text-slate-400">Zone: Ramkund / Panchavati Core • Priority: 74.87</div>
+        </div>
+
+        <div>
+          <label class="text-slate-300 font-medium block mb-1">Assign Flying Squad Unit:</label>
+          <select id="dispatchUnit" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs">
+            <option value="Sector 2 Beat 4 Flying Squad Alpha">Sector 2 Beat 4 Flying Squad Alpha (2 bikes, 4 officers)</option>
+            <option value="Panchavati Rapid Enforcement Unit">Panchavati Rapid Enforcement Unit (Patrol Van 112)</option>
+            <option value="Ramkund Ghat Mobile Task Force">Ramkund Ghat Mobile Task Force</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-slate-300 font-medium block mb-1">Action Order:</label>
+          <div class="p-2.5 bg-slate-800/50 border border-slate-700/60 rounded-lg text-slate-300">
+            Enforce statutory rate ceiling, issue digital compound fine (₹5,000) for repeat price gouging, and disperse rogue touts.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="closeDispatchModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
+          Cancel
+        </button>
+        <button onclick="confirmDispatch()" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold shadow-lg shadow-red-900/30">
+          Confirm Dispatch
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="supabase.js"></script>
+  <script src="i18n.js"></script>
+  <script>
+    let map = null;
+    let markers = [];
+    let circles = [];
+    let allHotspots = [];
+    let simEvents = [];
+    let simIndex = 0;
+    let simInterval = null;
+    let isSimulating = true;
+    let selectedCluster = null;
+
+    const API_BASE = window.API_BASE_URL || 'http://localhost:8000';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initMap();
+      fetchHotspots();
+      fetchSimulationEvents();
+    });
+
+    function initMap() {
+      map = L.map('map', {
+        center: [20.0084, 73.7929],
+        zoom: 13,
+        zoomControl: true
+      });
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(map);
+    }
+
+    async function fetchHotspots() {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/police/hotspots`);
+        const data = await res.json();
+        if (data.status === 'success' && data.hotspots) {
+          allHotspots = data.hotspots;
+          document.getElementById('statHotspots').textContent = allHotspots.length;
+          if (allHotspots.length > 0) {
+            document.getElementById('statTopPriority').textContent = allHotspots[0].priority.toFixed(1);
+          }
+          renderHotspotsOnMap(allHotspots);
+          renderHotspotsList(allHotspots);
+        }
+      } catch (err) {
+        console.error('Error fetching hotspots:', err);
+      }
+    }
+
+    function renderHotspotsOnMap(hotspots) {
+      // Clear previous
+      circles.forEach(c => map.removeLayer(c));
+      markers.forEach(m => map.removeLayer(m));
+      circles = [];
+      markers = [];
+
+      hotspots.forEach((h, idx) => {
+        let color = '#EAB308'; // Amber
+        if (h.priority >= 50) color = '#EF4444'; // Red
+        else if (h.priority >= 30) color = '#F97316'; // Orange
+
+        // Circle for cluster radius
+        const circle = L.circle([h.lat, h.lng], {
+          radius: Math.max(h.radius_m, 120),
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.22,
+          weight: 2
+        }).addTo(map);
+
+        circle.bindPopup(`
+          <div class="text-xs p-1">
+            <div class="font-bold text-white text-sm">Rank #${h.rank}: ${h.label}</div>
+            <div class="text-slate-300 mt-1">Zone: <span class="font-semibold text-white">${h.zone}</span></div>
+            <div class="text-slate-300">Patrol Priority: <span class="font-bold text-red-400">${h.priority.toFixed(2)}</span></div>
+            <div class="text-slate-300">Total Reports: <span class="text-white">${h.reports.toLocaleString()}</span> (Critical: ${h.critical})</div>
+            <div class="text-slate-300">Top Issue: <span class="text-amber-300 font-semibold">${h.top_issue}</span></div>
+            <div class="mt-2.5">
+              <button onclick="openDispatchModal(${h.cluster_id}, '${h.label.replace(/'/g, "\\'")}', '${h.zone.replace(/'/g, "\\'")}', ${h.priority})" class="w-full py-1 px-2 rounded bg-red-600 hover:bg-red-500 text-white font-bold text-[11px]">
+                🚨 Dispatch Squad Here
+              </button>
+            </div>
+          </div>
+        `);
+
+        circles.push(circle);
+
+        // Marker pin
+        const marker = L.circleMarker([h.lat, h.lng], {
+          radius: 6,
+          color: '#FFFFFF',
+          fillColor: color,
+          fillOpacity: 1.0,
+          weight: 2
+        }).addTo(map);
+
+        marker.on('click', () => {
+          circle.openPopup();
+        });
+
+        markers.push(marker);
+      });
+    }
+
+    function renderHotspotsList(hotspots) {
+      const container = document.getElementById('hotspotList');
+      container.innerHTML = '';
+
+      hotspots.slice(0, 10).forEach(h => {
+        let badgeColor = 'text-amber-400 bg-amber-950/60 border-amber-800';
+        let barColor = 'bg-amber-500';
+        if (h.priority >= 50) {
+          badgeColor = 'text-red-400 bg-red-950/60 border-red-800';
+          barColor = 'bg-red-500';
+        } else if (h.priority >= 30) {
+          badgeColor = 'text-orange-400 bg-orange-950/60 border-orange-800';
+          barColor = 'bg-orange-500';
+        }
+
+        const card = document.createElement('div');
+        card.className = 'bg-slate-800/70 hover:bg-slate-800 border border-slate-700/60 rounded-xl p-2.5 transition-all cursor-pointer';
+        card.onclick = () => {
+          map.flyTo([h.lat, h.lng], 15);
+          const circle = circles[h.rank - 1];
+          if (circle) circle.openPopup();
+        };
+
+        const pct = Math.min((h.priority / 80) * 100, 100);
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-xs mb-1">
+            <div class="flex items-center gap-1.5 font-bold text-white truncate max-w-[200px]">
+              <span class="text-slate-400 text-[11px]">#${h.rank}</span>
+              <span>${h.label}</span>
+            </div>
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${badgeColor}">
+              Priority ${h.priority.toFixed(1)}
+            </span>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1.5">
+            <span>${h.zone}</span>
+            <span>${h.reports.toLocaleString()} incidents</span>
+          </div>
+
+          <div class="w-full bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
+            <div class="${barColor} h-full rounded-full" style="width: ${pct}%"></div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function fetchSimulationEvents() {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/police/live-stream?limit=80`);
+        const data = await res.json();
+        if (data.status === 'success' && data.events) {
+          simEvents = data.events;
+          startSimulationFeed();
+        }
+      } catch (err) {
+        console.error('Error loading simulation stream:', err);
+      }
+    }
+
+    function startSimulationFeed() {
+      if (simInterval) clearInterval(simInterval);
+
+      // Inject initial batch of 3
+      for (let i = 0; i < 3; i++) {
+        pushNextSimEvent();
+      }
+
+      // Stream a new incident every 2.5 seconds
+      simInterval = setInterval(() => {
+        if (isSimulating) {
+          pushNextSimEvent();
+        }
+      }, 2500);
+    }
+
+    function pushNextSimEvent() {
+      if (simEvents.length === 0) return;
+      const event = simEvents[simIndex % simEvents.length];
+      simIndex++;
+
+      const container = document.getElementById('incidentStream');
+      const item = document.createElement('div');
+      item.className = 'bg-slate-800/90 border border-slate-700/80 rounded-xl p-3 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-3 transform transition-all duration-300 animate-fadeIn';
+
+      let sevBadge = 'bg-red-950 text-red-300 border-red-800';
+      if (event.severity === 'High') sevBadge = 'bg-orange-950 text-orange-300 border-orange-800';
+      else if (event.severity === 'Medium') sevBadge = 'bg-amber-950 text-amber-300 border-amber-800';
+      else if (event.severity === 'Low') sevBadge = 'bg-blue-950 text-blue-300 border-blue-800';
+
+      const diff = event.charged_price - event.reference_price;
+      const pct = Math.round(event.price_delta_percent);
+
+      item.innerHTML = `
+        <div class="flex items-start gap-3 min-w-0">
+          <div class="w-9 h-9 rounded-lg bg-red-950/80 border border-red-800/80 flex items-center justify-center text-red-400 shrink-0">
+            <span class="material-symbols-outlined text-[20px]">warning</span>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs font-mono font-bold text-slate-300">${event.report_id}</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${sevBadge} uppercase">${event.severity}</span>
+              <span class="text-[11px] text-slate-400">${event.category} • ${event.issue_type}</span>
+              <span class="text-[10px] text-slate-500 font-mono">Just now</span>
+            </div>
+            <div class="text-sm font-semibold text-white truncate mt-0.5">${event.vendor_name}</div>
+            <div class="flex items-center gap-2 text-xs text-slate-300 mt-1">
+              <span>Charged: <b class="text-red-400">₹${Math.round(event.charged_price)}</b></span>
+              <span>Cap: <b>₹${Math.round(event.reference_price)}</b></span>
+              <span class="text-red-400 font-bold font-mono">(+${pct}%)</span>
+              <span class="text-slate-500">•</span>
+              <span class="text-amber-400 flex items-center gap-0.5 text-[11px]">
+                <span class="material-symbols-outlined text-[13px]">pin_drop</span>
+                ${event.hotspot_name}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0 self-end md:self-center">
+          <button onclick="openDispatchModal(0, '${event.hotspot_name.replace(/'/g, "\\'")}', '${event.zone.replace(/'/g, "\\'")}', 75)" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">fmd_good</span>
+            Dispatch Squad
+          </button>
+        </div>
+      `;
+
+      // Insert at top
+      container.insertBefore(item, container.firstChild);
+
+      // Keep maximum 25 items in view
+      if (container.children.length > 25) {
+        container.removeChild(container.lastChild);
+      }
+
+      // Add a momentary pulse marker on the map
+      if (map && event.latitude && event.longitude) {
+        const ping = L.circleMarker([event.latitude, event.longitude], {
+          radius: 8,
+          color: '#EF4444',
+          fillColor: '#F87171',
+          fillOpacity: 0.9,
+          weight: 2
+        }).addTo(map);
+
+        setTimeout(() => map.removeLayer(ping), 3000);
+      }
+    }
+
+    function toggleSimulation() {
+      isSimulating = !isSimulating;
+      const btn = document.getElementById('toggleStreamBtn');
+      const icon = document.getElementById('streamIcon');
+      const text = document.getElementById('streamStatusText');
+
+      if (isSimulating) {
+        btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-sm transition-colors';
+        icon.textContent = 'sensors';
+        text.textContent = 'Simulation Active';
+      } else {
+        btn.className = 'px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 font-medium text-xs flex items-center gap-1.5 shadow-sm transition-colors';
+        icon.textContent = 'pause';
+        text.textContent = 'Simulation Paused';
+      }
+    }
+
+    function openDispatchModal(clusterId, name, zone, priority) {
+      selectedCluster = { clusterId, name, zone, priority };
+      document.getElementById('modalHotspotName').textContent = name;
+      document.getElementById('modalHotspotMeta').textContent = `Zone: ${zone} • Priority Score: ${priority.toFixed(1)}`;
+      document.getElementById('dispatchModal').classList.remove('hidden');
+      document.getElementById('dispatchModal').classList.add('flex');
+    }
+
+    function closeDispatchModal() {
+      document.getElementById('dispatchModal').classList.add('hidden');
+      document.getElementById('dispatchModal').classList.remove('flex');
+    }
+
+    async function confirmDispatch() {
+      if (!selectedCluster) return;
+      const unit = document.getElementById('dispatchUnit').value;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/police/dispatch-patrol`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cluster_id: selectedCluster.clusterId,
+            hotspot_name: selectedCluster.name,
+            officer_badge: 'MH-15-POLICE-0482',
+            unit_name: unit
+          })
+        });
+        const result = await res.json();
+        closeDispatchModal();
+        alert(`🚨 DISPATCH CONFIRMED!\n\nDispatch ID: ${result.dispatch_id}\nUnit: ${unit}\nDestination: ${selectedCluster.name}\nEstimated Response Time: 4 minutes`);
+      } catch (err) {
+        console.error('Dispatch error:', err);
+        closeDispatchModal();
+      }
+    }
+  </script>
+</body>
+</html>
