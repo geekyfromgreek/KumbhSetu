@@ -115,3 +115,9 @@ Thumbs.db
 *.tgz
 *.rar
 *.7z
+
+# Raw Design Files & Assets
+stitch_design/
+stitch_design/*
+stitch_kumbh_setu_civic_platform/
+
