@@ -120,7 +120,7 @@
 </button>
 <button class="issue-pill flex items-center gap-space-2xs px-space-sm py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm transition-all" data-issue="refused_rate" type="button">
 <span class="material-symbols-outlined text-[16px] text-outline">do_not_disturb_on</span>
-<span>Refused Govt Rate</span>
+<span>Refused Standard Rate</span>
 </button>
 <button class="issue-pill flex items-center gap-space-2xs px-space-sm py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm transition-all" data-issue="safety" type="button">
 <span class="material-symbols-outlined text-[16px] text-outline">health_and_safety</span>
@@ -128,21 +128,21 @@
 </button>
 </div>
 </div>
-<!-- 4. Quoted Price vs Govt Ceiling Comparison Card -->
+<!-- 4. Quoted Price vs Community Benchmark Comparison Card -->
 <div class="bg-surface-container-low rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-space-2xs">
 <span class="material-symbols-outlined text-primary text-[20px]">balance</span>
-<span class="font-label-lg text-label-lg text-on-surface">Tariff Discrepancy Check</span>
+<span class="font-label-lg text-label-lg text-on-surface">Community Range Comparison</span>
 </div>
 <span class="bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm px-space-xs py-0.5 rounded-full font-semibold">
-          Sector 3 Gazette Cap
+          Sector 3 Benchmark (₹800-₹900)
         </span>
 </div>
 <div class="grid grid-cols-2 gap-space-sm">
 <!-- Demanded Price Input -->
 <div class="flex flex-col gap-space-2xs">
-<label class="font-label-sm text-label-sm text-on-surface-variant font-medium" for="demanded-price">Demanded (मांगितलेली रक्कम)</label>
+<label class="font-label-sm text-label-sm text-on-surface-variant font-medium" for="demanded-price">Demanded (मागितलेली रक्कम)</label>
 <div class="relative flex items-center">
 <span class="absolute left-space-sm font-headline-sm text-headline-sm text-error font-bold">₹</span>
 <input class="w-full h-12 pl-8 pr-space-xs bg-surface-container-lowest rounded-xl font-headline-sm text-headline-sm text-on-surface shadow-sm focus:outline-none" id="demanded-price" inputmode="numeric" oninput="updateDeltaDisplay(this.value)" type="number" value="1500"/>
@@ -150,7 +150,7 @@
 </div>
 <!-- Official Municipal Cap -->
 <div class="flex flex-col gap-space-2xs">
-<label class="font-label-sm text-label-sm text-on-surface-variant font-medium">Govt Ceiling (अधिकृत दर)</label>
+<label class="font-label-sm text-label-sm text-on-surface-variant font-medium">Reference Benchmark (संदर्भ दर)</label>
 <div class="h-12 px-space-sm bg-surface-container-lowest rounded-xl flex items-center justify-between shadow-sm">
 <span class="font-headline-sm text-headline-sm text-on-surface font-bold">₹900</span>
 <span class="material-symbols-outlined text-primary text-[18px]">verified</span>
@@ -161,9 +161,9 @@
 <div class="p-space-xs rounded-lg bg-error-container text-on-error-container flex items-center justify-between" id="delta-container">
 <div class="flex items-center gap-space-2xs">
 <span class="material-symbols-outlined text-[18px]">warning</span>
-<span class="font-label-sm text-label-sm font-semibold">Excess Extortion:</span>
+<span class="font-label-sm text-label-sm font-semibold">Excess Above Benchmark:</span>
 </div>
-<span class="font-label-md text-label-md font-bold" id="delta-value">+₹600 (+66% over cap)</span>
+<span class="font-headline-sm text-headline-sm font-bold text-error" id="delta-value">+₹600 (+67% over benchmark)</span>
 </div>
 </div>
 <!-- 5. Photo / Receipt / Meter Upload -->
@@ -331,17 +331,17 @@
   function updateDeltaDisplay(val) {
     const deltaContainer = document.getElementById('delta-container');
     const deltaVal = document.getElementById('delta-value');
-    const govtCap = 900;
+    const benchmarkRate = 900;
     const demanded = parseFloat(val) || 0;
-    const diff = demanded - govtCap;
+    const diff = demanded - benchmarkRate;
 
     if (diff > 0) {
-      const pct = Math.round((diff / govtCap) * 100);
+      const pct = Math.round((diff / benchmarkRate) * 100);
       deltaContainer.className = "p-space-xs rounded-lg bg-error-container text-on-error-container flex items-center justify-between";
-      deltaVal.textContent = `+₹${diff} (+${pct}% over cap)`;
+      deltaVal.textContent = `+₹${diff} (+${pct}% above benchmark)`;
     } else {
       deltaContainer.className = "p-space-xs rounded-lg bg-surface-container-high text-on-surface flex items-center justify-between";
-      deltaVal.textContent = "Within official range";
+      deltaVal.textContent = "Within indicative fair range";
     }
   }
 

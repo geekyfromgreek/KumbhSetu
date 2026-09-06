@@ -87,6 +87,36 @@
 </div>
 </div>
 </div>
+<!-- Primary Quick Category Bar -->
+<div class="px-layout-margin-mobile py-2">
+  <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <a href="marketplace.html?category=stay" class="shrink-0 h-9 px-3 rounded-full bg-primary/10 text-primary border border-primary/20 font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-primary/20">
+      <span class="material-symbols-outlined text-[18px]">bed</span>
+      <span>Local Stays &amp; Dharamshalas</span>
+    </a>
+    <a href="marketplace.html?category=bazaar" class="shrink-0 h-9 px-3 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-secondary-container">
+      <span class="material-symbols-outlined text-[18px]">storefront</span>
+      <span>Local Bazaar &amp; Puja Stalls</span>
+    </a>
+    <a href="marketplace.html?category=guides" class="shrink-0 h-9 px-3 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-tertiary-container">
+      <span class="material-symbols-outlined text-[18px]">person_pin_circle</span>
+      <span>Local Guides</span>
+    </a>
+    <button onclick="openKumbhRoadmapModal()" class="shrink-0 h-9 px-3 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform shadow-sm">
+      <span class="material-symbols-outlined text-[18px]">route</span>
+      <span>Holy Ghats Roadmap</span>
+    </button>
+    <a href="food_finder.html" class="shrink-0 h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform">
+      <span class="material-symbols-outlined text-[18px]">soup_kitchen</span>
+      <span>Annakshetra &amp; Food</span>
+    </a>
+    <a href="marketplace.html?category=transport" class="shrink-0 h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform">
+      <span class="material-symbols-outlined text-[18px]">electric_rickshaw</span>
+      <span>Pre-Paid Transit</span>
+    </a>
+  </div>
+</div>
+
 <!-- Primary Civic Quick-Access Grid -->
 <div class="px-layout-margin-mobile py-space-xs">
 <div class="flex items-center justify-between mb-space-xs">
@@ -103,11 +133,11 @@
 <span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-semibold">4.8 ★</span>
 </div>
 <div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Local Market</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">Compare fair rickshaws, hotels, stay, &amp; licensed guides.</p>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Local Marketplace</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">Local Stays, Puja Bazaar, Rickshaws &amp; Verified Guides.</p>
 </div>
 <div class="mt-space-md pt-space-xs flex items-center text-primary font-label-md text-label-md font-semibold gap-1">
-<span>Compare Rates</span>
+<span>Explore Marketplace</span>
 <span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
 </div>
 </a>
@@ -164,20 +194,76 @@
 </a>
 </div>
 </div>
+
+<!-- Prominent Pre-Paid Rickshaw & Transit Fare Estimator -->
+<div class="px-layout-margin-mobile pt-space-xs">
+  <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-primary/20 flex flex-col gap-2">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-lg bg-primary text-on-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-[22px]">electric_rickshaw</span>
+        </div>
+        <div>
+          <h3 class="font-headline-sm text-sm font-bold text-on-surface">Pre-Paid Travel Rate &amp; Route Estimator</h3>
+          <p class="text-xs text-on-surface-variant">Verified by Kumbhveer &amp; Nashikkar Citizen Network</p>
+        </div>
+      </div>
+      <span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-bold text-[10px] uppercase">RTO Tariff</span>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 text-xs mt-1">
+      <div>
+        <label class="font-label-sm text-[11px] text-on-surface-variant block mb-0.5">Pickup Location (कुठून)</label>
+        <select id="home-calc-origin" class="w-full h-10 px-2 rounded-lg bg-surface-container-low text-on-surface border border-outline-variant/40 text-xs focus:outline-none focus:border-primary" onchange="calculateHomeRickshawFare()">
+          <option value="station">Nashik Road Station</option>
+          <option value="cbs">CBS Bus Stand</option>
+          <option value="tapovan">Tapovan Sadhu Gram</option>
+          <option value="ramkund" selected>Ramkund Main Ghat</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="font-label-sm text-[11px] text-on-surface-variant block mb-0.5">Destination (कुठे)</label>
+        <select id="home-calc-dest" class="w-full h-10 px-2 rounded-lg bg-surface-container-low text-on-surface border border-outline-variant/40 text-xs focus:outline-none focus:border-primary" onchange="calculateHomeRickshawFare()">
+          <option value="trimbak">Trimbakeshwar (28 km)</option>
+          <option value="ramkund">Ramkund Ghat (Panchavati)</option>
+          <option value="muktidham" selected>Muktidham Temple (9 km)</option>
+          <option value="cbs">CBS Central Stand (4 km)</option>
+          <option value="someshwar">Someshwar Waterfall (11 km)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low mt-1">
+      <div class="flex items-center gap-1.5 text-on-surface-variant text-xs">
+        <span class="material-symbols-outlined text-[16px] text-secondary">straighten</span>
+        <span id="home-calc-dist-label">Est. Distance: <strong>9.2 km</strong> (₹30/seat shared)</span>
+      </div>
+      <div class="flex items-baseline gap-1">
+        <span class="text-xs text-on-surface-variant font-medium">Fair Fare:</span>
+        <span class="font-headline-sm text-headline-sm font-bold text-primary" id="home-calc-fare-val">₹140</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Interactive Ghat Life & Holy Dip Experience Visual Showcase -->
 <div class="px-layout-margin-mobile py-space-sm">
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-all" onclick="openKumbhRoadmapModal()">
 <div class="relative h-44 w-full">
 <img class="w-full h-full object-cover" data-alt="A dignified and atmospheric early morning view of Godavari Ghat at Ramkund during Kumbh Mela Nashik. Warm sunlight bathes stone ancient ghats, deep terracotta temple shikhara, gentle river reflections, devout sadhus and pilgrims gathering peacefully under mist, authentic cultural lighting with no artificial glow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB30zpB-hrkYsOuz8hE7UUk4J8kcy65o3ezQbegGiEI79xS4snHA2RnKchpl96NdSGLLV_Hll38YU6O0ZbFdRa5lAF8InAh7hXEHfh10JyK5ZiNtKm_QW_GPZVC1z1I5Pa_2xsyqu1Brj2kbZcESIteGU6mdxOSj_GsF0MSlyqqt9jDbTGcshSxKChZQ9pg-CO1Iieurx6IsfrQI5Jql63SFugU1t0RpihFTU2m5BFKoQHZNVl-ja12"/>
 <div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-on-surface/20 to-transparent"></div>
 <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between text-on-primary">
 <div>
-<span class="font-label-sm text-label-sm bg-primary px-space-xs py-0.5 rounded text-on-primary font-semibold">Current Ghat View</span>
-<p class="font-headline-sm text-headline-sm font-bold mt-1 text-surface-bright">Panchavati &amp; Ramkund Complex</p>
+<span class="font-label-sm text-label-sm bg-primary px-space-xs py-0.5 rounded text-on-primary font-semibold">Complete Kumbh Experience</span>
+<p class="font-headline-sm text-headline-sm font-bold mt-1 text-surface-bright">Holy Ghats Pilgrimage Roadmap</p>
 </div>
-<button class="h-8 px-3 rounded-md bg-surface-container-lowest/90 text-on-surface text-label-sm font-semibold flex items-center gap-1 shadow-sm" type="button">
-<span class="material-symbols-outlined text-[16px] text-primary">route</span>
-<span>Walk Route</span>
+<button class="h-8 px-3 rounded-md bg-surface-container-lowest/90 text-on-surface text-label-sm font-semibold flex items-center gap-1 shadow-sm" onclick="event.stopPropagation(); openKumbhRoadmapModal();" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">explore</span>
+<span>View Roadmap</span>
+</button>
+</div>
+</div>
 </button>
 </div>
 </div>
@@ -288,21 +374,21 @@ Paste the WhatsApp message, video link, or verbal claim you heard. We forward hi
 </div>
 <div class="flex flex-col">
 <div class="flex items-center gap-space-2xs">
-<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Kumbhveer Civic Guarantee</span>
-<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Kumbhveer Civic Assistance</span>
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
 </div>
 <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-            All listed fair rates, medical camps, and community kitchens are officially inspected and endorsed by the <strong>Nashik Municipal Corporation</strong> and <strong>Akhil Bharatiya Akhada Parishad</strong>.
-          </p>
+Marketplace rates represent indicative fair price ranges and vendor declarations. Administration does not guarantee or fix prices. Emergency facilities and civic helplines operate 24x7.
+</p>
 <div class="flex items-center gap-space-md mt-space-sm text-outline font-label-sm text-label-sm">
 <span class="flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px] text-primary">gavel</span>
-              Zero Overcharge Tolerance
-            </span>
+<span class="material-symbols-outlined text-[16px] text-primary">balance</span>
+Fair Range Guidance
+</span>
 <span class="flex items-center gap-1">
 <span class="material-symbols-outlined text-[16px] text-primary">call</span>
-              Helpline: 1800-233-0202
-            </span>
+Helpline: 1800-233-0202
+</span>
 </div>
 </div>
 </div>
@@ -400,11 +486,213 @@ Paste the WhatsApp message, video link, or verbal claim you heard. We forward hi
       alert(`Claim submitted! Case ref: ${data.pib_case_number}. Forwarded to PIB Ground Cell & Police Admin.`);
       loadFactChecks();
     } catch (e) {
-      closeModal('reportRumorModal');
-      alert('Claim submitted to local queue (Demo active).');
-    }
+<!-- Complete Kumbh Experience & Holy Ghats Roadmap Modal -->
+<div id="kumbhRoadmapModal" class="fixed inset-0 z-50 bg-on-surface/60 backdrop-blur-sm hidden items-center justify-center p-4">
+  <div class="bg-surface rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-outline-variant/30">
+    <!-- Header -->
+    <div class="p-4 bg-primary text-on-primary flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-[24px]">route</span>
+        <div>
+          <h3 class="font-headline-sm text-headline-sm font-bold leading-tight">Complete Kumbh Pilgrimage Roadmap</h3>
+          <p class="font-label-sm text-label-sm text-primary-fixed-dim">Nashik &amp; Trimbakeshwar Holy Ghats Circuit</p>
+        </div>
+      </div>
+      <button onclick="closeModal('kumbhRoadmapModal')" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-on-primary" type="button">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="p-4 overflow-y-auto space-y-4 text-left">
+      <!-- Auspicious Snan Hours Banner -->
+      <div class="p-3 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-start gap-2 text-xs">
+        <span class="material-symbols-outlined text-tertiary text-[20px] shrink-0">schedule</span>
+        <div>
+          <strong>Auspicious Snan Timings:</strong> Brahma Muhurta Snan: 04:00 AM – 07:30 AM | Mahasnan &amp; Sandhya Deepotsav: 06:15 PM – 08:30 PM.
+        </div>
+      </div>
+
+      <!-- Pilgrimage Sequence Timeline -->
+      <div class="space-y-3">
+        <!-- Ghat 1: Ramkund -->
+        <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/40 flex items-start gap-3 shadow-sm">
+          <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface">Ramkund Main Holy Snan Ghat</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-primary/10 text-primary font-bold">Panchavati</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-0.5">Sacred central tank where Lord Rama performed Pitru Tarpan. Main Simhastha Kumbh Snan site.</p>
+            <div class="flex items-center justify-between mt-2 pt-1 border-t border-outline-variant/20 text-xs">
+              <span class="text-on-surface-variant font-medium">Holy Dip &amp; Ganga Godavari Aarti</span>
+              <a href="https://maps.google.com/?q=Ramkund,Panchavati,Nashik" target="_blank" class="text-primary font-bold hover:underline flex items-center gap-0.5">
+                <span>Navigate</span>
+                <span class="material-symbols-outlined text-[14px]">near_me</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ghat 2: Lakshman Ghat & Sita Gufa -->
+        <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/40 flex items-start gap-3 shadow-sm">
+          <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface">Lakshman Ghat &amp; Sita Gufa</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container-high text-on-surface-variant font-semibold">300m from Ramkund</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-0.5">The sacred 5 Banyan trees (Panch-Vat) and ancient cave where Devi Sita worshipped.</p>
+            <div class="flex items-center justify-between mt-2 pt-1 border-t border-outline-variant/20 text-xs">
+              <span class="text-on-surface-variant font-medium">Darshan &amp; Pradakshina</span>
+              <a href="https://maps.google.com/?q=Sita+Gufa,Panchavati,Nashik" target="_blank" class="text-primary font-bold hover:underline flex items-center gap-0.5">
+                <span>Navigate</span>
+                <span class="material-symbols-outlined text-[14px]">near_me</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ghat 3: Kapaleshwar Temple -->
+        <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/40 flex items-start gap-3 shadow-sm">
+          <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface">Kapaleshwar Mahadev Mandir</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container-high text-on-surface-variant font-semibold">Above Ramkund</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-0.5">Unique ancient Shiva temple where Lord Shiva did penance; only Shiva temple in India without Nandi.</p>
+            <div class="flex items-center justify-between mt-2 pt-1 border-t border-outline-variant/20 text-xs">
+              <span class="text-on-surface-variant font-medium">Darshan &amp; Rudrabhishek</span>
+              <a href="https://maps.google.com/?q=Kapaleshwar+Temple,Panchavati,Nashik" target="_blank" class="text-primary font-bold hover:underline flex items-center gap-0.5">
+                <span>Navigate</span>
+                <span class="material-symbols-outlined text-[14px]">near_me</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ghat 4: Tapovan & Kapila Sangam -->
+        <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/40 flex items-start gap-3 shadow-sm">
+          <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">4</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface">Tapovan &amp; Kapila Sangam</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container-high text-on-surface-variant font-semibold">3.5 km east</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-0.5">Confluence of Kapila and Godavari rivers where ancient sages and Rishis performed penance.</p>
+            <div class="flex items-center justify-between mt-2 pt-1 border-t border-outline-variant/20 text-xs">
+              <span class="text-on-surface-variant font-medium">Sangam Snan &amp; Laxman Temple</span>
+              <a href="https://maps.google.com/?q=Tapovan,Nashik" target="_blank" class="text-primary font-bold hover:underline flex items-center gap-0.5">
+                <span>Navigate</span>
+                <span class="material-symbols-outlined text-[14px]">near_me</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ghat 5: Kushavarta Kund & Trimbakeshwar -->
+        <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/40 flex items-start gap-3 shadow-sm">
+          <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">5</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface">Kushavarta Kund (Trimbakeshwar)</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-secondary-fixed text-on-secondary-fixed font-bold">Trimbak</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-0.5">The holy pond from which River Godavari emerges into plains. Sacred bathing pool of Akhadas during Shahi Snan.</p>
+            <div class="flex items-center justify-between mt-2 pt-1 border-t border-outline-variant/20 text-xs">
+              <span class="text-on-surface-variant font-medium">Shahi Snan Ghat &amp; Jyotirlinga</span>
+              <a href="https://maps.google.com/?q=Kushavarta+Kund,Trimbakeshwar" target="_blank" class="text-primary font-bold hover:underline flex items-center gap-0.5">
+                <span>Navigate</span>
+                <span class="material-symbols-outlined text-[14px]">near_me</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ghat 6: Brahmagiri Peak -->
+        <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/40 flex items-start gap-3 shadow-sm">
+          <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">6</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface">Brahmagiri Mountain Source</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container-high text-on-surface-variant font-semibold">Sacred Peak</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-0.5">Origin of Godavari at Ganga Dwar. Ancient hill pilgrimage where Sage Gautama worshipped.</p>
+            <div class="flex items-center justify-between mt-2 pt-1 border-t border-outline-variant/20 text-xs">
+              <span class="text-on-surface-variant font-medium">Trek &amp; Gangadwar Darshan</span>
+              <a href="https://maps.google.com/?q=Brahmagiri+Hill,Trimbakeshwar" target="_blank" class="text-primary font-bold hover:underline flex items-center gap-0.5">
+                <span>Navigate</span>
+                <span class="material-symbols-outlined text-[14px]">near_me</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div class="p-4 bg-surface-container-low border-t border-outline-variant/30 flex items-center gap-2 shrink-0">
+      <a href="marketplace.html?category=guides" class="flex-1 h-12 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold flex items-center justify-center gap-2 shadow-sm active:scale-98 transition-transform hover:bg-primary-container">
+        <span class="material-symbols-outlined text-[20px]">person_pin_circle</span>
+        <span>Choose a Guide for this Circuit</span>
+      </a>
+      <button onclick="closeModal('kumbhRoadmapModal')" class="h-12 px-4 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold" type="button">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openKumbhRoadmapModal() {
+    openModal('kumbhRoadmapModal');
   }
 
+  function calculateHomeRickshawFare() {
+    const origEl = document.getElementById('home-calc-origin');
+    const destEl = document.getElementById('home-calc-dest');
+    if (!origEl || !destEl) return;
+
+    const orig = origEl.value;
+    const dest = destEl.value;
+
+    const distances = {
+      'station_trimbak': { km: 38.0, fare: 480, shared: 160 },
+      'station_ramkund': { km: 9.5, fare: 140, shared: 30 },
+      'station_muktidham': { km: 2.2, fare: 50, shared: 15 },
+      'station_cbs': { km: 8.5, fare: 120, shared: 25 },
+      'station_someshwar': { km: 16.0, fare: 230, shared: 50 },
+
+      'cbs_trimbak': { km: 28.0, fare: 360, shared: 120 },
+      'cbs_ramkund': { km: 3.5, fare: 60, shared: 20 },
+      'cbs_muktidham': { km: 9.0, fare: 130, shared: 30 },
+      'cbs_cbs': { km: 0.5, fare: 30, shared: 10 },
+      'cbs_someshwar': { km: 9.0, fare: 130, shared: 30 },
+
+      'tapovan_trimbak': { km: 31.0, fare: 400, shared: 130 },
+      'tapovan_ramkund': { km: 2.8, fare: 50, shared: 15 },
+      'tapovan_muktidham': { km: 11.0, fare: 160, shared: 35 },
+      'tapovan_cbs': { km: 5.5, fare: 90, shared: 20 },
+      'tapovan_someshwar': { km: 12.5, fare: 180, shared: 40 },
+
+      'ramkund_trimbak': { km: 29.5, fare: 380, shared: 120 },
+      'ramkund_ramkund': { km: 0.8, fare: 30, shared: 10 },
+      'ramkund_muktidham': { km: 9.2, fare: 140, shared: 30 },
+      'ramkund_cbs': { km: 3.5, fare: 60, shared: 20 },
+      'ramkund_someshwar': { km: 9.8, fare: 145, shared: 35 }
+    };
+
+    const key = `${orig}_${dest}`;
+    const data = distances[key] || { km: 8.0, fare: 120, shared: 25 };
+
+    const distLabel = document.getElementById('home-calc-dist-label');
+    const fareVal = document.getElementById('home-calc-fare-val');
+    if (distLabel) distLabel.innerHTML = `Est. Distance: <strong>${data.km} km</strong> (₹${data.shared}/seat shared)`;
+    if (fareVal) fareVal.textContent = `₹${data.fare}`;
+  }
+
+  calculateHomeRickshawFare();
   loadFactChecks();
 </script>
 <script src="i18n.js"></script>

@@ -27,23 +27,27 @@
 <div class="bg-surface-container-low px-layout-margin-mobile pb-space-sm pt-space-2xs overflow-x-auto no-scrollbar flex items-center gap-space-xs" id="category-tabs">
 <button class="cat-pill active-tab shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-colors" data-cat="all">
 <span class="material-symbols-outlined text-[16px]">apps</span>
-<span>All Fair Rates</span>
-</button>
-<button class="cat-pill shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors" data-cat="transport">
-<span class="material-symbols-outlined text-[16px]">electric_rickshaw</span>
-<span>Rickshaw &amp; Bus</span>
+<span>All Services</span>
 </button>
 <button class="cat-pill shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors" data-cat="stay">
 <span class="material-symbols-outlined text-[16px]">hotel</span>
-<span>Hotels &amp; Dharamshalas</span>
+<span>Local Stays &amp; Dharamshalas</span>
 </button>
-<button class="cat-pill shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors" data-cat="food">
-<span class="material-symbols-outlined text-[16px]">restaurant</span>
-<span>Eateries &amp; Prasad</span>
+<button class="cat-pill shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors" data-cat="bazaar">
+<span class="material-symbols-outlined text-[16px]">storefront</span>
+<span>Local Bazaar &amp; Stalls</span>
 </button>
 <button class="cat-pill shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors" data-cat="guides">
 <span class="material-symbols-outlined text-[16px]">badge</span>
 <span>Local Guides</span>
+</button>
+<button class="cat-pill shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors" data-cat="transport">
+<span class="material-symbols-outlined text-[16px]">electric_rickshaw</span>
+<span>Rickshaws &amp; Transit</span>
+</button>
+<button class="cat-pill shrink-0 flex items-center gap-space-2xs px-space-sm py-2 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors" data-cat="food">
+<span class="material-symbols-outlined text-[16px]">restaurant</span>
+<span>Eateries &amp; Prasad</span>
 </button>
 </div>
 
@@ -95,6 +99,13 @@
 </div>
 
 <!-- Main Feed Area -->
+<div class="px-layout-margin-mobile mb-1">
+  <div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/40 flex items-center gap-2 text-xs text-on-surface-variant">
+    <span class="material-symbols-outlined text-[16px] text-tertiary shrink-0">info</span>
+    <span><strong>Indicative Fair Ranges:</strong> Rates shown are community reference ranges and vendor-declared rates. Administration does not fix or guarantee prices.</span>
+  </div>
+</div>
+
 <div class="px-layout-margin-mobile py-space-sm flex flex-col gap-space-md" id="listing-container">
 <!-- Card 1: Rickshaw Route -->
 <article class="listing-card bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col transition-all" onclick="window.location.href='listing_detail.html'" style="cursor:pointer" data-category="transport">
@@ -123,21 +134,21 @@
 <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
 <div class="flex items-center gap-1.5 flex-wrap">
 <span class="font-label-md text-label-md font-semibold text-primary">Kumbhveer Verified Stand</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">• RTO Nashik Regulated</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">• RTO Nashik Registered</span>
 </div>
 </div>
 <!-- Price Comparison Module -->
 <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
 <div class="flex flex-col pl-space-2xs">
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[13px] text-tertiary">balance</span> Govt Cap Rate
+<span class="material-symbols-outlined text-[13px] text-tertiary">balance</span> Indicative Range
             </span>
-<span class="font-headline-md text-headline-md text-on-surface font-bold">₹110</span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹100 - ₹120</span>
 </div>
 <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
 <span>Avg Reported</span>
-<span class="text-tertiary font-semibold">Exact</span>
+<span class="text-tertiary font-semibold">Typical</span>
 </span>
 <span class="font-headline-md text-headline-md text-primary font-bold">₹110</span>
 </div>
@@ -197,14 +208,14 @@
 <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
 <div class="flex flex-col pl-space-2xs">
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[13px] text-tertiary">price_check</span> Gazette Cap
+<span class="material-symbols-outlined text-[13px] text-tertiary">price_check</span> Typical Range
             </span>
-<span class="font-headline-md text-headline-md text-on-surface font-bold">₹800<span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/nt</span></span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹750 - ₹900<span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/nt</span></span>
 </div>
 <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
 <span>Avg Reported</span>
-<span class="text-tertiary font-semibold text-label-sm">+₹50 gap</span>
+<span class="text-tertiary font-semibold text-label-sm">Typical</span>
 </span>
 <span class="font-headline-md text-headline-md text-primary font-bold">₹850<span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/nt</span></span>
 </div>
@@ -264,14 +275,14 @@
 <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
 <div class="flex flex-col pl-space-2xs">
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[13px] text-tertiary">receipt_long</span> Standard Thali Cap
+<span class="material-symbols-outlined text-[13px] text-tertiary">receipt_long</span> Typical Thali Range
             </span>
-<span class="font-headline-md text-headline-md text-on-surface font-bold">₹80</span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹70 - ₹90</span>
 </div>
 <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
 <span>Reported Price</span>
-<span class="text-tertiary font-semibold">Matched</span>
+<span class="text-tertiary font-semibold">Standard</span>
 </span>
 <span class="font-headline-md text-headline-md text-primary font-bold">₹80</span>
 </div>
@@ -331,14 +342,14 @@
 <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
 <div class="flex flex-col pl-space-2xs">
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span> Standard Half-Day
+<span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span> Typical Half-Day Range
             </span>
-<span class="font-headline-md text-headline-md text-on-surface font-bold">₹400</span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹350 - ₹450</span>
 </div>
 <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
 <span>Reported Rate</span>
-<span class="text-tertiary font-semibold">Regulated</span>
+<span class="text-tertiary font-semibold">Typical</span>
 </span>
 <span class="font-headline-md text-headline-md text-primary font-bold">₹400</span>
 </div>
@@ -625,14 +636,14 @@
               <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
                 <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span> Listed Rate
               </span>
-              <span class="font-headline-md text-headline-md text-on-surface font-bold">₹150 <span class="text-xs font-normal text-on-surface-variant">/ hour</span></span>
+              <span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹120 - ₹180 <span class="text-xs font-normal text-on-surface-variant">/ hour</span></span>
             </div>
             <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
               <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
-                <span>Tariff</span>
-                <span class="text-primary font-semibold text-xs">Gazette Cap</span>
+                <span>Category</span>
+                <span class="text-primary font-semibold text-xs">Standard</span>
               </span>
-              <span class="font-label-md text-label-md text-primary font-bold">Protected</span>
+              <span class="font-label-md text-label-md text-primary font-bold">Fair Range</span>
             </div>
           </div>
           <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
@@ -673,6 +684,136 @@
           }
         }
 
+        if (cat === 'bazaar') {
+          // Curated Local Bazaar & Puja Stalls
+          const bazaarItems = [
+            {
+              id: 'bz-1',
+              name: 'Shree Ram Puja Samagri & Gangajal Bhandar',
+              category: 'bazaar',
+              address: 'Stall #24, Ramkund Ghat Marg, Panchavati, Nashik',
+              phone: '02532514411',
+              rating: 4.9,
+              reference_price: 150,
+              badge: 'Kumbh Certified Stall',
+              item_list: 'Copper Lota, Ganga Jal Brass Flask, Sandalwood, Camphor, Dhoop',
+              stock: 'Fresh Stock Available'
+            },
+            {
+              id: 'bz-2',
+              name: 'Panchavati Brass Kalash & Copper Works',
+              category: 'bazaar',
+              address: 'Stall #12, Kapaleshwar Mandir Steps, Nashik',
+              phone: '02532518822',
+              rating: 4.8,
+              reference_price: 250,
+              badge: 'Local Artisan Verified',
+              item_list: 'Hand-carved Shiva Kalash, Panchpatra, Brass Diya, Aarti Stand',
+              stock: 'Direct Workshop Rates'
+            },
+            {
+              id: 'bz-3',
+              name: 'Godavari Traditional Handicrafts & Rudraksha Kendra',
+              category: 'bazaar',
+              address: 'Stall #08, Sita Gufa Chowk, Panchavati, Nashik',
+              phone: '02532520033',
+              rating: 4.9,
+              reference_price: 180,
+              badge: 'Authentic Certified',
+              item_list: 'Original 5-Mukhi Rudraksha, Tulsi Mala, Saffron Cloth, Sphatik Shivalinga',
+              stock: 'Lab Tested Beads'
+            },
+            {
+              id: 'bz-4',
+              name: 'Nashik Dholak, Agarbatti & Prasad Mandir Stall',
+              category: 'bazaar',
+              address: 'Stall #31, Tapovan Sadhu Gram Bazar, Nashik',
+              phone: '02532529944',
+              rating: 4.7,
+              reference_price: 90,
+              badge: 'Pilgrim Approved',
+              item_list: 'Dry Fruits Prasad, Pure Cow Ghee Diya, Bhakti Dhun Audio, Agarbatti Box',
+              stock: 'Subsidized Pilgrim Pack'
+            }
+          ];
+
+          container.innerHTML = bazaarItems.map(bz => {
+            const rawPhone = bz.phone || '02532514411';
+            const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
+            const waPhone = cleanPhone.startsWith('91') ? cleanPhone : ('91' + (cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone));
+            const waText = encodeURIComponent(`Namaste, I am inquiring about ${bz.name} (${bz.address}) via KumbhSetu Simhastha Portal.`);
+            const waUrl = `https://wa.me/${waPhone}?text=${waText}`;
+            const callUrl = `tel:${rawPhone}`;
+            const dest = encodeURIComponent(bz.name + ', ' + bz.address);
+
+            return `
+            <article class="listing-card bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col transition-all" data-category="bazaar">
+              <div class="relative h-36 w-full bg-surface-container">
+                <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i" alt="${bz.name}"/>
+                <div class="absolute top-space-xs left-space-xs flex items-center gap-1 bg-surface-container-lowest/95 backdrop-blur-sm text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full shadow-sm">
+                  <span class="material-symbols-outlined text-[14px]">storefront</span>
+                  <span class="uppercase tracking-wider font-semibold">Local Bazaar</span>
+                </div>
+                <div class="absolute bottom-space-xs right-space-xs bg-surface-container-highest/90 backdrop-blur-sm px-2 py-0.5 rounded font-label-sm text-label-sm text-on-surface">
+                  ${bz.rating} ★ (Verified Stall)
+                </div>
+              </div>
+              <div class="p-space-sm flex flex-col gap-space-xs">
+                <div class="flex items-start justify-between gap-space-xs">
+                  <div class="min-w-0 flex-1">
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface truncate font-bold">${bz.name}</h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5 truncate">
+                      <span class="material-symbols-outlined text-[15px] text-outline">location_on</span>
+                      <span class="truncate">${bz.address}</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-space-xs py-1 px-2.5 rounded-lg bg-surface-container-low text-on-surface">
+                  <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="font-label-md text-label-md font-semibold text-primary">${bz.badge}</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">• ${bz.stock}</span>
+                  </div>
+                </div>
+                <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
+                  <div class="flex flex-col pl-space-2xs">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[13px] text-tertiary">sell</span> Listed Range
+                    </span>
+                    <span class="font-headline-md text-headline-md text-on-surface font-bold text-sm">₹50 - ₹${bz.reference_price * 2}</span>
+                  </div>
+                  <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
+                      <span>Items</span>
+                      <span class="text-tertiary font-semibold text-xs">Standard</span>
+                    </span>
+                    <span class="font-headline-sm text-headline-sm text-primary font-bold text-xs truncate">Puja Samagri</span>
+                  </div>
+                </div>
+                <div class="text-xs text-on-surface-variant line-clamp-1">
+                  <strong>Featured:</strong> ${bz.item_list}
+                </div>
+                <div class="grid grid-cols-3 gap-space-2xs pt-space-xs mt-space-2xs">
+                  <a class="w-full h-11 rounded-lg bg-green-700 text-white font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all shadow-sm cursor-pointer hover:bg-green-800" href="${waUrl}" target="_blank">
+                    <span class="material-symbols-outlined text-[17px]">chat</span>
+                    <span>WhatsApp</span>
+                  </a>
+                  <a class="w-full h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all border border-outline-variant/40 cursor-pointer hover:bg-surface-variant" href="${callUrl}">
+                    <span class="material-symbols-outlined text-[17px] text-primary">call</span>
+                    <span>Call</span>
+                  </a>
+                  <a class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-transform shadow-sm cursor-pointer hover:bg-primary-container" href="https://maps.google.com/?q=${dest}" target="_blank">
+                    <span class="material-symbols-outlined text-[17px]">explore</span>
+                    <span>Navigate</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+            `;
+          }).join('');
+          return;
+        }
+
         const catMap = {
           'transport': 'rickshaw_bus',
           'stay': 'hotel',
@@ -694,10 +835,21 @@
       }
     }
 
-    // Load initial listings from the 5,441 seeded dataset
-    loadDatasetListings('all');
+    // Check initial category from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initCat = urlParams.get('category') || 'all';
 
     tabs.forEach(tab => {
+      const tabCat = tab.getAttribute('data-cat');
+      if (tabCat === initCat) {
+        tabs.forEach(t => {
+          t.classList.remove('bg-primary', 'text-on-primary');
+          t.classList.add('bg-surface-container', 'text-on-surface-variant');
+        });
+        tab.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        tab.classList.add('bg-primary', 'text-on-primary');
+      }
+
       tab.addEventListener('click', () => {
         tabs.forEach(t => {
           t.classList.remove('bg-primary', 'text-on-primary');
@@ -710,6 +862,9 @@
         loadDatasetListings(currentCategory, searchInput ? searchInput.value.trim() : '');
       });
     });
+
+    // Load initial listings
+    loadDatasetListings(initCat);
 
     if (searchInput) {
       let debounceTimer;
