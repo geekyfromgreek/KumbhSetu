@@ -508,7 +508,7 @@
     }
 
     if (id && !imgParam) {
-      fetch(`${window.API_BASE_URL || 'http://localhost:8000'}/api/v1/marketplace/listings/${id}`)
+      fetch(`${window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + ''}/api/v1/marketplace/listings/${id}`)
         .then(r => r.json())
         .then(item => {
           if (item.name) {

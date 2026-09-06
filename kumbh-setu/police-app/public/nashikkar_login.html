@@ -807,7 +807,7 @@
       formData.append('govt_id_number', govtIdVal);
       formData.append('selfie_base64', selfieData);
 
-      const res = await fetch((window.API_BASE_URL || 'http://localhost:8000') + '/api/v1/verification/guide/register', {
+      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/verification/guide/register', {
         method: 'POST',
         body: formData
       });
@@ -838,7 +838,7 @@
 
     try {
       // Direct call to backend admin endpoint to create confirmed user in Supabase
-      const resp = await fetch((window.API_BASE_URL || 'http://localhost:8000') + '/api/v1/auth/supabase-signup', {
+      const resp = await fetch((window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/auth/supabase-signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -873,7 +873,7 @@
       formData.append('phone_number', '9822014522');
       formData.append('govt_id_number', govtId);
       if (capturedSelfieBase64) formData.append('selfie_base64', capturedSelfieBase64);
-      await fetch((window.API_BASE_URL || 'http://localhost:8000') + '/api/v1/verification/guide/register', { method: 'POST', body: formData });
+      await fetch((window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/verification/guide/register', { method: 'POST', body: formData });
     } catch (e) {}
 
     const profile = {

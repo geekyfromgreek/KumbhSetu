@@ -276,7 +276,7 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
     captureFromWebcam();
 
     try {
-      const url = `${window.API_BASE_URL || 'http://localhost:8000'}/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`;
+      const url = `${window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + ''}/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`;
       const formData = new FormData();
       if (selectedSelfieBase64) {
         formData.append('selfie_base64', selectedSelfieBase64);
@@ -338,7 +338,7 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
     document.getElementById('guide-call-btn').href = `tel:${phone}`;
 
     if (id) {
-      fetch(`${window.API_BASE_URL || 'http://localhost:8000'}/api/v1/marketplace/guides/${id}`)
+      fetch(`${window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + ''}/api/v1/marketplace/guides/${id}`)
         .then(r => r.json())
         .then(g => {
           if (g.name) document.getElementById('guide-name').textContent = g.name;

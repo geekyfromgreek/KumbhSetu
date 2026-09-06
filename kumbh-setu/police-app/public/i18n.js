@@ -1,7 +1,7 @@
 /**
  * KumbhSetu (कुंभसेतु) — Complete Trilingual Translation Engine
  * Official Languages: English (en), Marathi (mr / मराठी), Hindi (hi / हिंदी)
- * Covers all 23 screens with 1689+ verified entries and dynamic pattern matching.
+ * Covers all 23 screens with 1713+ verified entries and dynamic pattern matching.
  */
 
 (function () {
@@ -7334,8 +7334,8 @@
     "en": "Brahma Muhurta Snan: 04:00 AM – 07:30 AM | Mahasnan & Sandhya Deepotsav: 06:15 PM – 08:30 PM."
   },
   "Brahmagiri Mountain Source": {
-    "mr": "ब्रह्मगिरी पर्वत उगमस्थान",
-    "hi": "ब्रह्मगिरि पर्वत उद्गम स्थल",
+    "mr": "ब्रह्मगिरी पर्वत गोदावरी उगम",
+    "hi": "ब्रह्मगिरी पर्वत गोदावरी उद्गम",
     "en": "Brahmagiri Mountain Source"
   },
   "Choose a Guide for this Circuit": {
@@ -8452,6 +8452,126 @@
     "mr": "पोलीस टर्मिनल सेटिंग्ज",
     "hi": "पुलिस टर्मिनल सेटिंग्स",
     "en": "Police Terminal Settings"
+  },
+  "Holy Ghats & Pilgrimage Circuit Roadmap": {
+    "mr": "पवित्र घाट व तीर्थक्षेत्र प्रदक्षिणा नकाशा",
+    "hi": "पवित्र घाट एवं तीर्थ परिक्रमा रोडमैप",
+    "en": "Holy Ghats & Pilgrimage Circuit Roadmap"
+  },
+  "6 Sacred Sites • Interconnected Holy Route • Fares & Transit Guidance": {
+    "mr": "६ पवित्र स्थाने • एकमेकांशी जोडलेला मार्ग • प्रवास दर मार्गदर्शन",
+    "hi": "६ पवित्र स्थल • आपस में जुड़ा मार्ग • किराया एवं यात्रा मार्गदर्शन",
+    "en": "6 Sacred Sites • Interconnected Holy Route • Fares & Transit Guidance"
+  },
+  "~34 km Circuit": {
+    "mr": "~३४ किमी प्रदक्षिणा",
+    "hi": "~३४ किमी परिक्रमा",
+    "en": "~34 km Circuit"
+  },
+  "Public Transit Circuit: ~₹75 total": {
+    "mr": "सार्वजनिक वाहतूक: ~₹७५ एकूण",
+    "hi": "सार्वजनिक परिवहन: ~₹७५ कुल",
+    "en": "Public Transit Circuit: ~₹75 total"
+  },
+  "Auto/Cab: ₹450 - ₹650 (Meter / Indicative)": {
+    "mr": "रिक्षा/टॅक्सी: ₹४५० - ₹६५० (मीटर / सूचक दर)",
+    "hi": "ऑटो/कैब: ₹४५० - ₹६५० (मीटर / सांकेतिक)",
+    "en": "Auto/Cab: ₹450 - ₹650 (Meter / Indicative)"
+  },
+  "Tap pins to view sacred details & transit cost": {
+    "mr": "माहिती व प्रवास दर पाहण्यासाठी पिनवर टॅप करा",
+    "hi": "विवरण और यात्रा किराया देखने के लिए पिन टैप करें",
+    "en": "Tap pins to view sacred details & transit cost"
+  },
+  "Interconnected Route": {
+    "mr": "जोडलेला पवित्र मार्ग",
+    "hi": "आपस में जुड़ा मार्ग",
+    "en": "Interconnected Route"
+  },
+  "0 km (Base)": {
+    "mr": "० किमी (मूळ स्थान)",
+    "hi": "० किमी (आरंभ स्थल)",
+    "en": "0 km (Base)"
+  },
+  "Transit from Station: ₹80 Meter Auto / ₹15 Citylink Bus (9 km)": {
+    "mr": "स्टेशनवरून प्रवास: ₹८० मीटर रिक्षा / ₹१५ सिटीलिंक बस (९ किमी)",
+    "hi": "स्टेशन से यात्रा: ₹८० मीटर ऑटो / ₹१५ सिटीलिंक बस (९ किमी)",
+    "en": "Transit from Station: ₹80 Meter Auto / ₹15 Citylink Bus (9 km)"
+  },
+  "Verified Local Marketplace & Stalls": {
+    "mr": "प्रमाणित स्थानिक बाजार व दुकाने",
+    "hi": "सत्यापित स्थानीय बाजार एवं स्टॉल",
+    "en": "Verified Local Marketplace & Stalls"
+  },
+  "Direct from authenticated Nashik & Trimbak artisans with NMC price verification tags": {
+    "mr": "NMC दर पडताळणीसह थेट नाशिक व त्र्यंबकच्या कारागिरांकडून",
+    "hi": "NMC दर सत्यापन के साथ सीधे नासिक और त्र्यंबक के कारीगरों द्वारा",
+    "en": "Direct from authenticated Nashik & Trimbak artisans with NMC price verification tags"
+  },
+  "Brass Shiva Kalash & Diya Set": {
+    "mr": "पितळी शिव कलश व दिवा संच",
+    "hi": "पीतल शिव कलश एवं दीया सेट",
+    "en": "Brass Shiva Kalash & Diya Set"
+  },
+  "Ganga Jal & Maha-Puja Kit": {
+    "mr": "गंगा जल व महापूजा किट",
+    "hi": "गंगा जल एवं महापूजा किट",
+    "en": "Ganga Jal & Maha-Puja Kit"
+  },
+  "5-Mukhi Rudraksha Japa Mala": {
+    "mr": "५-मुखी रुद्राक्ष जप माळ",
+    "hi": "५-मुखी रुद्राक्ष जप माला",
+    "en": "5-Mukhi Rudraksha Japa Mala"
+  },
+  "Hammered Copper Tamra-Patra": {
+    "mr": "हस्तनिर्मित तांब्याचे ताम्रपात्र",
+    "hi": "तांबे का ताम्रपात्र",
+    "en": "Hammered Copper Tamra-Patra"
+  },
+  "Nashik Dry Fruit Prasad Box": {
+    "mr": "नाशिक सुका मेवा प्रसाद डबा",
+    "hi": "नासिक सूखा मेवा प्रसाद बॉक्स",
+    "en": "Nashik Dry Fruit Prasad Box"
+  },
+  "Handloom Saffron Dhoti & Shawl": {
+    "mr": "हातमाग भगवी धोती व शाल",
+    "hi": "हथकरघा भगवा धोती एवं शॉल",
+    "en": "Handloom Saffron Dhoti & Shawl"
+  },
+  "Live Sensor Net": {
+    "mr": "थेट सेन्सर नेटवर्क",
+    "hi": "लाइव सेंसर नेटवर्क",
+    "en": "Live Sensor Net"
+  },
+  "Ramkund Main Ghat Flow": {
+    "mr": "रामकुंड मुख्य घाट गर्दी प्रवाह",
+    "hi": "रामकुंड मुख्य घाट प्रवाह",
+    "en": "Ramkund Main Ghat Flow"
+  },
+  "सुगम संचार • Smooth Flow": {
+    "mr": "सुगम संचार • Smooth Flow",
+    "hi": "सुगम आवागमन • Smooth Flow",
+    "en": "सुगम संचार • Smooth Flow"
+  },
+  "28% capacity": {
+    "mr": "२८% क्षमता",
+    "hi": "२८% क्षमता",
+    "en": "28% capacity"
+  },
+  "54% capacity": {
+    "mr": "५४% क्षमता",
+    "hi": "५४% क्षमता",
+    "en": "54% capacity"
+  },
+  "18% capacity": {
+    "mr": "१८% क्षमता",
+    "hi": "१८% क्षमता",
+    "en": "18% capacity"
+  },
+  "22% capacity": {
+    "mr": "२२% क्षमता",
+    "hi": "२२% क्षमता",
+    "en": "22% capacity"
   }
 };
 

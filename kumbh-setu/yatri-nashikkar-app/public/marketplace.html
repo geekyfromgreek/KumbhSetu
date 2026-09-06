@@ -895,7 +895,7 @@
     async function loadDatasetListings(cat, query = '') {
       try {
         if (cat === 'guides') {
-          let url = (window.API_BASE_URL || 'http://localhost:8000') + '/api/v1/marketplace/guides';
+          let url = (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/marketplace/guides';
           if (query) url += '?search=' + encodeURIComponent(query);
           const res = await fetch(url);
           if (res.ok) {
@@ -1014,7 +1014,7 @@
           'food': 'eatery'
         };
         const backendCat = catMap[cat] || '';
-        let url = (window.API_BASE_URL || 'http://localhost:8000') + '/api/v1/marketplace/listings?page_size=50';
+        let url = (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '/api/v1/marketplace/listings?page_size=50';
         if (backendCat) url += '&category=' + backendCat;
         if (query) url += '&search=' + encodeURIComponent(query);
 

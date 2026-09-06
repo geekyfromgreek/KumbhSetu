@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#EA580C">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
   <title>KumbhSetu — Police AI Hotspot Radar & Live Triage</title>
@@ -381,7 +384,7 @@
     let isSimulating = true;
     let selectedCluster = null;
 
-    const API_BASE = window.API_BASE_URL || 'http://localhost:8000';
+    const API_BASE = window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '';
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
