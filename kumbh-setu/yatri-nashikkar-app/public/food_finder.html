@@ -98,41 +98,6 @@ If any eatery or vendor overcharges beyond their declared fair price, report imm
 </div>
 </div>
 </div>
-<!-- Booking/Token Bottom Modal (Client-side interactive state) -->
-<div class="fixed inset-0 z-50 bg-on-surface/50 hidden flex-col justify-end p-0" id="booking-modal">
-<div class="bg-surface-container-lowest rounded-t-xl p-space-md flex flex-col gap-space-sm max-w-lg mx-auto w-full shadow-2xl">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-space-2xs">
-<span class="material-symbols-outlined text-primary text-[22px]">confirmation_number</span>
-<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold" id="modal-title">Digital Meal Pass</h4>
-</div>
-<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant cursor-pointer" onclick="closeTokenModal()">
-<span class="material-symbols-outlined text-[18px]">close</span>
-</button>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant" id="modal-desc">
-Reserve a digital queue pass to avoid waiting in long rush lines.
-</p>
-<div class="flex flex-col gap-space-xs bg-surface-container-low p-space-sm rounded-lg">
-<div class="flex justify-between items-center text-on-surface">
-<span class="font-label-sm text-label-sm text-on-surface-variant">Number of Yatris:</span>
-<div class="flex items-center gap-3">
-<button class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center font-bold text-on-surface cursor-pointer active:scale-95" onclick="adjustCount(-1)">-</button>
-<span class="font-headline-sm text-headline-sm font-bold text-primary" id="pax-count">2</span>
-<button class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center font-bold text-on-surface cursor-pointer active:scale-95" onclick="adjustCount(1)">+</button>
-</div>
-</div>
-<div class="flex justify-between items-center text-on-surface">
-<span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Waiting Time:</span>
-<span class="font-label-md text-label-md font-semibold text-on-surface">Next 15 mins</span>
-</div>
-</div>
-<button class="w-full h-12 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-space-2xs shadow-md cursor-pointer active:scale-98" onclick="confirmBooking()">
-<span class="material-symbols-outlined text-[20px]">check_circle</span>
-<span>Generate Digital Pass</span>
-</button>
-</div>
-</div>
 <!-- Toast Notification -->
 <div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-on-surface text-inverse-on-surface px-space-md py-space-xs rounded-full font-label-md text-label-md shadow-xl hidden items-center gap-space-2xs z-50 transition-opacity" id="toast">
 <span class="material-symbols-outlined text-inverse-primary text-[18px]">info</span>
@@ -206,8 +171,12 @@ Reserve a digital queue pass to avoid waiting in long rush lines.
     
     // Direct destination URL for Google Maps to travel straight there
     const destinationQuery = encodeURIComponent(item.name + ', ' + (item.address || 'Ramkund, Panchavati, Nashik, Maharashtra'));
-    const directMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destinationQuery}`;
-    const img = item.img || 'https://lh3.googleusercontent.com/aida-public/AB6AXuB30zpB-hrkYsOuz8hE7UUk4J8kcy65o3ezQbegGiEI79xS4snHA2RnKchpl96NdSGLLV_Hll38YU6O0ZbFdRa5lAF8InAh7hXEHfh10JyK5ZiNtKm_QW_GPZVC1z1I5Pa_2xsyqu1Brj2kbZcESIteGU6mdxOSj_GsF0MSlyqqt9jDbTGcshSxKChZQ9pg-CO1Iieurx6IsfrQI5Jql63SFugU1t0RpihFTU2m5BFKoQHZNVl-ja12';
+        const rawPhone = item.phone || '02532575555';
+    const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
+    const waPhone = cleanPhone.startsWith('91') ? cleanPhone : ('91' + (cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone));
+    const waText = encodeURIComponent(`Namaste, I am inquiring about ${item.name} (${item.address || 'Nashik'}) via KumbhSetu Simhastha Portal.`);
+    const waUrl = `https://wa.me/${waPhone}?text=${waText}`;
+    const callUrl = `tel:${rawPhone}`;
 
     return `
     <div class="food-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm transition-all" data-category="${item.tag}">
@@ -267,23 +236,27 @@ Reserve a digital queue pass to avoid waiting in long rush lines.
           <span class="font-headline-sm text-headline-sm font-bold text-primary">${pricing.priceDisplay} <span class="text-xs font-normal text-on-surface-variant">${pricing.unit}</span></span>
         </div>
         <div class="flex items-center gap-1 text-on-surface-variant">
-          <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
-          <span class="font-label-sm text-label-sm">Zero Overcharge Protection</span>
+          <span class="material-symbols-outlined text-[16px] text-primary">call</span>
+          <span class="font-label-sm text-label-sm font-semibold text-on-surface">${rawPhone}</span>
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-space-xs pt-1">
-        <button class="h-12 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-space-2xs active:scale-[0.98] transition-transform shadow-sm cursor-pointer" onclick="handleTokenModal('${item.name.replace(/'/g, "\\'")}')">
-          <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
-          <span>Get Digital Pass</span>
-        </button>
-        <button class="h-12 rounded-lg bg-surface-container-highest text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-space-2xs active:scale-[0.98] transition-transform cursor-pointer" onclick="window.open('${directMapsUrl}', '_blank')">
-          <span class="material-symbols-outlined text-[18px] text-primary">directions</span>
-          <span>Navigate (Map)</span>
+      <!-- Direct Contact & Navigation Actions (No Pass) -->
+      <div class="grid grid-cols-3 gap-space-2xs pt-1">
+        <a class="h-11 rounded-lg bg-green-700 text-white font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all shadow-sm cursor-pointer hover:bg-green-800" href="${waUrl}" target="_blank">
+          <span class="material-symbols-outlined text-[17px]">chat</span>
+          <span>WhatsApp</span>
+        </a>
+        <a class="h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all border border-outline-variant/40 cursor-pointer hover:bg-surface-variant" href="${callUrl}">
+          <span class="material-symbols-outlined text-[17px] text-primary">call</span>
+          <span>Call</span>
+        </a>
+        <button class="h-11 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-transform shadow-sm cursor-pointer hover:bg-primary-container" onclick="window.open('${directMapsUrl}', '_blank')">
+          <span class="material-symbols-outlined text-[17px]">directions</span>
+          <span>Navigate</span>
         </button>
       </div>
     </div>
     `;
-  }
 
   async function loadFoodListings(tag = 'all', search = '') {
     try {

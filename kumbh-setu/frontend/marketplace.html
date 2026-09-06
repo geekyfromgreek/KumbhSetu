@@ -445,16 +445,23 @@
       };
     }
 
-    function renderCard(item) {
+        function renderCard(item) {
       const cat = item.category || 'eatery';
       const pricing = getPricingInfo(item);
       const imgUrl = defaultImages[cat] || defaultImages.eatery;
       const rating = item.rating ? item.rating.toFixed(1) + ' ★' : '4.6 ★';
       const statusText = pricing.badge;
       
-      // Direct destination Google Maps link to directly start navigation
+      // Direct destination Google Maps link
       const destinationQuery = encodeURIComponent(item.name + ', ' + (item.address || 'Nashik, Maharashtra'));
       const directMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destinationQuery}`;
+      
+      const rawPhone = item.phone || '02532575555';
+      const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
+      const waPhone = cleanPhone.startsWith('91') ? cleanPhone : ('91' + (cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone));
+      const waText = encodeURIComponent(`Namaste! Inquiring about ${item.name} (${item.address || 'Nashik'}) on KumbhSetu.`);
+      const waUrl = `https://wa.me/${waPhone}?text=${waText}`;
+      const callUrl = `tel:${rawPhone}`;
 
       return `
       <article class="listing-card bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col transition-all cursor-pointer" onclick="window.location.href='listing_detail.html?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}&price=${encodeURIComponent(pricing.displayPrice)}&category=${encodeURIComponent(cat)}&address=${encodeURIComponent(item.address || '')}'">
@@ -499,13 +506,17 @@
               <span class="font-label-md text-label-md text-primary font-bold">Fair Rate</span>
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-space-xs pt-space-xs mt-space-2xs">
-            <button class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform shadow-sm cursor-pointer" onclick="event.stopPropagation(); window.location.href='booking_confirmation.html?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}&price=${encodeURIComponent(pricing.displayPrice)}'">
-              <span class="material-symbols-outlined text-[18px]">event_seat</span>
-              <span>Book Service</span>
-            </button>
-            <button class="w-full h-11 rounded-lg bg-surface-container-high text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform cursor-pointer" onclick="event.stopPropagation(); window.open('${directMapsUrl}', '_blank')">
-              <span class="material-symbols-outlined text-[18px] text-secondary">explore</span>
+          <div class="grid grid-cols-3 gap-space-2xs pt-space-xs mt-space-2xs">
+            <a class="w-full h-11 rounded-lg bg-green-700 text-white font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all shadow-sm cursor-pointer hover:bg-green-800" href="${waUrl}" target="_blank" onclick="event.stopPropagation();">
+              <span class="material-symbols-outlined text-[17px]">chat</span>
+              <span>WhatsApp</span>
+            </a>
+            <a class="w-full h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-all border border-outline-variant/40 cursor-pointer hover:bg-surface-variant" href="${callUrl}" onclick="event.stopPropagation();">
+              <span class="material-symbols-outlined text-[17px] text-primary">call</span>
+              <span>Call</span>
+            </a>
+            <button class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 active:scale-[0.98] transition-transform shadow-sm cursor-pointer hover:bg-primary-container" onclick="event.stopPropagation(); window.open('${directMapsUrl}', '_blank')">
+              <span class="material-symbols-outlined text-[17px]">directions</span>
               <span>Directions</span>
             </button>
           </div>

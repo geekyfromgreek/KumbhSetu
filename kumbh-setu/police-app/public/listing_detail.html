@@ -230,17 +230,22 @@
 </div>
 <!-- Sticky Bottom Dual Action Bar -->
 <div class="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md pb-safe px-layout-margin-mobile pt-3 pb-3 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
-<div class="max-w-[75rem] mx-auto grid grid-cols-2 gap-space-sm">
-<!-- Navigate with Maps -->
-<a id="detail-navigate-btn" class="h-12 rounded-lg bg-surface-container-high text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 hover:bg-surface-variant active:scale-[0.98] transition-all cursor-pointer" href="https://maps.google.com/?q=Ramkund+Panchavati+Nashik" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[20px] text-primary">navigation</span>
-<span>Navigate Map</span>
+<div class="max-w-[75rem] mx-auto grid grid-cols-3 gap-space-xs">
+<!-- WhatsApp Chat -->
+<a id="detail-wa-btn" class="h-12 rounded-lg bg-green-700 text-white font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] transition-all cursor-pointer hover:bg-green-800" href="https://wa.me/912532575555" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span>WhatsApp</span>
 </a>
-<!-- Book Reservation -->
-<button id="detail-book-btn" class="h-12 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg font-bold flex items-center justify-center gap-1.5 shadow-md hover:bg-primary-container active:scale-[0.98] transition-all cursor-pointer" onclick="handleBookRoom()" type="button">
-<span class="material-symbols-outlined text-[20px]">calendar_today</span>
-<span>Book Service</span>
-</button>
+<!-- Phone Call -->
+<a id="detail-call-btn" class="h-12 rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 border border-outline-variant/40 active:scale-[0.98] transition-all cursor-pointer hover:bg-surface-variant" href="tel:02532575555">
+<span class="material-symbols-outlined text-[20px] text-primary">call</span>
+<span>Call</span>
+</a>
+<!-- Direct Map Navigation -->
+<a id="detail-navigate-btn" class="h-12 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 shadow-md hover:bg-primary-container active:scale-[0.98] transition-all cursor-pointer" href="https://www.google.com/maps/dir/?api=1&destination=Ramkund+Panchavati+Nashik" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[20px]">directions</span>
+<span>Navigate</span>
+</a>
 </div>
 </div>
 <!-- Success/Interactive Toast Notification -->
@@ -314,17 +319,6 @@
     window.location.href = 'report_issue.html';
   }
 
-  function handleBookRoom() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id') || '';
-    const name = params.get('name') || document.getElementById('detail-name').textContent;
-    const price = params.get('price') || '₹120';
-    showToast("Confirming allocation...", "bed");
-    setTimeout(() => {
-      window.location.href = `booking_confirmation.html?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&price=${encodeURIComponent(price)}`;
-    }, 600);
-  }
-
   // Dynamic Dataset details loader
   (function() {
     const params = new URLSearchParams(window.location.search);
@@ -340,6 +334,14 @@
       const navBtn = document.getElementById('detail-navigate-btn');
       const destQuery = encodeURIComponent(decodedName + ', ' + (address ? decodeURIComponent(address) : 'Nashik, Maharashtra'));
       if (navBtn) navBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${destQuery}`;
+
+      const rawPhone = params.get('phone') || '02532575555';
+      const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
+      const waPhone = cleanPhone.startsWith('91') ? cleanPhone : ('91' + (cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone));
+      const waBtn = document.getElementById('detail-wa-btn');
+      if (waBtn) waBtn.href = `https://wa.me/${waPhone}?text=${encodeURIComponent('Namaste! Inquiring via KumbhSetu for ' + decodedName + ' (Nashik 2027)')}`;
+      const callBtn = document.getElementById('detail-call-btn');
+      if (callBtn) callBtn.href = `tel:${rawPhone}`;
     }
     if (address) document.getElementById('detail-address').textContent = decodeURIComponent(address);
     if (cat) document.getElementById('detail-category').textContent = 'Civic Verified ' + decodeURIComponent(cat).toUpperCase();
@@ -361,6 +363,14 @@
             const destQuery = encodeURIComponent(item.name + ', ' + (item.address || 'Nashik, Maharashtra'));
             const navBtn = document.getElementById('detail-navigate-btn');
             if (navBtn) navBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${destQuery}`;
+
+            const rawPhone = item.phone || '02532575555';
+            const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
+            const waPhone = cleanPhone.startsWith('91') ? cleanPhone : ('91' + (cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone));
+            const waBtn = document.getElementById('detail-wa-btn');
+            if (waBtn) waBtn.href = `https://wa.me/${waPhone}?text=${encodeURIComponent('Namaste! Inquiring via KumbhSetu for ' + item.name + ' (Nashik 2027)')}`;
+            const callBtn = document.getElementById('detail-call-btn');
+            if (callBtn) callBtn.href = `tel:${rawPhone}`;
           }
           if (item.address) document.getElementById('detail-address').textContent = item.address;
           if (item.subcategory) document.getElementById('detail-category').textContent = 'Verified ' + item.subcategory;
