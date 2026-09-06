@@ -26,14 +26,17 @@ for fpath in html_files:
         f.write(content)
     print(f"Injected i18n.js into {os.path.basename(fpath)}")
 
-# Copy i18n.js to public dirs as well
+# Copy i18n.js, api_config.js, supabase.js to public dirs as well
 for dest in [YATRI_PUBLIC, POLICE_PUBLIC]:
     if os.path.isdir(dest):
         import shutil
-        shutil.copy(os.path.join(FRONTEND_DIR, 'i18n.js'), os.path.join(dest, 'i18n.js'))
+        for js_file in ['i18n.js', 'api_config.js', 'supabase.js']:
+            src_js = os.path.join(FRONTEND_DIR, js_file)
+            if os.path.exists(src_js):
+                shutil.copy(src_js, os.path.join(dest, js_file))
         # sync all html files
         for fpath in html_files:
             shutil.copy(fpath, os.path.join(dest, os.path.basename(fpath)))
-        print(f"Synced i18n and HTML to {dest}")
+        print(f"Synced i18n, api_config, and HTML to {dest}")
 
 print("Injection complete!")

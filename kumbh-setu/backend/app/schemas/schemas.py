@@ -15,6 +15,14 @@ class ListingCategory(str, Enum):
     HOTEL = "hotel"
     RICKSHAW_BUS = "rickshaw_bus"
     LOCAL_GUIDE = "local_guide"
+    BAZAAR = "bazaar"
+    PUJA_SAMAGRI = "puja_samagri"
+    GOODS = "goods"
+    STALL = "stall"
+    FOOD = "food"
+    STAY = "stay"
+    TRANSPORT = "transport"
+    INFRASTRUCTURE = "infrastructure"
 
 
 class VerificationStatus(str, Enum):
@@ -349,3 +357,28 @@ class GuideBookingVerificationResponse(BaseModel):
     guide_name: str
     message: str
     reason: Optional[str] = None
+
+
+class InquiryCreate(BaseModel):
+    sender_name: str = Field(..., min_length=1, max_length=100)
+    sender_phone: Optional[str] = None
+    target_id: Optional[str] = None
+    target_name: Optional[str] = None
+    category: Optional[str] = None
+    message_type: Optional[str] = "inquiry"
+    content: str = Field(..., min_length=1)
+    metadata: Optional[str] = None
+
+
+class InquiryResponse(BaseModel):
+    id: str
+    sender_name: str
+    sender_phone: Optional[str] = None
+    target_id: Optional[str] = None
+    target_name: Optional[str] = None
+    category: Optional[str] = None
+    message_type: str = "inquiry"
+    content: str
+    metadata: Optional[str] = None
+    created_at: str
+    time_ago: Optional[str] = "just now"

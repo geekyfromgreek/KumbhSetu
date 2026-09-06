@@ -7,7 +7,7 @@ from typing import Optional
 from datetime import datetime, timezone
 from ..schemas.schemas import (
     ListingResponse, ListingListResponse, ListingCreate, ListingUpdate,
-    ListingCategory, VerificationStatus
+    ListingCategory, VerificationStatus, InquiryCreate, InquiryResponse
 )
 from ..core.security import verify_jwt, require_nashikkar, CurrentUser
 from ..db.supabase_client import get_connection, now_iso, rows_to_list, row_to_dict
@@ -148,15 +148,22 @@ async def get_listing(listing_id: str, user_lat: Optional[float] = None, user_ln
 
 
 @router.post("/listings")
-async def create_listing(listing: ListingCreate, user: CurrentUser = Depends(require_nashikkar)):
-    """Create a new listing — Nashikkar only."""
+async def create_listing(listing: ListingCreate, user: Optional[CurrentUser] = Depends(verify_jwt)):
+    """
+    Create a new listing / item to sell — permanently committed to database.
+    Can be submitted by authenticated Nashikkar vendors or self-registered vendors.
+    """
     conn = get_connection()
     now = now_iso()
-    listing_id = str(uuid.uuid4())
+    listing_id = f"item-{uuid.uuid4().hex[:8]}"
 
-    delta, flagged = compute_price_delta(
-        listing.reference_price or 0, listing.reported_price or 0
-    )
+    ref_p = listing.reference_price if listing.reference_price is not None else (listing.reported_price or 0.0)
+    rep_p = listing.reported_price if listing.reported_price is not None else ref_p
+
+    delta, flagged = compute_price_delta(ref_p, rep_p)
+
+    verif_status = VerificationStatus.KUMBHVEER_VERIFIED.value if user else VerificationStatus.PENDING.value
+    cat_val = listing.category.value if hasattr(listing.category, 'value') else str(listing.category)
 
     conn.execute("""
         INSERT INTO listings (
@@ -167,17 +174,93 @@ async def create_listing(listing: ListingCreate, user: CurrentUser = Depends(req
             created_at, updated_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
-        listing_id, listing.name, listing.category.value, listing.subcategory,
-        listing.description, listing.address, listing.phone,
-        listing.latitude, listing.longitude, listing.maps_link,
-        listing.reference_price, listing.reported_price,
-        listing.rating, listing.review_count, listing.opening_hours,
-        listing.known_for, listing.image_url,
-        VerificationStatus.PENDING.value, 1 if flagged else 0, delta,
+        listing_id, listing.name, cat_val, listing.subcategory or "General Puja & Kumbh Goods",
+        listing.description or "Authentic Simhastha Kumbh vendor item.",
+        listing.address or "Panchavati Market / Ramkund Sector, Nashik",
+        listing.phone or "0253-2575555",
+        listing.latitude or 19.9975, listing.longitude or 73.7898,
+        listing.maps_link or "https://maps.google.com/?q=19.9975,73.7898",
+        ref_p, rep_p,
+        listing.rating or 4.9, listing.review_count or 1,
+        listing.opening_hours or "6:00 AM - 9:00 PM",
+        listing.known_for or "Simhastha Kumbh Vendor",
+        listing.image_url or "https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=400&q=80",
+        verif_status, 1 if flagged else 0, delta,
         now, now
     ))
     conn.commit()
-    return {"id": listing_id, "message": "Listing created", "price_flagged": flagged}
+    return {
+        "id": listing_id,
+        "name": listing.name,
+        "category": cat_val,
+        "reported_price": rep_p,
+        "reference_price": ref_p,
+        "verification_status": verif_status,
+        "message": "Listing successfully and permanently stored in database",
+        "price_flagged": flagged
+    }
+
+
+@router.post("/inquiries")
+async def create_inquiry(inquiry: InquiryCreate):
+    """
+    Submit a user inquiry, message, or info request — permanently stored in database.
+    """
+    conn = get_connection()
+    now = now_iso()
+    inquiry_id = f"inq-{uuid.uuid4().hex[:8]}"
+
+    conn.execute("""
+        INSERT INTO inquiries (
+            id, sender_name, sender_phone, target_id, target_name,
+            category, message_type, content, metadata, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        inquiry_id, inquiry.sender_name, inquiry.sender_phone,
+        inquiry.target_id, inquiry.target_name, inquiry.category,
+        inquiry.message_type or "inquiry", inquiry.content,
+        inquiry.metadata, now
+    ))
+    conn.commit()
+
+    return {
+        "id": inquiry_id,
+        "sender_name": inquiry.sender_name,
+        "target_name": inquiry.target_name,
+        "message": "Inquiry permanently logged in database",
+        "created_at": now
+    }
+
+
+@router.get("/inquiries")
+async def get_inquiries(
+    target_id: Optional[str] = None,
+    category: Optional[str] = None,
+    limit: int = Query(50, ge=1, le=100)
+):
+    """
+    Get user inquiries / messages permanently stored in database.
+    """
+    conn = get_connection()
+    query = "SELECT * FROM inquiries"
+    params = []
+    conditions = []
+
+    if target_id:
+        conditions.append("target_id = ?")
+        params.append(target_id)
+    if category:
+        conditions.append("category = ?")
+        params.append(category)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    query += " ORDER BY created_at DESC LIMIT ?"
+    params.append(limit)
+
+    rows = rows_to_list(conn.execute(query, params))
+    return {"inquiries": rows, "total": len(rows)}
 
 
 @router.put("/listings/{listing_id}")

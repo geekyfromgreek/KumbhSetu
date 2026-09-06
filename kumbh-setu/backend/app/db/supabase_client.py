@@ -168,10 +168,24 @@ def init_db():
             created_at TEXT NOT NULL
         );
 
+        CREATE TABLE IF NOT EXISTS inquiries (
+            id TEXT PRIMARY KEY,
+            sender_name TEXT,
+            sender_phone TEXT,
+            target_id TEXT,
+            target_name TEXT,
+            category TEXT,
+            message_type TEXT DEFAULT 'inquiry',
+            content TEXT NOT NULL,
+            metadata TEXT,
+            created_at TEXT NOT NULL
+        );
+
         CREATE INDEX IF NOT EXISTS idx_listings_category ON listings(category);
         CREATE INDEX IF NOT EXISTS idx_reports_status ON reports(status);
         CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status);
         CREATE INDEX IF NOT EXISTS idx_escalations_status ON escalations(status);
+        CREATE INDEX IF NOT EXISTS idx_inquiries_target ON inquiries(target_id);
     """)
     conn.commit()
 

@@ -9132,19 +9132,28 @@
       return false;
     }
 
-    const btn = el.closest('button, a, .lang-dropdown-trigger, [aria-label*="Language" i], [aria-label*="language" i], [aria-label*="Translate" i]');
-    if (!btn) return false;
+    // Explicit triggers
+    const explicitTrigger = el.closest('.lang-dropdown-trigger, [data-action="language"], [data-lang-trigger]');
+    if (explicitTrigger) return true;
 
-    const ariaLabel = (btn.getAttribute('aria-label') || '').toLowerCase();
-    if (ariaLabel.includes('language') || ariaLabel.includes('lang') || ariaLabel.includes('translate')) {
-      return true;
+    // Header language button only (never intercept content tiles, cards, or links)
+    const headerBtn = el.closest('header button, header .lang-btn');
+    if (headerBtn) {
+      const ariaLabel = (headerBtn.getAttribute('aria-label') || '').toLowerCase();
+      if (ariaLabel.includes('language') || ariaLabel.includes('translate')) {
+        return true;
+      }
+      // Check if button text is exactly the language name or contains the translate material icon
+      const icon = headerBtn.querySelector('.material-symbols-outlined, .material-icons');
+      if (icon && icon.textContent.trim() === 'translate') {
+        return true;
+      }
+      const txt = (headerBtn.textContent || '').trim();
+      if (txt === 'मराठी' || txt === 'हिंदी' || txt === 'English' || txt.startsWith('मराठी') || txt.startsWith('हिंदी') || txt.startsWith('English')) {
+        return true;
+      }
     }
 
-    const html = btn.innerHTML || '';
-    const txt = (btn.textContent || '').trim();
-    if (html.includes('translate') || txt.includes('मरा') || txt.includes('हिंदी') || txt.includes('English') || txt.includes('मराठी')) {
-      return true;
-    }
     return false;
   }
 
