@@ -198,57 +198,7 @@
 </div>
 </div>
 
-<!-- Prominent Pre-Paid Rickshaw & Transit Fare Estimator -->
-<div class="px-layout-margin-mobile pt-space-xs">
-  <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-primary/20 flex flex-col gap-2">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-lg bg-primary text-on-primary flex items-center justify-center">
-          <span class="material-symbols-outlined text-[22px]">electric_rickshaw</span>
-        </div>
-        <div>
-          <h3 class="font-headline-sm text-sm font-bold text-on-surface">Pre-Paid Travel Rate &amp; Route Estimator</h3>
-          <p class="text-xs text-on-surface-variant">Verified by Kumbhveer &amp; Nashikkar Citizen Network</p>
-        </div>
-      </div>
-      <a href="fare_board.html" class="px-2 py-0.5 rounded bg-primary/10 text-primary font-bold text-[10px] uppercase hover:bg-primary hover:text-white transition-colors">Open Board →</a>
-    </div>
 
-    <div class="grid grid-cols-2 gap-2 text-xs mt-1">
-      <div>
-        <label class="font-label-sm text-[11px] text-on-surface-variant block mb-0.5">Pickup Location (कुठून)</label>
-        <select id="home-calc-origin" class="w-full h-10 px-2 rounded-lg bg-surface-container-low text-on-surface border border-outline-variant/40 text-xs focus:outline-none focus:border-primary" onchange="calculateHomeRickshawFare()">
-          <option value="station">Nashik Road Station</option>
-          <option value="cbs">CBS Bus Stand</option>
-          <option value="tapovan">Tapovan Sadhu Gram</option>
-          <option value="ramkund" selected>Ramkund Main Ghat</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="font-label-sm text-[11px] text-on-surface-variant block mb-0.5">Destination (कुठे)</label>
-        <select id="home-calc-dest" class="w-full h-10 px-2 rounded-lg bg-surface-container-low text-on-surface border border-outline-variant/40 text-xs focus:outline-none focus:border-primary" onchange="calculateHomeRickshawFare()">
-          <option value="trimbak">Trimbakeshwar (28 km)</option>
-          <option value="ramkund">Ramkund Ghat (Panchavati)</option>
-          <option value="muktidham" selected>Muktidham Temple (9 km)</option>
-          <option value="cbs">CBS Central Stand (4 km)</option>
-          <option value="someshwar">Someshwar Waterfall (11 km)</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low mt-1">
-      <div class="flex items-center gap-1.5 text-on-surface-variant text-xs">
-        <span class="material-symbols-outlined text-[16px] text-secondary">straighten</span>
-        <span id="home-calc-dist-label">Est. Distance: <strong>9.2 km</strong> (₹30/seat shared)</span>
-      </div>
-      <div class="flex items-baseline gap-1">
-        <span class="text-xs text-on-surface-variant font-medium">Fair Fare:</span>
-        <span class="font-headline-sm text-headline-sm font-bold text-primary" id="home-calc-fare-val">₹140</span>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Interactive Ghat Life & Holy Dip Experience Visual Showcase -->
 <div class="px-layout-margin-mobile py-space-sm">
@@ -702,50 +652,6 @@ Helpline: 1800-233-0202
     openModal('kumbhRoadmapModal');
   }
 
-  function calculateHomeRickshawFare() {
-    const origEl = document.getElementById('home-calc-origin');
-    const destEl = document.getElementById('home-calc-dest');
-    if (!origEl || !destEl) return;
-
-    const orig = origEl.value;
-    const dest = destEl.value;
-
-    const distances = {
-      'station_trimbak': { km: 38.0, fare: 480, shared: 160 },
-      'station_ramkund': { km: 9.5, fare: 140, shared: 30 },
-      'station_muktidham': { km: 2.2, fare: 50, shared: 15 },
-      'station_cbs': { km: 8.5, fare: 120, shared: 25 },
-      'station_someshwar': { km: 16.0, fare: 230, shared: 50 },
-
-      'cbs_trimbak': { km: 28.0, fare: 360, shared: 120 },
-      'cbs_ramkund': { km: 3.5, fare: 60, shared: 20 },
-      'cbs_muktidham': { km: 9.0, fare: 130, shared: 30 },
-      'cbs_cbs': { km: 0.5, fare: 30, shared: 10 },
-      'cbs_someshwar': { km: 9.0, fare: 130, shared: 30 },
-
-      'tapovan_trimbak': { km: 31.0, fare: 400, shared: 130 },
-      'tapovan_ramkund': { km: 2.8, fare: 50, shared: 15 },
-      'tapovan_muktidham': { km: 11.0, fare: 160, shared: 35 },
-      'tapovan_cbs': { km: 5.5, fare: 90, shared: 20 },
-      'tapovan_someshwar': { km: 12.5, fare: 180, shared: 40 },
-
-      'ramkund_trimbak': { km: 29.5, fare: 380, shared: 120 },
-      'ramkund_ramkund': { km: 0.8, fare: 30, shared: 10 },
-      'ramkund_muktidham': { km: 9.2, fare: 140, shared: 30 },
-      'ramkund_cbs': { km: 3.5, fare: 60, shared: 20 },
-      'ramkund_someshwar': { km: 9.8, fare: 145, shared: 35 }
-    };
-
-    const key = `${orig}_${dest}`;
-    const data = distances[key] || { km: 8.0, fare: 120, shared: 25 };
-
-    const distLabel = document.getElementById('home-calc-dist-label');
-    const fareVal = document.getElementById('home-calc-fare-val');
-    if (distLabel) distLabel.innerHTML = `Est. Distance: <strong>${data.km} km</strong> (₹${data.shared}/seat shared)`;
-    if (fareVal) fareVal.textContent = `₹${data.fare}`;
-  }
-
-  calculateHomeRickshawFare();
   loadFactChecks();
 </script>
 
