@@ -1,82 +1,180 @@
 """
-Kumbh Setu — DeepFace Service
-Embedding generation and identity verification.
-Privacy-first: raw images are never stored.
+Kumbh Setu — DeepFace Selfie Identity Verification Service
+Generates mathematical embeddings from temporary selfie captures and performs
+cosine metric comparisons for Local Guide identity verification.
+
+Privacy-first: raw selfie images are NEVER written to permanent storage.
+Temporary files are cleaned up immediately within try/finally blocks.
+Only 128/512-dimensional numeric embeddings are stored in database columns.
 """
+import os
 import math
-from typing import Optional
+import logging
+import tempfile
+from typing import Union, Optional, List, Dict, Any
+
+logger = logging.getLogger("kumbhsetu.verification")
+
+# Threshold for cosine similarity metric in selfie identity verification.
+# Range: [-1.0, 1.0]. A value of 0.68 balances false-accept rate (preventing unauthorized impostors)
+# against false-reject rate (accommodating natural variations in ghat sunlight, angle, and turban/tilak).
+DEFAULT_SIMILARITY_THRESHOLD: float = 0.68
 
 
-def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
-    """Compute cosine similarity between two embedding vectors."""
-    if len(vec_a) != len(vec_b):
-        raise ValueError("Embedding vectors must have the same dimension")
+def cosine_similarity(vec_a: List[float], vec_b: List[float]) -> float:
+    """
+    Compute cosine similarity between two mathematical embedding vectors:
+    similarity = (vec_a · vec_b) / (||vec_a|| * ||vec_b||)
+    """
+    if not vec_a or not vec_b or len(vec_a) != len(vec_b):
+        raise ValueError("Embedding vectors must have identical non-zero dimensions")
 
     dot_product = sum(a * b for a, b in zip(vec_a, vec_b))
     norm_a = math.sqrt(sum(a * a for a in vec_a))
     norm_b = math.sqrt(sum(b * b for b in vec_b))
 
-    if norm_a == 0 or norm_b == 0:
+    if norm_a == 0.0 or norm_b == 0.0:
         return 0.0
 
     return dot_product / (norm_a * norm_b)
 
 
-def verify_identity(stored_embedding: list[float], new_embedding: list[float], threshold: float = 0.68) -> dict:
+def compare_embeddings(
+    embedding_a: List[float],
+    embedding_b: List[float],
+    threshold: float = DEFAULT_SIMILARITY_THRESHOLD
+) -> Dict[str, Any]:
     """
-    Compare a new selfie embedding against a stored embedding.
-    Returns identity confirmation status.
-
-    Note: This function operates on embeddings only.
-    The raw selfie images are discarded immediately after embedding generation.
-    """
-    similarity = cosine_similarity(stored_embedding, new_embedding)
-    confirmed = similarity >= threshold
-
-    return {
-        "identity_confirmed": confirmed,
-        "similarity_score": round(similarity, 4),
-        "threshold": threshold,
-        "message": "Identity Confirmed via Selfie" if confirmed else "Identity could not be confirmed. Please try again with better lighting."
-    }
-
-
-async def generate_embedding_from_image(image_bytes: bytes) -> Optional[list[float]]:
-    """
-    Generate face embedding from image bytes using DeepFace.
-    The raw image is NOT stored — only the embedding vector is returned.
-
-    In demo mode, returns a mock embedding if DeepFace is not available.
+    Compare a live booking selfie embedding against a registered guide's stored embedding.
+    Computes cosine similarity against the threshold.
+    
+    Returns:
+        {"identity_confirmed": bool, "similarity_score": float}
     """
     try:
-        # Attempt to use DeepFace
-        from deepface import DeepFace
-        import tempfile
-        import os
+        score = cosine_similarity(embedding_a, embedding_b)
+        confirmed = bool(score >= threshold)
+        return {
+            "identity_confirmed": confirmed,
+            "similarity_score": round(float(score), 4)
+        }
+    except Exception as exc:
+        logger.error(f"Error during embedding comparison: {exc}")
+        return {
+            "identity_confirmed": False,
+            "similarity_score": 0.0,
+            "error": "comparison_failed"
+        }
 
-        # Write to temp file, process, then immediately delete
-        with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
-            tmp.write(image_bytes)
-            tmp_path = tmp.name
 
+def generate_embedding(image_path_or_bytes: Union[str, bytes]) -> Union[List[float], Dict[str, str]]:
+    """
+    Extract a normalized mathematical embedding vector from a selfie image.
+    Uses DeepFace.represent() with model_name="Facenet".
+
+    Input: A temporary file path string or in-memory image bytes.
+    Output: List of floats representing the embedding vector, or an error dictionary.
+
+    Privacy & Data Handling:
+    - Input image is written ONLY to a volatile temporary location.
+    - Cleaned up immediately in a try/finally block so zero raw photos persist.
+    """
+    temp_file_path: Optional[str] = None
+    should_delete_temp: bool = False
+
+    try:
+        # Determine temporary file path
+        if isinstance(image_path_or_bytes, bytes):
+            with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
+                tmp.write(image_path_or_bytes)
+                temp_file_path = tmp.name
+                should_delete_temp = True
+        elif isinstance(image_path_or_bytes, str):
+            temp_file_path = image_path_or_bytes
+            should_delete_temp = False
+        else:
+            return {"error": "invalid_input_type"}
+
+        # Attempt to extract embedding with DeepFace
         try:
-            result = DeepFace.represent(
-                img_path=tmp_path,
-                model_name="Facenet512",
-                enforce_detection=True
+            from deepface import DeepFace  # type: ignore
+
+            # Extract embeddings using Facenet model architecture
+            representations = DeepFace.represent(
+                img_path=temp_file_path,
+                model_name="Facenet",
+                enforce_detection=True,
+                align=True
             )
-            embedding = result[0]["embedding"] if result else None
-        finally:
-            # Immediately delete the temporary image — privacy first
-            os.unlink(tmp_path)
 
-        return embedding
+            if not representations or len(representations) == 0:
+                return {"error": "no_face_detected"}
 
-    except ImportError:
-        # Demo fallback: return a mock embedding
-        import random
-        random.seed(hash(image_bytes[:100]) if image_bytes else 42)
-        return [random.gauss(0, 1) for _ in range(512)]
-    except Exception as e:
-        print(f"Embedding generation failed: {e}")
-        return None
+            if len(representations) > 1:
+                # Registration/verification selfies must contain exactly one person
+                return {"error": "multiple_faces_detected"}
+
+            embedding = representations[0].get("embedding")
+            if not embedding:
+                return {"error": "no_face_detected"}
+
+            return [float(x) for x in embedding]
+
+        except ImportError:
+            # Fallback for environments without heavy deepface/tensorflow binaries
+            logger.info("DeepFace binary not installed in environment; generating deterministic simulated embedding.")
+            import hashlib
+            seed_source = b""
+            if isinstance(image_path_or_bytes, bytes):
+                seed_source = image_path_or_bytes[:256]
+            elif temp_file_path and os.path.exists(temp_file_path):
+                with open(temp_file_path, "rb") as f:
+                    seed_source = f.read(256)
+            
+            h = hashlib.sha256(seed_source or b"kumbh_guide_selfie").digest()
+            # Generate deterministic 128-dimensional unit vector
+            import random
+            rng = random.Random(h)
+            raw_vec = [rng.gauss(0, 1) for _ in range(128)]
+            norm = math.sqrt(sum(v * v for v in raw_vec)) or 1.0
+            return [float(v / norm) for v in raw_vec]
+
+        except Exception as exc:
+            err_msg = str(exc).lower()
+            if "face could not be detected" in err_msg or "no face" in err_msg:
+                return {"error": "no_face_detected"}
+            if "multiple" in err_msg:
+                return {"error": "multiple_faces_detected"}
+            
+            logger.error(f"DeepFace inference error: {exc}")
+            return {"error": "inference_failed"}
+
+    finally:
+        # Guarantee volatile temporary file cleanup immediately
+        if should_delete_temp and temp_file_path and os.path.exists(temp_file_path):
+            try:
+                os.unlink(temp_file_path)
+            except OSError as cleanup_err:
+                logger.warning(f"Could not remove temp file {temp_file_path}: {cleanup_err}")
+
+
+# Aliases for backward compatibility
+async def generate_embedding_from_image(image_bytes: bytes) -> Optional[List[float]]:
+    res = generate_embedding(image_bytes)
+    if isinstance(res, list):
+        return res
+    return None
+
+
+def verify_identity(
+    stored_embedding: List[float],
+    new_embedding: List[float],
+    threshold: float = DEFAULT_SIMILARITY_THRESHOLD
+) -> Dict[str, Any]:
+    comp = compare_embeddings(stored_embedding, new_embedding, threshold)
+    return {
+        "identity_confirmed": comp.get("identity_confirmed", False),
+        "similarity_score": comp.get("similarity_score", 0.0),
+        "threshold": threshold,
+        "message": "Identity Confirmed via Selfie" if comp.get("identity_confirmed") else "Identity match below threshold."
+    }

@@ -121,10 +121,9 @@ stitch_design/
 stitch_design/*
 stitch_kumbh_setu_civic_platform/
 
-# Scratch & Internal Context Files
-*context.md
-*Context.md
-activeContext.md
-progress.md
+# Local Test Selfies (Not committed to repo)
+tests/test_selfies/
+backend/tests/test_selfies/
+
 
 
