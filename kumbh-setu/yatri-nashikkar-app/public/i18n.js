@@ -441,13 +441,14 @@
 
     const modal = document.createElement('div');
     modal.id = 'kumbh-lang-modal';
-    modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4 transition-opacity duration-200 opacity-0';
+    modal.className = 'fixed inset-0 bg-black/70 backdrop-blur-md z-[999999] hidden items-center justify-center p-4 transition-opacity duration-200 opacity-0';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999;';
     modal.innerHTML = `
-      <div class="bg-surface-container-lowest rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-outline-variant/30 transform scale-95 transition-transform duration-200" id="kumbh-lang-modal-content">
+      <div class="bg-surface-container-lowest rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-outline-variant/30 transform scale-95 transition-transform duration-200" id="kumbh-lang-modal-content" style="background-color: #ffffff; color: #1b1b20;">
         <div class="flex items-center justify-between pb-4 border-b border-surface-container-high mb-4">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-primary text-[24px]">translate</span>
-            <h3 class="font-headline-sm text-on-surface font-bold">Select Language / भाषा निवडा</h3>
+            <h3 class="font-headline-sm text-on-surface font-bold text-lg">Select Language / भाषा निवडा</h3>
           </div>
           <button type="button" class="text-on-surface-variant hover:text-on-surface p-1 rounded-full cursor-pointer" onclick="window.KumbhI18n.closeModal()">
             <span class="material-symbols-outlined text-[20px]">close</span>
@@ -457,7 +458,7 @@
         <div class="flex flex-col gap-2.5">
           <button type="button" onclick="window.KumbhI18n.setLanguage('en')" class="lang-modal-opt flex items-center justify-between p-3.5 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="en">
             <div class="flex items-center gap-3">
-              <span class="text-xl">🇬🇧</span>
+              <span class="text-2xl">🇬🇧</span>
               <div class="text-left">
                 <div class="font-bold text-on-surface text-base">English</div>
                 <div class="text-xs text-on-surface-variant">Default Global</div>
@@ -468,7 +469,7 @@
 
           <button type="button" onclick="window.KumbhI18n.setLanguage('mr')" class="lang-modal-opt flex items-center justify-between p-3.5 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="mr">
             <div class="flex items-center gap-3">
-              <span class="text-xl">🇮🇳</span>
+              <span class="text-2xl">🇮🇳</span>
               <div class="text-left">
                 <div class="font-bold text-on-surface text-base">मराठी (Marathi)</div>
                 <div class="text-xs text-on-surface-variant">स्थानिक भाषा / Regional</div>
@@ -479,7 +480,7 @@
 
           <button type="button" onclick="window.KumbhI18n.setLanguage('hi')" class="lang-modal-opt flex items-center justify-between p-3.5 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="hi">
             <div class="flex items-center gap-3">
-              <span class="text-xl">🇮🇳</span>
+              <span class="text-2xl">🇮🇳</span>
               <div class="text-left">
                 <div class="font-bold text-on-surface text-base">हिंदी (Hindi)</div>
                 <div class="text-xs text-on-surface-variant">राष्ट्रीय भाषा / National</div>
@@ -508,6 +509,7 @@
     createLanguageModal();
     const modal = document.getElementById('kumbh-lang-modal');
     const content = document.getElementById('kumbh-lang-modal-content');
+    if (!modal) return;
     const currentLang = getSavedLang();
 
     const options = modal.querySelectorAll('.lang-modal-opt');
@@ -527,8 +529,10 @@
     modal.classList.add('flex');
     setTimeout(() => {
       modal.classList.remove('opacity-0');
-      content.classList.remove('scale-95');
-      content.classList.add('scale-100');
+      if (content) {
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+      }
     }, 10);
   }
 
@@ -548,12 +552,43 @@
     }, 200);
   }
 
+  function cycleLanguage() {
+    const current = getSavedLang();
+    const next = current === 'en' ? 'mr' : (current === 'mr' ? 'hi' : 'en');
+    window.KumbhI18n.setLanguage(next);
+  }
+
+  function isLangButton(el) {
+    if (!el) return false;
+    const btn = el.closest('button, a, .lang-dropdown-trigger, [aria-label="Toggle Language"]');
+    if (!btn) return false;
+    const txt = (btn.textContent || '') + ' ' + (btn.innerHTML || '');
+    if (btn.getAttribute('aria-label') === 'Toggle Language') return true;
+    if (txt.includes('translate') || txt.includes('EN | मरा') || txt.includes('मराठी') || txt.includes('हिंदी') || txt.includes('English')) {
+      if (btn.closest('header') || btn.classList.contains('lang-btn') || btn.classList.contains('lang-dropdown-trigger') || btn.getAttribute('aria-label') === 'Toggle Language') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Global document click delegation for 100% reliable click response on any language button
+  document.addEventListener('click', function (e) {
+    const target = e.target;
+    if (isLangButton(target)) {
+      e.preventDefault();
+      e.stopPropagation();
+      openLanguageModal();
+    }
+  }, true);
+
   function setupHeaderClickListeners() {
-    const buttons = document.querySelectorAll('header button, [aria-label="Toggle Language"]');
+    const buttons = document.querySelectorAll('header button, [aria-label="Toggle Language"], .lang-dropdown-trigger');
     buttons.forEach(btn => {
       const html = btn.innerHTML || '';
       if (html.includes('translate') || html.includes('EN | मरा') || html.includes('मराठी') || btn.getAttribute('aria-label') === 'Toggle Language') {
         btn.classList.add('lang-dropdown-trigger', 'cursor-pointer');
+        btn.setAttribute('type', 'button');
         btn.onclick = function (e) {
           e.preventDefault();
           e.stopPropagation();
@@ -572,6 +607,7 @@
     getLanguage: getSavedLang,
     openModal: openLanguageModal,
     closeModal: closeLanguageModal,
+    cycleLanguage: cycleLanguage,
     translate: translateText,
     apply: function () {
       const current = getSavedLang();
@@ -580,8 +616,15 @@
     }
   };
 
-  // Compatibility for index.html setLang(btn, langCode)
+  // Global helpers
+  window.toggleLanguage = openLanguageModal;
+  window.toggleLanguageModal = openLanguageModal;
+  window.openLanguageModal = openLanguageModal;
+  window.cycleLanguage = cycleLanguage;
   window.setLang = function (btn, langCode) {
+    window.KumbhI18n.setLanguage(langCode);
+  };
+  window.switchLang = function (langCode) {
     window.KumbhI18n.setLanguage(langCode);
   };
 
