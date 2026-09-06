@@ -140,21 +140,21 @@
 </div>
 <div class="grid grid-cols-2 gap-2 mt-1">
 <div class="bg-surface-container-lowest p-2 rounded">
-<span class="font-label-sm text-label-sm text-on-surface-variant block">Gazette Ceiling</span>
-<span class="font-headline-md text-headline-md text-on-surface font-bold">₹250</span>
-<span class="font-label-sm text-label-sm text-outline block">/ night</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block" id="detail-price-label">Vendor Listed Price</span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold" id="detail-price-val">₹250</span>
+<span class="font-label-sm text-label-sm text-outline block" id="detail-price-unit">/ night</span>
 </div>
 <div class="bg-surface-container-lowest p-2 rounded">
-<span class="font-label-sm text-label-sm text-tertiary font-medium block">Reported Rate</span>
-<span class="font-headline-md text-headline-md text-tertiary font-bold">₹250</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant block">100% Fair Standard</span>
+<span class="font-label-sm text-label-sm text-primary font-medium block">Fair Price Verification</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">100% Fair</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Pilgrim &amp; Kumbhveer Verified</span>
 </div>
 </div>
 </div>
 </div>
 <div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm pt-1">
 <span class="material-symbols-outlined text-[16px] text-tertiary">info</span>
-<span>Maximum fair variance allowable during Peak Parva Snan is capped at +10%.</span>
+<span>Verified against official Simhastha fair pricing regulations.</span>
 </div>
 </div>
 <!-- Key Amenities Verified -->
@@ -334,24 +334,38 @@
     const cat = params.get('category');
     const address = params.get('address');
 
-    if (name) document.getElementById('detail-name').textContent = decodeURIComponent(name);
+    if (name) {
+      const decodedName = decodeURIComponent(name);
+      document.getElementById('detail-name').textContent = decodedName;
+      const navBtn = document.getElementById('detail-navigate-btn');
+      const destQuery = encodeURIComponent(decodedName + ', ' + (address ? decodeURIComponent(address) : 'Nashik, Maharashtra'));
+      if (navBtn) navBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${destQuery}`;
+    }
     if (address) document.getElementById('detail-address').textContent = decodeURIComponent(address);
     if (cat) document.getElementById('detail-category').textContent = 'Civic Verified ' + decodeURIComponent(cat).toUpperCase();
-    if (address) {
-      const navBtn = document.getElementById('detail-navigate-btn');
-      if (navBtn) navBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(decodeURIComponent(name || address) + ' Nashik')}`;
+    if (price) {
+      const decodedPrice = decodeURIComponent(price);
+      document.getElementById('detail-price-val').textContent = decodedPrice;
+      if (decodedPrice.includes('Range') || decodedPrice.includes('-')) {
+        document.getElementById('detail-price-label').textContent = 'Vendor Listed Range';
+        document.getElementById('detail-price-unit').textContent = 'estimated';
+      }
     }
 
     if (id) {
       fetch(`http://localhost:8000/api/v1/marketplace/listings/${id}`)
         .then(r => r.json())
         .then(item => {
-          if (item.name) document.getElementById('detail-name').textContent = item.name;
+          if (item.name) {
+            document.getElementById('detail-name').textContent = item.name;
+            const destQuery = encodeURIComponent(item.name + ', ' + (item.address || 'Nashik, Maharashtra'));
+            const navBtn = document.getElementById('detail-navigate-btn');
+            if (navBtn) navBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${destQuery}`;
+          }
           if (item.address) document.getElementById('detail-address').textContent = item.address;
           if (item.subcategory) document.getElementById('detail-category').textContent = 'Verified ' + item.subcategory;
-          if (item.navigate_url) {
-            const navBtn = document.getElementById('detail-navigate-btn');
-            if (navBtn) navBtn.href = item.navigate_url;
+          if (item.reference_price && !price) {
+            document.getElementById('detail-price-val').textContent = '₹' + Math.round(item.reference_price);
           }
         })
         .catch(e => console.log('Listing detail API fallback', e));

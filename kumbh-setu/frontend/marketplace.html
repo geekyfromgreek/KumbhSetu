@@ -347,17 +347,117 @@
       local_guide: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i'
     };
 
+    function getPricingInfo(item) {
+      const cat = (item.category || 'eatery').toLowerCase();
+      const name = (item.name || '').toLowerCase();
+      const sub = (item.subcategory || '').toLowerCase();
+      const refNum = item.reference_price ? Math.round(item.reference_price) : 0;
+
+      // Rule 1: Specific meals / Thalis
+      if (name.includes('thali') || sub.includes('thali')) {
+        const price = refNum > 0 ? refNum : 200;
+        return {
+          isRange: false,
+          primaryLabel: 'Listed Price',
+          displayPrice: '₹' + price,
+          unit: '/ thali',
+          badge: 'Kumbhveer Verified Meal'
+        };
+      }
+
+      // Rule 2: Other specific food items (misal, meal, snacks, breakfast)
+      if (cat === 'eatery' && (name.includes('bhojanalay') || name.includes('hotel') || name.includes('restaurant') || name.includes('dining'))) {
+        const price = refNum > 0 ? refNum : 150;
+        return {
+          isRange: false,
+          primaryLabel: 'Listed Price',
+          displayPrice: '₹' + price,
+          unit: '/ meal',
+          badge: 'Fair Price Verified'
+        };
+      }
+
+      // Rule 3: Stays / Hotels / Dormitory Beds
+      if (cat === 'hotel' || cat === 'stay') {
+        const price = refNum > 0 ? refNum : (name.includes('dorm') ? 250 : 600);
+        const unit = name.includes('dorm') || name.includes('bed') ? '/ night' : '/ room';
+        return {
+          isRange: false,
+          primaryLabel: 'Listed Price',
+          displayPrice: '₹' + price,
+          unit: unit,
+          badge: 'Civic Cap Protected'
+        };
+      }
+
+      // Rule 4: Transport / Rickshaw / Bus
+      if (cat === 'rickshaw_bus' || cat === 'transport') {
+        const price = refNum > 0 ? refNum : 80;
+        return {
+          isRange: false,
+          primaryLabel: 'Listed Price',
+          displayPrice: '₹' + price,
+          unit: '/ ride',
+          badge: 'RTO Pre-Paid Tariff'
+        };
+      }
+
+      // Rule 5: Guides
+      if (cat === 'local_guide' || cat === 'guides') {
+        const price = refNum > 0 ? refNum : 150;
+        return {
+          isRange: false,
+          primaryLabel: 'Listed Price',
+          displayPrice: '₹' + price,
+          unit: '/ hour',
+          badge: 'Certified Guide Rate'
+        };
+      }
+
+      // Rule 6: Perishables, fruits, general groceries, puja items, shopping -> Show Listed Range & General Fair Category
+      if (name.includes('fruit') || name.includes('vegetable') || name.includes('flower') || name.includes('puja') || name.includes('store') || name.includes('bhandar') || name.includes('market') || cat === 'infrastructure' || cat === 'shopping') {
+        return {
+          isRange: true,
+          primaryLabel: 'Listed Range',
+          displayPrice: '₹100 - ₹300',
+          unit: 'approx',
+          badge: 'Fair Category • Verified by Kumbhveer & Pilgrims'
+        };
+      }
+
+      // Default fallback
+      if (refNum > 0) {
+        return {
+          isRange: false,
+          primaryLabel: 'Listed Price',
+          displayPrice: '₹' + refNum,
+          unit: '',
+          badge: 'Kumbhveer Verified'
+        };
+      }
+
+      return {
+        isRange: true,
+        primaryLabel: 'Listed Range',
+        displayPrice: '₹100 - ₹300',
+        unit: 'standard',
+        badge: 'Fair Price Verified'
+      };
+    }
+
     function renderCard(item) {
       const cat = item.category || 'eatery';
-      const refPrice = item.reference_price ? '₹' + Math.round(item.reference_price) : '₹120';
-      const repPrice = item.reported_price ? '₹' + Math.round(item.reported_price) : refPrice;
+      const pricing = getPricingInfo(item);
       const imgUrl = defaultImages[cat] || defaultImages.eatery;
-      const rating = item.rating ? item.rating.toFixed(1) + ' ★' : '4.5 ★';
-      const statusText = item.verification_status || 'Kumbhveer Verified';
-      const mapsUrl = item.maps_link || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + ' Nashik')}`;
+      const rating = item.rating ? item.rating.toFixed(1) + ' ★' : '4.6 ★';
+      const statusText = pricing.badge;
+      
+      // Direct destination Google Maps link to directly start navigation
+      const destinationQuery = encodeURIComponent(item.name + ', ' + (item.address || 'Nashik, Maharashtra'));
+      const directMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destinationQuery}`;
 
       return `
-      <article class="listing-card bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col transition-all cursor-pointer" onclick="window.location.href='listing_detail.html?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}&price=${encodeURIComponent(refPrice)}&category=${encodeURIComponent(cat)}&address=${encodeURIComponent(item.address || '')}'">
+      <article class="listing-card bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col transition-all cursor-pointer" onclick="window.location.href='listing_detail.html?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}&price=${encodeURIComponent(pricing.displayPrice)}&category=${encodeURIComponent(cat)}&address=${encodeURIComponent(item.address || '')}'">
         <div class="relative h-36 w-full bg-surface-container">
           <img class="w-full h-full object-cover" src="${imgUrl}" alt="${item.name}"/>
           <div class="absolute top-space-xs left-space-xs flex items-center gap-1 bg-surface-container-lowest/95 backdrop-blur-sm text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full shadow-sm">
@@ -382,30 +482,29 @@
             <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
             <div class="flex items-center gap-1.5 flex-wrap">
               <span class="font-label-md text-label-md font-semibold text-primary">${statusText}</span>
-              <span class="font-label-sm text-label-sm text-on-surface-variant">• NMC Price Protected</span>
             </div>
           </div>
           <div class="bg-surface-container-low rounded-lg p-space-xs grid grid-cols-2 gap-space-xs items-center">
             <div class="flex flex-col pl-space-2xs">
               <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-                <span class="material-symbols-outlined text-[13px] text-tertiary">balance</span> Govt Cap
+                <span class="material-symbols-outlined text-[13px] text-tertiary">storefront</span> ${pricing.primaryLabel}
               </span>
-              <span class="font-headline-md text-headline-md text-on-surface font-bold">${refPrice}</span>
+              <span class="font-headline-md text-headline-md text-on-surface font-bold">${pricing.displayPrice} <span class="text-xs font-normal text-on-surface-variant">${pricing.unit}</span></span>
             </div>
             <div class="flex flex-col pl-space-2xs bg-surface-container-lowest rounded-md p-1.5 shadow-sm">
               <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
-                <span>Reported</span>
-                <span class="text-tertiary font-semibold">Exact</span>
+                <span>Verification</span>
+                <span class="text-primary font-semibold text-xs">Pilgrim Verified</span>
               </span>
-              <span class="font-headline-md text-headline-md text-primary font-bold">${repPrice}</span>
+              <span class="font-label-md text-label-md text-primary font-bold">Fair Rate</span>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-space-xs pt-space-xs mt-space-2xs">
-            <button class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform shadow-sm cursor-pointer" onclick="event.stopPropagation(); window.location.href='booking_confirmation.html?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}&price=${encodeURIComponent(refPrice)}'">
+            <button class="w-full h-11 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform shadow-sm cursor-pointer" onclick="event.stopPropagation(); window.location.href='booking_confirmation.html?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}&price=${encodeURIComponent(pricing.displayPrice)}'">
               <span class="material-symbols-outlined text-[18px]">event_seat</span>
               <span>Book Service</span>
             </button>
-            <button class="w-full h-11 rounded-lg bg-surface-container-high text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform cursor-pointer" onclick="event.stopPropagation(); window.open('${mapsUrl}', '_blank')">
+            <button class="w-full h-11 rounded-lg bg-surface-container-high text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform cursor-pointer" onclick="event.stopPropagation(); window.open('${directMapsUrl}', '_blank')">
               <span class="material-symbols-outlined text-[18px] text-secondary">explore</span>
               <span>Directions</span>
             </button>

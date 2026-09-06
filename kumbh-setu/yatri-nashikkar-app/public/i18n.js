@@ -275,6 +275,42 @@
     "Security PIN": { mr: "सुरक्षा पिन", hi: "सुरक्षा पिन", en: "Security PIN" }
   };
 
+    // Food Finder Specific Clean Translations
+    "Food Finder & Annakshetra": { mr: "अन्न शोधक व अन्नक्षेत्र", hi: "भोजन खोज एवं अन्नक्षेत्र", en: "Food Finder & Annakshetra" },
+    "Anchor Location": { mr: "स्थान बिंदू", hi: "मुख्य स्थान", en: "Anchor Location" },
+    "Within 1 km": { mr: "१ किमी च्या आत", hi: "१ किमी के भीतर", en: "Within 1 km" },
+    "Search Annakshetra, Thali, Bhojanalaya, Grocery, Fruits...": { mr: "अन्नछत्र, थाळी, भोजनालय, किराणा, फळे शोधा...", hi: "अन्नक्षेत्र, थाली, भोजनालय, राशन, फल खोजें...", en: "Search Annakshetra, Thali, Bhojanalaya, Grocery, Fruits..." },
+    "All Foods": { mr: "सर्व खाद्यपदार्थ", hi: "सभी खाद्य", en: "All Foods" },
+    "Free Annakshetra": { mr: "मोफत अन्नछत्र", hi: "मुफ्त अन्नक्षेत्र", en: "Free Annakshetra" },
+    "Pure Satvik": { mr: "शुद्ध सात्विक", hi: "शुद्ध सात्विक", en: "Pure Satvik" },
+    "Jain Bhojanalay": { mr: "जैन भोजनालय", hi: "जैन भोजनालय", en: "Jain Bhojanalay" },
+    "Budget Thali (₹200)": { mr: "किफायतशीर थाळी (₹२००)", hi: "किफायती थाली (₹२००)", en: "Budget Thali (₹200)" },
+    "Map View": { mr: "नकाशा पहा", hi: "मानचित्र देखें", en: "Map View" },
+    "Hide Map": { mr: "नकाशा लपवा", hi: "मानचित्र छुपाएँ", en: "Hide Map" },
+    "Digital Meal Pass": { mr: "डिजिटल भोजन पास", hi: "डिजिटल भोजन पास", en: "Digital Meal Pass" },
+    "Get Digital Pass": { mr: "डिजिटल पास मिळवा", hi: "डिजिटल पास प्राप्त करें", en: "Get Digital Pass" },
+    "Generate Digital Pass": { mr: "पास तयार करा", hi: "पास बनाएं", en: "Generate Digital Pass" },
+    "Number of Yatris:": { mr: "यात्री संख्या:", hi: "तीर्थयात्रियों की संख्या:", en: "Number of Yatris:" },
+    "Estimated Waiting Time:": { mr: "अनुमानित प्रतीक्षा वेळ:", hi: "अनुमानित प्रतीक्षा समय:", en: "Estimated Waiting Time:" },
+    "Next 15 mins": { mr: "पुढील १५ मिनिटे", hi: "अगले १५ मिनट", en: "Next 15 mins" },
+    "Fair-Price Food Protection Cell": { mr: "वाजवी दर अन्न संरक्षण कक्ष", hi: "उचित मूल्य भोजन संरक्षण केंद्र", en: "Fair-Price Food Protection Cell" },
+    "Open Civic Report Grievance": { mr: "नागरी तक्रार निवारण प्रणाली उघडा", hi: "नागरिक शिकायत प्रणाली खोलें", en: "Open Civic Report Grievance" },
+    "Today's Menu / Prasadam:": { mr: "आजचा मेनू / महाप्रसाद:", hi: "आज का मेनू / महाप्रसाद:", en: "Today's Menu / Prasadam:" },
+    "Distribution Timings:": { mr: "भोजन वितरण वेळ:", hi: "भोजन वितरण समय:", en: "Distribution Timings:" },
+    "Zero Overcharge Protection": { mr: "शून्य जादा दर हमी", hi: "अतिरिक्त वसूली सुरक्षा", en: "Zero Overcharge Protection" },
+    "Free Prasadam": { mr: "मोफत महाप्रसाद", hi: "मुफ्त महाप्रसाद", en: "Free Prasadam" },
+    "Listed Price": { mr: "नोंदवलेला दर", hi: "सूचीबद्ध दर", en: "Listed Price" },
+    "Vendor Listed Price": { mr: "विक्रेता नोंदवलेला दर", hi: "विक्रेता द्वारा सूचीबद्ध मूल्य", en: "Vendor Listed Price" },
+    "Listed Range": { mr: "दर मर्यादा", hi: "मूल्य सीमा", en: "Listed Range" },
+    "Vendor Listed Range": { mr: "विक्रेता दर मर्यादा", hi: "विक्रेता मूल्य सीमा", en: "Vendor Listed Range" },
+    "Fair Category • Verified by Kumbhveer & Pilgrims": { mr: "वाजवी वर्गवारी • कुंभवीर व यात्री सत्यापित", hi: "उचित श्रेणी • कुंभवीर व तीर्थयात्री सत्यापित", en: "Fair Category • Verified by Kumbhveer & Pilgrims" },
+    "Fair Price Verification": { mr: "वाजवी दर पडताळणी", hi: "उचित मूल्य सत्यापन", en: "Fair Price Verification" },
+    "Pilgrim & Kumbhveer Verified": { mr: "यात्री व कुंभवीर सत्यापित", hi: "तीर्थयात्री एवं कुंभवीर सत्यापित", en: "Pilgrim & Kumbhveer Verified" },
+    "100% Fair": { mr: "१००% वाजवी दर", hi: "१००% उचित मूल्य", en: "100% Fair" },
+    "Navigate (Map)": { mr: "नकाशा मार्ग (Navigate)", hi: "मानचित्र दिशा (Navigate)", en: "Navigate (Map)" },
+    "Directions": { mr: "दिशा / रस्ता", hi: "दिशा-निर्देश", en: "Directions" },
+    "Book Service": { mr: "सेवा बुक करा", hi: "सेवा बुक करें", en: "Book Service" },
+
   const LANG_STORAGE_KEY = 'kumbhsetu_lang';
   const SUPPORTED_LANGS = ['en', 'mr', 'hi'];
 
