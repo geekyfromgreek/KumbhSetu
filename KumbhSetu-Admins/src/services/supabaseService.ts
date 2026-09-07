@@ -411,20 +411,65 @@ export const AdminSupabaseService = {
       if (error) return null;
       if (!data) return null;
 
-      return data.map((row: any) => ({
-        id: row.id,
-        token: `KS-ENF-${row.id.substring(0, 6).toUpperCase()}`,
-        category: row.category,
-        vehicleOrShop: row.title,
-        location: `${row.sector} - ${row.location_details}`,
-        standardAmt: 'Standard Rate',
-        chargedAmt: 'Reported Violation',
-        timestamp: new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        status: row.status === 'RESOLVED' ? 'RESOLVED' : row.status === 'IN_PROGRESS' ? 'SQUAD_DISPATCHED' : 'REGISTERED',
-        assignedOfficer: row.assigned_volunteer_name || 'Enforcement Flying Squad',
-        actionSummary: row.resolution_notes || '',
-        penaltyAmount: 0,
-      }));
+      return data.map((row: any) => {
+        const sev: 'LOW' | 'MED' | 'HIGH' =
+          row.priority === 'HIGH' ? 'HIGH' : row.priority === 'LOW' ? 'LOW' : 'MED';
+
+        let status: AdminGrievanceTicket['status'] = 'REGISTERED';
+        if (row.status === 'RESOLVED') {
+          status = 'RESOLVED';
+        } else if (row.status === 'IN_PROGRESS' || row.status === 'ESCALATED_POLICE') {
+          status = 'SQUAD_DISPATCHED';
+        } else if (row.status === 'UNRESOLVED' || row.status === 'REJECTED') {
+          status = 'UNRESOLVED';
+        }
+
+        let lat = row.latitude ? Number(row.latitude) : undefined;
+        let lng = row.longitude ? Number(row.longitude) : undefined;
+        if ((!lat || !lng) && row.location_details) {
+          const gpsMatch = row.location_details.match(/\[GPS:\s*([0-9.-]+),\s*([0-9.-]+)\]/i);
+          if (gpsMatch) {
+            lat = parseFloat(gpsMatch[1]);
+            lng = parseFloat(gpsMatch[2]);
+          }
+        }
+
+        const rawImg = row.photo_url || row.image_url;
+        let validImg = rawImg && (rawImg.startsWith('http') || rawImg.startsWith('data:')) ? rawImg : undefined;
+        if (!validImg) {
+          const c = `${row.category || ''} ${row.title || ''}`.toLowerCase();
+          if (c.includes('auto') || c.includes('taxi') || c.includes('transit') || c.includes('vehicle')) {
+            validImg = 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=800&auto=format&fit=crop&q=80';
+          } else if (c.includes('food') || c.includes('sweet') || c.includes('stall') || c.includes('eatery')) {
+            validImg = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80';
+          } else if (c.includes('puja') || c.includes('samagri') || c.includes('temple') || c.includes('prasad')) {
+            validImg = 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=800&auto=format&fit=crop&q=80';
+          } else {
+            validImg = 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&auto=format&fit=crop&q=80';
+          }
+        }
+
+        return {
+          id: row.id,
+          token: `KS-ENF-${row.id.substring(0, 6).toUpperCase()}`,
+          category: row.category || 'Incident',
+          vehicleOrShop: row.title,
+          location: `${row.sector || ''} ${row.location_details || ''}`.trim() || 'Nashik Mela Area',
+          standardAmt: 'Standard Rate',
+          chargedAmt: 'Reported Violation',
+          timestamp: new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          status,
+          assignedOfficer: row.assigned_volunteer_name || 'Enforcement Flying Squad',
+          actionSummary: row.resolution_notes || '',
+          penaltyAmount: 0,
+          latitude: lat,
+          longitude: lng,
+          imageUrl: validImg,
+          severity: sev,
+          reporterName: row.reporter_name || 'Pilgrim',
+          reporterPhone: row.reporter_phone || '',
+        };
+      });
     } catch (e) {
       return null;
     }
@@ -443,6 +488,58 @@ export const AdminSupabaseService = {
         })
         .eq('id', id);
 
+      return !error;
+    } catch (e) {
+      return false;
+    }
+  },
+
+  async policeEnforceAction(params: {
+    id: string;
+    status: 'RESOLVED' | 'UNRESOLVED' | 'SQUAD_DISPATCHED';
+    punishmentType?: string;
+    penaltyAmount?: number;
+    notes?: string;
+    officerName?: string;
+  }): Promise<boolean> {
+    try {
+      const dbStatus = params.status === 'RESOLVED' ? 'RESOLVED' : params.status === 'UNRESOLVED' ? 'REJECTED' : 'IN_PROGRESS';
+      const summaryParts = [
+        params.punishmentType && params.punishmentType !== 'NONE' ? `Action: ${params.punishmentType}` : '',
+        params.penaltyAmount && params.penaltyAmount > 0 ? `Challan Fine: ₹${params.penaltyAmount}` : '',
+        params.notes ? `Police Report: ${params.notes}` : '',
+      ].filter(Boolean);
+
+      const resolutionText = summaryParts.length > 0 ? summaryParts.join(' | ') : 'Police Squad Action recorded.';
+
+      const { error } = await supabase
+        .from('incidents_and_grievances')
+        .update({
+          status: dbStatus,
+          resolution_notes: resolutionText,
+          assigned_volunteer_name: params.officerName || 'Inspector Vijay Rathore (Nashik Police)',
+          resolved_at: params.status === 'RESOLVED' ? new Date().toISOString() : null,
+        })
+        .eq('id', params.id);
+
+      return !error;
+    } catch (e) {
+      return false;
+    }
+  },
+
+  async deleteGrievance(id: string): Promise<boolean> {
+    try {
+      const { error } = await supabase.from('incidents_and_grievances').delete().eq('id', id);
+      return !error;
+    } catch (e) {
+      return false;
+    }
+  },
+
+  async clearAllGrievances(): Promise<boolean> {
+    try {
+      const { error } = await supabase.from('incidents_and_grievances').delete().neq('id', '00000000-0000-0000-0000-000000000000');
       return !error;
     } catch (e) {
       return false;
@@ -572,9 +669,13 @@ export const AdminSupabaseService = {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'tariff_routes' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'commodity_prices' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'merchants' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'catalog_items' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'incidents_and_grievances' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'fact_checks_and_rumors' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'snan_muhurats' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'volunteers' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'shop_reviews' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'pilgrim_inquiries' }, callback)
       .subscribe();
   },
 };

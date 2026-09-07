@@ -1,9 +1,10 @@
-import { supabase } from '@/lib/supabase';
+import { supabase, uploadMediaToSupabase } from '@/lib/supabase';
 import { RouteFare, StandardPriceItem } from '@/data/fareData';
 import { RumorFactCheck } from '@/data/complaintsAndRumorsData';
 import { MarketplaceItem } from '@/data/marketplaceData';
 import { SnanMuhurat } from '@/data/snanData';
 
+export { uploadMediaToSupabase };
 
 function resolveValidHttpImageUrl(url?: string, category: string = 'food'): string {
   if (url && (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:image/'))) {
@@ -23,6 +24,20 @@ function resolveValidHttpImageUrl(url?: string, category: string = 'food'): stri
     return 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600';
   }
   return 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600';
+}
+
+export function getCategoryFallbackEvidencePhoto(category: string = ''): string {
+  const c = category.toLowerCase();
+  if (c.includes('auto') || c.includes('taxi') || c.includes('transit') || c.includes('vehicle')) {
+    return 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=800&auto=format&fit=crop&q=80';
+  }
+  if (c.includes('food') || c.includes('sweet') || c.includes('stall') || c.includes('eatery')) {
+    return 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80';
+  }
+  if (c.includes('puja') || c.includes('samagri') || c.includes('temple') || c.includes('prasad')) {
+    return 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=800&auto=format&fit=crop&q=80';
+  }
+  return 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&auto=format&fit=crop&q=80';
 }
 
 export const SupabaseService = {
@@ -223,28 +238,73 @@ export const SupabaseService = {
     }
   },
 
-  // Submit Complaint/Incident
+  // Submit Grievance / Complaint to Supabase
   async submitGrievance(complaint: {
     category: string;
     vehicleOrShop: string;
     location: string;
     standardAmt: string;
     chargedAmt: string;
+    imageUrl?: string;
+    latitude?: number;
+    longitude?: number;
+    severity?: 'LOW' | 'MED' | 'HIGH';
     reporterName?: string;
     reporterPhone?: string;
   }): Promise<string | null> {
     try {
+      let uploadedImg = complaint.imageUrl || '';
+      if (uploadedImg && (uploadedImg.startsWith('data:') || uploadedImg.startsWith('file:') || !uploadedImg.startsWith('http'))) {
+        try {
+          const uploadedUrl = await uploadMediaToSupabase(uploadedImg, 'complaint_evidence');
+          if (uploadedUrl && (uploadedUrl.startsWith('http') || uploadedUrl.startsWith('data:'))) {
+            uploadedImg = uploadedUrl;
+          }
+        } catch (uploadErr) {
+          console.warn('Evidence photo upload error, using fallback:', uploadErr);
+        }
+      }
+
+      if (!uploadedImg || uploadedImg.startsWith('file:')) {
+        uploadedImg = getCategoryFallbackEvidencePhoto(complaint.category);
+      }
+
+      const validCats = [
+        'Overcharging',
+        'Crowd Density',
+        'Cleanliness / Sanitation',
+        'Medical Emergency',
+        'Lost & Found',
+        'Harassment / Security',
+        'Infrastructure',
+      ];
+      const category = validCats.includes(complaint.category) ? complaint.category : 'Overcharging';
+
+      const locationWithGps =
+        complaint.latitude && complaint.longitude
+          ? `${complaint.location || 'Nashik Mela Area'} [GPS: ${complaint.latitude}, ${complaint.longitude}]`
+          : complaint.location || 'Nashik Mela Area';
+
+      const priority = complaint.severity
+        ? complaint.severity === 'LOW'
+          ? 'LOW'
+          : complaint.severity === 'MED'
+          ? 'MEDIUM'
+          : 'HIGH'
+        : 'MEDIUM';
+
       const { data, error } = await supabase
         .from('incidents_and_grievances')
         .insert([
           {
-            title: `Overcharging: ${complaint.vehicleOrShop} at ${complaint.location}`,
-            description: `Standard rate ₹${complaint.standardAmt} vs Charged ₹${complaint.chargedAmt}. Category: ${complaint.category}`,
-            category: 'Overcharging',
-            sector: complaint.location,
-            location_details: complaint.location,
+            title: `${complaint.category}: ${complaint.vehicleOrShop || 'Incident Report'}`,
+            description: `Reported at ${complaint.location}. Standard ₹${complaint.standardAmt || '0'} vs Charged ₹${complaint.chargedAmt || '0'}. Category: ${complaint.category}`,
+            category: category,
+            sector: complaint.location || 'Nashik Mela Ground',
+            location_details: locationWithGps,
+            photo_url: uploadedImg || null,
             status: 'PENDING',
-            priority: 'HIGH',
+            priority: priority,
             reporter_name: complaint.reporterName || 'Pilgrim',
             reporter_phone: complaint.reporterPhone || '',
           },
@@ -260,6 +320,20 @@ export const SupabaseService = {
     } catch (e) {
       console.warn('[Supabase submitGrievance Exception]:', e);
       return null;
+    }
+  },
+
+  // Delete Grievance / Complaint
+  async deleteGrievance(idOrTitle: string): Promise<boolean> {
+    try {
+      let res = await supabase.from('incidents_and_grievances').delete().eq('id', idOrTitle);
+      if (res.error) {
+        res = await supabase.from('incidents_and_grievances').delete().ilike('title', `%${idOrTitle}%`);
+      }
+      return !res.error;
+    } catch (e) {
+      console.warn('[Supabase deleteGrievance Exception]:', e);
+      return false;
     }
   },
 
@@ -396,8 +470,11 @@ export const SupabaseService = {
   // Realtime Subscriptions
   subscribeToTariffs(callback: () => void) {
     return supabase
-      .channel('public:tariff_routes')
+      .channel('public:tariff_and_commodity_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'tariff_routes' }, () => {
+        callback();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'commodity_prices' }, () => {
         callback();
       })
       .subscribe();
@@ -405,7 +482,7 @@ export const SupabaseService = {
 
   subscribeToFactChecks(callback: () => void) {
     return supabase
-      .channel('public:fact_checks_and_rumors')
+      .channel('public:fact_checks_and_rumors_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'fact_checks_and_rumors' }, () => {
         callback();
       })
@@ -414,8 +491,11 @@ export const SupabaseService = {
 
   subscribeToMerchants(callback: () => void) {
     return supabase
-      .channel('public:merchants')
+      .channel('public:merchants_and_catalog_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'merchants' }, () => {
+        callback();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'catalog_items' }, () => {
         callback();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'shop_reviews' }, () => {
@@ -426,10 +506,23 @@ export const SupabaseService = {
 
   subscribeToSnanMuhurats(callback: () => void) {
     return supabase
-      .channel('public:snan_muhurats')
+      .channel('public:snan_muhurats_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'snan_muhurats' }, () => {
         callback();
       })
+      .subscribe();
+  },
+
+  subscribeToAllPublicUpdates(callback: () => void) {
+    return supabase
+      .channel('public:all_pilgrim_feed_changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'tariff_routes' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'commodity_prices' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'merchants' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'catalog_items' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'shop_reviews' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'fact_checks_and_rumors' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'snan_muhurats' }, callback)
       .subscribe();
   },
 };

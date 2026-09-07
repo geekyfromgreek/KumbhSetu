@@ -9,6 +9,7 @@ import {
   Modal,
   Alert,
   Linking,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { VeerColors } from '@/constants/colors';
@@ -21,6 +22,7 @@ export const IncidentAlertsTab: React.FC = () => {
   const {
     incidents,
     claimIncident,
+    verifyAndSetSeverity,
     resolveIncidentOffline,
     dismissIncident,
     profile,
@@ -31,16 +33,36 @@ export const IncidentAlertsTab: React.FC = () => {
   const [filterMode, setFilterMode] = useState<'my_sector' | 'all' | 'pending' | 'en_route'>('my_sector');
   const [selectedIncident, setSelectedIncident] = useState<GroundIncident | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [photoModalVisible, setPhotoModalVisible] = useState(false);
+  const [viewPhotoUrl, setViewPhotoUrl] = useState<string | null>(null);
   const [inspectionNotes, setInspectionNotes] = useState('');
+  const [selectedSeverity, setSelectedSeverity] = useState<'LOW' | 'MED' | 'HIGH'>('MED');
   const [dismissReason, setDismissReason] = useState('');
   const [showDismissInput, setShowDismissInput] = useState(false);
 
   const openInspectionModal = (inc: GroundIncident) => {
     setSelectedIncident(inc);
+    setSelectedSeverity(inc.severity || 'MED');
     setInspectionNotes(inc.volunteerNotes || '');
     setShowDismissInput(false);
     setDismissReason('');
     setModalVisible(true);
+  };
+
+  const handleOpenPhoto = (url?: string) => {
+    if (!url) return;
+    setViewPhotoUrl(url);
+    setPhotoModalVisible(true);
+  };
+
+  const handleOpenMapNavigation = (latitude?: number, longitude?: number, placeName?: string) => {
+    if (latitude && longitude) {
+      const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+      Linking.openURL(url);
+    } else if (placeName) {
+      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Nashik Kumbh Mela ' + placeName)}`;
+      Linking.openURL(url);
+    }
   };
 
   const handleClaim = async (inc: GroundIncident) => {
@@ -51,6 +73,20 @@ export const IncidentAlertsTab: React.FC = () => {
         ? `आपण ${inc.token} घटनास्थळी प्रत्यक्ष तपासणीसाठी जात आहात.`
         : `You are en route to inspect ${inc.token} on the ground.`
     );
+  };
+
+  const handleSaveSeverityAndEscalate = async () => {
+    if (!selectedIncident) return;
+    await verifyAndSetSeverity(selectedIncident.id, selectedSeverity, inspectionNotes);
+    Alert.alert(
+      selectedSeverity === 'LOW'
+        ? 'Severity Saved'
+        : 'Escalated to Police Dashboard',
+      selectedSeverity === 'LOW'
+        ? 'Marked as Low severity for volunteer resolution.'
+        : `Report ${selectedIncident.token} is now routed to Nashik Police Flying Squad Dashboard with ${selectedSeverity} severity!`
+    );
+    setModalVisible(false);
   };
 
   const handleSwipeConfirmResolution = async () => {
@@ -232,12 +268,64 @@ export const IncidentAlertsTab: React.FC = () => {
                   <Text style={styles.timestampText}>{inc.timestamp}</Text>
                 </View>
 
-                {/* Location */}
+                {/* Location & GPS Map button */}
                 <View style={styles.locationBar}>
                   <Ionicons name="location" size={13} color={VeerColors.saffron} />
                   <Text style={styles.locationText} numberOfLines={1}>
                     {inc.location} ({getSectorName(inc.sectorId)})
                   </Text>
+                  {(inc.latitude || inc.location) && (
+                    <TouchableOpacity
+                      style={styles.navMapBtn}
+                      onPress={() => handleOpenMapNavigation(inc.latitude, inc.longitude, inc.location)}
+                      activeOpacity={0.7}
+                    >
+                      <Ionicons name="navigate-circle" size={13} color="#2563EB" />
+                      <Text style={styles.navMapBtnText}>Map</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+
+                {/* Evidence Image and Severity Pill */}
+                <View style={styles.cardEvidenceRow}>
+                  {inc.imageUrl ? (
+                    <TouchableOpacity
+                      style={styles.cardEvidenceThumbWrapper}
+                      onPress={() => handleOpenPhoto(inc.imageUrl)}
+                      activeOpacity={0.8}
+                    >
+                      <Image source={{ uri: inc.imageUrl }} style={styles.cardEvidenceThumb} />
+                      <View style={styles.photoZoomTag}>
+                        <Ionicons name="expand" size={10} color="#FFFFFF" />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null}
+
+                  <View style={{ flex: 1, gap: 4 }}>
+                    {inc.severity && (
+                      <View
+                        style={[
+                          styles.severityPill,
+                          inc.severity === 'HIGH'
+                            ? styles.sevPillHigh
+                            : inc.severity === 'MED'
+                            ? styles.sevPillMed
+                            : styles.sevPillLow,
+                        ]}
+                      >
+                        <Text style={styles.sevPillText}>
+                          {inc.severity === 'HIGH' ? '🚨 HIGH SEVERITY' : inc.severity === 'MED' ? '⚠️ MED SEVERITY' : '🟢 LOW SEVERITY'}
+                        </Text>
+                      </View>
+                    )}
+
+                    {inc.escalatedToPolice && (
+                      <View style={styles.policeEscalatedBadge}>
+                        <Ionicons name="shield" size={11} color="#1E3A8A" />
+                        <Text style={styles.policeEscalatedText}>Escalated to Police Flying Squad</Text>
+                      </View>
+                    )}
+                  </View>
                 </View>
 
                 {/* Description */}
@@ -299,7 +387,7 @@ export const IncidentAlertsTab: React.FC = () => {
         )}
       </ScrollView>
 
-      {/* Offline Ground Verification Modal with Swipe-To-Confirm */}
+      {/* Offline Ground Verification Modal with 3-Stage Severity & Swipe-To-Confirm */}
       <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
@@ -317,11 +405,67 @@ export const IncidentAlertsTab: React.FC = () => {
               </TouchableOpacity>
             </View>
 
-            <ScrollView style={{ maxHeight: 380 }} showsVerticalScrollIndicator={false}>
+            <ScrollView style={{ maxHeight: 440 }} showsVerticalScrollIndicator={false}>
               <View style={styles.incidentSummaryBox}>
                 <Text style={styles.summaryCategory}>{selectedIncident?.category}</Text>
                 <Text style={styles.summaryDesc}>{selectedIncident?.description}</Text>
+                {selectedIncident?.imageUrl && (
+                  <TouchableOpacity
+                    style={styles.modalEvidenceRow}
+                    onPress={() => handleOpenPhoto(selectedIncident.imageUrl)}
+                  >
+                    <Image source={{ uri: selectedIncident.imageUrl }} style={styles.modalEvidenceThumb} />
+                    <Text style={styles.modalEvidenceText}>View Pilgrim Uploaded Photo</Text>
+                  </TouchableOpacity>
+                )}
               </View>
+
+              {/* 3-Stage Severity Assessment */}
+              <Text style={styles.modalLabel}>3-Stage Severity Verification:</Text>
+              <View style={styles.modalSeverityRow}>
+                {(['LOW', 'MED', 'HIGH'] as const).map((sev) => {
+                  const isSelected = selectedSeverity === sev;
+                  const cfg = {
+                    LOW: { bg: '#ECFDF5', border: '#10B981', label: 'Low', sub: 'Minor on-ground settle' },
+                    MED: { bg: '#FEF3C7', border: '#F59E0B', label: 'Med', sub: 'Overcharge / Fine' },
+                    HIGH: { bg: '#FEE2E2', border: '#EF4444', label: 'High', sub: 'Police Squad Action' },
+                  }[sev];
+
+                  return (
+                    <TouchableOpacity
+                      key={sev}
+                      style={[
+                        styles.modalSevChip,
+                        isSelected && { backgroundColor: cfg.bg, borderColor: cfg.border, borderWidth: 1.5 },
+                      ]}
+                      onPress={() => setSelectedSeverity(sev)}
+                    >
+                      <Text
+                        style={[
+                          styles.modalSevLabel,
+                          isSelected && { color: cfg.border, fontFamily: 'Poppins_700Bold' },
+                        ]}
+                      >
+                        {cfg.label}
+                      </Text>
+                      <Text style={styles.modalSevSub}>{cfg.sub}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+
+              {(selectedSeverity === 'MED' || selectedSeverity === 'HIGH') && (
+                <TouchableOpacity
+                  style={styles.escalatePoliceBtn}
+                  onPress={handleSaveSeverityAndEscalate}
+                  activeOpacity={0.85}
+                >
+                  <Ionicons name="shield-outline" size={16} color="#FFFFFF" />
+                  <Text style={styles.escalatePoliceText}>
+                    Forward & Escalate to Police Dashboard ({selectedSeverity})
+                  </Text>
+                </TouchableOpacity>
+              )}
 
               <Text style={styles.modalLabel}>{t.groundNotes}</Text>
               <TextInput
@@ -369,6 +513,25 @@ export const IncidentAlertsTab: React.FC = () => {
               )}
             </ScrollView>
           </View>
+        </View>
+      </Modal>
+
+      {/* Full Photo Evidence Modal */}
+      <Modal visible={photoModalVisible} transparent animationType="fade">
+        <View style={styles.fullPhotoOverlay}>
+          <TouchableOpacity
+            style={styles.fullPhotoCloseBtn}
+            onPress={() => setPhotoModalVisible(false)}
+          >
+            <Ionicons name="close" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
+          {viewPhotoUrl ? (
+            <Image
+              source={{ uri: viewPhotoUrl }}
+              style={styles.fullPhotoImage}
+              resizeMode="contain"
+            />
+          ) : null}
         </View>
       </Modal>
     </View>
@@ -513,11 +676,92 @@ const styles = StyleSheet.create({
     color: VeerColors.saffronDark,
     flex: 1,
   },
+  navMapBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: '#EFF6FF',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#BFDBFE',
+  },
+  navMapBtnText: {
+    fontSize: 10,
+    fontFamily: 'Poppins_600SemiBold',
+    color: '#2563EB',
+  },
+  cardEvidenceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginVertical: 4,
+  },
+  cardEvidenceThumbWrapper: {
+    position: 'relative',
+  },
+  cardEvidenceThumb: {
+    width: 50,
+    height: 50,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: VeerColors.cardBorder,
+  },
+  photoZoomTag: {
+    position: 'absolute',
+    bottom: 2,
+    right: 2,
+    backgroundColor: 'rgba(0,0,0,0.65)',
+    borderRadius: 4,
+    padding: 2,
+  },
+  severityPill: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+  },
+  sevPillHigh: {
+    backgroundColor: '#FEE2E2',
+    borderColor: '#EF4444',
+  },
+  sevPillMed: {
+    backgroundColor: '#FEF3C7',
+    borderColor: '#F59E0B',
+  },
+  sevPillLow: {
+    backgroundColor: '#ECFDF5',
+    borderColor: '#10B981',
+  },
+  sevPillText: {
+    fontSize: 9.5,
+    fontFamily: 'Poppins_700Bold',
+    color: '#1F2937',
+  },
+  policeEscalatedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: '#DBEAFE',
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#93C5FD',
+  },
+  policeEscalatedText: {
+    fontSize: 9,
+    fontFamily: 'Poppins_600SemiBold',
+    color: '#1E3A8A',
+  },
   descText: {
     fontSize: 12,
     fontFamily: 'Poppins_400Regular',
     color: VeerColors.textSecondary,
     lineHeight: 16,
+    marginTop: 2,
   },
   ratesBox: {
     flexDirection: 'row',
@@ -640,6 +884,68 @@ const styles = StyleSheet.create({
     marginTop: 2,
     lineHeight: 15,
   },
+  modalEvidenceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 8,
+    backgroundColor: '#FFFFFF',
+    padding: 6,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  modalEvidenceThumb: {
+    width: 38,
+    height: 38,
+    borderRadius: 4,
+  },
+  modalEvidenceText: {
+    fontSize: 11,
+    fontFamily: 'Poppins_600SemiBold',
+    color: '#2563EB',
+  },
+  modalSeverityRow: {
+    flexDirection: 'row',
+    gap: 6,
+    marginBottom: 10,
+  },
+  modalSevChip: {
+    flex: 1,
+    backgroundColor: VeerColors.surfaceHover,
+    borderRadius: 8,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: VeerColors.cardBorder,
+    alignItems: 'center',
+  },
+  modalSevLabel: {
+    fontSize: 11,
+    fontFamily: 'Poppins_600SemiBold',
+    color: VeerColors.textPrimary,
+  },
+  modalSevSub: {
+    fontSize: 8.5,
+    fontFamily: 'Poppins_400Regular',
+    color: VeerColors.textMuted,
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  escalatePoliceBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: '#1E3A8A',
+    borderRadius: 8,
+    paddingVertical: 10,
+    marginBottom: 12,
+  },
+  escalatePoliceText: {
+    color: '#FFFFFF',
+    fontSize: 11.5,
+    fontFamily: 'Poppins_700Bold',
+  },
   modalLabel: {
     fontSize: 11.5,
     fontFamily: 'Poppins_600SemiBold',
@@ -684,5 +990,25 @@ const styles = StyleSheet.create({
     color: VeerColors.white,
     fontSize: 11.5,
     fontFamily: 'Poppins_700Bold',
+  },
+  fullPhotoOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.92)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  fullPhotoCloseBtn: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    zIndex: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    borderRadius: 20,
+    padding: 6,
+  },
+  fullPhotoImage: {
+    width: '100%',
+    height: '80%',
   },
 });

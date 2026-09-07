@@ -78,10 +78,18 @@ export interface AdminGrievanceTicket {
   standardAmt: string;
   chargedAmt: string;
   timestamp: string;
-  status: 'REGISTERED' | 'SQUAD_DISPATCHED' | 'FINE_ISSUED' | 'RESOLVED';
+  status: 'REGISTERED' | 'SQUAD_DISPATCHED' | 'FINE_ISSUED' | 'RESOLVED' | 'UNRESOLVED';
   assignedOfficer: string;
   actionSummary?: string;
   penaltyAmount?: number;
+  latitude?: number;
+  longitude?: number;
+  imageUrl?: string;
+  severity?: 'LOW' | 'MED' | 'HIGH';
+  punishmentType?: 'CHALLAN_FINE' | 'SHOP_SEALED' | 'VEHICLE_IMPOUNDED' | 'WARNING_ISSUED' | 'LICENSE_SUSPENDED' | 'NONE';
+  resolutionNotes?: string;
+  reporterName?: string;
+  reporterPhone?: string;
 }
 
 export interface AdminSnanMuhurat {
