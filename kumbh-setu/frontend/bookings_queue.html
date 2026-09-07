@@ -325,7 +325,7 @@ Ramkund Evening Aarti Circuit
       <span class="material-symbols-outlined text-xs">chat</span> WhatsApp
     </a>
   </div>
-  <a href="guide_detail.html?verify=1" class="text-secondary font-semibold hover:underline flex items-center gap-0.5">
+  <a href="guide_detail.html?verify=1&mode=pilgrim_handshake&pilgrim_name=Dr.%20Ananya%20Roy&booking_id=BK-KMB-4092&meetup=Kalaram%20Temple%20East%20Gate&party=3%20Pax&phone=%2B919830092144&lang=Bengali%20%2F%20English&amount=500&tour=Ramkund%20Evening%20Aarti%20Circuit" class="text-secondary font-semibold hover:underline flex items-center gap-0.5">
     <span>Face Handshake</span>
     <span class="material-symbols-outlined text-xs">arrow_forward</span>
   </a>
@@ -440,6 +440,41 @@ Ramkund Evening Aarti Circuit
     card.setAttribute('data-status', 'confirmed');
     card.classList.add('border-primary');
     
+    let bookingId = 'BK-KMB-9821';
+    let tourTitle = 'Ramkund Heritage & Snan Guide';
+    let party = '4 Yatris (Family)';
+    let lang = 'Hindi, English';
+    let amount = '600';
+    if (cardId === 'booking-guide-req-2') {
+      bookingId = 'BK-KMB-7714';
+      tourTitle = 'Trimbakeshwar & Brahmagiri Yatra';
+      party = '6 Family Members';
+      lang = 'English, Tamil';
+      amount = '1200';
+    } else if (cardId === 'booking-guide-req-3') {
+      bookingId = 'BK-KMB-5520';
+      tourTitle = 'Tapovan, Sita Gumpha & Laxman Rekha';
+      party = '2 Pilgrims';
+      lang = 'Gujarati, Hindi';
+      amount = '450';
+    }
+
+    const handshakeData = {
+      pilgrimName,
+      phone,
+      meetupPoint,
+      bookingId,
+      tourTitle,
+      party,
+      lang,
+      amount
+    };
+    try {
+      localStorage.setItem('kumbh_active_guide_handshake', JSON.stringify(handshakeData));
+    } catch (e) {}
+
+    const handshakeUrl = `guide_detail.html?verify=1&mode=pilgrim_handshake&pilgrim_name=${encodeURIComponent(pilgrimName)}&booking_id=${bookingId}&meetup=${encodeURIComponent(meetupPoint)}&phone=${encodeURIComponent(phone)}&tour=${encodeURIComponent(tourTitle)}&party=${encodeURIComponent(party)}&lang=${encodeURIComponent(lang)}&amount=${amount}`;
+
     actions.innerHTML = `
       <div class="col-span-2 bg-surface-container-high text-on-surface p-space-xs rounded-xl flex flex-col gap-2 animate-fade-in">
         <div class="flex items-center justify-between">
@@ -459,8 +494,8 @@ Ramkund Evening Aarti Circuit
               <span class="material-symbols-outlined text-sm">chat</span> WhatsApp
             </a>
           </div>
-          <a href="guide_detail.html?verify=1" class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-sm text-xs font-semibold hover:bg-surface-container-highest flex items-center gap-1">
-            <span class="material-symbols-outlined text-sm text-secondary">face</span>
+          <a href="${handshakeUrl}" class="px-2.5 py-1.5 rounded-lg bg-secondary/15 text-secondary border border-secondary/30 font-label-sm text-xs font-semibold hover:bg-secondary/25 flex items-center gap-1 transition-colors">
+            <span class="material-symbols-outlined text-sm">face</span>
             <span>Face Handshake</span>
           </a>
         </div>
