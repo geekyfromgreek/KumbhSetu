@@ -273,149 +273,223 @@
 
 
 
-<!-- Verified Local Marketplace & Listed Vendor Stalls Showcase -->
+<!-- Verified Local Marketplace & Listed Vendor Stalls Showcase (Amazon-style 2-row horizontal slide) -->
 <div class="px-layout-margin-mobile py-2">
   <div class="flex items-center justify-between mb-2">
     <div>
       <div class="flex items-center gap-1.5">
         <span class="material-symbols-outlined text-primary text-base">storefront</span>
-        <h2 class="font-headline-sm text-sm font-bold text-on-surface">Verified Local Marketplace &amp; Stalls</h2>
+        <h2 class="font-headline-sm text-sm font-bold text-on-surface">Local Bazaar &amp; Stalls</h2>
       </div>
-      <p class="text-[11px] text-on-surface-variant">Sacred Samagri, Brass Diyas, Copper Kalash &amp; Certified Goods</p>
+      <p class="text-[11px] text-on-surface-variant">Products first • Certified fair prices from local Nashik stalls</p>
     </div>
     <a href="marketplace.html?category=bazaar" class="text-primary text-xs font-bold hover:underline flex items-center gap-0.5 shrink-0">
-      <span>All 24 Stalls</span>
+      <span>Explore All</span>
       <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
     </a>
   </div>
 
-  <!-- Grid of Actual Listed Vendor Products -->
-  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-    <!-- Product 1: Brass Ganga Aarti Diya -->
-    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div class="relative h-28 w-full bg-surface-container">
-        <img src="https://images.unsplash.com/photo-1584727638096-042c45049ebe?auto=format&fit=crop&w=600&q=80" alt="Panchavati Pure Brass Shiva Kalash & Diya" class="w-full h-full object-cover">
-        <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-sm">₹220 – ₹290</span>
-        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-surface/90 backdrop-blur-sm text-[9px] font-bold text-on-surface">Stall #12</span>
+  <!-- Horizontal hint badge -->
+  <div class="flex items-center justify-between text-[10px] text-outline mb-1.5 px-0.5">
+    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px] text-primary">swipe</span> Slide across for more items</span>
+    <span class="font-semibold text-primary">24+ Products</span>
+  </div>
+
+  <!-- Amazon-style 2-Row Horizontal Slide Carousel -->
+  <div class="grid grid-rows-2 grid-flow-col auto-cols-[165px] sm:auto-cols-[195px] gap-2.5 overflow-x-auto no-scrollbar py-1 scroll-smooth">
+    
+    <!-- Item 1 (Col 1, Top): Pure Brass Shiva Kalash -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div class="relative h-24 w-full bg-surface-container shrink-0">
+        <img src="https://images.unsplash.com/photo-1584727638096-042c45049ebe?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="Pure Brass Snan Kalash (1L)" class="w-full h-full object-cover"/>
+        <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-xs">₹240</span>
+        <span class="absolute bottom-1.5 right-1.5 px-1 py-0.2 rounded bg-surface/90 backdrop-blur-xs text-[9px] font-bold text-emerald-800">Fair Rate</span>
       </div>
-      <div class="p-2.5 flex flex-col gap-1">
-        <h3 class="font-bold text-xs text-on-surface line-clamp-1">Pure Brass Shiva Kalash &amp; Diya</h3>
-        <p class="text-[11px] text-on-surface-variant line-clamp-1">Kapaleshwar Steps (250m away)</p>
-        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 mt-0.5">
-          <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[12px]">verified</span> Nashikkar Auth
-          </span>
-          <a href="listing_detail.html?id=bz-2&name=Panchavati%20Pure%20Brass%20Shiva%20Kalash&price=%E2%82%B9220%20%E2%80%93%20%E2%82%B9290&category=bazaar&address=Stall%20%2312%2C%20Kapaleshwar%20Steps&verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
-            View
+      <div class="p-2 flex flex-col justify-between flex-1 gap-1">
+        <div>
+          <h3 class="font-bold text-xs text-on-surface line-clamp-1">Pure Brass Snan Kalash (1L)</h3>
+          <p class="text-[10px] text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[11px] text-primary">store</span>
+            <span class="truncate">Stall #14 • Rameshwar Brass</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+          <span class="text-[9px] text-emerald-700 font-bold">In Stock (40)</span>
+          <a href="listing_detail.html?id=bz-2&amp;name=Pure%20Brass%20Snan%20Kalash&amp;price=%E2%82%B9240&amp;category=bazaar&amp;address=Stall%20%2314%2C%20Ramkund%20Main%20Ghat&amp;verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
+            Contact
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Product 2: Gangajal & Maha-Puja Kit -->
-    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div class="relative h-28 w-full bg-surface-container">
-        <img src="https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=600&q=80" alt="Holy Ganga Jal & Maha-Puja Samagri Kit" class="w-full h-full object-cover">
-        <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-sm">₹140 – ₹210</span>
-        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-surface/90 backdrop-blur-sm text-[9px] font-bold text-on-surface">Stall #24</span>
+    <!-- Item 2 (Col 1, Bottom): Hand-Cast Brass Diya Set -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div class="relative h-24 w-full bg-surface-container shrink-0">
+        <img src="https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="Hand-Cast Brass Diya (Set of 2)" class="w-full h-full object-cover"/>
+        <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-xs">₹180</span>
+        <span class="absolute bottom-1.5 right-1.5 px-1 py-0.2 rounded bg-surface/90 backdrop-blur-xs text-[9px] font-bold text-emerald-800">Fair Rate</span>
       </div>
-      <div class="p-2.5 flex flex-col gap-1">
-        <h3 class="font-bold text-xs text-on-surface line-clamp-1">Ganga Jal &amp; Maha-Puja Kit</h3>
-        <p class="text-[11px] text-on-surface-variant line-clamp-1">Ramkund Ghat Marg (120m away)</p>
-        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 mt-0.5">
-          <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[12px]">verified</span> Kumbhveer Auth
-          </span>
-          <a href="listing_detail.html?id=bz-1&name=Shree%20Ram%20Holy%20Ganga%20Jal%20%26%20Puja%20Kit&price=%E2%82%B9140%20%E2%80%93%20%E2%82%B9210&category=bazaar&address=Stall%20%2324%2C%20Ramkund%20Ghat%20Marg&verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
-            View
+      <div class="p-2 flex flex-col justify-between flex-1 gap-1">
+        <div>
+          <h3 class="font-bold text-xs text-on-surface line-clamp-1">Hand-Cast Brass Diya (Set of 2)</h3>
+          <p class="text-[10px] text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[11px] text-primary">store</span>
+            <span class="truncate">Stall #12 • Kapaleshwar Craft</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+          <span class="text-[9px] text-emerald-700 font-bold">In Stock (45)</span>
+          <a href="listing_detail.html?id=bz-12&amp;name=Hand-Cast%20Brass%20Diya%20Set&amp;price=%E2%82%B9180&amp;category=bazaar&amp;address=Stall%20%2312%2C%20Kapaleshwar%20Steps&amp;verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
+            Contact
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Product 3: 5-Mukhi Rudraksha Mala -->
-    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div class="relative h-28 w-full bg-surface-container">
-        <img src="https://images.unsplash.com/photo-1614036417651-efe5912149d8?auto=format&fit=crop&w=600&q=80" alt="Lab-Certified 5-Mukhi Rudraksha" class="w-full h-full object-cover">
-        <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-sm">₹150 – ₹220</span>
-        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-surface/90 backdrop-blur-sm text-[9px] font-bold text-on-surface">Stall #08</span>
+    <!-- Item 3 (Col 2, Top): Brahmagiri Sealed Gangajal Flask -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div class="relative h-24 w-full bg-surface-container shrink-0">
+        <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="Brahmagiri Sealed Gangajal Flask" class="w-full h-full object-cover"/>
+        <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-xs">₹80</span>
+        <span class="absolute bottom-1.5 right-1.5 px-1 py-0.2 rounded bg-surface/90 backdrop-blur-xs text-[9px] font-bold text-emerald-800">Sealed</span>
       </div>
-      <div class="p-2.5 flex flex-col gap-1">
-        <h3 class="font-bold text-xs text-on-surface line-clamp-1">5-Mukhi Rudraksha Mala (108)</h3>
-        <p class="text-[11px] text-on-surface-variant line-clamp-1">Sita Gufa Chowk (450m away)</p>
-        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 mt-0.5">
-          <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[12px]">verified</span> Lab Certified
-          </span>
-          <a href="listing_detail.html?id=bz-3&name=Lab-Certified%205-Mukhi%20Rudraksha&price=%E2%82%B9150%20%E2%80%93%20%E2%82%B9220&category=bazaar&address=Stall%20%2308%2C%20Sita%20Gufa%20Chowk&verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
-            View
+      <div class="p-2 flex flex-col justify-between flex-1 gap-1">
+        <div>
+          <h3 class="font-bold text-xs text-on-surface line-clamp-1">Brahmagiri Gangajal Flask (500ml)</h3>
+          <p class="text-[10px] text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[11px] text-primary">store</span>
+            <span class="truncate">Stall #24 • Pt. Narayan Shastri</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+          <span class="text-[9px] text-emerald-700 font-bold">Kumbh Certified</span>
+          <a href="listing_detail.html?id=bz-1&amp;name=Brahmagiri%20Gangajal%20Flask&amp;price=%E2%82%B980&amp;category=bazaar&amp;address=Stall%20%2324%2C%20Ramkund%20Ghat%20Marg&amp;verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
+            Contact
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Product 4: Hammered Copper Vessels -->
-    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div class="relative h-28 w-full bg-surface-container">
-        <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80" alt="Pure Hammered Copper Tamra-Patra" class="w-full h-full object-cover">
-        <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-sm">₹280 – ₹360</span>
-        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-surface/90 backdrop-blur-sm text-[9px] font-bold text-on-surface">Stall #03</span>
+    <!-- Item 4 (Col 2, Bottom): 5-Mukhi Rudraksha Mala -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div class="relative h-24 w-full bg-surface-container shrink-0">
+        <img src="https://images.unsplash.com/photo-1614036417651-efe5912149d8?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="5-Mukhi Himalayan Rudraksha Mala" class="w-full h-full object-cover"/>
+        <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-xs">₹190</span>
+        <span class="absolute bottom-1.5 right-1.5 px-1 py-0.2 rounded bg-surface/90 backdrop-blur-xs text-[9px] font-bold text-emerald-800">Lab Tested</span>
       </div>
-      <div class="p-2.5 flex flex-col gap-1">
-        <h3 class="font-bold text-xs text-on-surface line-clamp-1">Pure Copper Tamra-Patra Jug</h3>
-        <p class="text-[11px] text-on-surface-variant line-clamp-1">Kushavarta Lane, Trimbak</p>
-        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 mt-0.5">
-          <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[12px]">verified</span> 99.4% Copper
-          </span>
-          <a href="listing_detail.html?id=bz-4&name=Pure%20Copper%20Tamra-Patra&price=%E2%82%B9280%20%E2%80%93%20%E2%82%B9360&category=bazaar&address=Stall%20%2303%2C%20Kushavarta%20Lane%2C%20Trimbak&verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
-            View
+      <div class="p-2 flex flex-col justify-between flex-1 gap-1">
+        <div>
+          <h3 class="font-bold text-xs text-on-surface line-clamp-1">5-Mukhi Rudraksha Mala (108)</h3>
+          <p class="text-[10px] text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[11px] text-primary">store</span>
+            <span class="truncate">Stall #08 • Sita Gufa Kendra</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+          <span class="text-[9px] text-emerald-700 font-bold">X-Ray Verified</span>
+          <a href="listing_detail.html?id=bz-3&amp;name=5-Mukhi%20Rudraksha%20Mala&amp;price=%E2%82%B9190&amp;category=bazaar&amp;address=Stall%20%2308%2C%20Sita%20Gufa%20Chowk&amp;verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
+            Contact
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Product 5: Authentic Dry Fruit Prasad Box -->
-    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div class="relative h-28 w-full bg-surface-container">
-        <img src="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=600&q=80" alt="Authentic Prasad Box & Peda" class="w-full h-full object-cover">
-        <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-sm">₹80 – ₹120</span>
-        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-surface/90 backdrop-blur-sm text-[9px] font-bold text-on-surface">Stall #31</span>
+    <!-- Item 5 (Col 3, Top): Pure Copper Tamra-Patra Thali -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div class="relative h-24 w-full bg-surface-container shrink-0">
+        <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="Pure Hammered Copper Thali" class="w-full h-full object-cover"/>
+        <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-xs">₹290</span>
+        <span class="absolute bottom-1.5 right-1.5 px-1 py-0.2 rounded bg-surface/90 backdrop-blur-xs text-[9px] font-bold text-emerald-800">99.4% Cu</span>
       </div>
-      <div class="p-2.5 flex flex-col gap-1">
-        <h3 class="font-bold text-xs text-on-surface line-clamp-1">Cow Ghee Peda &amp; Prasad Box</h3>
-        <p class="text-[11px] text-on-surface-variant line-clamp-1">Tapovan Sadhu Gram Bazar</p>
-        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 mt-0.5">
-          <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[12px]">verified</span> FSSAI Certified
-          </span>
-          <a href="listing_detail.html?id=bz-5&name=Authentic%20Prasad%20Box&price=%E2%82%B980%20%E2%80%93%20%E2%82%B9120&category=bazaar&address=Stall%20%2331%2C%20Tapovan%20Bazar&verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
-            View
+      <div class="p-2 flex flex-col justify-between flex-1 gap-1">
+        <div>
+          <h3 class="font-bold text-xs text-on-surface line-clamp-1">Pure Copper Tamra-Patra Thali</h3>
+          <p class="text-[10px] text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[11px] text-primary">store</span>
+            <span class="truncate">Stall #03 • Balasaheb Tambe</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+          <span class="text-[9px] text-emerald-700 font-bold">Artisan Direct</span>
+          <a href="listing_detail.html?id=bz-4&amp;name=Pure%20Copper%20Tamra-Patra&amp;price=%E2%82%B9290&amp;category=bazaar&amp;address=Stall%20%2303%2C%20Kushavarta%20Lane&amp;verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
+            Contact
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Product 6: Pure Cotton Saffron Dhoti & Shawl -->
-    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div class="relative h-28 w-full bg-surface-container">
-        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Saffron Handloom Dhoti & Angavastram" class="w-full h-full object-cover">
-        <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-sm">₹190 – ₹260</span>
-        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-surface/90 backdrop-blur-sm text-[9px] font-bold text-on-surface">Stall #18</span>
+    <!-- Item 6 (Col 3, Bottom): Mysore Natural Sandalwood Tika -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div class="relative h-24 w-full bg-surface-container shrink-0">
+        <img src="https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="Mysore Natural Sandalwood Paste" class="w-full h-full object-cover"/>
+        <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-xs">₹90</span>
+        <span class="absolute bottom-1.5 right-1.5 px-1 py-0.2 rounded bg-surface/90 backdrop-blur-xs text-[9px] font-bold text-emerald-800">100% Pure</span>
       </div>
-      <div class="p-2.5 flex flex-col gap-1">
-        <h3 class="font-bold text-xs text-on-surface line-clamp-1">Saffron Handloom Dhoti &amp; Shawl</h3>
-        <p class="text-[11px] text-on-surface-variant line-clamp-1">Main Godavari Ghat Road</p>
-        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 mt-0.5">
-          <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[12px]">verified</span> Handloom Pure
-          </span>
-          <a href="listing_detail.html?id=bz-6&name=Handloom%20Saffron%20Dhoti%20Set&price=%E2%82%B9190%20%E2%80%93%20%E2%82%B9260&category=bazaar&address=Stall%20%2318%2C%20Main%20Ghat%20Road&verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
-            View
+      <div class="p-2 flex flex-col justify-between flex-1 gap-1">
+        <div>
+          <h3 class="font-bold text-xs text-on-surface line-clamp-1">Mysore Sandalwood Paste &amp; Tika</h3>
+          <p class="text-[10px] text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[11px] text-primary">store</span>
+            <span class="truncate">Stall #21 • Madhavrao Sugandh</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+          <span class="text-[9px] text-emerald-700 font-bold">Rubbing Stone Inc.</span>
+          <a href="listing_detail.html?id=bz-13&amp;name=Mysore%20Sandalwood%20Tika&amp;price=%E2%82%B990&amp;category=bazaar&amp;address=Stall%20%2321%2C%20Panchavati&amp;verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
+            Contact
           </a>
         </div>
       </div>
     </div>
+
+    <!-- Item 7 (Col 4, Top): Authentic Cow Ghee Peda Prasad -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div class="relative h-24 w-full bg-surface-container shrink-0">
+        <img src="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="Cow Ghee Peda Prasad Box" class="w-full h-full object-cover"/>
+        <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-xs">₹110</span>
+        <span class="absolute bottom-1.5 right-1.5 px-1 py-0.2 rounded bg-surface/90 backdrop-blur-xs text-[9px] font-bold text-emerald-800">FSSAI</span>
+      </div>
+      <div class="p-2 flex flex-col justify-between flex-1 gap-1">
+        <div>
+          <h3 class="font-bold text-xs text-on-surface line-clamp-1">Cow Ghee Peda &amp; Prasad Box</h3>
+          <p class="text-[10px] text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[11px] text-primary">store</span>
+            <span class="truncate">Stall #31 • Anand Bhojraj</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+          <span class="text-[9px] text-emerald-700 font-bold">Gir Cow Ghee</span>
+          <a href="listing_detail.html?id=bz-5&amp;name=Cow%20Ghee%20Peda%20Prasad&amp;price=%E2%82%B9110&amp;category=bazaar&amp;address=Stall%20%2331%2C%20Tapovan&amp;verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
+            Contact
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 8 (Col 4, Bottom): Saffron Handloom Dhoti & Shawl -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs border border-outline-variant/30 flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div class="relative h-24 w-full bg-surface-container shrink-0">
+        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="Saffron Handloom Dhoti & Shawl" class="w-full h-full object-cover"/>
+        <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shadow-xs">₹210</span>
+        <span class="absolute bottom-1.5 right-1.5 px-1 py-0.2 rounded bg-surface/90 backdrop-blur-xs text-[9px] font-bold text-emerald-800">Handloom</span>
+      </div>
+      <div class="p-2 flex flex-col justify-between flex-1 gap-1">
+        <div>
+          <h3 class="font-bold text-xs text-on-surface line-clamp-1">Saffron Handloom Snan Dhoti Set</h3>
+          <p class="text-[10px] text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[11px] text-primary">store</span>
+            <span class="truncate">Stall #18 • Vithal Bunkar Guild</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+          <span class="text-[9px] text-emerald-700 font-bold">100% Pure Cotton</span>
+          <a href="listing_detail.html?id=bz-6&amp;name=Saffron%20Handloom%20Dhoti&amp;price=%E2%82%B9210&amp;category=bazaar&amp;address=Stall%20%2318%2C%20Main%20Ghat&amp;verified=1" class="px-2 py-0.5 bg-primary/10 hover:bg-primary hover:text-on-primary text-primary text-[10px] font-bold rounded transition-colors">
+            Contact
+          </a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 <!-- PIB Fact-Check & Rumor Buster (Truth & Trust) -->
@@ -601,7 +675,7 @@ Helpline: 1800-233-0202
   async function loadFactChecks() {
     const activeApiBase = window.API_BASE_URL || (function() {
       const h = window.location.hostname;
-      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : 'http://localhost:8000';
+      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || 'http://localhost:8000') + '';
     })();
     try {
       const res = await fetch(activeApiBase + '/api/v1/reports/fact-checks');
@@ -657,7 +731,7 @@ Helpline: 1800-233-0202
 
     const activeApiBase = window.API_BASE_URL || (function() {
       const h = window.location.hostname;
-      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : 'http://localhost:8000';
+      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || 'http://localhost:8000') + '';
     })();
 
     try {
