@@ -106,8 +106,8 @@
 <!-- Action Buttons -->
 <div class="flex flex-col gap-space-xs pt-1">
 <button class="w-full h-12 flex items-center justify-center gap-2 rounded bg-secondary text-on-secondary font-label-lg text-label-lg active:bg-on-secondary-container transition-colors shadow-sm" onclick="triggerEscalatePolice(this)" type="button">
-<span class="material-symbols-outlined text-[18px]">local_police</span>
-<span>Escalate to Police Desk</span>
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span>Verify as Citizen (Forward to Police Desk)</span>
 </button>
 <div class="grid grid-cols-2 gap-space-xs">
 <button class="h-11 flex items-center justify-center gap-1.5 rounded bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-dim transition-colors" onclick="alert('Initiating direct call to Ramkund Auto Stand Headman (Shri D. Sonawane)...')" type="button">
@@ -164,11 +164,11 @@
 <div class="grid grid-cols-2 gap-space-xs pt-1">
 <button class="h-12 flex items-center justify-center gap-1.5 rounded bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm" onclick="dispatchVolunteerAlert(this)" type="button">
 <span class="material-symbols-outlined text-[18px]">person_pin_circle</span>
-<span>Dispatch Volunteer</span>
+<span>Request Volunteer Audit</span>
 </button>
 <button class="h-12 flex items-center justify-center gap-1.5 rounded bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-dim transition-colors" onclick="issueFormalNotice(this)" type="button">
-<span class="material-symbols-outlined text-[18px] text-secondary">gavel</span>
-<span>Issue Notice</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">description</span>
+<span>View Official Tariff</span>
 </button>
 </div>
 </article>
@@ -247,13 +247,13 @@
     });
   });
 
-  // Escalate to Police Workflow Mock
+  // Citizen Verification & Police Forward Mock
   function triggerEscalatePolice(buttonElement) {
     const parentCard = buttonElement.closest('article');
     const entityTitle = parentCard.querySelector('h2').innerText;
     
-    if (confirm(`Confirm immediate handover of "${entityTitle}" to Nashik Police Kumbh Mela Rapid Response Unit?`)) {
-      buttonElement.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">sync</span><span>Dispatched to Police Desk</span>`;
+    if (confirm(`Confirm citizen verification for "${entityTitle}" to log on-ground complaint & notify Nashik Police Desk?`)) {
+      buttonElement.innerHTML = `<span class="material-symbols-outlined text-[18px]">check_circle</span><span>Citizen Verified • Sent to Police</span>`;
       buttonElement.disabled = true;
       buttonElement.classList.remove('bg-secondary');
       buttonElement.classList.add('bg-surface-container-highest', 'text-on-surface-variant');
@@ -266,8 +266,7 @@
 
       parentCard.setAttribute('data-status', 'escalated');
       
-      // Update badge counts dynamically
-      alert(`Docket forwarded. Officer dispatched to Ramkund Bay 4.`);
+      alert(`Citizen verification recorded for ${entityTitle}. Forwarded to Ramkund Police Desk.`);
     }
   }
 
@@ -283,24 +282,26 @@
       badge.className = "shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold";
     }
 
-    buttonElement.innerText = "Penalty Imposed &amp; Closed";
+    buttonElement.innerText = "Penalty Imposed & Closed";
     buttonElement.disabled = true;
     buttonElement.classList.remove('bg-primary');
     buttonElement.classList.add('bg-surface-container-highest', 'text-on-surface-variant');
   }
 
-  // Dispatch Volunteer Mock
+  // Request Volunteer Audit Mock
   function dispatchVolunteerAlert(btn) {
-    btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">how_to_reg</span><span>Volunteer En Route</span>`;
+    btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">how_to_reg</span><span>Audit Requested</span>`;
     btn.disabled = true;
     btn.classList.add('opacity-75');
+    alert('Volunteer verification request sent to Sector 4 Kumbhveer Desk.');
   }
 
-  // Issue Notice Mock
+  // View Official Tariff
   function issueFormalNotice(btn) {
-    btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">done</span><span>Gazette Notice Sent</span>`;
-    btn.disabled = true;
-    btn.classList.add('opacity-75');
+    btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">visibility</span><span>Opening Gazette...</span>`;
+    setTimeout(() => {
+      window.location.href = 'fare_board.html';
+    }, 400);
   }
-</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)]" data-active-classes="text-secondary font-semibold"><div class="flex justify-around items-center h-16 px-space-2xs"><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="overview" href="nashikkar_overview.html"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm">Overview</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-14 h-12 transition-colors text-secondary font-semibold" data-path="vendors" href="vendor_registration.html"><span class="material-symbols-outlined text-[22px]">badge</span><span class="font-label-sm text-label-sm">Vendors</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="market" href="marketplace.html"><span class="material-symbols-outlined text-[22px]">storefront</span><span class="font-label-sm text-label-sm">Market</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="bookings" href="bookings_queue.html"><span class="material-symbols-outlined text-[22px]">event_available</span><span class="font-label-sm text-label-sm">Bookings</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="reports" href="reports_analytics.html"><span class="material-symbols-outlined text-[22px]">summarize</span><span class="font-label-sm text-label-sm">Reports</span></a></div></nav><script src="i18n.js"></script>
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)]" data-active-classes="text-secondary font-semibold"><div class="flex justify-around items-center h-16 px-space-2xs"><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="overview" href="nashikkar_overview.html"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="text-[10px] font-semibold leading-tight">Overview</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-14 h-12 transition-colors text-secondary font-semibold" data-path="flags" href="price_flags.html"><span class="material-symbols-outlined text-[20px]">warning</span><span class="text-[10px] font-semibold leading-tight">Price Flags</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="volunteer" href="kumbhveer_portal.html"><span class="material-symbols-outlined text-[20px]">volunteer_activism</span><span class="text-[10px] font-semibold leading-tight">Volunteer</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="report" href="report_issue.html"><span class="material-symbols-outlined text-[20px]">report_problem</span><span class="text-[10px] font-semibold leading-tight">Report</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="fares" href="fare_board.html"><span class="material-symbols-outlined text-[20px]">price_change</span><span class="text-[10px] font-semibold leading-tight">Gazette</span></a></div></nav><script src="i18n.js"></script>
 </body></html>
