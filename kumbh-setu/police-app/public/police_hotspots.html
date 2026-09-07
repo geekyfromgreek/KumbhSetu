@@ -209,7 +209,7 @@
         <div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm border border-outline-variant/30 flex flex-col justify-between">
           <span class="font-label-sm text-xs text-on-surface-variant font-medium">Triaged Incidents</span>
           <div class="flex items-baseline gap-1.5 mt-1">
-            <span class="font-headline-lg text-2xl font-bold text-on-surface">100,000</span>
+            <span class="font-headline-lg text-2xl font-bold text-on-surface" id="statIncidents">100,000</span>
             <span class="font-label-sm text-[11px] text-on-surface-variant">Nashik Admin</span>
           </div>
         </div>
@@ -218,7 +218,7 @@
           <span class="font-label-sm text-xs text-on-surface-variant font-medium">Top Priority Zone</span>
           <div class="flex items-baseline gap-1.5 mt-1">
             <span class="font-headline-lg text-2xl font-bold text-secondary" id="statTopPriority">74.9</span>
-            <span class="font-label-sm text-[11px] text-secondary font-bold truncate">Ramkund Lane</span>
+            <span class="font-label-sm text-[11px] text-secondary font-bold truncate" id="statTopZone">Ramkund Lane</span>
           </div>
         </div>
 
@@ -384,7 +384,7 @@
     let isSimulating = true;
     let selectedCluster = null;
 
-    const API_BASE = window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '';
+    const API_BASE = window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '') + '';
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -491,6 +491,10 @@
       });
     }
 
+    let recentlyUpdatedClusterId = null;
+    let totalIncidentsCount = 100000;
+    let lastSeenReportId = null;
+
     function renderHotspotsList(hotspots) {
       const container = document.getElementById('hotspotList');
       container.innerHTML = '';
@@ -506,11 +510,13 @@
           barColor = 'bg-primary';
         }
 
+        const isRecent = h.cluster_id === recentlyUpdatedClusterId;
         const card = document.createElement('div');
-        card.className = 'bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 rounded-xl p-2.5 transition-all cursor-pointer shadow-xs';
+        card.className = `border rounded-xl p-2.5 transition-all cursor-pointer shadow-xs ${isRecent ? 'border-secondary bg-secondary-fixed/20 ring-2 ring-secondary/40 scale-[1.02] shadow-md' : 'bg-surface-container-low hover:bg-surface-container border-outline-variant/30'}`;
         card.onclick = () => {
           map.flyTo([h.lat, h.lng], 15);
-          const circle = circles[h.rank - 1];
+          const circleIdx = allHotspots.findIndex(x => x.cluster_id === h.cluster_id);
+          const circle = circles[circleIdx];
           if (circle) circle.openPopup();
         };
 
@@ -521,6 +527,7 @@
             <div class="flex items-center gap-1.5 font-bold text-on-surface truncate max-w-[190px]">
               <span class="text-on-surface-variant font-mono text-[11px]">#${h.rank}</span>
               <span class="truncate">${h.label}</span>
+              ${isRecent ? '<span class="text-[9px] font-bold text-secondary flex items-center gap-0.5 animate-pulse bg-secondary/10 px-1.5 py-0.2 rounded shrink-0"><span class="material-symbols-outlined text-[11px]">bolt</span>Live +1</span>' : ''}
             </div>
             <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${badgeColor}">
               Priority ${h.priority.toFixed(1)}
@@ -529,15 +536,130 @@
 
           <div class="flex items-center justify-between text-[11px] text-on-surface-variant mb-1.5">
             <span class="truncate">${h.zone}</span>
-            <span>${h.reports.toLocaleString()} incidents</span>
+            <span class="font-medium">${h.reports.toLocaleString()} incidents <span class="text-[10px] text-secondary font-mono font-bold">(${h.critical} crit)</span></span>
           </div>
 
           <div class="w-full bg-surface-container-high rounded-full h-1.5 overflow-hidden">
-            <div class="${barColor} h-full rounded-full" style="width: ${pct}%"></div>
+            <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
           </div>
         `;
         container.appendChild(card);
       });
+    }
+
+    function updateClusterFromReport(event) {
+      if (!allHotspots || allHotspots.length === 0) return;
+
+      // 1. Locate matching cluster
+      let target = null;
+      if (event.cluster_id !== undefined && event.cluster_id !== null && event.cluster_id !== 0) {
+        target = allHotspots.find(h => h.cluster_id === event.cluster_id);
+      }
+      if (!target && event.hotspot_name) {
+        target = allHotspots.find(h => 
+          h.label === event.hotspot_name || 
+          h.label.toLowerCase().includes(event.hotspot_name.toLowerCase()) || 
+          event.hotspot_name.toLowerCase().includes(h.label.toLowerCase())
+        );
+      }
+      if (!target && event.latitude && event.longitude) {
+        let minDist = Infinity;
+        allHotspots.forEach(h => {
+          const d = Math.hypot(h.lat - event.latitude, h.lng - event.longitude);
+          if (d < minDist) {
+            minDist = d;
+            target = h;
+          }
+        });
+      }
+
+      if (!target) target = allHotspots[0];
+
+      // 2. Increment cluster report statistics
+      target.reports = (target.reports || 0) + 1;
+      totalIncidentsCount++;
+
+      const isCrit = event.severity === 'Critical' || event.severity === 'High';
+      if (isCrit) {
+        target.critical = (target.critical || 0) + 1;
+      }
+
+      // 3. Dynamically recompute priority using DBSCAN severity weighting
+      const boost = isCrit ? 0.45 : 0.20;
+      target.priority = Math.min(99.9, Math.round((target.priority + boost) * 10) / 10);
+      target.radius_m = Math.min(420, Math.max(target.radius_m || 120, Math.round((target.radius_m || 120) + 0.8)));
+      recentlyUpdatedClusterId = target.cluster_id;
+
+      // 4. Re-sort clusters by priority descending
+      allHotspots.sort((a, b) => b.priority - a.priority);
+      allHotspots.forEach((h, idx) => h.rank = idx + 1);
+
+      // 5. Update header KPI cards
+      const statTop = document.getElementById('statTopPriority');
+      const statZone = document.getElementById('statTopZone');
+      const statInc = document.getElementById('statIncidents');
+      if (statTop && allHotspots.length > 0) statTop.textContent = allHotspots[0].priority.toFixed(1);
+      if (statZone && allHotspots.length > 0) statZone.textContent = allHotspots[0].label;
+      if (statInc) statInc.textContent = totalIncidentsCount.toLocaleString();
+
+      // 6. Update map layer visual and pulse wave
+      updateMapClusterVisual(target);
+
+      // 7. Refresh hotspot sidebar list
+      renderHotspotsList(allHotspots);
+    }
+
+    function updateMapClusterVisual(target) {
+      if (!map) return;
+
+      let color = '#7b541a';
+      if (target.priority >= 50) color = '#9e4041';
+      else if (target.priority >= 30) color = '#a03b00';
+
+      const circleIdx = allHotspots.findIndex(h => h.cluster_id === target.cluster_id);
+      if (circleIdx >= 0 && circles[circleIdx]) {
+        const circle = circles[circleIdx];
+        circle.setRadius(Math.max(target.radius_m, 120));
+        circle.setStyle({ color: color, fillColor: color });
+
+        circle.setPopupContent(`
+          <div class="text-xs p-1 font-body-sm">
+            <div class="font-bold text-on-surface text-sm flex items-center gap-1.5">
+              <span>Rank #${target.rank}: ${target.label}</span>
+              <span class="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed text-[9px] font-bold animate-pulse">Live +1 Report</span>
+            </div>
+            <div class="text-on-surface-variant mt-1">Zone: <strong class="text-on-surface">${target.zone}</strong></div>
+            <div class="text-on-surface-variant">Patrol Priority: <strong class="text-secondary font-bold">${target.priority.toFixed(2)}</strong></div>
+            <div class="text-on-surface-variant">Total Reports: <strong>${target.reports.toLocaleString()}</strong> (Critical: ${target.critical})</div>
+            <div class="text-on-surface-variant">Top Issue: <strong class="text-primary">${target.top_issue}</strong></div>
+            <div class="mt-2.5">
+              <button onclick="openDispatchModal(${target.cluster_id}, '${target.label.replace(/'/g, "\\'")}', '${target.zone.replace(/'/g, "\\'")}', ${target.priority})" class="w-full py-1.5 px-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-bold text-[11px] shadow-sm cursor-pointer">
+                🚨 Dispatch Squad Here
+              </button>
+            </div>
+          </div>
+        `);
+      }
+
+      // Animated Expanding Radar Wave on Cluster Centroid
+      const radarWave = L.circle([target.lat, target.lng], {
+        radius: 35,
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.5,
+        weight: 2
+      }).addTo(map);
+
+      let curRadius = 35;
+      const waveTimer = setInterval(() => {
+        curRadius += 22;
+        radarWave.setRadius(curRadius);
+        radarWave.setStyle({ fillOpacity: Math.max(0, 0.5 - (curRadius / 320)) });
+        if (curRadius >= Math.max(target.radius_m, 120) + 70) {
+          clearInterval(waveTimer);
+          map.removeLayer(radarWave);
+        }
+      }, 35);
     }
 
     async function fetchSimulationEvents() {
@@ -565,6 +687,39 @@
           pushNextSimEvent();
         }
       }, 2500);
+
+      // Periodically poll for newly submitted live reports from citizens
+      setInterval(pollRealCitizenReports, 5000);
+    }
+
+    async function pollRealCitizenReports() {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/police/escalations?limit=5`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const escalations = data.escalations || [];
+        if (escalations.length > 0) {
+          const newest = escalations[0];
+          if (newest.id !== lastSeenReportId) {
+            lastSeenReportId = newest.id;
+            updateClusterFromReport({
+              report_id: newest.id,
+              severity: newest.priority === 'Critical' ? 'Critical' : 'High',
+              category: newest.category,
+              issue_type: newest.issue_type,
+              vendor_name: newest.listing_name || 'Reported Stall',
+              charged_price: 150,
+              reference_price: 60,
+              price_delta_percent: 150,
+              hotspot_name: 'Ramkund Main Ghat',
+              latitude: 20.0074,
+              longitude: 73.7925
+            });
+          }
+        }
+      } catch (e) {
+        // quiet fallback
+      }
     }
 
     function pushNextSimEvent() {
@@ -634,6 +789,9 @@
 
         setTimeout(() => map.removeLayer(ping), 3000);
       }
+
+      // Dynamically update the associated hotspot cluster in real-time
+      updateClusterFromReport(event);
     }
 
     function toggleSimulation() {

@@ -552,7 +552,7 @@
     const fullDesc = `Selected Categories: [${finalCategory}]. Issues: [${finalIssueType}]. Location: ${location || 'Ramkund Area'}. Demanded Price: ${demanded ? '₹' + demanded : 'Disputed'}. Notes: ${description || 'Pilgrim reported grievance / civic violation'}`;
 
     try {
-      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '/api/v1/reports/', {
+      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '/api/v1/reports/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -565,7 +565,7 @@
       });
 
       if (finalIssueType.toLowerCase().includes('false') || finalIssueType.toLowerCase().includes('rumor')) {
-        fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '/api/v1/reports/fact-checks/report-rumor', {
+        fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '/api/v1/reports/fact-checks/report-rumor', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ claim_text: `${location}: ${finalIssueType} - ${description}`, category: finalCategory })

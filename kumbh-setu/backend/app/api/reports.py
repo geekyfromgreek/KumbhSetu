@@ -258,7 +258,7 @@ async def get_volunteer_leaderboard():
     Reward system offering honesty points, gift vouchers, and civic badges.
     """
     conn = get_connection()
-    rows = rows_to_list(conn.execute("SELECT * FROM volunteer_rewards ORDER BY points DESC LIMIT 20"))
+    rows = rows_to_list(conn.execute("SELECT * FROM volunteer_rewards ORDER BY points DESC LIMIT 50"))
     for r in rows:
         if r.get("badges") and isinstance(r["badges"], str):
             try:

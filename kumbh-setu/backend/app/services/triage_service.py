@@ -96,6 +96,21 @@ class TriageService:
 
         nearest = self.find_nearest_hotspot(lat, lng)
 
+        # Dynamically update cluster metrics as new reports arrive
+        if nearest and not nearest.get("is_noise"):
+            for h in self.hotspots:
+                if h["cluster_id"] == nearest["cluster_id"]:
+                    h["reports"] = (h.get("reports", 0)) + 1
+                    if severity in ("Critical", "High"):
+                        h["critical"] = (h.get("critical", 0)) + 1
+                    boost = 0.45 if severity == "Critical" else 0.25 if severity == "High" else 0.15
+                    h["priority"] = round(min(99.9, h.get("priority", 50.0) + boost), 2)
+                    h["radius_m"] = min(420, max(h.get("radius_m", 120), h.get("radius_m", 120) + 1))
+                    break
+            self.hotspots.sort(key=lambda x: x["priority"], reverse=True)
+            for i, h in enumerate(self.hotspots):
+                h["rank"] = i + 1
+
         return {
             "severity": severity,
             "severity_score": round(severity_score, 4),

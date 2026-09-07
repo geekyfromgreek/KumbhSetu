@@ -751,13 +751,53 @@
         </div>
 
         <div>
-          <label class="font-bold text-on-surface block mb-1">Product Photo URL</label>
-          <input type="url" id="new-item-img" value="https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&amp;fit=crop&amp;w=400&amp;q=80" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-on-surface text-xs focus:ring-2 focus:ring-primary focus:outline-none"/>
-          <div class="flex items-center gap-2 mt-1.5 overflow-x-auto no-scrollbar">
-            <button type="button" onclick="document.getElementById('new-item-img').value='https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&amp;fit=crop&amp;w=400&amp;q=80'" class="px-2 py-0.5 rounded bg-surface-container text-[10px] text-on-surface-variant hover:text-primary">Brass Diya</button>
-            <button type="button" onclick="document.getElementById('new-item-img').value='https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&amp;fit=crop&amp;w=400&amp;q=80'" class="px-2 py-0.5 rounded bg-surface-container text-[10px] text-on-surface-variant hover:text-primary">Copper Kalash</button>
-            <button type="button" onclick="document.getElementById('new-item-img').value='https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&amp;fit=crop&amp;w=400&amp;q=80'" class="px-2 py-0.5 rounded bg-surface-container text-[10px] text-on-surface-variant hover:text-primary">Rudraksha</button>
-            <button type="button" onclick="document.getElementById('new-item-img').value='https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&amp;fit=crop&amp;w=400&amp;q=80'" class="px-2 py-0.5 rounded bg-surface-container text-[10px] text-on-surface-variant hover:text-primary">Handloom</button>
+          <label class="font-bold text-on-surface block mb-1">Product Photo</label>
+          <input type="file" id="modal-product-file" accept="image/*" class="hidden" onchange="handleProductPhotoUpload(event)"/>
+          <input type="hidden" id="new-item-img" value="https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&amp;fit=crop&amp;w=400&amp;q=80"/>
+
+          <!-- Photo Upload & Live Preview Card -->
+          <div id="product-photo-dropzone" onclick="document.getElementById('modal-product-file').click()" class="border-2 border-dashed border-primary/40 hover:border-primary bg-surface-container-low rounded-xl p-3 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2 group">
+            <div id="photo-preview-box" class="w-full flex flex-col items-center">
+              <div class="relative w-full h-36 rounded-lg overflow-hidden border border-outline-variant/30 bg-surface shadow-xs flex items-center justify-center">
+                <img id="modal-img-preview" src="https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&amp;fit=crop&amp;w=400&amp;q=80" alt="Product Preview" class="w-full h-full object-cover"/>
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  <span class="px-3 py-1.5 rounded-full bg-surface text-on-surface text-[11px] font-bold shadow flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[15px]">photo_camera</span>
+                    Change Photo
+                  </span>
+                </div>
+                <span id="photo-badge" class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold shadow-sm flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[12px]">check_circle</span>
+                  Ready
+                </span>
+              </div>
+              <div class="flex items-center justify-between w-full mt-2 px-1">
+                <button type="button" onclick="event.stopPropagation(); document.getElementById('modal-product-file').click();" class="text-primary hover:underline text-xs font-bold flex items-center gap-1 cursor-pointer">
+                  <span class="material-symbols-outlined text-[16px]">add_a_photo</span>
+                  Take Photo / Browse
+                </button>
+                <span id="photo-filename" class="text-[10px] text-on-surface-variant font-mono truncate max-w-[150px]">copper_kalash.jpg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Artisan Sample Presets -->
+          <div class="mt-2">
+            <span class="text-[10px] font-semibold text-on-surface-variant block mb-1">Or choose sample artisan item photo:</span>
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              <button type="button" onclick="selectSampleArtisanPhoto('https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&amp;fit=crop&amp;w=400&amp;q=80', 'brass_diya.jpg')" class="px-2 py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-[10px] text-on-surface hover:text-primary hover:border-primary flex items-center gap-1 shrink-0 cursor-pointer">
+                <span>🪔</span> Brass Diya
+              </button>
+              <button type="button" onclick="selectSampleArtisanPhoto('https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&amp;fit=crop&amp;w=400&amp;q=80', 'copper_kalash.jpg')" class="px-2 py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-[10px] text-on-surface hover:text-primary hover:border-primary flex items-center gap-1 shrink-0 cursor-pointer">
+                <span>🏺</span> Copper Kalash
+              </button>
+              <button type="button" onclick="selectSampleArtisanPhoto('https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&amp;fit=crop&amp;w=400&amp;q=80', 'rudraksha_mala.jpg')" class="px-2 py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-[10px] text-on-surface hover:text-primary hover:border-primary flex items-center gap-1 shrink-0 cursor-pointer">
+                <span>📿</span> Rudraksha
+              </button>
+              <button type="button" onclick="selectSampleArtisanPhoto('https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&amp;fit=crop&amp;w=400&amp;q=80', 'handloom_shawl.jpg')" class="px-2 py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-[10px] text-on-surface hover:text-primary hover:border-primary flex items-center gap-1 shrink-0 cursor-pointer">
+                <span>🧣</span> Handloom
+              </button>
+            </div>
           </div>
         </div>
 
@@ -822,7 +862,7 @@
 
   <script src="i18n.js"></script>
   <script>
-    const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '');
+    const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '');
     let activeItemForPrice = '';
     let currentInquiryForReply = null;
     let localCustomProductCount = 0;
@@ -877,6 +917,71 @@
 
     function closeNewItemModal() {
       document.getElementById('new-item-modal').classList.add('hidden');
+    }
+
+    function handleProductPhotoUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const rawData = e.target.result;
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 600;
+          let width = img.width;
+          let height = img.height;
+          if (width > height) {
+            if (width > maxDim) {
+              height = Math.round(height * (maxDim / width));
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width = Math.round(width * (maxDim / height));
+              height = maxDim;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+          const imgInput = document.getElementById('new-item-img');
+          const previewImg = document.getElementById('modal-img-preview');
+          const filenameEl = document.getElementById('photo-filename');
+          const badgeEl = document.getElementById('photo-badge');
+
+          if (imgInput) imgInput.value = compressedDataUrl;
+          if (previewImg) previewImg.src = compressedDataUrl;
+          if (filenameEl) filenameEl.textContent = file.name;
+          if (badgeEl) {
+            badgeEl.innerHTML = '<span class="material-symbols-outlined text-[12px]">check_circle</span> Photo Ready';
+            badgeEl.className = 'absolute top-2 right-2 px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold shadow-sm flex items-center gap-1';
+          }
+          showToast('✓ Photo captured and compressed!');
+        };
+        img.src = rawData;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function selectSampleArtisanPhoto(url, filename) {
+      const imgInput = document.getElementById('new-item-img');
+      const previewImg = document.getElementById('modal-img-preview');
+      const filenameEl = document.getElementById('photo-filename');
+      const badgeEl = document.getElementById('photo-badge');
+
+      if (imgInput) imgInput.value = url;
+      if (previewImg) previewImg.src = url;
+      if (filenameEl) filenameEl.textContent = filename;
+      if (badgeEl) {
+        badgeEl.innerHTML = '<span class="material-symbols-outlined text-[12px]">check_circle</span> Sample Ready';
+        badgeEl.className = 'absolute top-2 right-2 px-2 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold shadow-sm flex items-center gap-1';
+      }
+      showToast('✓ Sample photo selected');
     }
 
     async function handleNewItemSubmit(e) {
@@ -966,8 +1071,8 @@
         }
 
         closeNewItemModal();
-        showToast(`✓ Stored permanently in DB! Item #${itemId}`);
         document.getElementById('new-item-form').reset();
+        selectSampleArtisanPhoto('https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=400&q=80', 'copper_kalash.jpg');
       } catch (err) {
         console.error('Failed to create listing:', err);
         showToast('Error saving item: ' + err.message);
