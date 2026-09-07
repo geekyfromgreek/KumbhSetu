@@ -58,118 +58,115 @@ def seed_from_csv(csv_path: str) -> dict:
         print(f"Dataset not found at {csv_path}")
         return {"error": f"File not found: {csv_path}"}
 
-    with open(csv_path, "r", encoding="utf-8-sig") as f:
-        content = f.read().replace("\r\r\n", "\n").replace("\r\n", "\n").replace("\r", "\n")
-
-    reader = csv.DictReader(io.StringIO(content))
-    conn = get_connection()
-
     counts = {"eatery": 0, "hotel": 0, "rickshaw_bus": 0, "infrastructure": 0, "skipped": 0}
+    max_per_category = 400  # Cap per category to keep memory tiny (<5MB) and startup instant
     now = now_iso()
-
     random.seed(42)  # Reproducible pricing
 
-    for row in reader:
-        layer = (row.get("layer") or "").strip()
-        if layer not in LAYER_TO_CATEGORY:
-            counts["skipped"] += 1
-            continue
+    batch = []
+    insert_sql = """
+        INSERT INTO listings (
+            id, name, category, subcategory, description, address, phone,
+            latitude, longitude, maps_link, reference_price, reported_price,
+            rating, review_count, opening_hours, known_for, image_url,
+            verification_status, price_flagged, price_delta_percent,
+            created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """
 
-        category = LAYER_TO_CATEGORY[layer]
+    conn = get_connection()
 
-        # Get name from either 'name' or 'Name' field
-        name = (row.get("Name") or row.get("name") or "").strip()
-        if not name:
-            counts["skipped"] += 1
-            continue
+    with open(csv_path, "r", encoding="utf-8-sig", errors="replace", newline="") as f:
+        reader = csv.DictReader(f)
 
-        lat_str = (row.get("latitude") or "").strip()
-        lng_str = (row.get("longitude") or "").strip()
-        if not lat_str or not lng_str:
-            counts["skipped"] += 1
-            continue
+        for row in reader:
+            layer = (row.get("layer") or "").strip()
+            if layer not in LAYER_TO_CATEGORY:
+                counts["skipped"] += 1
+                continue
 
-        try:
-            latitude = float(lat_str)
-            longitude = float(lng_str)
-        except ValueError:
-            counts["skipped"] += 1
-            continue
+            category = LAYER_TO_CATEGORY[layer]
+            if counts[category] >= max_per_category:
+                continue
 
-        # Extract fields
-        subcategory = (row.get("Category") or layer).strip()
-        address = (row.get("Address") or row.get("address") or "").strip()
-        phone = (row.get("Phone") or row.get("phone") or "").strip()
-        maps_link = (row.get("Maps Link") or "").strip()
-        opening_hours = (row.get("Opening Hours") or row.get("Timings") or "").strip()
-        known_for = (row.get("Known For") or "").strip()
+            name = (row.get("Name") or row.get("name") or "").strip()
+            if not name:
+                counts["skipped"] += 1
+                continue
 
-        rating_str = (row.get("Rating") or "").strip()
-        rating = None
-        if rating_str:
+            lat_str = (row.get("latitude") or "").strip()
+            lng_str = (row.get("longitude") or "").strip()
+            if not lat_str or not lng_str:
+                counts["skipped"] += 1
+                continue
+
             try:
-                rating = float(rating_str)
+                latitude = float(lat_str)
+                longitude = float(lng_str)
             except ValueError:
-                # Handle strings like "4.6 (537 delivery ratings) Zomato"
-                import re
-                match = re.match(r"([\d.]+)", rating_str)
-                if match:
-                    try:
-                        rating = float(match.group(1))
-                    except ValueError:
-                        rating = None
+                counts["skipped"] += 1
+                continue
 
-        review_str = (row.get("Review Count") or "").strip()
-        review_count = 0
-        if review_str:
-            try:
-                review_count = int(review_str)
-            except ValueError:
-                import re
-                match = re.match(r"(\d+)", review_str)
-                review_count = int(match.group(1)) if match else 0
+            subcategory = (row.get("Category") or layer).strip()
+            address = (row.get("Address") or row.get("address") or "").strip()
+            phone = (row.get("Phone") or row.get("phone") or "").strip()
+            maps_link = (row.get("Maps Link") or "").strip()
+            opening_hours = (row.get("Opening Hours") or row.get("Timings") or "").strip()
+            known_for = (row.get("Known For") or "").strip()
 
-        # Generate pricing
-        reference_price = generate_reference_price(category, subcategory)
-        # Simulate reported price with some variance
-        variance = random.uniform(-0.15, 0.40)  # -15% to +40% variance
-        reported_price = round(reference_price * (1 + variance), 0)
+            rating_str = (row.get("Rating") or "").strip()
+            rating = None
+            if rating_str:
+                try:
+                    rating = float(rating_str)
+                except ValueError:
+                    import re
+                    match = re.match(r"([\d.]+)", rating_str)
+                    rating = float(match.group(1)) if match else None
 
-        delta, flagged = compute_price_delta(reference_price, reported_price)
+            review_str = (row.get("Review Count") or "").strip()
+            review_count = 0
+            if review_str:
+                try:
+                    review_count = int(review_str)
+                except ValueError:
+                    import re
+                    match = re.match(r"(\d+)", review_str)
+                    review_count = int(match.group(1)) if match else 0
 
-        # Assign verification status
-        rand = random.random()
-        if rand < 0.65:
-            verification_status = "Kumbhveer Verified"
-        elif rand < 0.90:
-            verification_status = "Pending Verification"
-        else:
-            verification_status = "Flagged — Info Incomplete"
+            reference_price = generate_reference_price(category, subcategory)
+            variance = random.uniform(-0.15, 0.40)
+            reported_price = round(reference_price * (1 + variance), 0)
+            delta, flagged = compute_price_delta(reference_price, reported_price)
 
-        listing_id = str(uuid.uuid4())
+            rand = random.random()
+            if rand < 0.65:
+                verification_status = "Kumbhveer Verified"
+            elif rand < 0.90:
+                verification_status = "Pending Verification"
+            else:
+                verification_status = "Flagged — Info Incomplete"
 
-        try:
-            conn.execute("""
-                INSERT INTO listings (
-                    id, name, category, subcategory, description, address, phone,
-                    latitude, longitude, maps_link, reference_price, reported_price,
-                    rating, review_count, opening_hours, known_for, image_url,
-                    verification_status, price_flagged, price_delta_percent,
-                    created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
+            listing_id = str(uuid.uuid4())
+
+            batch.append((
                 listing_id, name, category, subcategory, None, address, phone,
                 latitude, longitude, maps_link, reference_price, reported_price,
                 rating, review_count, opening_hours, known_for, None,
                 verification_status, 1 if flagged else 0, delta,
                 now, now
             ))
-            counts[category] = counts.get(category, 0) + 1
-        except Exception as e:
-            print(f"Error inserting {name}: {e}")
-            counts["skipped"] += 1
+            counts[category] += 1
 
-    conn.commit()
+            if len(batch) >= 200:
+                with conn:
+                    conn.executemany(insert_sql, batch)
+                batch = []
+
+    if batch:
+        with conn:
+            conn.executemany(insert_sql, batch)
+
     print(f"Seeding complete: {counts}")
     return counts
 
