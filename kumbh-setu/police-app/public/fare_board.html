@@ -23,9 +23,15 @@
             "on-primary": "#ffffff",
             "secondary": "#9e4041",
             "secondary-container": "#fd8a88",
+            "secondary-fixed": "#ffdad8",
+            "on-secondary-fixed": "#410007",
             "tertiary": "#7b541a",
+            "tertiary-container": "#976c31",
             "tertiary-fixed": "#ffddb5",
+            "on-tertiary-fixed": "#2a1800",
             "surface": "#fbf8ff",
+            "surface-dim": "#dbd9e0",
+            "surface-bright": "#fbf8ff",
             "surface-container-lowest": "#ffffff",
             "surface-container-low": "#f5f2f9",
             "surface-container": "#f0edf4",
@@ -34,7 +40,37 @@
             "on-surface": "#1b1b20",
             "on-surface-variant": "#584239",
             "outline": "#8c7167",
-            "outline-variant": "#e0c0b4"
+            "outline-variant": "#e0c0b4",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6"
+          },
+          "spacing": {
+            "space-2xs": "0.25rem",
+            "space-xs": "0.5rem",
+            "space-sm": "0.75rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-2xl": "3rem"
+          },
+          "fontFamily": {
+            "body-md": ["Inter"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "label-lg": ["Inter"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "label-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-sm": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }]
           }
         }
       }
@@ -97,34 +133,34 @@
 <body class="bg-surface text-on-surface h-full font-sans antialiased overflow-x-hidden">
   
   <!-- Fixed Header -->
-  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-surface/90 backdrop-blur-xl border-b border-primary/20 shadow-sm pt-safe">
-    <div class="flex items-center gap-2">
-      <a href="yatri_home.html" class="p-1 text-on-surface hover:text-primary transition-colors cursor-pointer" aria-label="Back to Home">
-        <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-3 sm:px-4 h-14 sm:h-16 bg-surface/95 backdrop-blur-xl border-b border-outline-variant/30 shadow-xs pt-safe">
+    <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+      <a href="yatri_home.html" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors cursor-pointer rounded-full active:bg-surface-container shrink-0" aria-label="Back to Home">
+        <span class="material-symbols-outlined text-[22px]">arrow_back</span>
       </a>
-      <div class="flex items-center gap-1.5">
-        <span class="material-symbols-outlined text-primary text-[24px]">electric_rickshaw</span>
-        <div class="flex flex-col">
-          <span class="font-bold text-sm text-primary leading-tight">कुंभ सेतू • Fare Board</span>
-          <span class="text-[10px] text-on-surface-variant uppercase tracking-wider">RTO Gazetted Rates 2027</span>
+      <div class="flex items-center gap-1.5 min-w-0">
+        <span class="material-symbols-outlined text-primary text-[22px] shrink-0">electric_rickshaw</span>
+        <div class="flex flex-col min-w-0">
+          <span class="font-bold text-xs sm:text-sm text-primary leading-tight truncate">कुंभ सेतू • Fare Board</span>
+          <span class="text-[9px] sm:text-[10px] text-on-surface-variant uppercase tracking-wider truncate">RTO Gazetted Rates 2027</span>
         </div>
       </div>
     </div>
-    <div class="flex items-center gap-2">
-      <button aria-label="Toggle Language" class="lang-dropdown-trigger h-9 px-space-xs rounded-full bg-surface-container-high flex items-center gap-space-2xs text-on-surface font-label-sm text-xs cursor-pointer hover:bg-surface-container" type="button">
-        <span class="material-symbols-outlined text-primary text-[16px]">translate</span>
-        <span>मराठी</span>
-        <span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
+    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+      <button aria-label="Toggle Language" class="lang-dropdown-trigger h-8 px-2 sm:px-2.5 rounded-full bg-surface-container-high hover:bg-surface-container flex items-center gap-1 text-on-surface text-[11px] font-semibold transition-colors cursor-pointer" type="button">
+        <span class="material-symbols-outlined text-primary text-[15px]">translate</span>
+        <span class="kumbh-active-lang-label">English</span>
+        <span class="material-symbols-outlined text-outline text-[14px]">expand_more</span>
       </button>
-      <button onclick="openReportFareModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary text-on-primary font-bold text-xs shadow-sm cursor-pointer hover:bg-primary-container active:scale-95 transition-all">
-        <span class="material-symbols-outlined text-sm">add</span>
-        <span>Report Price</span>
+      <button onclick="openReportFareModal()" class="flex items-center gap-1 h-8 px-2.5 sm:px-3 rounded-full bg-primary text-on-primary font-bold text-[11px] sm:text-xs shadow-xs cursor-pointer hover:bg-primary-container active:scale-95 transition-all shrink-0">
+        <span class="material-symbols-outlined text-[15px]">add</span>
+        <span>Report</span>
       </button>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="pt-20 pb-28 px-4 max-w-2xl mx-auto min-h-screen flex flex-col gap-4">
+  <main class="pt-16 sm:pt-20 pb-24 sm:pb-28 px-3 sm:px-4 max-w-2xl mx-auto min-h-screen flex flex-col gap-4">
     
     <!-- Title & Subtitle -->
     <section class="mt-1">
@@ -373,27 +409,27 @@
   </div>
 
   <!-- Bottom Navigation (5 Unified Options) -->
-  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold">
-    <div class="flex items-center justify-around h-16 px-space-xs">
-      <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html">
-        <span class="material-symbols-outlined text-[22px]">temple_hindu</span>
-        <span class="font-label-sm text-label-sm leading-tight">Home</span>
+  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold">
+    <div class="flex items-center justify-around h-14 sm:h-16 px-1 sm:px-space-xs">
+      <a class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-0.5 text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html">
+        <span class="material-symbols-outlined text-[20px] sm:text-[22px]">temple_hindu</span>
+        <span class="text-[10px] sm:text-[11px] font-semibold leading-tight">Home</span>
       </a>
-      <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="marketplace" href="marketplace.html">
-        <span class="material-symbols-outlined text-[22px]">verified</span>
-        <span class="font-label-sm text-label-sm leading-tight">Market</span>
+      <a class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-0.5 text-on-surface-variant transition-colors" data-path="marketplace" href="marketplace.html">
+        <span class="material-symbols-outlined text-[20px] sm:text-[22px]">verified</span>
+        <span class="text-[10px] sm:text-[11px] font-semibold leading-tight">Market</span>
       </a>
-      <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html">
-        <span class="material-symbols-outlined text-[22px]">campaign</span>
-        <span class="font-label-sm text-label-sm leading-tight">Report</span>
+      <a class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-0.5 text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html">
+        <span class="material-symbols-outlined text-[20px] sm:text-[22px]">campaign</span>
+        <span class="text-[10px] sm:text-[11px] font-semibold leading-tight">Report</span>
       </a>
-      <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html">
-        <span class="material-symbols-outlined text-[22px]">emergency</span>
-        <span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span>
+      <a class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-0.5 text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html">
+        <span class="material-symbols-outlined text-[20px] sm:text-[22px]">emergency</span>
+        <span class="text-[10px] sm:text-[11px] font-bold leading-tight text-secondary">SOS</span>
       </a>
-      <a aria-current="page" class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs transition-colors text-primary font-bold" data-path="fare-board" href="fare_board.html">
-        <span class="material-symbols-outlined text-[22px]">electric_rickshaw</span>
-        <span class="font-label-sm text-label-sm leading-tight">Fares</span>
+      <a aria-current="page" class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-0.5 transition-colors text-primary font-bold" data-path="fare-board" href="fare_board.html">
+        <span class="material-symbols-outlined text-[20px] sm:text-[22px]">electric_rickshaw</span>
+        <span class="text-[10px] sm:text-[11px] font-bold leading-tight">Fares</span>
       </a>
     </div>
   </nav>

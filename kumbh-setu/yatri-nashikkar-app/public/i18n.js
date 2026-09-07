@@ -9169,9 +9169,19 @@
   function ensureLanguageButtonOnPage() {
     if (document.getElementById('lang-switch-group')) return;
 
+    // Check if any language trigger already exists anywhere on page
+    if (document.querySelector('.lang-dropdown-trigger, [aria-label*="Language" i], [aria-label*="language" i], [data-action="language"], [data-lang-trigger]')) {
+      return;
+    }
+
     const header = document.querySelector('header');
     if (header) {
-      const headerRight = header.querySelector('.flex.items-center:last-child');
+      // Check if header already contains a language trigger or button
+      if (header.querySelector('.lang-dropdown-trigger, [aria-label*="Language" i]')) {
+        return;
+      }
+      // Target the real top-level right container of header
+      const headerRight = header.lastElementChild;
       if (headerRight && !headerRight.querySelector('[aria-label*="Language" i], .lang-dropdown-trigger')) {
         let hasTranslate = false;
         headerRight.querySelectorAll('button').forEach(b => {
@@ -9181,11 +9191,11 @@
           const langPill = document.createElement('button');
           langPill.type = 'button';
           langPill.setAttribute('aria-label', 'Toggle Language');
-          langPill.className = 'lang-dropdown-trigger h-9 px-space-xs rounded-full bg-surface-container-high flex items-center gap-space-2xs text-on-surface font-label-sm text-label-sm cursor-pointer hover:bg-surface-container';
+          langPill.className = 'lang-dropdown-trigger h-8 px-2 sm:px-2.5 rounded-full bg-surface-container-high hover:bg-surface-container flex items-center gap-1 text-on-surface text-[11px] font-semibold transition-colors cursor-pointer';
           langPill.innerHTML = `
-            <span class="material-symbols-outlined text-primary text-[16px]">translate</span>
-            <span>${getSavedLang() === 'mr' ? 'मराठी' : (getSavedLang() === 'hi' ? 'हिंदी' : 'English')}</span>
-            <span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
+            <span class="material-symbols-outlined text-primary text-[15px]">translate</span>
+            <span class="kumbh-active-lang-label">${getSavedLang() === 'mr' ? 'मराठी' : (getSavedLang() === 'hi' ? 'हिंदी' : 'English')}</span>
+            <span class="material-symbols-outlined text-outline text-[14px]">expand_more</span>
           `;
           headerRight.insertBefore(langPill, headerRight.firstChild);
         }
