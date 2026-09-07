@@ -8,106 +8,276 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="api_config.js"></script>
-<style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "inverse-primary": "#ffb597", "on-secondary": "#ffffff", "on-surface": "#1b1b20", "on-surface-variant": "#584239", "primary-container": "#c64f0e", "surface-dim": "#dbd9e0", "on-primary-container": "#fffbff", "surface-variant": "#e4e1e8", "error": "#ba1a1a", "secondary-fixed": "#ffdad8", "tertiary-fixed": "#ffddb5", "secondary-container": "#fd8a88", "tertiary-container": "#976c31", "on-secondary-fixed": "#410007", "surface-container-lowest": "#ffffff", "on-tertiary-container": "#fffbff", "background": "#fbf8ff", "on-primary": "#ffffff", "secondary-fixed-dim": "#ffb3b0", "on-primary-fixed-variant": "#7d2d00", "tertiary-fixed-dim": "#f1bd79", "surface-bright": "#fbf8ff", "outline": "#8c7167", "on-tertiary": "#ffffff", "surface": "#fbf8ff", "surface-container-low": "#f5f2f9", "surface-container-high": "#eae7ee", "on-secondary-container": "#752125", "on-error": "#ffffff", "secondary": "#9e4041", "on-secondary-fixed-variant": "#7f292b", "on-tertiary-fixed-variant": "#633f04", "surface-tint": "#a43d00", "inverse-surface": "#303035", "tertiary": "#7b541a", "on-primary-fixed": "#360f00", "surface-container-highest": "#e4e1e8", "primary-fixed-dim": "#ffb597", "on-error-container": "#93000a", "error-container": "#ffdad6", "primary-fixed": "#ffdbcd", "outline-variant": "#e0c0b4", "primary": "#a03b00", "on-background": "#1b1b20", "surface-container": "#f0edf4", "on-tertiary-fixed": "#2a1800", "inverse-on-surface": "#f2eff6" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-md": "1rem", "space-2xl": "3rem", "layout-max-width": "75rem", "layout-margin-mobile": "1rem", "space-sm": "0.75rem", "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "space-3xl": "4rem", "space-lg": "1.5rem", "layout-margin-tablet": "2rem", "space-2xs": "0.25rem", "layout-margin-desktop": "3rem", "gutter-mobile": "0.75rem", "space-xl": "2rem" }, "fontFamily": { "body-md": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-lg": ["Inter"], "headline-md": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "display-lg-mobile": ["Plus Jakarta Sans"], "label-md": ["Inter"], "body-sm": ["Inter"] }, "fontSize": { "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600" }], "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }], "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "headline-xl-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.005em", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-layout-margin-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><a href="index.html" aria-label="Back to Choose Role" class="p-1.5 -ml-1.5 text-on-surface hover:text-primary transition-colors flex items-center justify-center rounded-full hover:bg-surface-container-high cursor-pointer" title="Back to Choose Role / भूमिका निवडा"><span class="material-symbols-outlined text-[24px]">arrow_back</span></a><img alt="Kumbh Setu Emblem Wordmark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-none tracking-tight">कुंभ सेतू</span><a href="index.html" class="ml-2 text-xs text-primary underline">Change Role</a><span class="font-label-sm text-label-sm text-on-surface-variant leading-none uppercase">Nashik 2027</span></div></div><div class="flex items-center gap-space-xs"><button class="h-9 px-space-xs rounded-full bg-surface-container-high flex items-center gap-space-2xs text-on-surface font-label-sm text-label-sm"><span class="material-symbols-outlined text-primary text-[16px]">translate</span><span>मराठी</span><span class="material-symbols-outlined text-outline text-[16px]">expand_more</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-20 bg-surface min-h-screen"><div class="flex flex-col w-full">
-<!-- Subtle Civic Ambient Aura -->
-<div class="px-layout-margin-mobile pt-space-sm pb-space-xs">
-<!-- Greeting & Cultural Welcome Header -->
-<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm relative overflow-hidden">
-<div class="absolute -right-6 -bottom-6 w-28 h-28 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
-<div class="flex items-start justify-between gap-space-sm">
-<div class="flex flex-col">
-<div class="flex items-center gap-space-2xs mb-1">
-<span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Kumbh Mela 2027 Live Portal</span>
-</div>
-<h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface font-bold tracking-tight">
-            Namaste, Yatri <span class="text-primary font-normal text-headline-md">/ शुभ यात्रा</span>
-</h1>
-<div class="flex items-center gap-space-2xs mt-space-2xs text-on-surface-variant">
-<span class="material-symbols-outlined text-primary text-[18px]">location_on</span>
-<span class="font-label-md text-label-md font-medium">Ramkund &amp; Godavari Ghats, Nashik</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0">
-<span class="font-label-sm text-label-sm bg-surface-container-highest text-on-surface px-space-xs py-0.5 rounded-full font-semibold">
-            Zone A-1
-          </span>
-<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">28°C • Pleasant</span>
-</div>
-</div>
-<!-- Dynamic Compact Ghat Flow Monitor (Sleek Rectangular Banner) -->
-<div class="px-layout-margin-mobile pt-1.5 pb-1">
-  <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col gap-1.5">
-    <div class="flex items-center justify-between gap-1">
-      <div class="flex items-center gap-1.5 min-w-0">
-        <span class="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0"></span>
-        <span class="text-xs font-bold text-on-surface truncate" id="flow-ghat-name">Ramkund Main Ghat Flow</span>
-        <span id="flow-density-pct" class="text-[10px] font-semibold text-on-surface-variant shrink-0">28% cap</span>
+<style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "inverse-primary": "#ffb597", "on-secondary": "#ffffff", "on-surface": "#1b1b20", "on-surface-variant": "#584239", "primary-container": "#c64f0e", "surface-dim": "#dbd9e0", "on-primary-container": "#fffbff", "surface-variant": "#e4e1e8", "error": "#ba1a1a", "secondary-fixed": "#ffdad8", "tertiary-fixed": "#ffddb5", "secondary-container": "#fd8a88", "tertiary-container": "#976c31", "on-secondary-fixed": "#410007", "surface-container-lowest": "#ffffff", "on-tertiary-container": "#fffbff", "background": "#fbf8ff", "on-primary": "#ffffff", "secondary-fixed-dim": "#ffb3b0", "on-primary-fixed-variant": "#7d2d00", "tertiary-fixed-dim": "#f1bd79", "surface-bright": "#fbf8ff", "outline": "#8c7167", "on-tertiary": "#ffffff", "surface": "#fbf8ff", "surface-container-low": "#f5f2f9", "surface-container-high": "#eae7ee", "on-secondary-container": "#752125", "on-error": "#ffffff", "secondary": "#9e4041", "on-secondary-fixed-variant": "#7f292b", "on-tertiary-fixed-variant": "#633f04", "surface-tint": "#a43d00", "inverse-surface": "#303035", "tertiary": "#7b541a", "on-primary-fixed": "#360f00", "surface-container-highest": "#e4e1e8", "primary-fixed-dim": "#ffb597", "on-error-container": "#93000a", "error-container": "#ffdad6", "primary-fixed": "#ffdbcd", "outline-variant": "#e0c0b4", "primary": "#a03b00", "on-background": "#1b1b20", "surface-container": "#f0edf4", "on-tertiary-fixed": "#2a1800", "inverse-on-surface": "#f2eff6" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-md": "1rem", "space-2xl": "3rem", "layout-max-width": "75rem", "layout-margin-mobile": "1rem", "space-sm": "0.75rem", "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "space-3xl": "4rem", "space-lg": "1.5rem", "layout-margin-tablet": "2rem", "space-2xs": "0.25rem", "layout-margin-desktop": "3rem", "gutter-mobile": "0.75rem", "space-xl": "2rem" }, "fontFamily": { "body-md": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-lg": ["Inter"], "headline-md": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "display-lg-mobile": ["Plus Jakarta Sans"], "label-md": ["Inter"], "body-sm": ["Inter"] }, "fontSize": { "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600" }], "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }], "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "headline-xl-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.005em", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased">
+
+<!-- Sleek Mobile-Responsive Top App Header -->
+<header class="fixed top-0 w-full z-40 pt-safe bg-surface/95 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+  <div class="h-14 sm:h-16 px-3 sm:px-4 flex items-center justify-between gap-2 max-w-7xl mx-auto">
+    <!-- Left: Role Back Button + Logo + Clean Title -->
+    <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+      <a href="index.html" aria-label="Change Role" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors flex items-center justify-center rounded-full hover:bg-surface-container-high shrink-0 cursor-pointer" title="Change Role / भूमिका बदला">
+        <span class="material-symbols-outlined text-[22px]">arrow_back</span>
+      </a>
+      <img alt="Kumbh Setu Emblem Wordmark" class="h-7 sm:h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+      <div class="flex flex-col min-w-0 justify-center">
+        <div class="flex items-center gap-1.5">
+          <span class="font-bold text-sm sm:text-base text-primary leading-tight truncate">कुंभ सेतू</span>
+          <a href="index.html" class="px-1.5 py-0.2 rounded bg-primary/10 text-primary text-[9px] font-bold shrink-0 hover:bg-primary/20 transition-colors">Role</a>
+        </div>
+        <span class="text-[10px] text-on-surface-variant leading-none truncate font-medium">Nashik 2027</span>
       </div>
-      <div class="flex items-center gap-1 shrink-0">
-        <span id="flow-status-pill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-800">
-          सुगम संचार • Smooth
+    </div>
+
+    <!-- Right: Language Selector + User Profile -->
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button class="lang-dropdown-trigger h-8 px-2 sm:px-2.5 rounded-full bg-surface-container-high hover:bg-surface-container flex items-center gap-1 text-on-surface text-[11px] font-semibold transition-colors" type="button">
+        <span class="material-symbols-outlined text-primary text-[15px]">translate</span>
+        <span class="text-[11px]">English</span>
+        <span class="material-symbols-outlined text-outline text-[14px]">expand_more</span>
+      </button>
+      <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0 shadow-xs">
+        <span class="material-symbols-outlined text-on-primary text-[16px] sm:text-[18px]">person</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="flex flex-col relative w-full pt-14 sm:pt-16 pb-20 bg-surface min-h-screen"><div class="flex flex-col w-full">
+
+<!-- Subtle Civic Ambient Aura & Greeting -->
+<div class="px-layout-margin-mobile pt-2.5 pb-1">
+  <div class="bg-surface-container-low rounded-xl p-3 sm:p-4 shadow-sm relative overflow-hidden">
+    <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex flex-col min-w-0">
+        <div class="flex items-center gap-1.5 mb-1">
+          <span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span class="text-[10px] sm:text-xs font-semibold text-primary uppercase tracking-wider">Kumbh Mela 2027 Live Portal</span>
+        </div>
+        <h1 class="text-base sm:text-xl text-on-surface font-bold tracking-tight">
+          Namaste, Yatri <span class="text-primary font-normal text-sm sm:text-base">/ शुभ यात्रा</span>
+        </h1>
+        <div class="flex items-center gap-1 mt-0.5 text-on-surface-variant text-xs">
+          <span class="material-symbols-outlined text-primary text-[16px] shrink-0">location_on</span>
+          <span class="truncate font-medium">Ramkund &amp; Godavari Ghats, Nashik</span>
+        </div>
+      </div>
+      <div class="flex flex-col items-end shrink-0">
+        <span class="text-[10px] sm:text-xs bg-surface-container-highest text-on-surface px-2 py-0.5 rounded-full font-semibold">
+          Zone A-1
         </span>
-        <button onclick="cycleGhatFlow(-1)" title="Previous Ghat" class="w-5 h-5 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface text-xs cursor-pointer">
-          <span class="material-symbols-outlined text-[13px]">chevron_left</span>
-        </button>
-        <button onclick="cycleGhatFlow(1)" title="Next Ghat" class="w-5 h-5 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface text-xs cursor-pointer">
-          <span class="material-symbols-outlined text-[13px]">chevron_right</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Slim Progress density bar -->
-    <div class="w-full bg-surface-container h-1 rounded-full overflow-hidden">
-      <div id="flow-progress-bar" class="h-full bg-green-600 rounded-full transition-all duration-500" style="width: 28%"></div>
-    </div>
-
-    <!-- Quick Ghat Selector Tabs & Dip Window -->
-    <div class="flex items-center justify-between gap-1 pt-0.5">
-      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
-        <button onclick="selectGhatFlow(0)" id="ghat-tab-0" class="ghat-flow-pill px-2 py-0.5 rounded-full text-[10px] font-semibold bg-primary text-on-primary shadow-sm shrink-0 cursor-pointer">
-          Ramkund (28%)
-        </button>
-        <button onclick="selectGhatFlow(1)" id="ghat-tab-1" class="ghat-flow-pill px-2 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 cursor-pointer">
-          Kushavarta (54%)
-        </button>
-        <button onclick="selectGhatFlow(2)" id="ghat-tab-2" class="ghat-flow-pill px-2 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 cursor-pointer">
-          Kapila (18%)
-        </button>
-        <button onclick="selectGhatFlow(3)" id="ghat-tab-3" class="ghat-flow-pill px-2 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 cursor-pointer">
-          Lakshman (22%)
-        </button>
-      </div>
-      <div class="text-[10px] text-on-surface-variant shrink-0 whitespace-nowrap pl-1">
-        <span id="flow-window-text">Best: <strong>Next 45m</strong></span>
+        <span class="text-[10px] text-on-surface-variant mt-1">28°C • Pleasant</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Detailed Kumbh Pilgrimage Circuit Roadmap with Interactive Map (Compact Rectangular) -->
+<!-- Dynamic Compact Ghat Flow Monitor (Mobile Responsive Layout) -->
 <div class="px-layout-margin-mobile py-1">
-  <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col gap-1.5">
-    <!-- Streamlined Header & Circuit Summary in one rectangular row -->
-    <div class="flex items-center justify-between gap-1">
+  <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col gap-2">
+    <!-- Row 1: Ghat Name + Status Pill + Switchers -->
+    <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-1.5 min-w-0">
-        <span class="material-symbols-outlined text-primary text-[17px] shrink-0">route</span>
-        <h2 class="font-headline-sm text-xs font-bold text-on-surface truncate">Holy Circuit Roadmap</h2>
-        <span class="px-1.5 py-0.2 rounded bg-primary/10 text-primary text-[9px] font-bold shrink-0">~34 km</span>
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shrink-0"></span>
+        <span class="text-xs sm:text-sm font-bold text-on-surface truncate" id="flow-ghat-name">Ramkund Main Holy Ghat</span>
       </div>
-      <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant shrink-0">
-        <span>Bus: <strong class="text-on-surface">~₹75</strong></span>
-        <span>•</span>
-        <span>Auto: <strong class="text-on-surface">₹450-650</strong></span>
+      <div class="flex items-center gap-1 shrink-0">
+        <span id="flow-status-pill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-800 shrink-0">
+          सुगम संचार • Smooth
+        </span>
+        <div class="flex items-center gap-0.5 shrink-0">
+          <button onclick="cycleGhatFlow(-1)" aria-label="Previous Ghat" class="w-6 h-6 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface cursor-pointer">
+            <span class="material-symbols-outlined text-[15px]">chevron_left</span>
+          </button>
+          <button onclick="cycleGhatFlow(1)" aria-label="Next Ghat" class="w-6 h-6 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface cursor-pointer">
+            <span class="material-symbols-outlined text-[15px]">chevron_right</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Interactive Circuit Leaflet Map (Sleek Widescreen Rectangular) -->
-    <div class="relative w-full rounded-lg overflow-hidden shadow-inner border border-outline-variant/30">
-      <div id="kumbh-circuit-map" class="w-full h-36 sm:h-44 bg-surface-container"></div>
+    <!-- Row 2: Slim Progress density bar & Capacity Details -->
+    <div class="flex flex-col gap-1">
+      <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+        <div id="flow-progress-bar" class="h-full bg-green-600 rounded-full transition-all duration-500" style="width: 28%"></div>
+      </div>
+      <div class="flex items-center justify-between text-[10px] text-on-surface-variant font-medium">
+        <span id="flow-density-pct" class="font-bold text-primary">28% capacity (~240/m² safe)</span>
+        <span id="flow-window-text">Optimal window: <strong>Next 45m</strong></span>
+      </div>
+    </div>
+
+    <!-- Row 3: Quick Ghat Selector Tabs -->
+    <div class="flex items-center gap-1 overflow-x-auto no-scrollbar pt-0.5">
+      <button onclick="selectGhatFlow(0)" id="ghat-tab-0" class="ghat-flow-pill px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-primary text-on-primary shadow-xs shrink-0 cursor-pointer transition-all">
+        Ramkund (28%)
+      </button>
+      <button onclick="selectGhatFlow(1)" id="ghat-tab-1" class="ghat-flow-pill px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 cursor-pointer transition-all">
+        Kushavarta (54%)
+      </button>
+      <button onclick="selectGhatFlow(2)" id="ghat-tab-2" class="ghat-flow-pill px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 cursor-pointer transition-all">
+        Kapila (18%)
+      </button>
+      <button onclick="selectGhatFlow(3)" id="ghat-tab-3" class="ghat-flow-pill px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 cursor-pointer transition-all">
+        Lakshman (22%)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Detailed Kumbh Pilgrimage Circuit Roadmap with Interactive Map & Transit Fare Search -->
+<div class="px-layout-margin-mobile py-1">
+  <div class="bg-surface-container-lowest rounded-xl p-2.5 sm:p-3 shadow-sm border border-outline-variant/30 flex flex-col gap-2">
+    <!-- Streamlined Header & Circuit Summary (Clean 2-row layout) -->
+    <div class="flex flex-col gap-1">
+      <div class="flex items-center justify-between gap-1">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="material-symbols-outlined text-primary text-[18px] shrink-0">route</span>
+          <h2 class="font-headline-sm text-xs sm:text-sm font-bold text-on-surface truncate">Holy Circuit Roadmap</h2>
+          <span class="px-1.5 py-0.2 rounded bg-primary/10 text-primary text-[9px] font-bold shrink-0">~34 km circuit</span>
+        </div>
+        <button onclick="openModal('kumbhRoadmapModal')" type="button" class="text-primary text-[11px] font-bold hover:underline flex items-center gap-0.5 shrink-0">
+          <span>Full Guide</span>
+          <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+        </button>
+      </div>
+      <div class="flex items-center justify-between text-[10px] text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-md">
+        <span>🚌 Citylink Bus: <strong class="text-on-surface">~₹75</strong></span>
+        <span>•</span>
+        <span>🛺 Meter Auto: <strong class="text-on-surface">₹450-650</strong></span>
+        <span>•</span>
+        <span class="text-emerald-700 font-semibold">6 Sacred Stops</span>
+      </div>
+    </div>
+
+    <!-- NEW: Transit Fare & Route Calculator (Search Pick-up & Drop-off) -->
+    <div class="bg-surface-container-low rounded-xl p-2.5 border border-outline-variant/30 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-1.5 text-xs font-bold text-on-surface">
+          <span class="material-symbols-outlined text-primary text-[16px]">commute</span>
+          <span>Transit Fare &amp; Route Search</span>
+        </div>
+        <span class="text-[9px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">Govt Regulated Fares</span>
+      </div>
+
+      <!-- Pick-up and Drop-off Inputs with Swap Button -->
+      <div class="grid grid-cols-[1fr_auto_1fr] gap-1.5 items-center">
+        <!-- Pick-up -->
+        <div class="flex flex-col gap-0.5 min-w-0">
+          <label class="text-[9px] font-bold text-on-surface-variant flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-[11px] text-green-700">trip_origin</span>
+            <span>Pick-up Spot</span>
+          </label>
+          <select id="transit-pickup-select" onchange="calculateTransitFare()" class="w-full h-8 px-2 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-[11px] font-semibold text-on-surface focus:outline-none focus:border-primary truncate cursor-pointer">
+            <option value="nashik_road" selected>Nashik Road Rly Stn</option>
+            <option value="cbs_bus">CBS Central Bus Stand</option>
+            <option value="ramkund">Ramkund Main Ghat</option>
+            <option value="tapovan">Tapovan Sadhu Gram</option>
+            <option value="dwarka">Dwarka Highway Circle</option>
+            <option value="trimbak_mandir">Trimbakeshwar Mandir</option>
+            <option value="kushavarta">Kushavarta Kund</option>
+            <option value="sita_gufa">Sita Gufa / Panchavati</option>
+            <option value="kapaleshwar">Kapaleshwar Mandir</option>
+            <option value="brahmagiri">Brahmagiri Mountain Base</option>
+          </select>
+        </div>
+
+        <!-- Swap Button -->
+        <button type="button" onclick="swapTransitLocations()" title="Swap Pick-up &amp; Drop-off" class="w-7 h-7 rounded-full bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface flex items-center justify-center transition-colors shrink-0 shadow-xs cursor-pointer mt-3">
+          <span class="material-symbols-outlined text-[15px]">swap_horiz</span>
+        </button>
+
+        <!-- Drop-off -->
+        <div class="flex flex-col gap-0.5 min-w-0">
+          <label class="text-[9px] font-bold text-on-surface-variant flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-[11px] text-red-600">location_on</span>
+            <span>Drop-off Destination</span>
+          </label>
+          <select id="transit-dropoff-select" onchange="calculateTransitFare()" class="w-full h-8 px-2 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-[11px] font-semibold text-on-surface focus:outline-none focus:border-primary truncate cursor-pointer">
+            <option value="ramkund">Ramkund Main Ghat</option>
+            <option value="trimbak_mandir" selected>Trimbakeshwar Mandir</option>
+            <option value="kushavarta">Kushavarta Kund</option>
+            <option value="tapovan">Tapovan Sadhu Gram</option>
+            <option value="sita_gufa">Sita Gufa / Panchavati</option>
+            <option value="kapaleshwar">Kapaleshwar Mandir</option>
+            <option value="cbs_bus">CBS Central Bus Stand</option>
+            <option value="nashik_road">Nashik Road Rly Stn</option>
+            <option value="dwarka">Dwarka Highway Circle</option>
+            <option value="brahmagiri">Brahmagiri Mountain Base</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick Route Presets -->
+      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+        <span class="text-[9px] text-outline font-semibold shrink-0">Popular:</span>
+        <button type="button" onclick="setTransitPreset('nashik_road', 'ramkund')" class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-[9px] font-bold text-on-surface-variant shrink-0 transition-colors cursor-pointer">
+          Station ➔ Ramkund
+        </button>
+        <button type="button" onclick="setTransitPreset('ramkund', 'trimbak_mandir')" class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-[9px] font-bold text-on-surface-variant shrink-0 transition-colors cursor-pointer">
+          Ramkund ➔ Trimbak
+        </button>
+        <button type="button" onclick="setTransitPreset('cbs_bus', 'tapovan')" class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-[9px] font-bold text-on-surface-variant shrink-0 transition-colors cursor-pointer">
+          CBS ➔ Tapovan
+        </button>
+        <button type="button" onclick="setTransitPreset('trimbak_mandir', 'brahmagiri')" class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-[9px] font-bold text-on-surface-variant shrink-0 transition-colors cursor-pointer">
+          Trimbak ➔ Brahmagiri
+        </button>
+      </div>
+
+      <!-- Live Calculated Fare Card -->
+      <div id="transit-fare-result" class="p-2 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex flex-col gap-1.5 shadow-xs">
+        <div class="flex items-center justify-between text-[11px]">
+          <div class="flex items-center gap-1 text-on-surface font-bold">
+            <span class="material-symbols-outlined text-primary text-[14px]">straighten</span>
+            <span id="transit-distance-text">~28.5 km</span>
+            <span class="text-outline">•</span>
+            <span id="transit-duration-text" class="text-on-surface-variant font-medium">~45 min travel</span>
+          </div>
+          <a id="transit-gmaps-link" href="https://maps.google.com" target="_blank" class="text-primary font-bold text-[10px] hover:underline flex items-center gap-0.5">
+            <span>Google Maps</span>
+            <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+          </a>
+        </div>
+
+        <!-- Fare Breakdown Chips -->
+        <div class="grid grid-cols-3 gap-1 text-center">
+          <div class="bg-surface-container-low p-1.5 rounded-md border border-outline-variant/20 flex flex-col items-center">
+            <span class="text-[9px] text-on-surface-variant font-semibold">Citylink Bus</span>
+            <span id="transit-bus-fare" class="text-xs font-bold text-primary">₹45</span>
+            <span class="text-[8px] text-emerald-700 font-bold">Fixed Gov</span>
+          </div>
+          <div class="bg-surface-container-low p-1.5 rounded-md border border-outline-variant/20 flex flex-col items-center">
+            <span class="text-[9px] text-on-surface-variant font-semibold">Meter Auto</span>
+            <span id="transit-auto-fare" class="text-xs font-bold text-amber-800">₹420</span>
+            <span class="text-[8px] text-outline">NMC Meter</span>
+          </div>
+          <div class="bg-surface-container-low p-1.5 rounded-md border border-outline-variant/20 flex flex-col items-center">
+            <span class="text-[9px] text-on-surface-variant font-semibold">Shared Shuttle</span>
+            <span id="transit-shared-fare" class="text-xs font-bold text-secondary">₹60</span>
+            <span class="text-[8px] text-outline">Per Seat</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-0.5 text-[10px]">
+          <span class="text-outline text-[9px] flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-[11px] text-emerald-700">verified</span>
+            Official Simhastha Transit Chart
+          </span>
+          <a href="fare_board.html" class="text-primary font-bold hover:underline flex items-center gap-0.5 text-[10px]">
+            <span>Full Fare Board</span>
+            <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Circuit Leaflet Map (Sleek Widescreen Rectangular, ISOLATED STACKING CONTEXT) -->
+    <div class="relative w-full rounded-xl overflow-hidden shadow-inner border border-outline-variant/30 isolate z-0" style="isolation: isolate; contain: paint; z-index: 0;">
+      <div id="kumbh-circuit-map" class="w-full h-36 sm:h-44 bg-surface-container" style="z-index: 0;"></div>
       
       <!-- Interactive Hint Overlay -->
-      <div class="absolute bottom-1 left-1.5 right-1.5 bg-surface/85 backdrop-blur-md px-2 py-0.5 rounded text-[10px] flex items-center justify-between pointer-events-none z-20">
+      <div class="absolute bottom-1 left-1.5 right-1.5 bg-surface/90 backdrop-blur-md px-2 py-0.5 rounded text-[10px] flex items-center justify-between pointer-events-none z-10">
         <div class="flex items-center gap-1 text-on-surface font-medium truncate">
           <span class="material-symbols-outlined text-primary text-[12px]">touch_app</span>
           <span>Tap pins to view transit cost</span>
@@ -118,32 +288,32 @@
 
     <!-- Quick Circuit Stop Selector Chips -->
     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-      <button onclick="focusCircuitStop(0)" class="circuit-chip px-2 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold shrink-0 cursor-pointer shadow-sm">
+      <button onclick="focusCircuitStop(0)" class="circuit-chip px-2.5 py-1 rounded-lg bg-primary text-on-primary text-[10px] font-bold shrink-0 cursor-pointer shadow-xs transition-all">
         1. Ramkund
       </button>
-      <button onclick="focusCircuitStop(1)" class="circuit-chip px-2 py-0.5 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer">
+      <button onclick="focusCircuitStop(1)" class="circuit-chip px-2.5 py-1 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer transition-all">
         2. Kapaleshwar
       </button>
-      <button onclick="focusCircuitStop(2)" class="circuit-chip px-2 py-0.5 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer">
+      <button onclick="focusCircuitStop(2)" class="circuit-chip px-2.5 py-1 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer transition-all">
         3. Sita Gufa
       </button>
-      <button onclick="focusCircuitStop(3)" class="circuit-chip px-2 py-0.5 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer">
+      <button onclick="focusCircuitStop(3)" class="circuit-chip px-2.5 py-1 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer transition-all">
         4. Tapovan
       </button>
-      <button onclick="focusCircuitStop(4)" class="circuit-chip px-2 py-0.5 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer">
+      <button onclick="focusCircuitStop(4)" class="circuit-chip px-2.5 py-1 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer transition-all">
         5. Kushavarta
       </button>
-      <button onclick="focusCircuitStop(5)" class="circuit-chip px-2 py-0.5 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer">
+      <button onclick="focusCircuitStop(5)" class="circuit-chip px-2.5 py-1 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[10px] font-semibold shrink-0 cursor-pointer transition-all">
         6. Brahmagiri
       </button>
     </div>
 
     <!-- Dynamic Selected Stop Detail Card (Compact Rectangular) -->
-    <div id="circuit-stop-card" class="p-2 rounded-lg bg-surface-container-low border border-primary/20 flex flex-col gap-1 transition-all">
+    <div id="circuit-stop-card" class="p-2.5 rounded-lg bg-surface-container-low border border-primary/20 flex flex-col gap-1 transition-all">
       <div class="flex items-center justify-between gap-1">
         <div class="flex items-center gap-1.5 min-w-0">
           <div id="circuit-stop-badge" class="w-4 h-4 rounded-full bg-primary text-on-primary flex items-center justify-center text-[9px] font-bold shrink-0">1</div>
-          <h3 id="circuit-stop-title" class="font-bold text-xs text-on-surface truncate">Ramkund Main Holy Snan Ghat</h3>
+          <h3 id="circuit-stop-title" class="font-bold text-xs sm:text-sm text-on-surface truncate">Ramkund Main Holy Snan Ghat</h3>
         </div>
         <span id="circuit-stop-dist" class="px-1.5 py-0.2 rounded text-[9px] bg-primary/10 text-primary font-bold shrink-0">0 km (Base)</span>
       </div>
@@ -163,112 +333,112 @@
     </div>
   </div>
 </div>
-<!-- Primary Quick Category Bar -->
-<div class="px-layout-margin-mobile py-2">
+
+<!-- Primary Quick Category Bar (Smooth Horizontal Scroll) -->
+<div class="px-layout-margin-mobile py-1.5">
   <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-    <a href="marketplace.html?category=stay" class="shrink-0 h-9 px-3 rounded-full bg-primary/10 text-primary border border-primary/20 font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-primary/20">
-      <span class="material-symbols-outlined text-[18px]">bed</span>
+    <a href="marketplace.html?category=stay" class="shrink-0 h-8 sm:h-9 px-3 rounded-full bg-primary/10 text-primary border border-primary/20 font-label-sm text-[11px] sm:text-xs font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-primary/20">
+      <span class="material-symbols-outlined text-[16px] sm:text-[18px]">bed</span>
       <span>Contact Stays &amp; Dharamshalas</span>
     </a>
-    <a href="marketplace.html?category=bazaar" class="shrink-0 h-9 px-3 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-secondary-container">
-      <span class="material-symbols-outlined text-[18px]">storefront</span>
-      <span>Local Bazaar &amp; Puja Stalls</span>
+    <a href="marketplace.html?category=bazaar" class="shrink-0 h-8 sm:h-9 px-3 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[11px] sm:text-xs font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-secondary-container">
+      <span class="material-symbols-outlined text-[16px] sm:text-[18px]">storefront</span>
+      <span>Local Bazaar &amp; Stalls</span>
     </a>
-    <a href="guide_detail.html?id=guide-anand-joshi" class="shrink-0 h-9 px-3 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-bold flex items-center gap-1.5 active:scale-95 transition-transform shadow-sm">
-      <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+    <a href="guide_detail.html?id=guide-anand-joshi" class="shrink-0 h-8 sm:h-9 px-3 rounded-full bg-primary text-on-primary font-label-sm text-[11px] sm:text-xs font-bold flex items-center gap-1.5 active:scale-95 transition-transform shadow-xs">
+      <span class="material-symbols-outlined text-[16px] sm:text-[18px]">how_to_reg</span>
       <span>Book Registered Guide ✓</span>
     </a>
-    <button onclick="openKumbhRoadmapModal()" class="shrink-0 h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform">
-      <span class="material-symbols-outlined text-[18px]">route</span>
-      <span>Holy Ghats Roadmap</span>
-    </button>
-    <a href="food_finder.html" class="shrink-0 h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform">
-      <span class="material-symbols-outlined text-[18px]">soup_kitchen</span>
-      <span>Annakshetra &amp; Food</span>
+    <a href="food_finder.html" class="shrink-0 h-8 sm:h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-[11px] sm:text-xs font-semibold flex items-center gap-1.5 active:scale-95 transition-transform">
+      <span class="material-symbols-outlined text-[16px] sm:text-[18px]">soup_kitchen</span>
+      <span>Annakshetra &amp; Meals</span>
     </a>
-    <a href="fare_board.html" class="shrink-0 h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-primary hover:text-on-primary">
-      <span class="material-symbols-outlined text-[18px]">call</span>
-      <span>Call Rides &amp; Fare Guide</span>
+    <a href="fare_board.html" class="shrink-0 h-8 sm:h-9 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-[11px] sm:text-xs font-semibold flex items-center gap-1.5 active:scale-95 transition-transform hover:bg-primary hover:text-on-primary">
+      <span class="material-symbols-outlined text-[16px] sm:text-[18px]">electric_rickshaw</span>
+      <span>Fare Board &amp; Rides</span>
     </a>
   </div>
 </div>
 
-<!-- Primary Civic Quick-Access Grid -->
-<div class="px-layout-margin-mobile py-space-xs">
-<div class="flex items-center justify-between mb-space-xs">
-<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Essential Pilgrim Services</h2>
-<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Verified by NMC</span>
-</div>
-<div class="grid grid-cols-2 gap-space-sm">
-<!-- Tile 1: Hotel & Ashram Stays -->
-<a id="tile-hotel-stays" href="marketplace.html?category=stay" onclick="window.location.href='marketplace.html?category=stay';" class="group flex flex-col justify-between text-left p-space-md bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all duration-150 active:scale-[0.98] block cursor-pointer">
-<div class="flex items-center justify-between w-full mb-space-md">
-<div class="w-11 h-11 rounded-lg bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
-<span class="material-symbols-outlined text-[24px]">hotel</span>
-</div>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-semibold">Direct Contact</span>
-</div>
-<div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Hotel &amp; Ashram Stays</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">Dharamshalas, ashrams, budget hotels &amp; tent cities (call directly).</p>
-</div>
-<div class="mt-space-md pt-space-xs flex items-center text-primary font-label-md text-label-md font-semibold gap-1">
-<span>Contact Stays</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</div>
-</a>
-<!-- Tile 2: Food Finder -->
-<a id="tile-food-finder" href="food_finder.html" onclick="window.location.href='food_finder.html';" class="group flex flex-col justify-between text-left p-space-md bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all duration-150 active:scale-[0.98] block cursor-pointer">
-<div class="flex items-center justify-between w-full mb-space-md">
-<div class="w-11 h-11 rounded-lg bg-surface-container flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
-<span class="material-symbols-outlined text-[24px]">soup_kitchen</span>
-</div>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-semibold">Free &amp; Subsidized</span>
-</div>
-<div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Food Finder</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">Annachhatra, satvik, Jain &amp; pure veg verified bhojanalayas.</p>
-</div>
-<div class="mt-space-md pt-space-xs flex items-center text-tertiary font-label-md text-label-md font-semibold gap-1">
-<span>Find Meals</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</div>
-</a>
-<!-- Tile 3: Report an Issue -->
-<a id="tile-report-issue" href="report_issue.html" onclick="window.location.href='report_issue.html';" class="group flex flex-col justify-between text-left p-space-md bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all duration-150 active:scale-[0.98] block cursor-pointer">
-<div class="flex items-center justify-between w-full mb-space-md">
-<div class="w-11 h-11 rounded-lg bg-surface-container flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
-<span class="material-symbols-outlined text-[24px]">report_problem</span>
-</div>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-semibold">Fast Action</span>
-</div>
-<div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Report Issue</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">Flag rate gouging, fake guides or sanitation alerts directly.</p>
-</div>
-<div class="mt-space-md pt-space-xs flex items-center text-secondary font-label-md text-label-md font-semibold gap-1">
-<span>File Notice</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</div>
-</a>
-<!-- Tile 4: Emergency SOS -->
-<a id="tile-emergency-sos" href="emergency_sos.html" onclick="window.location.href='emergency_sos.html';" class="group flex flex-col justify-between text-left p-space-md bg-secondary-fixed-dim/30 rounded-xl shadow-sm hover:shadow-md transition-all duration-150 active:scale-[0.98] block cursor-pointer">
-<div class="flex items-center justify-between w-full mb-space-md">
-<div class="w-11 h-11 rounded-lg bg-secondary flex items-center justify-center text-on-secondary">
-<span class="material-symbols-outlined text-[24px]">e911_emergency</span>
-</div>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-secondary text-on-secondary font-bold">112 / 108</span>
-</div>
-<div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Emergency SOS</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">Immediate distress call, ambulance &amp; nearest police outpost map.</p>
-</div>
-<div class="mt-space-md pt-space-xs flex items-center text-secondary font-label-md text-label-md font-bold gap-1">
-<span>Get Help Now</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</div>
-</a>
-</div>
+<!-- Primary Civic Quick-Access Grid (Mobile-Responsive Tiles) -->
+<div class="px-layout-margin-mobile py-1">
+  <div class="flex items-center justify-between mb-2 px-0.5">
+    <h2 class="font-bold text-sm sm:text-base text-on-surface">Essential Pilgrim Services</h2>
+    <span class="text-[10px] sm:text-xs text-on-surface-variant font-medium">Verified by NMC</span>
+  </div>
+  <div class="grid grid-cols-2 gap-2.5 sm:gap-3.5">
+    <!-- Tile 1: Hotel & Ashram Stays -->
+    <a id="tile-hotel-stays" href="marketplace.html?category=stay" onclick="window.location.href='marketplace.html?category=stay';" class="group flex flex-col justify-between text-left p-3 sm:p-3.5 bg-surface-container-lowest rounded-xl shadow-xs border border-outline-variant/30 hover:shadow-md transition-all duration-150 active:scale-[0.98] block cursor-pointer">
+      <div class="flex items-center justify-between w-full mb-2">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+          <span class="material-symbols-outlined text-[20px] sm:text-[22px]">hotel</span>
+        </div>
+        <span class="text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant">Direct Call</span>
+      </div>
+      <div>
+        <h3 class="font-bold text-xs sm:text-sm text-on-surface leading-snug">Hotel &amp; Stays</h3>
+        <p class="text-[11px] text-on-surface-variant mt-0.5 line-clamp-2 leading-relaxed">Verified dharamshalas, ashrams &amp; budget rooms.</p>
+      </div>
+      <div class="mt-2.5 pt-1 border-t border-outline-variant/20 flex items-center text-primary text-[11px] sm:text-xs font-semibold gap-1">
+        <span>Contact Stays</span>
+        <span class="material-symbols-outlined text-[14px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+      </div>
+    </a>
+
+    <!-- Tile 2: Food Finder -->
+    <a id="tile-food-finder" href="food_finder.html" onclick="window.location.href='food_finder.html';" class="group flex flex-col justify-between text-left p-3 sm:p-3.5 bg-surface-container-lowest rounded-xl shadow-xs border border-outline-variant/30 hover:shadow-md transition-all duration-150 active:scale-[0.98] block cursor-pointer">
+      <div class="flex items-center justify-between w-full mb-2">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-surface-container flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
+          <span class="material-symbols-outlined text-[20px] sm:text-[22px]">soup_kitchen</span>
+        </div>
+        <span class="text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed">Satvik Meal</span>
+      </div>
+      <div>
+        <h3 class="font-bold text-xs sm:text-sm text-on-surface leading-snug">Food Finder</h3>
+        <p class="text-[11px] text-on-surface-variant mt-0.5 line-clamp-2 leading-relaxed">Annachhatra, satvik, Jain &amp; pure veg food.</p>
+      </div>
+      <div class="mt-2.5 pt-1 border-t border-outline-variant/20 flex items-center text-tertiary text-[11px] sm:text-xs font-semibold gap-1">
+        <span>Find Meals</span>
+        <span class="material-symbols-outlined text-[14px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+      </div>
+    </a>
+
+    <!-- Tile 3: Report an Issue -->
+    <a id="tile-report-issue" href="report_issue.html" onclick="window.location.href='report_issue.html';" class="group flex flex-col justify-between text-left p-3 sm:p-3.5 bg-surface-container-lowest rounded-xl shadow-xs border border-outline-variant/30 hover:shadow-md transition-all duration-150 active:scale-[0.98] block cursor-pointer">
+      <div class="flex items-center justify-between w-full mb-2">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+          <span class="material-symbols-outlined text-[20px] sm:text-[22px]">report_problem</span>
+        </div>
+        <span class="text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed">Fast Action</span>
+      </div>
+      <div>
+        <h3 class="font-bold text-xs sm:text-sm text-on-surface leading-snug">Report Issue</h3>
+        <p class="text-[11px] text-on-surface-variant mt-0.5 line-clamp-2 leading-relaxed">Flag rate gouging, fake guides or hygiene alerts.</p>
+      </div>
+      <div class="mt-2.5 pt-1 border-t border-outline-variant/20 flex items-center text-secondary text-[11px] sm:text-xs font-semibold gap-1">
+        <span>File Notice</span>
+        <span class="material-symbols-outlined text-[14px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+      </div>
+    </a>
+
+    <!-- Tile 4: Emergency SOS -->
+    <a id="tile-emergency-sos" href="emergency_sos.html" onclick="window.location.href='emergency_sos.html';" class="group flex flex-col justify-between text-left p-3 sm:p-3.5 bg-secondary-fixed-dim/30 rounded-xl shadow-xs border border-secondary/20 hover:shadow-md transition-all duration-150 active:scale-[0.98] block cursor-pointer">
+      <div class="flex items-center justify-between w-full mb-2">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-secondary flex items-center justify-center text-on-secondary">
+          <span class="material-symbols-outlined text-[20px] sm:text-[22px]">e911_emergency</span>
+        </div>
+        <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-secondary text-on-secondary">112 / 108</span>
+      </div>
+      <div>
+        <h3 class="font-bold text-xs sm:text-sm text-on-surface leading-snug">Emergency SOS</h3>
+        <p class="text-[11px] text-on-surface-variant mt-0.5 line-clamp-2 leading-relaxed">Immediate police, ambulance &amp; disaster helpline.</p>
+      </div>
+      <div class="mt-2.5 pt-1 border-t border-secondary/20 flex items-center text-secondary text-[11px] sm:text-xs font-bold gap-1">
+        <span>Get Help Now</span>
+        <span class="material-symbols-outlined text-[14px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+      </div>
+    </a>
+  </div>
 </div>
 
 
@@ -524,8 +694,8 @@
 </div>
 
 <!-- Modal: PIB Verified Truth Feed -->
-<div id="pibFactModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-<div class="bg-surface-container-lowest text-on-surface rounded-2xl max-w-lg w-full p-6 shadow-2xl flex flex-col gap-3 max-h-[85vh] overflow-y-auto">
+<div id="pibFactModal" class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4">
+<div class="bg-surface-container-lowest text-on-surface rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl flex flex-col gap-3 max-h-[85vh] overflow-y-auto border border-outline-variant/40">
 <div class="flex items-center justify-between border-b border-surface-container pb-3">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary text-[24px]">verified</span>
@@ -548,8 +718,8 @@
 </div>
 
 <!-- Modal: Report Rumor Form -->
-<div id="reportRumorModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-<div class="bg-surface-container-lowest text-on-surface rounded-2xl max-w-md w-full p-6 shadow-2xl flex flex-col gap-3">
+<div id="reportRumorModal" class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4">
+<div class="bg-surface-container-lowest text-on-surface rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl flex flex-col gap-3 border border-outline-variant/40">
 <div class="flex items-center justify-between border-b border-surface-container pb-3">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-secondary text-[24px]">flag</span>
@@ -675,7 +845,7 @@ Helpline: 1800-233-0202
   async function loadFactChecks() {
     const activeApiBase = window.API_BASE_URL || (function() {
       const h = window.location.hostname;
-      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || 'http://localhost:8000') + '';
+      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '';
     })();
     try {
       const res = await fetch(activeApiBase + '/api/v1/reports/fact-checks');
@@ -731,7 +901,7 @@ Helpline: 1800-233-0202
 
     const activeApiBase = window.API_BASE_URL || (function() {
       const h = window.location.hostname;
-      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || 'http://localhost:8000') + '';
+      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '';
     })();
 
     try {
@@ -754,8 +924,8 @@ Helpline: 1800-233-0202
 </script>
 
 <!-- Complete Kumbh Experience & Holy Ghats Roadmap Modal -->
-<div id="kumbhRoadmapModal" class="fixed inset-0 z-50 bg-on-surface/60 backdrop-blur-sm hidden items-center justify-center p-4">
-  <div class="bg-surface rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-outline-variant/30">
+<div id="kumbhRoadmapModal" class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md hidden items-center justify-center p-2.5 sm:p-4">
+  <div class="bg-surface rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden shadow-2xl border border-outline-variant/40">
     <!-- Header -->
     <div class="p-4 bg-primary text-on-primary flex items-center justify-between shrink-0">
       <div class="flex items-center gap-2">
@@ -1166,12 +1336,9 @@ Helpline: 1800-233-0202
       setTimeout(() => {
         if (circuitMap) {
           circuitMap.invalidateSize();
-          if (circuitMarkers.length > 0) {
-            const group = L.featureGroup(circuitMarkers);
-            circuitMap.fitBounds(group.getBounds(), { padding: [10, 10] });
-          }
+          calculateTransitFare();
         }
-      }, 350);
+      }, 400);
 
       window.addEventListener('resize', () => {
         if (circuitMap) circuitMap.invalidateSize();
@@ -1179,6 +1346,151 @@ Helpline: 1800-233-0202
     } catch (e) {
       console.warn('Circuit map init note:', e);
     }
+  }
+
+  // --- Live Kumbh Transit Fare & Route Calculator ---
+  const TRANSIT_HUBS = {
+    'ramkund': { name: 'Ramkund Main Ghat', coords: [19.9975, 73.7915], label: 'Panchavati Ghat' },
+    'nashik_road': { name: 'Nashik Road Railway Station', coords: [19.9540, 73.8340], label: 'Main Railway Junction' },
+    'cbs_bus': { name: 'CBS Central Bus Stand', coords: [19.9930, 73.7820], label: 'City Bus Terminal' },
+    'tapovan': { name: 'Tapovan Sadhu Gram', coords: [19.9910, 73.8180], label: 'Sadhu Gram Camp' },
+    'dwarka': { name: 'Dwarka Highway Circle', coords: [19.9880, 73.8050], label: 'Highway Junction' },
+    'trimbak_mandir': { name: 'Trimbakeshwar Mandir', coords: [19.9320, 73.5310], label: 'Jyotirlinga Temple' },
+    'kushavarta': { name: 'Kushavarta Kund', coords: [19.9325, 73.5305], label: 'Shahi Snan Kund' },
+    'sita_gufa': { name: 'Sita Gufa / Panchavati', coords: [20.0010, 73.7950], label: '5 Banyan Trees' },
+    'kapaleshwar': { name: 'Kapaleshwar Mandir', coords: [19.9988, 73.7925], label: 'Shiva Temple' },
+    'brahmagiri': { name: 'Brahmagiri Mountain Base', coords: [19.9380, 73.5180], label: 'Godavari Source' }
+  };
+
+  let transitSearchPolyline = null;
+  let transitPickupMarker = null;
+  let transitDropoffMarker = null;
+
+  function calcHaversineKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  function calculateTransitFare() {
+    const pSelect = document.getElementById('transit-pickup-select');
+    const dSelect = document.getElementById('transit-dropoff-select');
+    if (!pSelect || !dSelect) return;
+
+    const pKey = pSelect.value;
+    const dKey = dSelect.value;
+
+    const pHub = TRANSIT_HUBS[pKey] || TRANSIT_HUBS['nashik_road'];
+    const dHub = TRANSIT_HUBS[dKey] || TRANSIT_HUBS['trimbak_mandir'];
+
+    // Straight-line distance multiplied by 1.25 road winding factor
+    const directDist = calcHaversineKm(pHub.coords[0], pHub.coords[1], dHub.coords[0], dHub.coords[1]);
+    const roadDist = Math.max(0.8, directDist * 1.25);
+    const distText = roadDist < 1 ? `${Math.round(roadDist * 1000)} m` : `~${roadDist.toFixed(1)} km`;
+
+    // Speed approx: City 24 km/h, Highway 42 km/h
+    const avgSpeed = roadDist > 15 ? 42 : 24;
+    const durationMin = Math.max(5, Math.round((roadDist / avgSpeed) * 60));
+
+    // Regulated Fare calculation:
+    // Citylink Bus Fare: Under 4km: ₹10, 4-9km: ₹15, 9-18km: ₹25, >18km: ₹45
+    let busFare = 10;
+    if (roadDist > 18) busFare = 45;
+    else if (roadDist > 9) busFare = 25;
+    else if (roadDist > 4) busFare = 15;
+
+    // Regulated NMC Meter Auto Fare: Base ₹24 for 1.5 km + ₹15/km
+    const meterFare = Math.round(24 + Math.max(0, roadDist - 1.5) * 15);
+
+    // Shared Auto / Shuttle Fare: Local ₹15-₹25, Highway ₹60-₹75
+    let sharedFare = 15;
+    if (roadDist > 18) sharedFare = 60;
+    else if (roadDist > 6) sharedFare = 25;
+
+    // Update DOM
+    const distEl = document.getElementById('transit-distance-text');
+    const durEl = document.getElementById('transit-duration-text');
+    const busEl = document.getElementById('transit-bus-fare');
+    const autoEl = document.getElementById('transit-auto-fare');
+    const sharedEl = document.getElementById('transit-shared-fare');
+    const gmapsLink = document.getElementById('transit-gmaps-link');
+
+    if (distEl) distEl.textContent = distText;
+    if (durEl) durEl.textContent = `~${durationMin} min travel`;
+    if (busEl) busEl.textContent = `₹${busFare}`;
+    if (autoEl) autoEl.textContent = `₹${meterFare}`;
+    if (sharedEl) sharedEl.textContent = `₹${sharedFare}`;
+
+    if (gmapsLink) {
+      gmapsLink.href = `https://www.google.com/maps/dir/?api=1&origin=${pHub.coords[0]},${pHub.coords[1]}&destination=${dHub.coords[0]},${dHub.coords[1]}&travelmode=driving`;
+    }
+
+    // Update Leaflet Map route highlight
+    if (circuitMap && typeof L !== 'undefined') {
+      try {
+        if (transitSearchPolyline) circuitMap.removeLayer(transitSearchPolyline);
+        if (transitPickupMarker) circuitMap.removeLayer(transitPickupMarker);
+        if (transitDropoffMarker) circuitMap.removeLayer(transitDropoffMarker);
+
+        // Distinct route
+        transitSearchPolyline = L.polyline([pHub.coords, dHub.coords], {
+          color: '#dc2626',
+          weight: 4.5,
+          dashArray: '8, 8',
+          opacity: 0.95
+        }).addTo(circuitMap);
+
+        // Start pin (Green)
+        const pIcon = L.divIcon({
+          html: `<div style="background:#16a34a; width:26px; height:26px; border-radius:50%; border:2.5px solid white; box-shadow:0 3px 6px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:800;">A</div>`,
+          className: 'custom-route-start',
+          iconSize: [26, 26],
+          iconAnchor: [13, 13]
+        });
+        transitPickupMarker = L.marker(pHub.coords, { icon: pIcon }).addTo(circuitMap);
+        transitPickupMarker.bindPopup(`<b>Pick-up:</b> ${pHub.name}`);
+
+        // Destination pin (Red)
+        const dIcon = L.divIcon({
+          html: `<div style="background:#dc2626; width:26px; height:26px; border-radius:50%; border:2.5px solid white; box-shadow:0 3px 6px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:800;">B</div>`,
+          className: 'custom-route-end',
+          iconSize: [26, 26],
+          iconAnchor: [13, 13]
+        });
+        transitDropoffMarker = L.marker(dHub.coords, { icon: dIcon }).addTo(circuitMap);
+        transitDropoffMarker.bindPopup(`<b>Drop-off:</b> ${dHub.name}<br><b>Est. Fare:</b> Bus ₹${busFare} / Auto ₹${meterFare}`);
+
+        // Smooth zoom to fit both pickup and drop-off points
+        const bounds = L.latLngBounds([pHub.coords, dHub.coords]);
+        circuitMap.fitBounds(bounds, { padding: [25, 25], maxZoom: 14 });
+      } catch (err) {
+        console.warn('Transit map highlight note:', err);
+      }
+    }
+  }
+
+  function swapTransitLocations() {
+    const pSelect = document.getElementById('transit-pickup-select');
+    const dSelect = document.getElementById('transit-dropoff-select');
+    if (!pSelect || !dSelect) return;
+    const temp = pSelect.value;
+    pSelect.value = dSelect.value;
+    dSelect.value = temp;
+    calculateTransitFare();
+    showToast('⇄ Pick-up & Drop-off swapped');
+  }
+
+  function setTransitPreset(pKey, dKey) {
+    const pSelect = document.getElementById('transit-pickup-select');
+    const dSelect = document.getElementById('transit-dropoff-select');
+    if (pSelect) pSelect.value = pKey;
+    if (dSelect) dSelect.value = dKey;
+    calculateTransitFare();
   }
 
   function focusCircuitStop(idx) {
