@@ -147,26 +147,32 @@
 
     <!-- Segmented Navigation Chips -->
     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-3">
-      <button onclick="switchTab('audits')" id="tab-btn-audits" class="tab-chip px-4 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
+      <button onclick="switchTab('audits')" id="tab-btn-audits" class="tab-chip px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
         <span class="material-symbols-outlined text-base">checklist</span>
-        <span>Field Audits to Verify</span>
+        <span>Field Audits</span>
         <span class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]" id="badgePendingAudits">20</span>
       </button>
 
-      <button onclick="switchTab('upload')" id="tab-btn-upload" class="tab-chip px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
-        <span class="material-symbols-outlined text-base text-primary">add_a_photo</span>
-        <span>Upload Photo Proof</span>
+      <button onclick="switchTab('reports')" id="tab-btn-reports" class="tab-chip px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
+        <span class="material-symbols-outlined text-base text-red-600">campaign</span>
+        <span>Citizen Reports &amp; Flags</span>
+        <span class="px-1.5 py-0.2 rounded-full bg-red-100 text-red-700 text-[10px] font-bold" id="badgePendingReports">0</span>
       </button>
 
-      <button onclick="switchTab('truth')" id="tab-btn-truth" class="tab-chip px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
+      <button onclick="switchTab('upload')" id="tab-btn-upload" class="tab-chip px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
+        <span class="material-symbols-outlined text-base text-primary">add_a_photo</span>
+        <span>Upload Proof</span>
+      </button>
+
+      <button onclick="switchTab('truth')" id="tab-btn-truth" class="tab-chip px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
         <span class="material-symbols-outlined text-base text-secondary">fact_check</span>
         <span>PIB Truth Desk</span>
         <span class="px-1.5 py-0.2 rounded-full bg-red-100 text-red-800 text-[10px] font-bold">4</span>
       </button>
 
-      <button onclick="switchTab('leaderboard')" id="tab-btn-leaderboard" class="tab-chip px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
+      <button onclick="switchTab('leaderboard')" id="tab-btn-leaderboard" class="tab-chip px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
         <span class="material-symbols-outlined text-base text-amber-600">military_tech</span>
-        <span>Volunteer Leaderboard</span>
+        <span>Leaderboard</span>
       </button>
     </div>
 
@@ -206,7 +212,80 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 2: UPLOAD PHOTO AUDIT PROOF ==================== -->
+    <!-- ==================== TAB 2: CITIZEN REPORTS & FLAGS ==================== -->
+    <section id="tab-reports" class="tab-content flex-col gap-3">
+      <!-- Header Banner for Citizen Grievances -->
+      <div class="p-3.5 bg-red-50/80 border border-red-200/80 rounded-2xl flex flex-col gap-2 text-on-surface shadow-xs">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[18px]">campaign</span>
+            </div>
+            <div>
+              <h2 class="font-bold text-sm text-red-950">Citizen Grievances &amp; Flags Desk</h2>
+              <p class="text-[11px] text-red-800/90 font-medium">Real-time reports filed by pilgrims across Nashik</p>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-extrabold" id="reportCountHeader">0 Open</span>
+        </div>
+
+        <!-- Metric badges summary -->
+        <div class="grid grid-cols-4 gap-1.5 pt-1 text-center">
+          <div class="bg-white/80 rounded-xl p-1.5 border border-red-100 flex flex-col items-center">
+            <span class="text-[10px] text-on-surface-variant font-semibold">⚡ Price</span>
+            <span class="text-xs font-black text-amber-700 font-mono" id="statCountPrice">0</span>
+          </div>
+          <div class="bg-white/80 rounded-xl p-1.5 border border-red-100 flex flex-col items-center">
+            <span class="text-[10px] text-on-surface-variant font-semibold">🚨 Misbehave</span>
+            <span class="text-xs font-black text-red-700 font-mono" id="statCountMisbehavior">0</span>
+          </div>
+          <div class="bg-white/80 rounded-xl p-1.5 border border-red-100 flex flex-col items-center">
+            <span class="text-[10px] text-on-surface-variant font-semibold">🧹 Hygiene</span>
+            <span class="text-xs font-black text-emerald-700 font-mono" id="statCountSanitation">0</span>
+          </div>
+          <div class="bg-white/80 rounded-xl p-1.5 border border-red-100 flex flex-col items-center">
+            <span class="text-[10px] text-on-surface-variant font-semibold">⚠️ Scams</span>
+            <span class="text-xs font-black text-purple-700 font-mono" id="statCountScams">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Filter Controls -->
+      <div class="flex flex-col sm:flex-row items-center gap-2">
+        <div class="relative flex-1 w-full">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+          <input type="text" id="reportSearchInput" oninput="filterReportsList()" placeholder="Search grievance, token, phone, location, keyword..." class="w-full h-10 pl-9 pr-8 bg-surface-container-lowest rounded-xl text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary shadow-xs"/>
+          <button onclick="document.getElementById('reportSearchInput').value=''; filterReportsList();" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface cursor-pointer">
+            <span class="material-symbols-outlined text-sm">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Report Category Filters -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+        <button onclick="filterReportCategory('all', this)" class="report-cat-pill active px-2.5 py-1 rounded-lg text-[11px] font-bold bg-primary text-white cursor-pointer shrink-0">All Reports</button>
+        <button onclick="filterReportCategory('price', this)" class="report-cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">⚡ Price Flags</button>
+        <button onclick="filterReportCategory('misbehavior', this)" class="report-cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">🚨 Misbehavior</button>
+        <button onclick="filterReportCategory('sanitation', this)" class="report-cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">🧹 Ghats &amp; Cleanliness</button>
+        <button onclick="filterReportCategory('scam', this)" class="report-cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">⚠️ Scams &amp; Fake Passes</button>
+        <button onclick="filterReportCategory('rumor', this)" class="report-cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">📢 Rumors</button>
+      </div>
+
+      <!-- Status Filter Tabs -->
+      <div class="flex items-center gap-1 text-[11px] bg-surface-container p-0.5 rounded-xl border border-outline-variant/30">
+        <button onclick="filterReportStatus('all', this)" class="report-status-btn flex-1 py-1 rounded-lg font-bold bg-white text-primary shadow-xs cursor-pointer text-center">All Status</button>
+        <button onclick="filterReportStatus('pending', this)" class="report-status-btn flex-1 py-1 rounded-lg font-semibold text-on-surface-variant hover:text-on-surface cursor-pointer text-center">Pending</button>
+        <button onclick="filterReportStatus('escalated', this)" class="report-status-btn flex-1 py-1 rounded-lg font-semibold text-on-surface-variant hover:text-on-surface cursor-pointer text-center">Police Escalated</button>
+        <button onclick="filterReportStatus('resolved', this)" class="report-status-btn flex-1 py-1 rounded-lg font-semibold text-on-surface-variant hover:text-on-surface cursor-pointer text-center">Resolved</button>
+      </div>
+
+      <!-- Reports Stream / List Container -->
+      <div id="reportsListContainer" class="flex flex-col gap-2.5">
+        <!-- Rendered dynamically by renderReportsList() -->
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: UPLOAD PHOTO AUDIT PROOF ==================== -->
     <section id="tab-upload" class="tab-content flex-col gap-4">
       <div class="bg-surface-container-lowest rounded-2xl p-4 sm:p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-3.5">
         <div class="flex items-center gap-2 border-b border-surface-container pb-2.5">
@@ -468,25 +547,26 @@
         <span class="text-[10px] font-bold leading-tight tracking-tight truncate max-w-full">Audits</span>
       </button>
 
+      <button onclick="switchTab('reports')" id="nav-btn-reports" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer relative">
+        <span class="material-symbols-outlined text-[20px]">campaign</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Reports</span>
+        <span id="navBadgeReports" class="hidden absolute top-1 right-3 w-2 h-2 rounded-full bg-red-600 ring-2 ring-surface"></span>
+      </button>
+
       <button onclick="switchTab('upload')" id="nav-btn-upload" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
         <span class="material-symbols-outlined text-[20px]">add_a_photo</span>
-        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Upload Proof</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Upload</span>
       </button>
 
       <button onclick="switchTab('truth')" id="nav-btn-truth" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
         <span class="material-symbols-outlined text-[20px]">fact_check</span>
-        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Truth Cell</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Truth Desk</span>
       </button>
 
       <button onclick="switchTab('leaderboard')" id="nav-btn-leaderboard" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
         <span class="material-symbols-outlined text-[20px]">military_tech</span>
-        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Leaderboard</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Ranks</span>
       </button>
-
-      <a href="nashikkar_overview.html" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors">
-        <span class="material-symbols-outlined text-[20px]">dashboard</span>
-        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Overview</span>
-      </a>
     </div>
   </nav>
 
@@ -683,10 +763,16 @@
 
       <!-- Action Area -->
       <div class="pt-2 border-t border-outline-variant/20 space-y-2">
-        <button id="rdmVerifyBtn" onclick="verifyReportFromDetailModal()" class="w-full h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all cursor-pointer">
-          <span class="material-symbols-outlined text-lg">verified</span>
-          <span>✓ Verify On-Site (+50 Pts)</span>
-        </button>
+        <div class="flex gap-2">
+          <button id="rdmVerifyBtn" onclick="verifyReportFromDetailModal()" class="flex-1 h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-98 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">verified</span>
+            <span>✓ Verify On-Site (+50 Pts)</span>
+          </button>
+          <button id="rdmEscalateBtn" onclick="escalateReportFromDetailModal()" class="flex-1 h-11 rounded-xl bg-red-700 hover:bg-red-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-98 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">local_police</span>
+            <span>🚨 Escalate to Police</span>
+          </button>
+        </div>
         <button type="button" onclick="attachCounterProofFromDetailModal()" class="w-full h-8.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 cursor-pointer">
           <span class="material-symbols-outlined text-sm text-primary">add_a_photo</span>
           <span>Upload Field Counter-Proof Photo (Optional)</span>
@@ -980,13 +1066,93 @@
       { rank: 21, name: "Kavita Chavan", college: "KTHM Arts", audits: 17, points: 1180, badge: "Junior Scout" }
     ];
 
-    let auditsState = [...SEEDED_AUDITS];
+    // 6 Realistic Seeded Citizen Reports covering ALL Grievance Categories
+    const SEEDED_REPORTS = [
+      {
+        id: "rep-live-01",
+        category: "Transport & Civic Services",
+        listing_name: "Nimani Bus Stand & Auto Depot",
+        issue_type: "Misbehavior / Meter Refusal",
+        typeCategory: "misbehavior",
+        description: "Auto driver was extremely rude, refused government prepaid meter, and used offensive language when shown the official Simhastha tariff board. Demanded ₹350 for 2km.",
+        photo_url: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80",
+        reporter_phone: "9822451098",
+        status: "New",
+        created_at: new Date(Date.now() - 12 * 60 * 1000).toISOString()
+      },
+      {
+        id: "rep-live-02",
+        category: "Accommodation & Stay",
+        listing_name: "Godavari Yatri Niwas (Dharamshala)",
+        issue_type: "Price Gouging / Tariff Discrepancy",
+        typeCategory: "price",
+        description: "Counter attendant insisted on ₹1,500 cash for a standard dormitory bed when official municipal rate card mandates a ₹400 cap. Refused to provide receipt.",
+        photo_url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
+        reporter_phone: "9421876543",
+        status: "New",
+        created_at: new Date(Date.now() - 35 * 60 * 1000).toISOString()
+      },
+      {
+        id: "rep-live-03",
+        category: "Ghats & Sanitation",
+        listing_name: "Ramkund Ghat (Gandhi Smarak Steps)",
+        issue_type: "Dirty Ghat & Overflowing Waste",
+        typeCategory: "sanitation",
+        description: "Pilgrims taking holy dip slipping due to wet waste and unattended floral debris near Gandhi Smarak steps. Waste bins overflowing, urgent municipal cleaning required.",
+        photo_url: "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=600&q=80",
+        reporter_phone: "9156098234",
+        status: "New",
+        created_at: new Date(Date.now() - 50 * 60 * 1000).toISOString()
+      },
+      {
+        id: "rep-live-04",
+        category: "Security & Touts",
+        listing_name: "Kalaram Mandir East Gate",
+        issue_type: "Fake VIP Darshan Passes",
+        typeCategory: "scam",
+        description: "Two touts wearing unauthorized saffron badges selling laminated cards claiming to be 'VIP Express Pass' for ₹800. Police intervention requested.",
+        photo_url: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80",
+        reporter_phone: "9890123456",
+        status: "Escalated to Police",
+        created_at: new Date(Date.now() - 90 * 60 * 1000).toISOString()
+      },
+      {
+        id: "rep-live-05",
+        category: "Food & Dining",
+        listing_name: "Tapovan Bhojanalaya & Sweet Stall #12",
+        issue_type: "Substandard Food & Overcharging",
+        typeCategory: "price",
+        description: "Demanded ₹180 for standard thali capped at ₹80. Food served was stale and unhygienic with fly infestation around sweet display.",
+        photo_url: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&q=80",
+        reporter_phone: "9765432109",
+        status: "New",
+        created_at: new Date(Date.now() - 140 * 60 * 1000).toISOString()
+      },
+      {
+        id: "rep-live-06",
+        category: "Public Safety & Rumors",
+        listing_name: "Amrutdham Godavari Bridge",
+        issue_type: "False Rumor of Bridge Closure",
+        typeCategory: "rumor",
+        description: "Viral WhatsApp audio circulating falsely claiming bridge closed due to structural crack. Bridge is structurally sound and traffic is moving normally.",
+        photo_url: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&q=80",
+        reporter_phone: "9823124567",
+        status: "Resolved",
+        created_at: new Date(Date.now() - 210 * 60 * 1000).toISOString()
+      }
+    ];
+
+    // Separate Independent States
+    let auditsState = [...SEEDED_AUDITS];   // Pure Field Stall Reviews
+    let reportsState = [];                   // All Citizen Grievances & Flags
     let userPoints = 2450;
     let userAudits = 42;
     let activeCatFilter = 'all';
+    let activeReportCatFilter = 'all';
+    let activeReportStatusFilter = 'all';
 
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Resolve registered volunteer profile (Nakul or logged-in volunteer)
+      // 1. Resolve registered volunteer profile
       let profile = null;
       try {
         const stored = localStorage.getItem('kumbhsetu_user_profile');
@@ -1017,7 +1183,7 @@
         VOLUNTEERS_LEADERBOARD[userIdx].college = userCollegeVal;
       }
 
-      // Restore persisted data
+      // Restore persisted audits
       const savedAudits = localStorage.getItem('kumbhsetu_verified_audits');
       if (savedAudits) {
         try {
@@ -1038,7 +1204,9 @@
         document.getElementById('statAuditedCount').textContent = userAudits;
       }
 
+      // Initial Renders
       renderAuditsList();
+      renderReportsList();
       renderLeaderboard();
 
       // Initialize Supabase Realtime & Load incoming citizen reports
@@ -1049,31 +1217,90 @@
       if (!window.KumbhRealtime) return;
       await KumbhRealtime.ready();
 
-      // 1. Fetch live reports from Supabase (with fallback to FastAPI)
+      // 1. Fetch live citizen reports
       await loadLiveReports();
 
       // 2. Subscribe to real-time reports
       KumbhRealtime.subscribe('reports', '*', (payload) => {
-        console.log('[Kumbhveer] Real-time report event:', payload.eventType, payload);
+        console.log('[Kumbhveer] Real-time citizen report event:', payload.eventType, payload);
         loadLiveReports();
         const rep = payload.new || payload.record;
-        if (rep && rep.listing_name) {
-          showToast(`⚡ Live Report Alert: "${rep.listing_name}" added to Field Audit queue!`);
+        if (rep) {
+          const issue = rep.issue_type || 'Grievance';
+          const loc = rep.listing_name || 'Nashik Sector';
+          showToast(`📢 New Citizen Report: "${issue}" at ${loc}!`);
         }
       });
     }
 
+    function classifyReportType(r) {
+      const text = ((r.issue_type || '') + ' ' + (r.category || '') + ' ' + (r.description || '')).toLowerCase();
+      if (text.includes('misbehave') || text.includes('rude') || text.includes('abuse') || text.includes('harass') || text.includes('threat')) {
+        return 'misbehavior';
+      }
+      if (text.includes('scam') || text.includes('tout') || text.includes('pass') || text.includes('cheat') || text.includes('fraud')) {
+        return 'scam';
+      }
+      if (text.includes('clean') || text.includes('dirty') || text.includes('sanitat') || text.includes('ghat') || text.includes('waste') || text.includes('plastic') || text.includes('garbage')) {
+        return 'sanitation';
+      }
+      if (text.includes('rumor') || text.includes('false') || text.includes('fake news') || text.includes('audio') || text.includes('panic')) {
+        return 'rumor';
+      }
+      if (text.includes('price') || text.includes('overcharg') || text.includes('rate') || text.includes('tariff') || text.includes('demanded') || text.includes('bench') || text.includes('₹')) {
+        return 'price';
+      }
+      return 'other';
+    }
+
     async function loadLiveReports() {
       try {
-        const reports = await KumbhRealtime.getReports({ limit: 20 });
-        if (reports && reports.length > 0) {
-          const mapped = reports.map(mapReportToAudit);
-          const reportAuditIds = new Set(mapped.map(m => String(m.id)));
-          const baseAudits = auditsState.filter(a => !reportAuditIds.has(String(a.id)) && !a.isLiveReport);
-          auditsState = [...mapped, ...baseAudits];
-          renderAuditsList();
-          console.log('[Kumbhveer] Loaded live reports into audit queue:', mapped.length);
+        let fetched = [];
+        if (window.KumbhRealtime) {
+          const sbReports = await KumbhRealtime.getReports({ limit: 50 });
+          if (Array.isArray(sbReports) && sbReports.length > 0) {
+            fetched = sbReports;
+          }
         }
+
+        // LocalStorage backup
+        try {
+          const local = JSON.parse(localStorage.getItem('kumbhsetu_local_reports') || '[]');
+          local.forEach(loc => {
+            if (!fetched.find(f => String(f.id) === String(loc.id))) {
+              fetched.push(loc);
+            }
+          });
+        } catch (e) {}
+
+        // Normalize reports
+        const normalized = fetched.map(r => {
+          const parsed = parseReportDescription(r.description);
+          const cleanLoc = r.listing_name || parsed.location || 'Panchavati Sector';
+          return {
+            id: r.id,
+            category: r.category || parsed.categories || 'Public Grievance',
+            listing_name: cleanLoc,
+            issue_type: r.issue_type || parsed.issues || 'Grievance Reported',
+            typeCategory: classifyReportType(r),
+            description: parsed.notes || r.description || 'Citizen reported issue',
+            demandedPrice: parsed.demanded || '',
+            photo_url: r.photo_url || r.image_url || null,
+            reporter_phone: r.reporter_phone || 'Citizen Mobile Verified',
+            status: r.status || 'New',
+            created_at: r.created_at || new Date().toISOString()
+          };
+        });
+
+        const existingIds = new Set(normalized.map(n => String(n.id)));
+        const remainingSeeded = SEEDED_REPORTS.filter(s => !existingIds.has(String(s.id)));
+
+        reportsState = [...normalized, ...remainingSeeded];
+
+        // Render Reports List & Badges (Audits state is kept purely independent!)
+        renderReportsList();
+        updateReportBadges();
+        console.log('[Kumbhveer] Loaded all citizen reports & flags:', reportsState.length);
       } catch (err) {
         console.warn('[Kumbhveer] Load live reports error:', err);
       }
@@ -1109,68 +1336,6 @@
       return { location, demanded, notes, issues, categories };
     }
 
-    function mapReportToAudit(report) {
-      const cat = (report.category || '').toLowerCase();
-      let auditCat = 'bazaar';
-      let catBadge = 'Civic Flag';
-      if (cat.includes('hotel') || cat.includes('stay') || cat.includes('niwas') || cat.includes('lodge')) {
-        auditCat = 'dharamshala';
-        catBadge = 'Stay Violation';
-      } else if (cat.includes('food') || cat.includes('stall') || cat.includes('restaurant')) {
-        auditCat = 'food';
-        catBadge = 'Food & Hygiene';
-      } else if (cat.includes('transport') || cat.includes('auto') || cat.includes('bus') || cat.includes('stand')) {
-        auditCat = 'transit';
-        catBadge = 'Transit Fare';
-      } else if (cat.includes('pooja') || cat.includes('flower') || cat.includes('samagri')) {
-        auditCat = 'pooja';
-        catBadge = 'Pooja Rate';
-      }
-
-      const shortToken = '#RPT-' + (report.id ? String(report.id).slice(0, 6).toUpperCase() : 'CIVIC');
-      const isResolved = report.status === 'Resolved' || report.status === 'Verified';
-
-      const parsed = parseReportDescription(report.description);
-      const cleanLocation = parsed.location || report.listing_name || 'Ramkund & Panchavati Sector';
-      const cleanNotes = parsed.notes || 'Pilgrim reported grievance / civic violation';
-      const cleanDemanded = parsed.demanded || '';
-
-      let photoEvidence = report.image_url || report.photo_url || report.photo || null;
-      if (!photoEvidence) {
-        const locLower = cleanLocation.toLowerCase();
-        if (locLower.includes('ccm')) {
-          photoEvidence = 'https://images.unsplash.com/photo-1554415707-9e4c09d48d53?w=800&q=80';
-        } else if (locLower.includes('godavari')) {
-          photoEvidence = 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=800&q=80';
-        }
-      }
-
-      return {
-        id: 'rpt-' + report.id,
-        reportId: report.id,
-        name: report.listing_name || cleanLocation,
-        token: shortToken,
-        category: auditCat,
-        catLabel: `⚡ ${catBadge}`,
-        lane: cleanLocation,
-        demandedPrice: cleanDemanded,
-        rawDescription: report.description,
-        notes: cleanNotes,
-        imageUrl: photoEvidence,
-        issueType: report.issue_type || parsed.issues || 'Grievance Reported',
-        capRate: cleanDemanded ? `₹${cleanDemanded.replace(/^₹/, '')}` : (report.issue_type || 'Civic Flag'),
-        status: isResolved ? 'verified' : 'pending',
-        isLiveReport: true,
-        createdAt: report.created_at || new Date().toISOString(),
-        reporterPhone: report.reporter_phone || 'Citizen Mobile Verified',
-        checklist: [
-          `Citizen Complaint: "${report.issue_type || parsed.issues || 'Violation Reported'}"`,
-          'Verify official Simhastha rate board & display card visibility',
-          'Inspect digital UPI QR & confirm zero unlawful extra charge'
-        ]
-      };
-    }
-
     function showToast(msg) {
       const toast = document.getElementById('toast');
       const txt = document.getElementById('toast-txt');
@@ -1193,14 +1358,14 @@
       });
 
       // Bottom nav button state
-      const navIds = ['audits', 'upload', 'truth', 'leaderboard'];
+      const navIds = ['audits', 'reports', 'upload', 'truth', 'leaderboard'];
       navIds.forEach(k => {
         const btn = document.getElementById(`nav-btn-${k}`);
         if (btn) {
           if (k === tabKey) {
-            btn.className = 'flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-primary font-bold transition-colors cursor-pointer';
+            btn.className = 'flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-primary font-bold transition-colors cursor-pointer relative';
           } else {
-            btn.className = 'flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer';
+            btn.className = 'flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer relative';
           }
         }
       });
@@ -1214,9 +1379,16 @@
         activeChip.classList.add('bg-primary', 'text-white', 'shadow-sm');
       }
 
+      if (tabKey === 'reports') {
+        renderReportsList();
+      } else if (tabKey === 'audits') {
+        renderAuditsList();
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    /* ── TAB 1: Pure Field Audits to Verify ── */
     function renderAuditsList() {
       const container = document.getElementById('auditsListContainer');
       if (!container) return;
@@ -1229,7 +1401,6 @@
           item.name.toLowerCase().includes(q) || 
           item.token.toLowerCase().includes(q) || 
           item.lane.toLowerCase().includes(q) ||
-          (item.notes && item.notes.toLowerCase().includes(q)) ||
           item.catLabel.toLowerCase().includes(q);
         return matchCat && matchQuery;
       });
@@ -1251,24 +1422,20 @@
 
       container.innerHTML = filtered.map(item => {
         const isVerified = item.status === 'verified';
-        const isLive = !!item.isLiveReport;
         const isCitylink = (item.name && item.name.toLowerCase().includes('citylink')) || (item.category === 'transit' && item.name.toLowerCase().includes('bus'));
-        const priceLabel = isLive ? 'Reported Issue' : (isCitylink ? 'Gazette Cap' : 'Estimated Price');
-        const hasImage = !!item.imageUrl;
+        const priceLabel = isCitylink ? 'Gazette Cap' : 'Estimated Price';
 
         return `
-          <div onclick="openReportDetailModal('${item.id}')" class="p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm border ${isLive ? 'border-red-400/80 bg-red-50/15 ring-1 ring-red-400/30' : (isVerified ? 'border-emerald-300 bg-emerald-50/20' : 'border-outline-variant/30')} flex flex-col gap-2.5 transition-all hover:border-primary/60 hover:shadow-md cursor-pointer group">
+          <div class="p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm border ${isVerified ? 'border-emerald-300 bg-emerald-50/20' : 'border-outline-variant/30'} flex flex-col gap-2.5 transition-all hover:border-primary/60 hover:shadow-md cursor-pointer group" onclick="openVerificationModal('${item.id}')">
             <div class="flex items-start justify-between gap-2">
               <div class="flex flex-col min-w-0">
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${getCategoryBadgeStyle(item.category)}">${item.catLabel}</span>
-                  ${isLive ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-red-600 text-white flex items-center gap-1 animate-pulse"><span class="w-1.5 h-1.5 rounded-full bg-white"></span>Live Yatri Report</span>` : ''}
                   <span class="text-[11px] font-mono font-bold text-on-surface-variant">${item.token}</span>
-                  ${hasImage ? `<span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-blue-100 text-blue-800 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">photo_camera</span>Photo Attached</span>` : ''}
                 </div>
                 <h3 class="font-bold text-sm text-on-surface group-hover:text-primary transition-colors flex items-center gap-1.5 mt-1">
                   <span>${item.name}</span>
-                  <span class="text-[11px] text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center">Inspect →</span>
+                  <span class="text-[11px] text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Verify →</span>
                 </h3>
                 <span class="text-[11px] text-on-surface-variant flex items-center gap-1 mt-0.5">
                   <span class="material-symbols-outlined text-[13px] text-primary shrink-0">location_on</span>
@@ -1282,25 +1449,11 @@
               </div>
             </div>
 
-            <!-- Citizen Notes Callout if available -->
-            ${item.notes ? `
-              <div class="bg-surface-container-low/90 px-3 py-2 rounded-xl flex items-start gap-2 text-xs text-on-surface border border-outline-variant/20">
-                <span class="material-symbols-outlined text-red-600 text-[16px] shrink-0 mt-0.5">rate_review</span>
-                <div class="min-w-0 flex-1">
-                  <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">Description / Citizen Notes:</span>
-                  <p class="text-[11px] text-on-surface font-medium line-clamp-2 leading-tight">${item.notes}</p>
-                </div>
-                ${hasImage ? `
-                  <img src="${item.imageUrl}" alt="Proof Thumbnail" class="w-10 h-10 rounded-lg object-cover border border-outline-variant/50 shrink-0 ml-1"/>
-                ` : ''}
-              </div>
-            ` : ''}
-
             <!-- Checkpoints list -->
             <div class="bg-surface-container-low/70 p-2.5 rounded-xl flex flex-col gap-1 text-[11px] text-on-surface-variant">
               ${item.checklist.map(chk => `
                 <div class="flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-[14px] ${isVerified ? 'text-emerald-700' : (isLive ? 'text-red-600' : 'text-primary')}">check_circle</span>
+                  <span class="material-symbols-outlined text-[14px] ${isVerified ? 'text-emerald-700' : 'text-primary'}">check_circle</span>
                   <span>${chk}</span>
                 </div>
               `).join('')}
@@ -1314,19 +1467,372 @@
                   <span>Verified On-Site with Proof (+50 Pts)</span>
                 </div>
               ` : `
-                <button onclick="openReportDetailModal('${item.id}')" class="px-3 h-9 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center gap-1.5 cursor-pointer">
-                  <span class="material-symbols-outlined text-xs text-primary">visibility</span>
-                  <span>Inspect Report</span>
-                </button>
-                <button onclick="openVerificationModal('${item.id}')" class="flex-1 h-9 rounded-xl ${isLive ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-700 hover:bg-emerald-800'} text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-transform cursor-pointer">
+                <button onclick="openVerificationModal('${item.id}')" class="w-full h-9 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-transform cursor-pointer">
                   <span class="material-symbols-outlined text-sm">check_circle</span>
-                  <span>✓ Verify On-Site (+50 Pts)</span>
+                  <span>✓ Verify On-Site Stall (+50 Pts)</span>
                 </button>
               `}
             </div>
           </div>
         `;
       }).join('');
+    }
+
+    /* ── TAB 2: Citizen Reports & Flags Engine ── */
+    function getReportBadgeConfig(typeCategory, issueType) {
+      if (typeCategory === 'misbehavior') {
+        return {
+          label: 'Misbehavior',
+          icon: 'gavel',
+          badgeClass: 'bg-red-100 text-red-900 border border-red-300',
+          borderClass: 'border-red-300/80 bg-red-50/15 ring-1 ring-red-400/20'
+        };
+      }
+      if (typeCategory === 'scam') {
+        return {
+          label: 'Scam / Fake Pass',
+          icon: 'warning',
+          badgeClass: 'bg-purple-100 text-purple-900 border border-purple-300',
+          borderClass: 'border-purple-300/80 bg-purple-50/15 ring-1 ring-purple-400/20'
+        };
+      }
+      if (typeCategory === 'sanitation') {
+        return {
+          label: 'Ghats & Hygiene',
+          icon: 'cleaning_services',
+          badgeClass: 'bg-teal-100 text-teal-900 border border-teal-300',
+          borderClass: 'border-teal-300/80 bg-teal-50/15 ring-1 ring-teal-400/20'
+        };
+      }
+      if (typeCategory === 'rumor') {
+        return {
+          label: 'False Rumor',
+          icon: 'campaign',
+          badgeClass: 'bg-indigo-100 text-indigo-900 border border-indigo-300',
+          borderClass: 'border-indigo-300/80 bg-indigo-50/15 ring-1 ring-indigo-400/20'
+        };
+      }
+      if (typeCategory === 'price') {
+        return {
+          label: 'Price Flag',
+          icon: 'bolt',
+          badgeClass: 'bg-amber-100 text-amber-900 border border-amber-300',
+          borderClass: 'border-amber-300/80 bg-amber-50/15 ring-1 ring-amber-400/20'
+        };
+      }
+      return {
+        label: 'Citizen Flag',
+        icon: 'report',
+        badgeClass: 'bg-orange-100 text-orange-900 border border-orange-300',
+        borderClass: 'border-outline-variant/30'
+      };
+    }
+
+    function maskPhoneNumber(phone) {
+      if (!phone) return 'Citizen Mobile Verified';
+      const clean = String(phone).replace(/\D/g, '');
+      if (clean.length >= 10) {
+        return `+91 ${clean.slice(0, 2)}*** *${clean.slice(-4)}`;
+      }
+      return `+91 ${phone}`;
+    }
+
+    function formatTimeAgo(dateStr) {
+      if (!dateStr) return 'Live';
+      const diffMs = Date.now() - new Date(dateStr).getTime();
+      const diffMin = Math.round(diffMs / 60000);
+      if (diffMin < 2) return 'Just now';
+      if (diffMin < 60) return `${diffMin}m ago`;
+      const diffHr = Math.round(diffMin / 60);
+      if (diffHr < 24) return `${diffHr}h ago`;
+      return `${Math.round(diffHr / 24)}d ago`;
+    }
+
+    function renderReportsList() {
+      const container = document.getElementById('reportsListContainer');
+      if (!container) return;
+
+      const q = (document.getElementById('reportSearchInput')?.value || '').trim().toLowerCase();
+
+      const filtered = reportsState.filter(r => {
+        const matchCat = activeReportCatFilter === 'all' || r.typeCategory === activeReportCatFilter;
+        let matchStatus = true;
+        if (activeReportStatusFilter === 'pending') {
+          matchStatus = r.status === 'New' || r.status === 'pending';
+        } else if (activeReportStatusFilter === 'escalated') {
+          matchStatus = r.status === 'Escalated to Police';
+        } else if (activeReportStatusFilter === 'resolved') {
+          matchStatus = r.status === 'Resolved' || r.status === 'verified';
+        }
+
+        const matchQuery = !q ||
+          (r.listing_name && r.listing_name.toLowerCase().includes(q)) ||
+          (r.issue_type && r.issue_type.toLowerCase().includes(q)) ||
+          (r.description && r.description.toLowerCase().includes(q)) ||
+          (r.id && String(r.id).toLowerCase().includes(q)) ||
+          (r.reporter_phone && String(r.reporter_phone).includes(q));
+
+        return matchCat && matchStatus && matchQuery;
+      });
+
+      updateReportBadges();
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">fact_check</span>
+            <p class="font-bold text-sm">No citizen reports found matching this filter.</p>
+            <p class="text-xs text-outline mt-0.5">Try choosing "All Reports" or clear your search term.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(r => {
+        const isEscalated = r.status === 'Escalated to Police';
+        const isResolved = r.status === 'Resolved' || r.status === 'verified';
+        const token = '#RPT-' + (r.id ? String(r.id).slice(-4).toUpperCase() : '8492');
+        const badgeConfig = getReportBadgeConfig(r.typeCategory, r.issue_type);
+        const hasImage = !!r.photo_url;
+        const timeAgo = formatTimeAgo(r.created_at);
+
+        return `
+          <div class="p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm border ${badgeConfig.borderClass} flex flex-col gap-2.5 transition-all hover:shadow-md cursor-pointer group" onclick="openReportDetailModal('${r.id}')">
+            <!-- Top Row: Issue Badge, Token, Status -->
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${badgeConfig.badgeClass} flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px]">${badgeConfig.icon}</span>
+                  <span>${badgeConfig.label}</span>
+                </span>
+                <span class="text-[11px] font-mono font-bold text-on-surface-variant">${token}</span>
+                <span class="text-[10px] text-on-surface-variant">• ${timeAgo}</span>
+              </div>
+
+              <div class="shrink-0">
+                ${isEscalated ? `
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-red-600 text-white flex items-center gap-1 shadow-xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                    Police Escalated
+                  </span>
+                ` : (isResolved ? `
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[12px]">check</span> Resolved
+                  </span>
+                ` : `
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span> Action Required
+                  </span>
+                `)}
+              </div>
+            </div>
+
+            <!-- Issue Title & Location -->
+            <div>
+              <h3 class="font-bold text-sm text-on-surface group-hover:text-primary transition-colors flex items-center gap-1.5 leading-snug">
+                <span>${r.issue_type || 'Public Grievance'}</span>
+                <span class="text-[11px] text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Inspect Details →</span>
+              </h3>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+                <span class="material-symbols-outlined text-[13px] text-primary shrink-0">location_on</span>
+                <span class="truncate">${r.listing_name || 'Ramkund & Panchavati Sector'}</span>
+              </span>
+            </div>
+
+            <!-- Description Box & Photo Thumbnail -->
+            <div class="bg-surface-container-low/80 p-2.5 rounded-xl flex items-start gap-2.5 text-xs text-on-surface border border-outline-variant/20">
+              <div class="min-w-0 flex-1">
+                <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block mb-0.5">Citizen Complaint:</span>
+                <p class="text-[11px] text-on-surface font-medium line-clamp-2 leading-relaxed">${r.description || 'No description provided'}</p>
+              </div>
+              ${hasImage ? `
+                <div class="relative shrink-0 w-12 h-12 rounded-lg overflow-hidden border border-outline-variant/40 bg-black/10 group/img" onclick="event.stopPropagation(); openFullImageZoom('${r.photo_url}')" title="Click to view photo full size">
+                  <img src="${r.photo_url}" alt="Report Evidence" class="w-full h-full object-cover"/>
+                  <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-white text-sm">zoom_in</span>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- Complainant details and tracking -->
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-0.5">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-emerald-600">smartphone</span>
+                <span>Complainant: <strong>${maskPhoneNumber(r.reporter_phone)}</strong></span>
+              </span>
+              <span class="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                SMS Tracking Active
+              </span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 pt-1 border-t border-outline-variant/20" onclick="event.stopPropagation()">
+              <button onclick="openReportDetailModal('${r.id}')" class="px-2.5 h-8.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-[14px] text-primary">visibility</span>
+                <span>Details</span>
+              </button>
+
+              ${!isResolved ? `
+                <button onclick="verifyReportOnSiteAction('${r.id}')" class="flex-1 h-8.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-xs active:scale-98 transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  <span>Verify (+50 Pts)</span>
+                </button>
+
+                ${!isEscalated ? `
+                  <button onclick="escalateReportToPolice('${r.id}')" class="h-8.5 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-xs active:scale-98 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-[14px]">local_police</span>
+                    <span>Escalate</span>
+                  </button>
+                ` : `
+                  <span class="text-[11px] text-red-600 font-bold px-2 py-1 bg-red-50 rounded-lg border border-red-200">Police Squad Notified</span>
+                `}
+              ` : `
+                <div class="flex-1 h-8.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs flex items-center justify-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">task_alt</span>
+                  <span>Resolved On-Site</span>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateReportBadges() {
+      const openReports = reportsState.filter(r => r.status === 'New' || r.status === 'pending');
+      const badgeEl = document.getElementById('badgePendingReports');
+      if (badgeEl) badgeEl.textContent = openReports.length;
+
+      const headerCount = document.getElementById('reportCountHeader');
+      if (headerCount) headerCount.textContent = `${openReports.length} Open`;
+
+      const navBadge = document.getElementById('navBadgeReports');
+      if (navBadge) {
+        if (openReports.length > 0) navBadge.classList.remove('hidden');
+        else navBadge.classList.add('hidden');
+      }
+
+      // Categories metric counters
+      const priceCount = reportsState.filter(r => r.typeCategory === 'price' && (r.status === 'New' || r.status === 'pending')).length;
+      const misbehaveCount = reportsState.filter(r => r.typeCategory === 'misbehavior' && (r.status === 'New' || r.status === 'pending')).length;
+      const sanitationCount = reportsState.filter(r => r.typeCategory === 'sanitation' && (r.status === 'New' || r.status === 'pending')).length;
+      const scamCount = reportsState.filter(r => r.typeCategory === 'scam' && (r.status === 'New' || r.status === 'pending')).length;
+
+      const elPrice = document.getElementById('statCountPrice');
+      if (elPrice) elPrice.textContent = priceCount;
+      const elMisbehave = document.getElementById('statCountMisbehavior');
+      if (elMisbehave) elMisbehave.textContent = misbehaveCount;
+      const elSanitation = document.getElementById('statCountSanitation');
+      if (elSanitation) elSanitation.textContent = sanitationCount;
+      const elScams = document.getElementById('statCountScams');
+      if (elScams) elScams.textContent = scamCount;
+    }
+
+    function filterReportCategory(cat, btn) {
+      activeReportCatFilter = cat;
+      document.querySelectorAll('.report-cat-pill').forEach(el => {
+        el.classList.remove('active', 'bg-primary', 'text-white');
+        el.classList.add('bg-surface-container', 'text-on-surface');
+      });
+      if (btn) {
+        btn.classList.remove('bg-surface-container', 'text-on-surface');
+        btn.classList.add('active', 'bg-primary', 'text-white');
+      }
+      renderReportsList();
+    }
+
+    function filterReportStatus(status, btn) {
+      activeReportStatusFilter = status;
+      document.querySelectorAll('.report-status-btn').forEach(el => {
+        el.classList.remove('bg-white', 'text-primary', 'font-bold', 'shadow-xs');
+        el.classList.add('text-on-surface-variant', 'font-semibold');
+      });
+      if (btn) {
+        btn.classList.remove('text-on-surface-variant', 'font-semibold');
+        btn.classList.add('bg-white', 'text-primary', 'font-bold', 'shadow-xs');
+      }
+      renderReportsList();
+    }
+
+    function filterReportsList() {
+      renderReportsList();
+    }
+
+    async function escalateReportToPolice(reportId) {
+      const r = reportsState.find(x => String(x.id) === String(reportId));
+      if (!r) return;
+
+      r.status = 'Escalated to Police';
+
+      // 1. Sync to Supabase
+      if (window.KumbhRealtime && KumbhRealtime._client) {
+        try {
+          await KumbhRealtime._client.from('reports').update({ status: 'Escalated to Police' }).eq('id', r.id);
+          
+          const escRow = {
+            id: 'esc-' + (r.id || Date.now()),
+            report_id: r.id,
+            category: r.category || 'Citizen Escalation',
+            listing_name: r.listing_name || 'Sector 4 Service Area',
+            issue_type: r.issue_type || 'Grievance',
+            description: r.description || 'Escalated by Kumbhveer squad',
+            priority: 'High',
+            status: 'New',
+            escalated_by: 'Kumbhveer Field Volunteer'
+          };
+          await KumbhRealtime._client.from('escalations').insert([escRow]);
+        } catch (e) {
+          console.warn('Escalate Supabase sync note:', e);
+        }
+      }
+
+      // 2. Local storage sync for Police Escalations Dashboard
+      try {
+        const localEsc = JSON.parse(localStorage.getItem('kumbhsetu_live_escalations') || '[]');
+        localEsc.unshift({
+          id: r.id,
+          case_number: 'ESC-' + (r.id ? String(r.id).slice(-4).toUpperCase() : '9021'),
+          listing_name: r.listing_name,
+          category: r.category,
+          issues: r.issue_type,
+          notes: r.description,
+          demanded: r.demandedPrice || '',
+          status: 'Escalated to Police',
+          escalated_by: 'Kumbhveer Field Squad (Sector 4)',
+          time_ago: 'Just now'
+        });
+        localStorage.setItem('kumbhsetu_live_escalations', JSON.stringify(localEsc.slice(0, 30)));
+      } catch (e) {}
+
+      showToast(`🚨 Report #${String(r.id).slice(0,6).toUpperCase()} escalated to Police Command Hub!`);
+      renderReportsList();
+      updateReportBadges();
+    }
+
+    function verifyReportOnSiteAction(reportId) {
+      const r = reportsState.find(x => String(x.id) === String(reportId));
+      if (!r) return;
+
+      r.status = 'Resolved';
+      userPoints += 50;
+      userAudits += 1;
+
+      document.getElementById('statVolunteerPoints').textContent = userPoints.toLocaleString();
+      document.getElementById('statAuditedCount').textContent = userAudits;
+      localStorage.setItem('kumbhsetu_user_points', userPoints);
+      localStorage.setItem('kumbhsetu_audited_count', userAudits);
+
+      if (window.KumbhRealtime && KumbhRealtime._client) {
+        KumbhRealtime._client.from('reports').update({
+          status: 'Resolved',
+          notes: 'Verified on-site by Kumbhveer volunteer squad'
+        }).eq('id', r.id).then(() => {}).catch(() => {});
+      }
+
+      showToast(`✓ Report #${String(r.id).slice(0,6).toUpperCase()} verified on-site! +50 Seva Points awarded.`);
+      renderReportsList();
+      updateReportBadges();
     }
 
     function getCategoryBadgeStyle(cat) {
@@ -1495,40 +2001,49 @@
     let activeDetailReportId = null;
 
     function openReportDetailModal(id) {
-      const item = auditsState.find(a => String(a.id) === String(id));
+      let item = reportsState.find(r => String(r.id) === String(id));
+      let isAudit = false;
+      if (!item) {
+        item = auditsState.find(a => String(a.id) === String(id));
+        isAudit = true;
+      }
       if (!item) return;
 
       activeDetailReportId = item.id;
 
       // Header tokens
-      document.getElementById('rdmToken').textContent = item.token || '#RPT-CIVIC';
-      document.getElementById('rdmBadge').textContent = (item.catLabel || 'Civic Flag').replace(/^⚡\s*/, '');
-      document.getElementById('rdmTitle').textContent = item.name || 'Reported Civic Location';
+      const token = '#RPT-' + (item.id ? String(item.id).slice(-4).toUpperCase() : '8492');
+      document.getElementById('rdmToken').textContent = token;
+      document.getElementById('rdmBadge').textContent = (item.issue_type || item.catLabel || 'Citizen Grievance').replace(/^⚡\s*/, '').toUpperCase();
+      document.getElementById('rdmTitle').textContent = item.listing_name || item.name || 'Reported Location';
 
       // Status
       const statusBadge = document.getElementById('rdmStatusBadge');
-      if (item.status === 'verified') {
+      if (item.status === 'Resolved' || item.status === 'verified') {
         statusBadge.textContent = '✓ Verified On-Site';
         statusBadge.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300';
+      } else if (item.status === 'Escalated to Police') {
+        statusBadge.textContent = '🚨 Escalated to Police';
+        statusBadge.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-red-600 text-white';
       } else {
-        statusBadge.textContent = 'Pending Field Audit';
+        statusBadge.textContent = 'Action Required';
         statusBadge.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300';
       }
 
       // Metadata
-      document.getElementById('rdmLocation').textContent = item.lane || item.name || 'Panchavati Sector';
-      document.getElementById('rdmIssueType').textContent = item.issueType || item.capRate || 'Civic Violation / Misbehavior';
+      document.getElementById('rdmLocation').textContent = item.listing_name || item.lane || 'Panchavati Sector';
+      document.getElementById('rdmIssueType').textContent = item.issue_type || item.capRate || 'Civic Violation / Misbehavior';
       
       const demandedEl = document.getElementById('rdmDemandedPrice');
       if (item.demandedPrice) {
-        demandedEl.textContent = 'Demanded: ' + (item.demandedPrice.startsWith('₹') ? item.demandedPrice : '₹' + item.demandedPrice);
+        demandedEl.textContent = 'Demanded: ' + (String(item.demandedPrice).startsWith('₹') ? item.demandedPrice : '₹' + item.demandedPrice);
         demandedEl.classList.remove('hidden');
       } else {
         demandedEl.classList.add('hidden');
       }
 
-      document.getElementById('rdmNotes').textContent = item.notes || item.rawDescription || 'No detailed textual description was attached by the citizen.';
-      document.getElementById('rdmTime').textContent = item.createdAt ? new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Live Yatri Report';
+      document.getElementById('rdmNotes').textContent = item.description || item.notes || 'No detailed textual description was attached by the citizen.';
+      document.getElementById('rdmTime').textContent = item.created_at ? formatTimeAgo(item.created_at) : 'Live';
 
       // Images / Evidence
       const imgEl = document.getElementById('rdmImage');
@@ -1537,33 +2052,48 @@
       const reporterInfo = document.getElementById('rdmReporterInfo');
 
       if (reporterInfo) {
-        reporterInfo.textContent = item.reporterPhone ? `Reporter: ${item.reporterPhone}` : 'Citizen Mobile Authenticated';
+        reporterInfo.textContent = item.reporter_phone ? `Reporter: ${maskPhoneNumber(item.reporter_phone)}` : 'Citizen Mobile Authenticated';
       }
 
-      if (item.imageUrl) {
-        imgEl.src = item.imageUrl;
+      const photoUrl = item.photo_url || item.imageUrl || null;
+      if (photoUrl) {
+        imgEl.src = photoUrl;
         imgEl.classList.remove('hidden');
         noImgBox.classList.add('hidden');
-        countTag.textContent = 'Photo Attached';
+        countTag.textContent = 'Photo Evidence Attached';
         countTag.className = 'text-[10px] font-bold text-emerald-800 px-2 py-0.5 rounded bg-emerald-100';
       } else {
         imgEl.src = '';
         imgEl.classList.add('hidden');
         noImgBox.classList.remove('hidden');
-        countTag.textContent = 'No Media';
+        countTag.textContent = 'No Photo Media';
         countTag.className = 'text-[10px] font-bold text-on-surface-variant px-2 py-0.5 rounded bg-surface-container-high';
       }
 
       // Verify Button state
       const verifyBtn = document.getElementById('rdmVerifyBtn');
-      if (item.status === 'verified') {
+      if (item.status === 'Resolved' || item.status === 'verified') {
         verifyBtn.disabled = true;
-        verifyBtn.innerHTML = '<span class="material-symbols-outlined text-lg">verified</span><span>Already Verified On-Site (+50 Pts)</span>';
-        verifyBtn.className = 'w-full h-11 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-sm flex items-center justify-center gap-2 border border-emerald-300 cursor-default';
+        verifyBtn.innerHTML = '<span class="material-symbols-outlined text-base">verified</span><span>Already Verified On-Site</span>';
+        verifyBtn.className = 'flex-1 h-11 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-emerald-300 cursor-default';
       } else {
         verifyBtn.disabled = false;
-        verifyBtn.innerHTML = '<span class="material-symbols-outlined text-lg">verified</span><span>✓ Verify On-Site (+50 Pts)</span>';
-        verifyBtn.className = 'w-full h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all cursor-pointer';
+        verifyBtn.innerHTML = '<span class="material-symbols-outlined text-base">verified</span><span>✓ Verify On-Site (+50 Pts)</span>';
+        verifyBtn.className = 'flex-1 h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-98 transition-all cursor-pointer';
+      }
+
+      // Escalate Button state
+      const escalateBtn = document.getElementById('rdmEscalateBtn');
+      if (escalateBtn) {
+        if (item.status === 'Escalated to Police') {
+          escalateBtn.disabled = true;
+          escalateBtn.innerHTML = '<span class="material-symbols-outlined text-base">local_police</span><span>Police Notified</span>';
+          escalateBtn.className = 'flex-1 h-11 rounded-xl bg-red-100 text-red-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-red-300 cursor-default';
+        } else {
+          escalateBtn.disabled = false;
+          escalateBtn.innerHTML = '<span class="material-symbols-outlined text-base">local_police</span><span>🚨 Escalate to Police</span>';
+          escalateBtn.className = 'flex-1 h-11 rounded-xl bg-red-700 hover:bg-red-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-98 transition-all cursor-pointer';
+        }
       }
 
       document.getElementById('reportDetailModal').classList.remove('hidden');
@@ -1579,26 +2109,26 @@
     function verifyReportFromDetailModal() {
       if (!activeDetailReportId) return;
       const id = activeDetailReportId;
+
+      // 1. If in reportsState
+      const rep = reportsState.find(r => String(r.id) === String(id));
+      if (rep) {
+        closeReportDetailModal();
+        verifyReportOnSiteAction(rep.id);
+        return;
+      }
+
+      // 2. If in auditsState
       const item = auditsState.find(a => String(a.id) === String(id));
       if (!item || item.status === 'verified') return;
 
-      const notes = `Verified on-site by Kumbhveer Rohit S. Complaint inspected: ${item.issueType || 'Civic flag'}. Municipal rate card verified.`;
+      const notes = `Verified on-site by Kumbhveer volunteer. Stall and rate card compliant.`;
       const photo = item.imageUrl || modalProofPhotoData || 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=400&q=80';
 
       item.status = 'verified';
       item.verifiedNotes = notes;
       item.verifiedPhoto = photo;
       item.verifiedTimestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      // Sync with Supabase / backend if this is an incoming report
-      if (item.reportId && window.KumbhRealtime) {
-        KumbhRealtime.update('reports', item.reportId, {
-          status: 'Resolved',
-          notes: notes
-        }).then(() => {
-          console.log('[Kumbhveer] Report status updated to Resolved in Supabase:', item.reportId);
-        }).catch(err => console.log('Report update note:', err));
-      }
 
       userPoints += 50;
       userAudits += 1;
@@ -1611,25 +2141,16 @@
       const verifiedList = auditsState.filter(a => a.status === 'verified').map(a => a.id);
       localStorage.setItem('kumbhsetu_verified_audits', JSON.stringify(verifiedList));
 
-      // Append to recent photos gallery
-      const gallery = document.getElementById('recentPhotosList');
-      if (gallery) {
-        const newCard = document.createElement('div');
-        newCard.className = 'bg-surface-container-low rounded-xl p-2 flex flex-col gap-1 text-[11px] border border-emerald-400 bg-emerald-50/20';
-        newCard.innerHTML = `
-          <img src="${photo}" alt="Audit Proof" class="w-full h-24 object-cover rounded-lg"/>
-          <span class="font-bold truncate text-on-surface">${item.name}</span>
-          <span class="text-[10px] text-emerald-800 font-semibold flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[13px]">verified</span> Proof Verified (+50 pts)
-          </span>
-          <p class="text-[10px] text-on-surface-variant truncate italic">"${notes}"</p>
-        `;
-        gallery.insertBefore(newCard, gallery.firstChild);
-      }
-
       closeReportDetailModal();
       showToast(`✓ "${item.name}" verified on-site! +50 Seva Points awarded.`);
       renderAuditsList();
+    }
+
+    function escalateReportFromDetailModal() {
+      if (!activeDetailReportId) return;
+      const id = activeDetailReportId;
+      closeReportDetailModal();
+      escalateReportToPolice(id);
     }
 
     function attachCounterProofFromDetailModal() {
@@ -1641,6 +2162,14 @@
 
     function attachDemoProofToActiveReport() {
       if (!activeDetailReportId) return;
+      const rep = reportsState.find(r => String(r.id) === String(activeDetailReportId));
+      if (rep) {
+        rep.photo_url = 'https://images.unsplash.com/photo-1554415707-9e4c09d48d53?w=800&q=80';
+        openReportDetailModal(activeDetailReportId);
+        showToast('Sample evidence photo attached');
+        renderReportsList();
+        return;
+      }
       const item = auditsState.find(a => String(a.id) === String(activeDetailReportId));
       if (item) {
         item.imageUrl = 'https://images.unsplash.com/photo-1554415707-9e4c09d48d53?w=800&q=80';
