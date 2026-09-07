@@ -13,8 +13,62 @@ from ..core.security import verify_jwt, require_nashikkar, CurrentUser
 from ..db.supabase_client import get_connection, now_iso, rows_to_list
 import uuid
 import json
+import os
+import httpx
+from pathlib import Path
+from dotenv import load_dotenv
+
+env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
+SUPABASE_URL = (os.getenv("SUPABASE_URL") or "https://asparwhkzpnnittnhsic.supabase.co").rstrip("/")
+SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY", "")
 
 router = APIRouter(prefix="/reports", tags=["Reports"])
+
+
+async def _sync_report_to_supabase(report_id: str, status: str, notes: Optional[str] = None, updated_at: Optional[str] = None):
+    if not SUPABASE_SERVICE_ROLE_KEY:
+        return
+    try:
+        async with httpx.AsyncClient() as client:
+            await client.patch(
+                f"{SUPABASE_URL}/rest/v1/reports?id=eq.{report_id}",
+                headers={
+                    "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                    "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                    "Content-Type": "application/json",
+                    "Prefer": "return=representation"
+                },
+                json={
+                    "status": status,
+                    "notes": notes,
+                    "updated_at": updated_at or now_iso()
+                },
+                timeout=8.0
+            )
+    except Exception as e:
+        print(f"[SupabaseSync] Report update error: {e}")
+
+
+async def _insert_report_to_supabase(data: dict):
+    if not SUPABASE_SERVICE_ROLE_KEY:
+        return
+    try:
+        async with httpx.AsyncClient() as client:
+            await client.post(
+                f"{SUPABASE_URL}/rest/v1/reports",
+                headers={
+                    "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                    "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                    "Content-Type": "application/json",
+                    "Prefer": "resolution=merge-duplicates"
+                },
+                json=data,
+                timeout=8.0
+            )
+    except Exception as e:
+        print(f"[SupabaseSync] Report insert error: {e}")
 
 
 def _time_ago(iso_str: str) -> str:
@@ -63,6 +117,21 @@ async def submit_report(report: ReportCreate):
     ))
     conn.commit()
 
+    # Mirror to Supabase reports table
+    await _insert_report_to_supabase({
+        "id": report_id,
+        "category": report.category,
+        "listing_id": report.listing_id,
+        "listing_name": report.listing_name,
+        "issue_type": report.issue_type,
+        "description": report.description,
+        "photo_url": report.photo_url,
+        "reporter_phone": report.reporter_phone,
+        "status": ReportStatus.NEW.value,
+        "created_at": now,
+        "updated_at": now
+    })
+
     return ReportResponse(
         id=report_id,
         category=report.category,
@@ -86,8 +155,45 @@ async def get_reports(
     page_size: int = Query(20, ge=1, le=100),
     user: CurrentUser = Depends(require_nashikkar)
 ):
-    """Get all reports — Nashikkar only."""
+    """Get all reports — Nashikkar only. Synchronizes with Supabase so statuses are always fresh."""
     conn = get_connection()
+
+    # Synchronize with Supabase reports if reachable
+    if SUPABASE_SERVICE_ROLE_KEY:
+        try:
+            async with httpx.AsyncClient() as client:
+                sb_res = await client.get(
+                    f"{SUPABASE_URL}/rest/v1/reports?select=*&order=created_at.desc&limit=100",
+                    headers={
+                        "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}"
+                    },
+                    timeout=5.0
+                )
+                if sb_res.status_code == 200:
+                    for item in sb_res.json():
+                        conn.execute("""
+                            INSERT INTO reports (
+                                id, category, listing_id, listing_name, issue_type,
+                                description, photo_url, reporter_phone, status, notes,
+                                created_at, updated_at
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ON CONFLICT(id) DO UPDATE SET
+                                status = excluded.status,
+                                notes = COALESCE(excluded.notes, reports.notes),
+                                updated_at = excluded.updated_at
+                        """, (
+                            item["id"], item.get("category", "Civic"),
+                            item.get("listing_id"), item.get("listing_name", "Service Provider"),
+                            item.get("issue_type", "Grievance"), item.get("description", ""),
+                            item.get("photo_url"), item.get("reporter_phone"),
+                            item.get("status", "New"), item.get("notes"),
+                            item.get("created_at", now_iso()), item.get("updated_at", now_iso())
+                        ))
+                    conn.commit()
+        except Exception as e:
+            print(f"[ReportsAPI] Supabase pull error: {e}")
+
     conditions = []
     params = []
 
@@ -124,21 +230,87 @@ async def update_report_status(
 ):
     """
     Update report status — Nashikkar only.
-    Escalating to Police creates an escalation record.
+    Updates local SQLite AND synchronizes to Supabase reports table.
+    If status is Escalated to Police, creates an escalation record in both SQLite and Supabase.
+    If status is Resolved, updates linked escalations in both SQLite and Supabase.
     """
     conn = get_connection()
     row = conn.execute("SELECT * FROM reports WHERE id = ?", (report_id,)).fetchone()
-    if not row:
-        raise HTTPException(status_code=404, detail="Report not found")
-
     now = now_iso()
+
+    # If row not in SQLite, check Supabase first
+    if not row and SUPABASE_SERVICE_ROLE_KEY:
+        try:
+            async with httpx.AsyncClient() as client:
+                sb_res = await client.get(
+                    f"{SUPABASE_URL}/rest/v1/reports?id=eq.{report_id}",
+                    headers={
+                        "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}"
+                    },
+                    timeout=5.0
+                )
+                if sb_res.status_code == 200 and sb_res.json():
+                    sb_item = sb_res.json()[0]
+                    conn.execute("""
+                        INSERT OR REPLACE INTO reports (
+                            id, category, listing_id, listing_name, issue_type,
+                            description, photo_url, reporter_phone, status, notes,
+                            created_at, updated_at
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        sb_item["id"], sb_item.get("category", "Civic"),
+                        sb_item.get("listing_id"), sb_item.get("listing_name", "Service Provider"),
+                        sb_item.get("issue_type", "Grievance"), sb_item.get("description", ""),
+                        sb_item.get("photo_url"), sb_item.get("reporter_phone"),
+                        update.status.value, update.notes,
+                        sb_item.get("created_at", now), now
+                    ))
+                    conn.commit()
+                    row = conn.execute("SELECT * FROM reports WHERE id = ?", (report_id,)).fetchone()
+        except Exception as e:
+            print(f"[ReportStatus] Error pulling from Supabase: {e}")
+
+    if not row:
+        # Create a placeholder row in SQLite if report originated on frontend with generated ID
+        conn.execute("""
+            INSERT INTO reports (id, category, listing_name, issue_type, description, status, notes, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            report_id, "Civic", "Report " + report_id[:8], "Grievance",
+            "Grievance recorded and status updated.", update.status.value, update.notes, now, now
+        ))
+        conn.commit()
+        row = conn.execute("SELECT * FROM reports WHERE id = ?", (report_id,)).fetchone()
 
     conn.execute(
         "UPDATE reports SET status = ?, notes = ?, updated_at = ? WHERE id = ?",
         (update.status.value, update.notes, now, report_id)
     )
 
-    # If escalating to police, create an escalation record
+    # 1. Synchronize report status update to Supabase
+    await _sync_report_to_supabase(report_id, update.status.value, update.notes, now)
+
+    # 2. If status is Resolved, also update linked escalations in SQLite and Supabase
+    if update.status == ReportStatus.RESOLVED:
+        conn.execute("UPDATE escalations SET status = 'Resolved', updated_at = ? WHERE report_id = ?", (now, report_id))
+        if SUPABASE_SERVICE_ROLE_KEY:
+            try:
+                async with httpx.AsyncClient() as client:
+                    await client.patch(
+                        f"{SUPABASE_URL}/rest/v1/escalations?report_id=eq.{report_id}",
+                        headers={
+                            "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                            "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                            "Content-Type": "application/json"
+                        },
+                        json={"status": "Resolved", "updated_at": now},
+                        timeout=5.0
+                    )
+            except Exception:
+                pass
+
+    # 3. If escalating to police, create an escalation record in both SQLite and Supabase
     if update.status == ReportStatus.ESCALATED:
         esc_id = str(uuid.uuid4())
         conn.execute("""
@@ -148,14 +320,44 @@ async def update_report_status(
                 escalated_at, updated_at
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
-            esc_id, report_id, row["category"], row["listing_name"],
-            row["issue_type"], row["description"],
+            esc_id, report_id, row["category"] if row else "Civic",
+            row["listing_name"] if row else "Service Provider",
+            row["issue_type"] if row else "Grievance",
+            row["description"] if row else "",
             EscalationPriority.MEDIUM.value, "New",
             user.user_id, now, now
         ))
+        if SUPABASE_SERVICE_ROLE_KEY:
+            try:
+                async with httpx.AsyncClient() as client:
+                    await client.post(
+                        f"{SUPABASE_URL}/rest/v1/escalations",
+                        headers={
+                            "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                            "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                            "Content-Type": "application/json",
+                            "Prefer": "resolution=merge-duplicates"
+                        },
+                        json={
+                            "id": esc_id,
+                            "report_id": report_id,
+                            "category": row["category"] if row else "Civic",
+                            "listing_name": row["listing_name"] if row else "Service Provider",
+                            "issue_type": row["issue_type"] if row else "Grievance",
+                            "description": row["description"] if row else "",
+                            "priority": "Medium",
+                            "status": "New",
+                            "escalated_by": user.user_id,
+                            "escalated_at": now,
+                            "updated_at": now
+                        },
+                        timeout=5.0
+                    )
+            except Exception:
+                pass
 
     conn.commit()
-    return {"message": f"Report status updated to {update.status.value}", "id": report_id}
+    return {"message": f"Report status updated to {update.status.value}", "id": report_id, "status": update.status.value}
 
 
 @router.get("/stats")

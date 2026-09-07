@@ -1168,6 +1168,11 @@
     "hi": "प्रशासक कक्ष",
     "en": "Admin Desk"
   },
+  "Admin Login": {
+    "mr": "प्रशासक लॉगिन",
+    "hi": "प्रशासक लॉगिन",
+    "en": "Admin Login"
+  },
   "against municipal cap of": {
     "mr": "मनपा कमाल मर्यादेच्या तुलनेत",
     "hi": "नगर निगम सीमा के मुकाबले",
@@ -1524,8 +1529,8 @@
     "en": "Auto Bay 4 Rate Card"
   },
   "Auto Fare Gouging": {
-    "mr": "रिक्षा Fare Gouging",
-    "hi": "ऑटो Fare Gouging",
+    "mr": "रिक्षा जादा भाडे आकारणी",
+    "hi": "ऑटो अधिक किराया वसूली",
     "en": "Auto Fare Gouging"
   },
   "AUTO FARE GOUGING": {
@@ -3839,8 +3844,8 @@
     "en": "Gazette"
   },
   "Gazette Cap": {
-    "mr": "Gazette मर्यादा",
-    "hi": "Gazette सीमा",
+    "mr": "राजपत्र मर्यादा",
+    "hi": "राजपत्र सीमा",
     "en": "Gazette Cap"
   },
   "Gazette Cycle: Morning Sync 08:30 AM": {
@@ -4829,8 +4834,8 @@
     "en": "Kumbhveer volunteers can upload on-site audit photos directly from gallery or storage. No live camera facial verification is required."
   },
   "Kumbhveers": {
-    "mr": "Kumbhveers",
-    "hi": "Kumbhveers",
+    "mr": "कुंभवीर",
+    "hi": "कुंभवीर",
     "en": "Kumbhveers"
   },
   "Kumbhveers actively debunk social media rumors, verify on-ground reality at ghats, and protect pilgrims from misinformation.": {
@@ -10462,6 +10467,451 @@
     "mr": "🛺 मीटर रिक्षा:",
     "hi": "🛺 मीटर ऑटो:",
     "en": "🛺 Meter Auto:"
+  },
+  "Nashikkar Portal — KumbhSetu": {
+    "mr": "नाशिककर पोर्टल — कुंभसेतु",
+    "hi": "नाशिककर पोर्टल — कुंभसेतु",
+    "en": "Nashikkar Portal — KumbhSetu"
+  },
+  "KumbhSetu — Volunteer Portal": {
+    "mr": "कुंभसेतु — स्वयंसेवक पोर्टल",
+    "hi": "कुंभसेतु — वॉलंटियर पोर्टल",
+    "en": "KumbhSetu — Volunteer Portal"
+  },
+  "Kumbhveer Portal — Volunteer & Ground Truth Desk": {
+    "mr": "कुंभवीर पोर्टल — स्वयंसेवक व प्रत्यक्ष पडताळणी कक्ष",
+    "hi": "कुंभवीर पोर्टल — वॉलंटियर एवं जमीनी सत्यापन डेस्क",
+    "en": "Kumbhveer Portal — Volunteer & Ground Truth Desk"
+  },
+  "Police Escalations Terminal — KumbhSetu 2027": {
+    "mr": "पोलीस तक्रार निवारण टर्मिनल — कुंभसेतु २०२७",
+    "hi": "पुलिस शिकायत निवारण टर्मिनल — कुंभसेतु २०२७",
+    "en": "Police Escalations Terminal — KumbhSetu 2027"
+  },
+  "KumbhSetu Nashik": {
+    "mr": "कुंभसेतु नाशिक",
+    "hi": "कुंभसेतु नासिक",
+    "en": "KumbhSetu Nashik"
+  },
+  "Panchavati & Ramkund Sector": {
+    "mr": "पंचवटी व रामकुंड विभाग",
+    "hi": "पंचवटी एवं रामकुंड सेक्टर",
+    "en": "Panchavati & Ramkund Sector"
+  },
+  "Panchavati & Ramkund Civic Hub": {
+    "mr": "पंचवटी व रामकुंड नागरी केंद्र",
+    "hi": "पंचवटी एवं रामकुंड नागरिक केंद्र",
+    "en": "Panchavati & Ramkund Civic Hub"
+  },
+  "Nashik Civic Desk": {
+    "mr": "नाशिक नागरी कक्ष",
+    "hi": "नासिक नागरिक डेस्क",
+    "en": "Nashik Civic Desk"
+  },
+  "Live Ground Node": {
+    "mr": "थेट क्षेत्रीय केंद्र",
+    "hi": "लाइव ग्राउंड नोड",
+    "en": "Live Ground Node"
+  },
+  "Operational Snapshot": {
+    "mr": "कार्यरत आढावा",
+    "hi": "परिचालन स्नैपशॉट",
+    "en": "Operational Snapshot"
+  },
+  "Real-time Telemetry": {
+    "mr": "थेट टेलीमेट्री",
+    "hi": "रीयल-टाइम टेलीमेट्री",
+    "en": "Real-time Telemetry"
+  },
+  "Civic Grievances": {
+    "mr": "नागरी तक्रारी",
+    "hi": "नागरिक शिकायतें",
+    "en": "Civic Grievances"
+  },
+  "Active Price Flags": {
+    "mr": "सक्रिय दर तक्रारी",
+    "hi": "सक्रिय मूल्य शिकायतें",
+    "en": "Active Price Flags"
+  },
+  "Active Kumbhveers": {
+    "mr": "सक्रिय कुंभवीर",
+    "hi": "सक्रिय कुंभवीर",
+    "en": "Active Kumbhveers"
+  },
+  "Community Audits": {
+    "mr": "नागरी तपासण्या",
+    "hi": "सामुदायिक ऑडिट",
+    "en": "Community Audits"
+  },
+  "Audits Completed": {
+    "mr": "पूर्ण तपासण्या",
+    "hi": "पूर्ण ऑडिट",
+    "en": "Audits Completed"
+  },
+  "Audits Today": {
+    "mr": "आजच्या तपासण्या",
+    "hi": "आज के ऑडिट",
+    "en": "Audits Today"
+  },
+  "Fair Rates": {
+    "mr": "वाजवी दर",
+    "hi": "उचित दर",
+    "en": "Fair Rates"
+  },
+  "Urgent Price Alerts": {
+    "mr": "तातडीचे दर अलर्ट",
+    "hi": "तत्काल मूल्य अलर्ट",
+    "en": "Urgent Price Alerts"
+  },
+  "Live Local Alerts": {
+    "mr": "थेट स्थानिक सूचना",
+    "hi": "लाइव स्थानीय अलर्ट",
+    "en": "Live Local Alerts"
+  },
+  "Kumbhveer Leaderboard": {
+    "mr": "कुंभवीर मानांकन तक्ता",
+    "hi": "कुंभवीर लीडरबोर्ड",
+    "en": "Kumbhveer Leaderboard"
+  },
+  "Municipal & Emergency Hotlines": {
+    "mr": "महानगरपालिका व आपत्कालीन हेल्पलाईन",
+    "hi": "नगर निगम एवं आपातकालीन हेल्पलाइन",
+    "en": "Municipal & Emergency Hotlines"
+  },
+  "Active Audits": {
+    "mr": "सक्रिय तपासण्या",
+    "hi": "सक्रिय ऑडिट",
+    "en": "Active Audits"
+  },
+  "Seva Points": {
+    "mr": "सेवा गुण",
+    "hi": "सेवा अंक",
+    "en": "Seva Points"
+  },
+  "Voucher Cash": {
+    "mr": "व्हाउचर रक्कम",
+    "hi": "वाउचर राशि",
+    "en": "Voucher Cash"
+  },
+  "Current Rank": {
+    "mr": "सध्याचा क्रमांक",
+    "hi": "वर्तमान रैंक",
+    "en": "Current Rank"
+  },
+  "Field Audits": {
+    "mr": "क्षेत्रीय तपासण्या",
+    "hi": "फील्ड ऑडिट",
+    "en": "Field Audits"
+  },
+  "Submit Rate Board": {
+    "mr": "दर फलक सादर करा",
+    "hi": "दर बोर्ड सबमिट करें",
+    "en": "Submit Rate Board"
+  },
+  "Ground Truth Feed": {
+    "mr": "प्रत्यक्ष पडताळणी प्रवाह",
+    "hi": "ग्राउंड ट्रुथ फ़ीड",
+    "en": "Ground Truth Feed"
+  },
+  "Rewards Leaderboard": {
+    "mr": "बक्षीस मानांकन तक्ता",
+    "hi": "रिवॉर्ड्स लीडरबोर्ड",
+    "en": "Rewards Leaderboard"
+  },
+  "Overcharging / Civic": {
+    "mr": "जादा दर / नागरी",
+    "hi": "अधिक किराया / नागरिक",
+    "en": "Overcharging / Civic"
+  },
+  "CityLink & Autos": {
+    "mr": "सिटीलिंक व रिक्षा",
+    "hi": "सिटीलिंक एवं ऑटो",
+    "en": "CityLink & Autos"
+  },
+  "21 Active Verifiers": {
+    "mr": "२१ सक्रिय पडताळणीकार",
+    "hi": "२१ सक्रिय सत्यापनकर्ता",
+    "en": "21 Active Verifiers"
+  },
+  "Municipal review queue": {
+    "mr": "मनपा तपासणी प्रतीक्षा",
+    "hi": "नगर निगम समीक्षा कतार",
+    "en": "Municipal review queue"
+  },
+  "Reported by Yatris": {
+    "mr": "यात्रेकरूंनी नोंदवलेले",
+    "hi": "यात्रियों द्वारा रिपोर्ट किए गए",
+    "en": "Reported by Yatris"
+  },
+  "Students on field": {
+    "mr": "विद्यार्थी प्रत्यक्ष क्षेत्रात",
+    "hi": "छात्र मैदान पर",
+    "en": "Students on field"
+  },
+  "Rates & hygiene verified": {
+    "mr": "दर व स्वच्छता प्रमाणित",
+    "hi": "दर एवं स्वच्छता सत्यापित",
+    "en": "Rates & hygiene verified"
+  },
+  "3 Cases Escalated Onward": {
+    "mr": "३ प्रकरणे पुढील कारवाईसाठी वर्ग",
+    "hi": "३ मामले आगे भेजे गए",
+    "en": "3 Cases Escalated Onward"
+  },
+  "Municipal Magistrate for compound penalty": {
+    "mr": "दंडात्मक कारवाईसाठी मनपा दंडाधिकारी",
+    "hi": "शमन दंड हेतु नगर निगम मजिस्ट्रेट",
+    "en": "Municipal Magistrate for compound penalty"
+  },
+  "Verify On-Site": {
+    "mr": "जागेवर पडताळणी करा",
+    "hi": "मौके पर सत्यापित करें",
+    "en": "Verify On-Site"
+  },
+  "Call Owner": {
+    "mr": "मालकाशी संपर्क साधा",
+    "hi": "मालिक को कॉल करें",
+    "en": "Call Owner"
+  },
+  "Call Helpline": {
+    "mr": "हेल्पलाईनला कॉल करा",
+    "hi": "हेल्पलाइन पर कॉल करें",
+    "en": "Call Helpline"
+  },
+  "Review Flag": {
+    "mr": "तक्रार तपासा",
+    "hi": "फ्लैग की समीक्षा करें",
+    "en": "Review Flag"
+  },
+  "Log Note": {
+    "mr": "नोंद ठेवा",
+    "hi": "नोट दर्ज करें",
+    "en": "Log Note"
+  },
+  "Review": {
+    "mr": "तपासा",
+    "hi": "समीक्षा करें",
+    "en": "Review"
+  },
+  "All Priority": {
+    "mr": "सर्व प्राधान्यता",
+    "hi": "सभी प्राथमिकता",
+    "en": "All Priority"
+  },
+  "High Priority": {
+    "mr": "उच्च प्राधान्यता",
+    "hi": "उच्च प्राथमिकता",
+    "en": "High Priority"
+  },
+  "Medium Priority": {
+    "mr": "मध्यम प्राधान्यता",
+    "hi": "मध्यम प्राथमिकता",
+    "en": "Medium Priority"
+  },
+  "Forwarded / Alerts": {
+    "mr": "वर्ग केलेल्या / सूचना",
+    "hi": "अग्रेषित / अलर्ट",
+    "en": "Forwarded / Alerts"
+  },
+  "Acknowledge": {
+    "mr": "पोहोच द्या",
+    "hi": "स्वीकार करें",
+    "en": "Acknowledge"
+  },
+  "Acknowledged": {
+    "mr": "पोहोच दिली",
+    "hi": "स्वीकृत",
+    "en": "Acknowledged"
+  },
+  "Assign Unit": {
+    "mr": "पथक नियुक्त करा",
+    "hi": "दस्ता नियुक्त करें",
+    "en": "Assign Unit"
+  },
+  "Dispatched": {
+    "mr": "रवाना झाले",
+    "hi": "रवाना किया गया",
+    "en": "Dispatched"
+  },
+  "Overview": {
+    "mr": "आढावा",
+    "hi": "अवलोकन",
+    "en": "Overview"
+  },
+  "Flags": {
+    "mr": "तक्रारी",
+    "hi": "शिकायतें",
+    "en": "Flags"
+  },
+  "Market": {
+    "mr": "बाजारपेठ",
+    "hi": "बाजार",
+    "en": "Market"
+  },
+  "Volunteers": {
+    "mr": "स्वयंसेवक",
+    "hi": "स्वयंसेवक",
+    "en": "Volunteers"
+  },
+  "Vendors": {
+    "mr": "विक्रेते",
+    "hi": "विक्रेता",
+    "en": "Vendors"
+  },
+  "Police": {
+    "mr": "पोलीस",
+    "hi": "पुलिस",
+    "en": "Police"
+  },
+  "NMC Control": {
+    "mr": "मनपा नियंत्रण कक्ष",
+    "hi": "नगर निगम नियंत्रण कक्ष",
+    "en": "NMC Control"
+  },
+  "Ambulance": {
+    "mr": "रुग्णवाहिका",
+    "hi": "एम्बुलेंस",
+    "en": "Ambulance"
+  },
+  "Police Escalations Terminal": {
+    "mr": "पोलीस तक्रार निवारण टर्मिनल",
+    "hi": "पुलिस शिकायत निवारण टर्मिनल",
+    "en": "Police Escalations Terminal"
+  },
+  "Police Escalation Terminal": {
+    "mr": "पोलीस तक्रार निवारण टर्मिनल",
+    "hi": "पुलिस शिकायत निवारण टर्मिनल",
+    "en": "Police Escalation Terminal"
+  },
+  "Nashik Police Command": {
+    "mr": "नाशिक पोलीस नियंत्रण कक्ष",
+    "hi": "नासिक पुलिस नियंत्रण कक्ष",
+    "en": "Nashik Police Command"
+  },
+  "Panchavati Sub-Division": {
+    "mr": "पंचवटी उपविभाग",
+    "hi": "पंचवटी उपखंड",
+    "en": "Panchavati Sub-Division"
+  },
+  "Ramkund Sector": {
+    "mr": "रामकुंड विभाग",
+    "hi": "रामकुंड सेक्टर",
+    "en": "Ramkund Sector"
+  },
+  "Live Telemetry": {
+    "mr": "थेट माहिती",
+    "hi": "लाइव टेलीमेट्री",
+    "en": "Live Telemetry"
+  },
+  "Estimated Price": {
+    "mr": "अंदाजित दर",
+    "hi": "अनुमानित दर",
+    "en": "Estimated Price"
+  },
+  "Estimated Rate": {
+    "mr": "अंदाजित दर",
+    "hi": "अनुमानित दर",
+    "en": "Estimated Rate"
+  },
+  "against estimated price of": {
+    "mr": "च्या अंदाजित दराच्या तुलनेत",
+    "hi": "के अनुमानित दर के मुकाबले",
+    "en": "against estimated price of"
+  },
+  "Unit Dispatched": {
+    "mr": "पथक रवाना झाले",
+    "hi": "दस्ता रवाना",
+    "en": "Unit Dispatched"
+  },
+  "Magistrate Notice": {
+    "mr": "दंडाधिकारी नोटीस",
+    "hi": "मजिस्ट्रेट नोटिस",
+    "en": "Magistrate Notice"
+  },
+  "FIR Recommended": {
+    "mr": "गुन्हा दाखल करण्याची शिफारस",
+    "hi": "एफआईआर की सिफारिश",
+    "en": "FIR Recommended"
+  },
+  "Dispatch Unit": {
+    "mr": "पथक रवाना करा",
+    "hi": "दस्ता रवाना करें",
+    "en": "Dispatch Unit"
+  },
+  "Incident Feed": {
+    "mr": "घटना माहिती",
+    "hi": "घटना फ़ीड",
+    "en": "Incident Feed"
+  },
+  "All Incidents": {
+    "mr": "सर्व घटना",
+    "hi": "सभी घटनाएं",
+    "en": "All Incidents"
+  },
+  "Overcharging / Extortion": {
+    "mr": "जादा दर / खंडणी",
+    "hi": "अधिक किराया / जबरन वसूली",
+    "en": "Overcharging / Extortion"
+  },
+  "Counterfeit Passes": {
+    "mr": "बनावट पास",
+    "hi": "फर्जी पास",
+    "en": "Counterfeit Passes"
+  },
+  "Unauthorized Parking Fee": {
+    "mr": "अनधिकृत पार्किंग शुल्क",
+    "hi": "अनधिकृत पार्किंग शुल्क",
+    "en": "Unauthorized Parking Fee"
+  },
+  "Sanitation Hazard / Blocking Ghat": {
+    "mr": "स्वच्छता धोका / घाट अडथळा",
+    "hi": "स्वच्छता खतरा / घाट अवरोध",
+    "en": "Sanitation Hazard / Blocking Ghat"
+  },
+  "Food Adulteration": {
+    "mr": "अन्न भेसळ",
+    "hi": "खाद्य मिलावट",
+    "en": "Food Adulteration"
+  },
+  "Emergency Dispatch": {
+    "mr": "तातडीची रवानगी",
+    "hi": "आपातकालीन रवानगी",
+    "en": "Emergency Dispatch"
+  },
+  "Action Logged": {
+    "mr": "कारवाई नोंदवली",
+    "hi": "कार्रवाई दर्ज",
+    "en": "Action Logged"
+  },
+  "Select Severity": {
+    "mr": "तीव्रता निवडा",
+    "hi": "गंभीरता चुनें",
+    "en": "Select Severity"
+  },
+  "✓ Verify On-Site (+50 Pts)": {
+    "mr": "✓ जागेवर पडताळणी करा (+५० गुण)",
+    "hi": "✓ मौके पर सत्यापन करें (+५० अंक)",
+    "en": "✓ Verify On-Site (+50 Pts)"
+  },
+  "Verified On-Site with Proof (+50 Pts)": {
+    "mr": "पुराव्यासह जागेवर पडताळणी पूर्ण (+५० गुण)",
+    "hi": "प्रमाण सहित मौके पर सत्यापन पूर्ण (+५० अंक)",
+    "en": "Verified On-Site with Proof (+50 Pts)"
+  },
+  "KumbhSetu": {
+    "mr": "कुंभसेतु",
+    "hi": "कुंभसेतु",
+    "en": "KumbhSetu"
+  },
+  "Price Gouging Alerts": {
+    "mr": "दर उल्लंघने सूचना",
+    "hi": "मूल्य उल्लंघन अलर्ट",
+    "en": "Price Gouging Alerts"
+  },
+  "Price Gouging Alerts — KumbhSetu": {
+    "mr": "दर उल्लंघने सूचना — कुंभसेतु",
+    "hi": "मूल्य उल्लंघन अलर्ट — कुंभसेतु",
+    "en": "Price Gouging Alerts — KumbhSetu"
   }
 };
 
@@ -10658,6 +11108,24 @@
       return targetLang === 'mr' ? `₹${m[1]} प्रत्यक्ष दर` : (targetLang === 'hi' ? `₹${m[1]} ऑफलाइन दर` : t);
     }
 
+    // 13. Active Reports: "6 Active Reports"
+    m = t.match(/^(\d+[\d,]*)\s*Active Reports$/i);
+    if (m) {
+      return targetLang === 'mr' ? `${m[1]} सक्रिय अहवाल` : (targetLang === 'hi' ? `${m[1]} सक्रिय रिपोर्ट्स` : t);
+    }
+
+    // 14. Daily Briefing: "Daily Briefing: 08:30 AM"
+    m = t.match(/^Daily Briefing:\s*(.*)$/i);
+    if (m) {
+      return targetLang === 'mr' ? `दैनिक आढावा: ${m[1]}` : (targetLang === 'hi' ? `दैनिक ब्रीफिंग: ${m[1]}` : t);
+    }
+
+    // 15. View All with count: "View All (6) →" or "View All (6)"
+    m = t.match(/^View All\s*\((\d+)\)\s*(?:→)?$/i);
+    if (m) {
+      return targetLang === 'mr' ? `सर्व पहा (${m[1]}) →` : (targetLang === 'hi' ? `सभी देखें (${m[1]}) →` : t);
+    }
+
     return null;
   }
 
@@ -10726,6 +11194,19 @@
       }
     }
 
+    // 7. Smart compound separator handling (" — ", " – ", " • ", " & ", " / ", " | ")
+    const sepMatch = trimmed.match(/^(.*?)\s+([—–•&/|])\s+(.*)$/);
+    if (sepMatch) {
+      const part1 = sepMatch[1].trim();
+      const sep = sepMatch[2];
+      const part2 = sepMatch[3].trim();
+      const trans1 = translateText(part1, targetLang);
+      const trans2 = translateText(part2, targetLang);
+      if ((trans1 && trans1 !== part1) || (trans2 && trans2 !== part2)) {
+        return `${trans1} ${sep} ${trans2}`;
+      }
+    }
+
     return trimmed;
   }
 
@@ -10741,8 +11222,12 @@
         if (!document._kumbhOrigTitle) {
           document._kumbhOrigTitle = document.title;
         }
-        const translatedTitle = translateText(document._kumbhOrigTitle, lang);
-        if (translatedTitle) document.title = translatedTitle;
+        if (lang === 'en') {
+          document.title = document._kumbhOrigTitle;
+        } else {
+          const translatedTitle = translateText(document._kumbhOrigTitle, lang);
+          if (translatedTitle) document.title = translatedTitle;
+        }
       }
 
       // 2. Translate explicit data-i18n elements
@@ -10866,16 +11351,21 @@
     });
 
     // 2. Header language dropdown / pill button on inner pages
-    const headerButtons = document.querySelectorAll('header button, [aria-label*="Language" i], [aria-label*="language" i], .lang-dropdown-trigger');
+    const headerButtons = document.querySelectorAll('header button.lang-dropdown-trigger, header button[aria-label*="Language" i], header button[aria-label*="language" i], header button[aria-label*="translate" i], .lang-dropdown-trigger');
     const langLabels = { en: 'English', mr: 'मराठी', hi: 'हिंदी' };
 
     headerButtons.forEach(btn => {
-      if (btn.classList.contains('lang-btn') || btn.closest('#lang-switch-group')) return;
+      if (btn.classList.contains('lang-btn') || btn.closest('#lang-switch-group') || btn.id === 'btn-admin-profile') return;
       const textSpan = btn.querySelector('span:not(.material-symbols-outlined):not(.material-icons)');
       if (textSpan) {
         textSpan.textContent = langLabels[lang] || 'English';
       }
     });
+
+    const langBtnText = document.getElementById('lang-btn-text');
+    if (langBtnText) {
+      langBtnText.textContent = langLabels[lang] || 'English';
+    }
 
     // 3. Floating language pill if active
     const floatText = document.querySelector('#kumbh-floating-lang-btn .kumbh-float-lang-text');
