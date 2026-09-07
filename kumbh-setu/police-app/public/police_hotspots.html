@@ -131,102 +131,102 @@
 <body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen">
 
   <!-- Header matching Police Suite -->
-  <header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-    <div class="h-16 px-layout-margin-mobile flex items-center justify-between gap-space-xs max-w-5xl mx-auto">
-      <div class="flex items-center gap-space-xs min-w-0 flex-1">
-        <a href="police_escalations.html" class="p-2 -ml-2 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors" title="Back to Escalations">
-          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+  <header class="fixed top-0 w-full z-50 pt-safe bg-surface/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+    <div class="h-14 sm:h-16 px-3 sm:px-layout-margin-mobile flex items-center justify-between gap-2 max-w-5xl mx-auto">
+      <div class="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+        <a href="police_escalations.html" class="p-1.5 -ml-1 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors shrink-0" title="Back to Escalations">
+          <span class="material-symbols-outlined text-[18px] sm:text-[20px]">arrow_back</span>
         </a>
-        <img alt="Kumbh Setu Emblem Wordmark" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+        <img alt="Kumbh Setu" class="h-6 sm:h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
         <div class="flex flex-col min-w-0">
-          <div class="flex items-center gap-space-2xs">
-            <span class="material-symbols-outlined text-secondary text-[16px]">shield</span>
-            <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold truncate">Nashik 2027 • Police Unit</span>
+          <div class="flex items-center gap-1">
+            <span class="font-headline-sm text-xs sm:text-sm text-on-surface truncate font-bold">AI Hotspot Radar</span>
+            <span class="inline-flex items-center px-1.5 py-0.2 bg-secondary-fixed text-on-secondary-fixed rounded text-[9px] font-mono font-bold tracking-tight shrink-0">SEC-04</span>
           </div>
-          <span class="font-headline-sm text-headline-sm text-on-surface truncate font-bold">AI Hotspot Radar</span>
+          <span class="text-[10px] text-secondary font-semibold truncate hidden sm:block">Nashik Police Unit</span>
         </div>
       </div>
 
-      <div class="flex items-center gap-space-2xs shrink-0">
-        <span class="inline-flex items-center px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed rounded font-label-sm text-label-sm font-bold tracking-tight">SEC-04</span>
-        <button id="toggleStreamBtn" onclick="toggleSimulation()" class="h-8 px-2.5 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white font-label-sm text-[11px] font-bold flex items-center gap-1 shadow-sm transition-colors cursor-pointer" type="button">
-          <span class="material-symbols-outlined text-[15px]" id="streamIcon">sensors</span>
-          <span id="streamStatusText">Live Feed</span>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button id="toggleStreamBtn" onclick="toggleSimulation()" class="h-7 sm:h-8 px-2 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white text-[10px] sm:text-[11px] font-bold flex items-center gap-1 shadow-sm transition-colors cursor-pointer" type="button">
+          <span class="material-symbols-outlined text-[13px] sm:text-[15px]" id="streamIcon">sensors</span>
+          <span id="streamStatusText">Live</span>
         </button>
-        <button aria-label="Language Toggle" class="min-h-[36px] px-2 flex items-center justify-center text-on-surface-variant font-label-md text-label-md font-bold hover:text-on-surface transition-colors rounded-lg hover:bg-surface-container" type="button">
-          <span class="px-space-2xs py-0.5 bg-surface-container-high rounded text-on-surface text-xs">मरा / EN</span>
+        <button type="button" aria-label="Toggle Language" class="lang-dropdown-trigger h-7 sm:h-8 px-2 rounded-full bg-surface-container-high hover:bg-surface-container text-on-surface text-[11px] font-semibold flex items-center gap-0.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[13px] text-primary">translate</span>
+          <span class="text-[10px] sm:text-xs">मरा/EN</span>
         </button>
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
-          <span class="material-symbols-outlined text-[18px]">person</span>
+        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0">
+          <span class="material-symbols-outlined text-[16px] sm:text-[18px]">person</span>
         </div>
       </div>
     </div>
   </header>
 
   <!-- Main Content Area -->
-  <main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen">
-    <div class="flex flex-col w-full px-layout-margin-mobile gap-space-md max-w-5xl mx-auto">
+  <main class="flex flex-col relative w-full pt-14 sm:pt-16 pb-20 sm:pb-24 bg-surface min-h-screen">
+    <div class="flex flex-col w-full px-3 sm:px-layout-margin-mobile gap-3 sm:gap-space-md max-w-5xl mx-auto">
 
       <!-- Officer Duty Presence Strip -->
-      <div class="w-full bg-surface-container-lowest rounded-xl p-space-sm shadow-sm border border-outline-variant/30 flex items-center justify-between gap-space-sm mt-3">
-        <div class="flex items-center gap-space-xs min-w-0">
+      <div class="w-full bg-surface-container-lowest rounded-xl p-2.5 sm:p-space-sm shadow-sm border border-outline-variant/30 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 mt-2 sm:mt-3">
+        <div class="flex items-center gap-2 min-w-0">
           <div class="relative shrink-0">
-            <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-sm text-headline-sm font-bold shadow-sm">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-sm text-sm font-bold shadow-sm">
               VP
             </div>
-            <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-secondary ring-2 ring-surface-container-lowest"></span>
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-secondary ring-2 ring-surface-container-lowest"></span>
           </div>
           <div class="flex flex-col min-w-0">
-            <div class="flex items-center gap-space-2xs">
-              <span class="font-label-lg text-label-lg text-on-surface font-bold truncate">Insp. Vikram Patil</span>
-              <span class="material-symbols-outlined text-primary text-[16px] shrink-0" style="font-variation-settings: 'FILL' 1;">verified</span>
+            <div class="flex items-center gap-1">
+              <span class="font-label-md text-xs sm:text-sm text-on-surface font-bold truncate">Insp. Vikram Patil</span>
+              <span class="material-symbols-outlined text-primary text-[15px] shrink-0" style="font-variation-settings: 'FILL' 1;">verified</span>
             </div>
-            <span class="font-label-sm text-label-sm text-on-surface-variant truncate">Sector 2 Desk • Duty Active (Shift B)</span>
+            <span class="text-[10px] sm:text-xs text-on-surface-variant truncate">Sector 2 Desk • Shift B Active</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-space-2xs shrink-0">
-          <span class="px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm flex items-center gap-1 font-bold">
-            <span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+        <div class="flex items-center gap-1.5 shrink-0 ml-auto sm:ml-0">
+          <span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
             <span>ML Radar Active</span>
           </span>
-          <button onclick="window.location.href='police_escalations.html'" class="px-space-xs py-1 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center gap-1 active:scale-95 transition-transform" type="button">
+          <button onclick="window.location.href='police_escalations.html'" class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface text-[11px] font-bold flex items-center gap-1 active:scale-95 transition-transform cursor-pointer" type="button">
             <span>Escalations</span>
           </button>
         </div>
       </div>
 
       <!-- Overview Metric Cards -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-space-xs">
-        <div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-          <span class="font-label-sm text-xs text-on-surface-variant font-medium">Discovered Hotspots</span>
-          <div class="flex items-baseline gap-1.5 mt-1">
-            <span class="font-headline-lg text-2xl font-bold text-primary" id="statHotspots">17</span>
-            <span class="font-label-sm text-[11px] text-secondary font-semibold">DBSCAN ε=120m</span>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+          <span class="text-[11px] text-on-surface-variant font-medium">Discovered Hotspots</span>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-xl sm:text-2xl font-bold text-primary" id="statHotspots">17</span>
+            <span class="text-[10px] text-secondary font-semibold">ε=120m</span>
           </div>
         </div>
 
-        <div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-          <span class="font-label-sm text-xs text-on-surface-variant font-medium">Triaged Incidents</span>
-          <div class="flex items-baseline gap-1.5 mt-1">
-            <span class="font-headline-lg text-2xl font-bold text-on-surface" id="statIncidents">100,000</span>
-            <span class="font-label-sm text-[11px] text-on-surface-variant">Nashik Admin</span>
+        <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+          <span class="text-[11px] text-on-surface-variant font-medium">Triaged Incidents</span>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-xl sm:text-2xl font-bold text-on-surface" id="statIncidents">100,000</span>
+            <span class="text-[10px] text-on-surface-variant">Admin</span>
           </div>
         </div>
 
-        <div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-          <span class="font-label-sm text-xs text-on-surface-variant font-medium">Top Priority Zone</span>
-          <div class="flex items-baseline gap-1.5 mt-1">
-            <span class="font-headline-lg text-2xl font-bold text-secondary" id="statTopPriority">74.9</span>
-            <span class="font-label-sm text-[11px] text-secondary font-bold truncate" id="statTopZone">Ramkund Lane</span>
+        <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+          <span class="text-[11px] text-on-surface-variant font-medium">Top Priority Zone</span>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-xl sm:text-2xl font-bold text-secondary" id="statTopPriority">74.9</span>
+            <span class="text-[10px] text-secondary font-bold truncate max-w-[80px]" id="statTopZone">Ramkund</span>
           </div>
         </div>
 
-        <div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-          <span class="font-label-sm text-xs text-on-surface-variant font-medium">Triage AI Model</span>
-          <div class="flex items-baseline gap-1.5 mt-1">
-            <span class="font-headline-lg text-lg font-bold text-primary">XGBoost v2.1</span>
-            <span class="font-label-sm text-[11px] text-on-surface-variant">KNN k=15</span>
+        <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+          <span class="text-[11px] text-on-surface-variant font-medium">Triage AI Model</span>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-base sm:text-lg font-bold text-primary">XGBoost</span>
+            <span class="text-[10px] text-on-surface-variant">k=15</span>
           </div>
         </div>
       </div>
@@ -340,27 +340,27 @@
   </div>
 
   <!-- Bottom Navigation matching Police Suite -->
-  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold">
-    <div class="flex justify-around items-center h-16 px-space-xs max-w-5xl mx-auto">
-      <a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-space-xs text-on-surface-variant transition-colors" data-path="escalations" href="police_escalations.html">
-        <span class="material-symbols-outlined text-[22px]">emergency</span>
-        <span class="font-label-sm text-label-sm mt-0.5">Escalations</span>
+  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)] border-t border-outline-variant/20" data-active-classes="text-primary font-bold">
+    <div class="flex justify-around items-center h-14 sm:h-15 px-1 max-w-5xl mx-auto">
+      <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="escalations" href="police_escalations.html">
+        <span class="material-symbols-outlined text-[20px]">emergency</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Escalations</span>
       </a>
-      <a aria-current="page" class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-space-xs text-primary font-bold transition-colors" data-path="hotspots" href="police_hotspots.html">
-        <span class="material-symbols-outlined text-[22px]">radar</span>
-        <span class="font-label-sm text-label-sm mt-0.5">AI Radar</span>
+      <a aria-current="page" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-primary font-bold transition-colors" data-path="hotspots" href="police_hotspots.html">
+        <span class="material-symbols-outlined text-[20px]">radar</span>
+        <span class="text-[10px] font-bold leading-tight tracking-tight truncate max-w-full">AI Radar</span>
       </a>
-      <a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-space-xs text-on-surface-variant transition-colors" data-path="case-detail" href="police_case_detail.html">
-        <span class="material-symbols-outlined text-[22px]">quick_reference</span>
-        <span class="font-label-sm text-label-sm mt-0.5">Case Detail</span>
+      <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="case-detail" href="police_case_detail.html">
+        <span class="material-symbols-outlined text-[20px]">quick_reference</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Case Detail</span>
       </a>
-      <a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-space-xs text-on-surface-variant transition-colors" data-path="case-log" href="police_case_log.html">
-        <span class="material-symbols-outlined text-[22px]">assignment</span>
-        <span class="font-label-sm text-label-sm mt-0.5">Case Log</span>
+      <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="case-log" href="police_case_log.html">
+        <span class="material-symbols-outlined text-[20px]">assignment</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Case Log</span>
       </a>
-      <a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-space-xs text-on-surface-variant transition-colors" data-path="police-settings" href="police_settings.html">
-        <span class="material-symbols-outlined text-[22px]">tune</span>
-        <span class="font-label-sm text-label-sm mt-0.5">Settings</span>
+      <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="police-settings" href="police_settings.html">
+        <span class="material-symbols-outlined text-[20px]">tune</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Settings</span>
       </a>
     </div>
   </nav>
@@ -384,7 +384,7 @@
     let isSimulating = true;
     let selectedCluster = null;
 
-    const API_BASE = window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '') + '';
+    const API_BASE = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + ''));
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -413,10 +413,9 @@
         zoomControl: true
       });
 
-      // CartoDB Voyager: clean, crisp, light-mode tiles matching Kumbh Setu daylight UI
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-        subdomains: 'abcd',
+      // Clean OpenStreetMap tiles: no watermarks, crisp road data
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19
       }).addTo(map);
     }

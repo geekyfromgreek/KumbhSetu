@@ -9,8 +9,8 @@
 <section class="rounded-xl bg-surface-container-high p-space-md shadow-sm relative overflow-hidden">
 <div class="flex flex-col gap-space-2xs relative z-10">
 <div class="flex items-center gap-space-xs">
-<span class="inline-flex items-center px-space-xs py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider font-semibold">
-          Live Dispatch
+      <span class="inline-flex items-center px-space-xs py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider font-semibold">
+          Active Field Audits
         </span>
 <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
 <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
@@ -165,8 +165,9 @@
 <span class="material-symbols-outlined text-[18px]">verified_user</span>
           Review Flag
         </button>
-<button class="h-10 px-space-sm rounded bg-surface-container text-on-surface font-label-md text-label-md font-semibold active:bg-surface-container-high" type="button">
-          Dispatch Squad
+<button class="h-10 px-space-sm rounded bg-surface-container text-on-surface font-label-md text-label-md font-semibold active:bg-surface-container-high flex items-center gap-1 cursor-pointer" onclick="handleAction(this, 'Audit Note Logged for Sai Auto Stand')" type="button">
+          <span class="material-symbols-outlined text-[16px]">rule</span>
+          Log Note
         </button>
 </div>
 </article>
@@ -205,7 +206,12 @@
 <span class="material-symbols-outlined text-primary text-[20px]">school</span>
 <h2 class="font-headline-sm text-headline-sm text-on-surface">Kumbhveer College Leaderboard</h2>
 </div>
-<span class="font-label-sm text-label-sm text-primary font-bold" id="kv-total-count-badge">21 Kumbhveers Active</span>
+<div class="flex items-center gap-1.5">
+  <a href="kumbhveer_portal.html" class="px-2.5 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-950 font-label-sm text-xs font-bold flex items-center gap-1 border border-amber-300 shadow-2xs transition-all">
+    <span class="material-symbols-outlined text-sm text-primary">volunteer_activism</span>
+    <span>Volunteer Desk</span>
+  </a>
+  <span class="font-label-sm text-label-sm text-primary font-bold" id="kv-total-count-badge">21 Active</span>
 </div>
 
 <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
@@ -252,7 +258,7 @@
 <div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-sm pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4" id="toast-slot">
 <div class="bg-inverse-surface text-inverse-on-surface p-space-sm rounded-lg shadow-xl flex items-center gap-space-xs">
 <span class="material-symbols-outlined text-inverse-primary text-[22px]">verified</span>
-<span class="font-label-md text-label-md leading-tight" id="toast-message">Action Dispatched Successfully</span>
+<span class="font-label-md text-label-md leading-tight" id="toast-message">Verification Action Recorded Successfully</span>
 </div>
 </div>
 </div>
@@ -280,7 +286,7 @@
     }, 600);
   }
 
-  const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || 'http://localhost:8000') + '');
+  const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '');
   let allVolunteers = [];
   let showAllVolunteers = false;
 

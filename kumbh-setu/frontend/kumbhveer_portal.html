@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#EA580C">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>KumbhSetu — Kumbhveer Volunteer Verification Desk</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  
+  <style>
+    @layer base {
+      html, body { width: 100%; margin: 0; padding: 0; min-height: 100%; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .tab-content { display: none; }
+    .tab-content.active { display: flex; }
+  </style>
+
+  <script src="api_config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#a03b00",
+            "primary-container": "#c64f0e",
+            "on-primary": "#ffffff",
+            "secondary": "#9e4041",
+            "secondary-fixed": "#ffdad8",
+            "on-secondary-fixed": "#410007",
+            "tertiary": "#7b541a",
+            "tertiary-fixed": "#ffddb5",
+            "surface": "#fbf8ff",
+            "surface-container-low": "#f5f2f9",
+            "surface-container": "#f0edf4",
+            "surface-container-high": "#eae7ee",
+            "surface-container-lowest": "#ffffff",
+            "on-surface": "#1b1b20",
+            "on-surface-variant": "#584239",
+            "outline": "#8c7167",
+            "outline-variant": "#e0c0b4"
+          },
+          fontFamily: {
+            "body-md": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-surface text-on-surface font-body-md text-sm antialiased min-h-screen flex flex-col">
+
+  <!-- Header matching Civic Suite -->
+  <header class="fixed top-0 w-full z-50 bg-surface/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe border-b border-outline-variant/20">
+    <div class="h-14 sm:h-16 px-3 sm:px-4 flex items-center justify-between gap-2 max-w-4xl mx-auto">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        <a href="nashikkar_overview.html" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors cursor-pointer rounded-full active:bg-surface-container shrink-0" title="Back to Overview">
+          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        </a>
+        <img alt="Kumbh Setu" class="h-7 sm:h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs sm:text-sm font-bold text-on-surface truncate">कुंभवीर कक्ष • Volunteer Desk</span>
+            <span class="px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 text-[9px] font-mono font-bold tracking-tight shrink-0">SEC-04</span>
+          </div>
+          <span class="text-[10px] text-primary font-semibold truncate hidden sm:block">Ramkund &amp; Panchavati Field Verification</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button type="button" aria-label="Toggle Language" class="lang-dropdown-trigger h-7 sm:h-8 px-2 rounded-full bg-surface-container-high hover:bg-surface-container text-on-surface text-[11px] font-semibold flex items-center gap-0.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[13px] text-primary">translate</span>
+          <span class="text-[10px] sm:text-xs">मरा/EN</span>
+        </button>
+        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm" title="Kumbhveer Rohit S.">
+          KV
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col relative w-full max-w-4xl mx-auto pt-16 pb-20 px-3 sm:px-4">
+    
+    <!-- Volunteer Duty & Points Status Card -->
+    <div class="w-full bg-gradient-to-r from-amber-900 via-orange-900 to-amber-950 text-white rounded-2xl p-4 shadow-sm mt-2 relative overflow-hidden border border-amber-700/50">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300 shadow-inner shrink-0">
+            <span class="material-symbols-outlined text-[28px]">volunteer_activism</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-base font-bold text-white tracking-tight">Rohit Shinde</h1>
+              <span class="px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 text-[10px] font-bold uppercase tracking-wider">Kumbhveer #KV-204</span>
+            </div>
+            <p class="text-xs text-amber-200/90 font-medium">KTHM College Nashik • Sector 4 Field Audit Hub</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="switchTab('upload')" class="h-9 px-3.5 rounded-full bg-white text-amber-950 hover:bg-amber-100 font-bold text-xs flex items-center gap-1.5 shadow cursor-pointer active:scale-95 transition-transform">
+            <span class="material-symbols-outlined text-sm text-primary">photo_camera</span>
+            <span>Upload Audit Proof</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Counters -->
+      <div class="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-amber-700/40 text-center">
+        <div class="bg-black/25 rounded-xl p-2">
+          <span class="text-[10px] text-amber-200 uppercase font-semibold">Today's Audits</span>
+          <div class="text-lg font-extrabold text-white mt-0.5">
+            <span id="statAuditedCount">42</span> <span class="text-xs text-amber-300/80 font-normal">/ 50</span>
+          </div>
+        </div>
+        <div class="bg-black/25 rounded-xl p-2">
+          <span class="text-[10px] text-amber-200 uppercase font-semibold">Seva Points</span>
+          <div class="text-lg font-extrabold text-amber-300 mt-0.5" id="statVolunteerPoints">
+            2,450
+          </div>
+        </div>
+        <div class="bg-black/25 rounded-xl p-2">
+          <span class="text-[10px] text-amber-200 uppercase font-semibold">College Rank</span>
+          <div class="text-lg font-extrabold text-emerald-400 mt-0.5">
+            #4 <span class="text-[10px] text-emerald-200 font-normal">in Nashik</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Segmented Navigation Chips -->
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-3">
+      <button onclick="switchTab('audits')" id="tab-btn-audits" class="tab-chip px-4 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
+        <span class="material-symbols-outlined text-base">checklist</span>
+        <span>Field Audits to Verify</span>
+        <span class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]" id="badgePendingAudits">20</span>
+      </button>
+
+      <button onclick="switchTab('upload')" id="tab-btn-upload" class="tab-chip px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
+        <span class="material-symbols-outlined text-base text-primary">add_a_photo</span>
+        <span>Upload Photo Proof</span>
+      </button>
+
+      <button onclick="switchTab('truth')" id="tab-btn-truth" class="tab-chip px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
+        <span class="material-symbols-outlined text-base text-secondary">fact_check</span>
+        <span>PIB Truth Desk</span>
+        <span class="px-1.5 py-0.2 rounded-full bg-red-100 text-red-800 text-[10px] font-bold">4</span>
+      </button>
+
+      <button onclick="switchTab('leaderboard')" id="tab-btn-leaderboard" class="tab-chip px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
+        <span class="material-symbols-outlined text-base text-amber-600">military_tech</span>
+        <span>Volunteer Leaderboard</span>
+      </button>
+    </div>
+
+    <!-- ==================== TAB 1: FIELD AUDITS TO VERIFY ==================== -->
+    <section id="tab-audits" class="tab-content active flex-col gap-3">
+      <!-- Search & Filter Controls -->
+      <div class="flex flex-col sm:flex-row items-center gap-2">
+        <div class="relative flex-1 w-full">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+          <input type="text" id="auditSearchInput" oninput="filterAuditsList()" placeholder="Search stall name, token #, item, lane..." class="w-full h-10 pl-9 pr-8 bg-surface-container-lowest rounded-xl text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary shadow-xs"/>
+          <button onclick="document.getElementById('auditSearchInput').value=''; filterAuditsList();" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface cursor-pointer">
+            <span class="material-symbols-outlined text-base">close</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-1 overflow-x-auto w-full sm:w-auto pb-1 no-scrollbar">
+          <button onclick="filterAuditCategory('all')" class="cat-pill active px-2.5 py-1 rounded-lg text-[11px] font-bold bg-primary text-white cursor-pointer shrink-0">All</button>
+          <button onclick="filterAuditCategory('bazaar')" class="cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">Bazaars</button>
+          <button onclick="filterAuditCategory('dharamshala')" class="cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">Dharamshala</button>
+          <button onclick="filterAuditCategory('pooja')" class="cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">Pooja &amp; Flowers</button>
+          <button onclick="filterAuditCategory('food')" class="cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">Food &amp; Milk</button>
+          <button onclick="filterAuditCategory('transit')" class="cat-pill px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer shrink-0">Transit Stands</button>
+        </div>
+      </div>
+
+      <!-- Notice Banner for Kumbhveers -->
+      <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2.5 text-amber-900 text-xs">
+        <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">verified_user</span>
+        <div class="leading-snug">
+          <strong>Kumbhveer Verification Protocol:</strong> Inspect stall rate board visibility, digital payment QR, and hygiene conditions. Tap <strong>Verify On-Site</strong> to authenticate compliance (+50 points).
+        </div>
+      </div>
+
+      <!-- Audit Cards Grid / Stream -->
+      <div id="auditsListContainer" class="flex flex-col gap-2.5">
+        <!-- Seeded dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: UPLOAD PHOTO AUDIT PROOF ==================== -->
+    <section id="tab-upload" class="tab-content flex-col gap-4">
+      <div class="bg-surface-container-lowest rounded-2xl p-4 sm:p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-3.5">
+        <div class="flex items-center gap-2 border-b border-surface-container pb-2.5">
+          <span class="material-symbols-outlined text-primary text-xl">add_photo_alternate</span>
+          <div>
+            <h2 class="font-bold text-sm text-on-surface">Submit On-Site Stall Photo &amp; Audit Evidence</h2>
+            <p class="text-[11px] text-on-surface-variant">Live geo-tagged photos prove authentic Simhastha price compliance (+75 Seva Pts).</p>
+          </div>
+        </div>
+
+        <form id="auditUploadForm" onsubmit="handleAuditUpload(event)" class="flex flex-col gap-3 text-xs">
+          <div>
+            <label class="font-semibold block mb-1">Select Stall or Lodging to Audit*</label>
+            <select id="uploadStallSelect" class="w-full h-10 px-3 bg-surface-container-low rounded-xl text-xs text-on-surface focus:ring-1 focus:ring-primary" required>
+              <option value="">-- Choose from Sector 4 Registry --</option>
+              <option value="Godavari Yatri Niwas (#NSK-GH-409)">Godavari Yatri Niwas (#NSK-GH-409, Trimbak Road)</option>
+              <option value="Shri Krishna Pooja Bhandar (#NSK-BZ-102)">Shri Krishna Pooja Bhandar (#NSK-BZ-102, Panchavati Steps)</option>
+              <option value="Balaji Prasad Ladoos (#NSK-BZ-118)">Balaji Prasad Ladoos (#NSK-BZ-118, Ramkund East)</option>
+              <option value="Sai Auto Stand (#NSK-TR-04)">Sai Auto Stand (#NSK-TR-04, Panchavati Ghat)</option>
+              <option value="Panchavati Bhojnalaya (#NSK-FD-205)">Panchavati Bhojnalaya (#NSK-FD-205, Sita Gufa Road)</option>
+              <option value="Trimbak Floral Vender Stalls (#NSK-BZ-144)">Trimbak Floral Vender Stalls (#NSK-BZ-144, Kushavarta)</option>
+              <option value="Other Custom Stall / Shop">Other Unlisted Local Stall / Shop</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="font-semibold block mb-1">Sector &amp; Location Lane</label>
+              <input type="text" id="uploadLocationInput" class="w-full h-10 px-3 bg-surface-container-low rounded-xl text-xs" value="Ramkund Ghat Steps, Sector 4"/>
+            </div>
+            <div>
+              <label class="font-semibold block mb-1">Audit Type</label>
+              <select id="uploadAuditType" class="w-full h-10 px-3 bg-surface-container-low rounded-xl text-xs">
+                <option value="Rate Card Public Display">Rate Card Public Display Inspection</option>
+                <option value="Hygiene & Drinking Water">Hygiene &amp; Free Drinking Water</option>
+                <option value="Zero Overcharging Confirmation">Zero Overcharging Price Check</option>
+                <option value="Digital QR Compliance">Digital Payment / QR Code Active</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Photo Upload Box with Preview -->
+          <div>
+            <label class="font-semibold block mb-1">On-Site Stall / Rate Board Photo*</label>
+            <div class="border-2 border-dashed border-outline-variant/60 hover:border-primary rounded-xl p-4 flex flex-col items-center justify-center gap-2 bg-surface-container-low/50 cursor-pointer text-center relative" onclick="document.getElementById('uploadFileInput').click()">
+              <input type="file" id="uploadFileInput" accept="image/*" capture="environment" class="hidden" onchange="previewUploadImage(event)" required/>
+              <div id="uploadPlaceholder" class="flex flex-col items-center">
+                <span class="material-symbols-outlined text-primary text-3xl">photo_camera</span>
+                <span class="font-bold text-xs text-on-surface mt-1">Tap to capture camera photo or browse files</span>
+                <span class="text-[10px] text-on-surface-variant">PNG, JPG up to 10MB • Auto GPS stamped</span>
+              </div>
+              <img id="uploadImgPreview" class="hidden max-h-48 rounded-lg object-contain shadow-sm border border-outline-variant/40" alt="Audit Preview"/>
+            </div>
+          </div>
+
+          <!-- Verification Checklist Checkboxes -->
+          <div class="bg-surface-container-low p-3 rounded-xl flex flex-col gap-2">
+            <span class="font-bold text-xs text-on-surface">Volunteer On-Site Checklist:</span>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="chkRateCard" checked class="w-4 h-4 text-primary rounded accent-primary"/>
+              <span>Official gazetted rate card is clearly visible to pilgrims</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="chkNoSurcharge" checked class="w-4 h-4 text-primary rounded accent-primary"/>
+              <span>No unauthorized festival surcharge or arbitrary bargaining detected</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="chkHygiene" checked class="w-4 h-4 text-primary rounded accent-primary"/>
+              <span>Clean premises &amp; potable water available for pilgrims</span>
+            </label>
+          </div>
+
+          <div>
+            <label class="font-semibold block mb-1">Kumbhveer Field Notes (Optional)</label>
+            <input type="text" id="uploadNotes" placeholder="e.g. Rate card posted in Marathi & English, owner verified." class="w-full h-10 px-3 bg-surface-container-low rounded-xl text-xs"/>
+          </div>
+
+          <button type="submit" class="w-full h-11 bg-primary hover:bg-primary-container text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-98 transition-transform cursor-pointer">
+            <span class="material-symbols-outlined text-base">cloud_upload</span>
+            <span>Submit Verified Field Evidence (+75 Points)</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Recent Uploads Stream -->
+      <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-2">
+        <h3 class="font-bold text-xs text-on-surface flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">history</span>
+          <span>Recent Field Photos Audited Today</span>
+        </h3>
+        <div id="recentPhotosList" class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+          <!-- Seeded with demo verified images -->
+          <div class="bg-surface-container-low rounded-xl p-2 flex flex-col gap-1 text-[11px] border border-outline-variant/20">
+            <img src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=300&q=80" alt="Stall Audit" class="w-full h-24 object-cover rounded-lg"/>
+            <span class="font-bold truncate text-on-surface">Pooja Samagri Stall #4</span>
+            <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]">check_circle</span> Verified 12m ago
+            </span>
+          </div>
+
+          <div class="bg-surface-container-low rounded-xl p-2 flex flex-col gap-1 text-[11px] border border-outline-variant/20">
+            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=300&q=80" alt="Stall Audit" class="w-full h-24 object-cover rounded-lg"/>
+            <span class="font-bold truncate text-on-surface">Godavari Bhawan</span>
+            <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]">check_circle</span> Verified 28m ago
+            </span>
+          </div>
+
+          <div class="bg-surface-container-low rounded-xl p-2 flex flex-col gap-1 text-[11px] border border-outline-variant/20">
+            <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=300&q=80" alt="Stall Audit" class="w-full h-24 object-cover rounded-lg"/>
+            <span class="font-bold truncate text-on-surface">Panchavati Sweets</span>
+            <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]">check_circle</span> Verified 45m ago
+            </span>
+          </div>
+
+          <div class="bg-surface-container-low rounded-xl p-2 flex flex-col gap-1 text-[11px] border border-outline-variant/20">
+            <img src="https://images.unsplash.com/photo-1605379399642-870262d3d051?w=300&q=80" alt="Stall Audit" class="w-full h-24 object-cover rounded-lg"/>
+            <span class="font-bold truncate text-on-surface">Auto Bay 4 Rate Card</span>
+            <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]">check_circle</span> Verified 1h ago
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: PIB GROUND TRUTH CELL ==================== -->
+    <section id="tab-truth" class="tab-content flex-col gap-3">
+      <div class="p-3.5 bg-red-950 text-red-100 rounded-2xl border border-red-800 flex items-start gap-2.5">
+        <span class="material-symbols-outlined text-red-400 text-xl shrink-0 mt-0.5">shield</span>
+        <div>
+          <h2 class="font-bold text-sm text-white">PIB &amp; District Police Ground Truth Desk</h2>
+          <p class="text-xs text-red-200/90 leading-relaxed mt-0.5">
+            Kumbhveers actively debunk social media rumors, verify on-ground reality at ghats, and protect pilgrims from misinformation.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2.5" id="rumorsListContainer">
+        <!-- Rumor 1 -->
+        <div class="bg-surface-container-lowest rounded-xl p-3.5 shadow-sm border border-outline-variant/30 flex flex-col gap-2">
+          <div class="flex items-start justify-between gap-2">
+            <span class="px-2 py-0.5 rounded bg-red-100 text-red-800 text-[10px] font-bold uppercase">Viral WhatsApp Message</span>
+            <span class="text-[10px] text-on-surface-variant">Spotted 15m ago</span>
+          </div>
+          <p class="font-semibold text-xs text-on-surface">"VIP Ramkund Bathing Passes being sold for ₹2,000 near CBS stand."</p>
+          <div class="p-2 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 text-[11px] leading-snug">
+            <strong>Ground Truth (PIB Verified):</strong> 100% FALSE. Simhastha holy dips across all 24 Nashik &amp; Trimbak ghats are strictly free and open to all citizens. Anyone selling passes is arrested under BNS.
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">verified</span> Debunked by Kumbhveer Squad #4
+            </span>
+            <button onclick="shareFactCheck('VIP Ramkund Bathing Passes')" class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-[11px] font-bold flex items-center gap-1 hover:bg-surface-container-high cursor-pointer">
+              <span class="material-symbols-outlined text-xs text-primary">share</span> Share Clarification
+            </button>
+          </div>
+        </div>
+
+        <!-- Rumor 2 -->
+        <div class="bg-surface-container-lowest rounded-xl p-3.5 shadow-sm border border-outline-variant/30 flex flex-col gap-2">
+          <div class="flex items-start justify-between gap-2">
+            <span class="px-2 py-0.5 rounded bg-red-100 text-red-800 text-[10px] font-bold uppercase">Social Media Post</span>
+            <span class="text-[10px] text-on-surface-variant">Spotted 40m ago</span>
+          </div>
+          <p class="font-semibold text-xs text-on-surface">"Water shortage in Tapovan Sadhu Gram Sector 3 camp."</p>
+          <div class="p-2 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 text-[11px] leading-snug">
+            <strong>Ground Truth (Volunteer Verified):</strong> 100% FALSE. Municipal water supply pipelines are functional with 18 mobile tankers stationed at Sector 3.
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">verified</span> Verified by Kumbhveer Tanmay K.
+            </span>
+            <button onclick="shareFactCheck('Tapovan Water Supply')" class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-[11px] font-bold flex items-center gap-1 hover:bg-surface-container-high cursor-pointer">
+              <span class="material-symbols-outlined text-xs text-primary">share</span> Share Clarification
+            </button>
+          </div>
+        </div>
+
+        <!-- Rumor 3 -->
+        <div class="bg-surface-container-lowest rounded-xl p-3.5 shadow-sm border border-outline-variant/30 flex flex-col gap-2">
+          <div class="flex items-start justify-between gap-2">
+            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold uppercase">Live Field Alert</span>
+            <span class="text-[10px] text-on-surface-variant">Spotted 1h ago</span>
+          </div>
+          <p class="font-semibold text-xs text-on-surface">"Trimbak road bus service suspended due to rain."</p>
+          <div class="p-2 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 text-[11px] leading-snug">
+            <strong>Ground Truth (MSRTC Verified):</strong> FALSE. Normal 10-minute interval shuttle buses are operating continuously from CBS to Trimbakeshwar.
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">verified</span> Verified by CBS Desk
+            </span>
+            <button onclick="shareFactCheck('Trimbak Bus Service')" class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-[11px] font-bold flex items-center gap-1 hover:bg-surface-container-high cursor-pointer">
+              <span class="material-symbols-outlined text-xs text-primary">share</span> Share Clarification
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: VOLUNTEER LEADERBOARD & REWARDS ==================== -->
+    <section id="tab-leaderboard" class="tab-content flex-col gap-3">
+      <div class="bg-gradient-to-r from-amber-600 to-orange-600 text-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
+        <div>
+          <h2 class="font-bold text-sm text-white">Simhastha Volunteer Honour Roll 2027</h2>
+          <p class="text-[11px] text-amber-100">Top volunteers receive the Nashik Municipal Apex Gold Seva Medal.</p>
+        </div>
+        <span class="material-symbols-outlined text-3xl text-amber-200">workspace_premium</span>
+      </div>
+
+      <!-- Top 3 Podium Cards -->
+      <div class="grid grid-cols-3 gap-2">
+        <div class="bg-surface-container-lowest rounded-xl p-3 text-center flex flex-col items-center border border-amber-300 shadow-xs relative">
+          <span class="text-xl">🥈</span>
+          <span class="text-xs font-bold text-on-surface truncate max-w-full mt-1">Sneha Joshi</span>
+          <span class="text-[10px] text-on-surface-variant truncate">Sandip Univ</span>
+          <span class="text-xs font-extrabold text-amber-700 mt-1">2,850 pts</span>
+          <span class="text-[9px] text-emerald-700 font-semibold">58 Audits</span>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-xl p-3 text-center flex flex-col items-center border-2 border-amber-500 shadow-sm relative -translate-y-1">
+          <span class="text-2xl">🥇</span>
+          <span class="text-xs font-bold text-on-surface truncate max-w-full mt-1">Tanmay Kadam</span>
+          <span class="text-[10px] text-on-surface-variant truncate">KK Wagh Engg</span>
+          <span class="text-xs font-extrabold text-amber-700 mt-1">3,120 pts</span>
+          <span class="text-[9px] text-emerald-700 font-semibold">64 Audits</span>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-xl p-3 text-center flex flex-col items-center border border-amber-300 shadow-xs relative">
+          <span class="text-xl">🥉</span>
+          <span class="text-xs font-bold text-on-surface truncate max-w-full mt-1">Pooja Deshmukh</span>
+          <span class="text-[10px] text-on-surface-variant truncate">MET Bhujbal</span>
+          <span class="text-xs font-extrabold text-amber-700 mt-1">2,610 pts</span>
+          <span class="text-[9px] text-emerald-700 font-semibold">52 Audits</span>
+        </div>
+      </div>
+
+      <!-- Full Table of 21 Volunteers -->
+      <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden">
+        <div class="px-4 py-2.5 bg-surface-container-low font-bold text-xs text-on-surface border-b border-outline-variant/20 flex justify-between">
+          <span>Rank &amp; Volunteer</span>
+          <span>Verified • Points</span>
+        </div>
+        <div class="divide-y divide-surface-container" id="leaderboardTableBody">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Specialized Kumbhveer Bottom Navigation (5 Strict Volunteer Options) -->
+  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)] border-t border-outline-variant/20">
+    <div class="flex justify-around items-center h-14 sm:h-15 px-1 max-w-4xl mx-auto">
+      <button onclick="switchTab('audits')" id="nav-btn-audits" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-primary font-bold transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">checklist</span>
+        <span class="text-[10px] font-bold leading-tight tracking-tight truncate max-w-full">Audits</span>
+      </button>
+
+      <button onclick="switchTab('upload')" id="nav-btn-upload" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">add_a_photo</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Upload Proof</span>
+      </button>
+
+      <button onclick="switchTab('truth')" id="nav-btn-truth" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">fact_check</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Truth Cell</span>
+      </button>
+
+      <button onclick="switchTab('leaderboard')" id="nav-btn-leaderboard" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">military_tech</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Leaderboard</span>
+      </button>
+
+      <a href="nashikkar_overview.html" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-[20px]">dashboard</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Overview</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-on-surface text-surface px-4 py-2.5 rounded-full text-xs font-semibold shadow-xl hidden items-center gap-2 z-50 transition-opacity">
+    <span class="material-symbols-outlined text-amber-400 text-base">check_circle</span>
+    <span id="toast-txt">Action recorded successfully!</span>
+  </div>
+
+  <script>
+    // 20 Authentic Field Audits Queued for Sector 4 Verification
+    const SEEDED_AUDITS = [
+      {
+        id: 1,
+        name: "Godavari Yatri Niwas",
+        token: "#NSK-GH-409",
+        category: "dharamshala",
+        catLabel: "Dharamshala",
+        lane: "Trimbak Road, Sector 4",
+        capRate: "₹350 / bed",
+        status: "pending",
+        checklist: ["Rate card placed at reception", "Dorm hygiene verified", "No extra booking fee"]
+      },
+      {
+        id: 2,
+        name: "Shri Krishna Pooja Samagri",
+        token: "#NSK-BZ-102",
+        category: "pooja",
+        catLabel: "Pooja & Flowers",
+        lane: "Ramkund North Steps",
+        capRate: "₹50 brass diya",
+        status: "pending",
+        checklist: ["Flower price tag displayed", "Brass item MRP confirmed", "Digital UPI active"]
+      },
+      {
+        id: 3,
+        name: "Balaji Prasad Ladoos",
+        token: "#NSK-BZ-118",
+        category: "food",
+        catLabel: "Food & Sweets",
+        lane: "Ramkund East Gate",
+        capRate: "₹120 / box",
+        status: "pending",
+        checklist: ["Food safety license displayed", "Weight scale certified", "Packaged seal intact"]
+      },
+      {
+        id: 4,
+        name: "Sai Auto Rickshaw Stand",
+        token: "#NSK-TR-04",
+        category: "transit",
+        catLabel: "Transit Stand",
+        lane: "Panchavati Ghat Bay 4",
+        capRate: "₹26 base meter",
+        status: "pending",
+        checklist: ["RTO tariff chart board legible", "Pre-paid token booth open", "Zero meter refusal"]
+      },
+      {
+        id: 5,
+        name: "Panchavati Bhojnalaya",
+        token: "#NSK-FD-205",
+        category: "food",
+        catLabel: "Food & Sweets",
+        lane: "Sita Gufa Road",
+        capRate: "₹80 thali cap",
+        status: "pending",
+        checklist: ["Thali menu board posted", "Clean drinking water provided", "Digital receipt issued"]
+      },
+      {
+        id: 6,
+        name: "Trimbak Floral Vender Stalls",
+        token: "#NSK-BZ-144",
+        category: "pooja",
+        catLabel: "Pooja & Flowers",
+        lane: "Kushavarta Kund Entrance",
+        capRate: "₹30 haar & belpatra",
+        status: "pending",
+        checklist: ["Standard basket pricing", "No forced dakshina", "Stall tag #144 verified"]
+      },
+      {
+        id: 7,
+        name: "Tapovan Yatri Pilgrim Camp #5",
+        token: "#NSK-GH-512",
+        category: "dharamshala",
+        catLabel: "Dharamshala",
+        lane: "Tapovan Sadhu Gram",
+        capRate: "Free Seva / ₹200 tent",
+        status: "pending",
+        checklist: ["Sanitation facility verified", "Potable water tested", "Doctor on call"]
+      },
+      {
+        id: 8,
+        name: "Muktidham Tourist Rest Home",
+        token: "#NSK-GH-301",
+        category: "dharamshala",
+        catLabel: "Dharamshala",
+        lane: "Nashik Road Station Lane",
+        capRate: "₹600 double room",
+        status: "pending",
+        checklist: ["Police registry ledger active", "Municipal tariff compliance", "Clean linen verified"]
+      },
+      {
+        id: 9,
+        name: "Kapaleshwar Temple Prasad Stall",
+        token: "#NSK-BZ-122",
+        category: "pooja",
+        catLabel: "Pooja & Flowers",
+        lane: "Kapaleshwar Mandir Gate",
+        capRate: "₹40 coconut prasad",
+        status: "pending",
+        checklist: ["Rate board legible", "Fresh flowers only", "UPI QR scanned and tested"]
+      },
+      {
+        id: 10,
+        name: "Someshwar Refreshment Point",
+        token: "#NSK-FD-311",
+        category: "food",
+        catLabel: "Food & Sweets",
+        lane: "Someshwar Waterfalls Lane",
+        capRate: "₹20 MRP water / ₹15 tea",
+        status: "pending",
+        checklist: ["MRP compliance verified", "Dustbin placed", "No plastic carry bags"]
+      },
+      {
+        id: 11,
+        name: "Godavari Peda & Sweets Bhandar",
+        token: "#NSK-FD-112",
+        category: "food",
+        catLabel: "Food & Sweets",
+        lane: "Raviwar Peth Market",
+        capRate: "₹320 / kg pedha",
+        status: "pending",
+        checklist: ["FSSAI badge displayed", "Electronic scale stamp current", "Pure ghee verification"]
+      },
+      {
+        id: 12,
+        name: "Gangapur Road Tulsi Kiosk",
+        token: "#NSK-BZ-133",
+        category: "pooja",
+        catLabel: "Pooja & Flowers",
+        lane: "Gangapur Ghat Approach",
+        capRate: "₹25 mala",
+        status: "pending",
+        checklist: ["Uniform price card visible", "Clean flower storage", "Volunteer verified"]
+      },
+      {
+        id: 13,
+        name: "Kalaram East Gate Cloakroom",
+        token: "#NSK-BZ-204",
+        category: "bazaar",
+        catLabel: "Bazaar & Stalls",
+        lane: "Kalaram Mandir East",
+        capRate: "₹10 per bag",
+        status: "pending",
+        checklist: ["Token receipt printer working", "CCTV coverage verified", "Tariff board visible"]
+      },
+      {
+        id: 14,
+        name: "Shahi Snan Cotton Dhoti Stall",
+        token: "#NSK-BZ-180",
+        category: "bazaar",
+        catLabel: "Bazaar & Stalls",
+        lane: "Ramkund North Bank",
+        capRate: "₹60 gamcha / ₹150 dhoti",
+        status: "pending",
+        checklist: ["Fixed price label", "Good cotton quality", "Polite conduct verified"]
+      },
+      {
+        id: 15,
+        name: "CBS Pre-paid Auto Booth",
+        token: "#NSK-TR-01",
+        category: "transit",
+        catLabel: "Transit Stand",
+        lane: "Central Bus Stand (CBS)",
+        capRate: "RTO Gazetted Rate",
+        status: "pending",
+        checklist: ["Pre-paid slip queue active", "RTO personnel stationed", "Fare chart displayed"]
+      },
+      {
+        id: 16,
+        name: "Anandwalli Snack Kiosk",
+        token: "#NSK-FD-401",
+        category: "food",
+        catLabel: "Food & Sweets",
+        lane: "Navshya Ganpati Road",
+        capRate: "₹10 tea / ₹20 poha",
+        status: "pending",
+        checklist: ["Clean drinking water", "Food covered properly", "Price card verified"]
+      },
+      {
+        id: 17,
+        name: "Sita Gufa Pilgrim Photo Studio",
+        token: "#NSK-BZ-210",
+        category: "bazaar",
+        catLabel: "Bazaar & Stalls",
+        lane: "Sita Gufa Caves Lane",
+        capRate: "₹50 instant photo",
+        status: "pending",
+        checklist: ["Rate card at counter", "Quick delivery promised", "No forced extras"]
+      },
+      {
+        id: 18,
+        name: "Panchavati Herbal Remedies",
+        token: "#NSK-BZ-230",
+        category: "bazaar",
+        catLabel: "Bazaar & Stalls",
+        lane: "Ganga Godavari Mandir",
+        capRate: "₹100 herbal pain oil",
+        status: "pending",
+        checklist: ["Ayush approval stamp", "Batch number visible", "MRP compliance"]
+      },
+      {
+        id: 19,
+        name: "Trimbakeshwar Footwear Desk",
+        token: "#NSK-BZ-301",
+        category: "bazaar",
+        catLabel: "Bazaar & Stalls",
+        lane: "Trimbak North Entry Gate",
+        capRate: "Free Seva / ₹5 token",
+        status: "pending",
+        checklist: ["Free seva counter marked", "Security token issued", "Safe shoe racks"]
+      },
+      {
+        id: 20,
+        name: "Panchavati Karanja E-Rickshaw Bay",
+        token: "#NSK-TR-09",
+        category: "transit",
+        catLabel: "Transit Stand",
+        lane: "Panchavati Karanja",
+        capRate: "₹15 shared seat",
+        status: "pending",
+        checklist: ["Standard ₹15 route board", "Green zone pass active", "No overcrowding"]
+      }
+    ];
+
+    // 21 Nashik Student Volunteers for Leaderboard
+    const VOLUNTEERS_LEADERBOARD = [
+      { rank: 1, name: "Tanmay Kadam", college: "KK Wagh Engg", audits: 64, points: 3120, badge: "Gold Seva" },
+      { rank: 2, name: "Sneha Joshi", college: "Sandip University", audits: 58, points: 2850, badge: "Gold Seva" },
+      { rank: 3, name: "Pooja Deshmukh", college: "MET Bhujbal", audits: 52, points: 2610, badge: "Silver Guard" },
+      { rank: 4, name: "Rohit Shinde (You)", college: "KTHM College", audits: 42, points: 2450, badge: "Rate Sentinel", isUser: true },
+      { rank: 5, name: "Aditya Khairnar", college: "BYK College", audits: 40, points: 2320, badge: "Silver Guard" },
+      { rank: 6, name: "Sakshi Patil", college: "Gokhale Edu Society", audits: 39, points: 2280, badge: "Silver Guard" },
+      { rank: 7, name: "Mayur Wagh", college: "MVP College", audits: 36, points: 2100, badge: "Bronze Seva" },
+      { rank: 8, name: "Pranav Bhalerao", college: "Sandip Foundation", audits: 35, points: 2050, badge: "Bronze Seva" },
+      { rank: 9, name: "Anjali Tambe", college: "KTHM College", audits: 33, points: 1940, badge: "Bronze Seva" },
+      { rank: 10, name: "Kunal Sonawane", college: "KK Wagh College", audits: 32, points: 1900, badge: "Bronze Seva" },
+      { rank: 11, name: "Shraddha Gaikwad", college: "Bhonsala Military", audits: 30, points: 1820, badge: "Seva Scout" },
+      { rank: 12, name: "Nikhil Shirsath", college: "MET BKC", audits: 29, points: 1780, badge: "Seva Scout" },
+      { rank: 13, name: "Divya Jadhav", college: "BYK Commerce", audits: 28, points: 1710, badge: "Seva Scout" },
+      { rank: 14, name: "Gaurav More", college: "HPT Arts College", audits: 26, points: 1650, badge: "Seva Scout" },
+      { rank: 15, name: "Pallavi Bhamre", college: "KTHM Science", audits: 25, points: 1600, badge: "Seva Scout" },
+      { rank: 16, name: "Chetan Suryavanshi", college: "Sandip Poly", audits: 24, points: 1540, badge: "Field Scout" },
+      { rank: 17, name: "Neha Pawar", college: "MVP Architecture", audits: 23, points: 1490, badge: "Field Scout" },
+      { rank: 18, name: "Akshay Ahire", college: "KK Wagh Agri", audits: 22, points: 1430, badge: "Field Scout" },
+      { rank: 19, name: "Rutuja Mahajan", college: "Gokhale College", audits: 20, points: 1350, badge: "Field Scout" },
+      { rank: 20, name: "Vaibhav Borse", college: "MET Pharmacy", audits: 19, points: 1280, badge: "Junior Scout" },
+      { rank: 21, name: "Kavita Chavan", college: "KTHM Arts", audits: 17, points: 1180, badge: "Junior Scout" }
+    ];
+
+    let auditsState = [...SEEDED_AUDITS];
+    let userPoints = 2450;
+    let userAudits = 42;
+    let activeCatFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Restore persisted data
+      const savedAudits = localStorage.getItem('kumbhsetu_verified_audits');
+      if (savedAudits) {
+        const verifiedIds = JSON.parse(savedAudits);
+        auditsState.forEach(a => {
+          if (verifiedIds.includes(a.id)) a.status = 'verified';
+        });
+      }
+      const savedPoints = localStorage.getItem('kumbhsetu_user_points');
+      if (savedPoints) {
+        userPoints = parseInt(savedPoints, 10);
+        document.getElementById('statVolunteerPoints').textContent = userPoints.toLocaleString();
+      }
+      const savedCount = localStorage.getItem('kumbhsetu_audited_count');
+      if (savedCount) {
+        userAudits = parseInt(savedCount, 10);
+        document.getElementById('statAuditedCount').textContent = userAudits;
+      }
+
+      renderAuditsList();
+      renderLeaderboard();
+    });
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const txt = document.getElementById('toast-txt');
+      if (toast && txt) {
+        txt.textContent = msg;
+        toast.classList.remove('hidden');
+        toast.classList.add('flex');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+          toast.classList.remove('flex');
+        }, 3200);
+      }
+    }
+
+    function switchTab(tabKey) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-chip').forEach(el => {
+        el.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+        el.classList.add('bg-surface-container-high', 'text-on-surface');
+      });
+
+      // Bottom nav button state
+      const navIds = ['audits', 'upload', 'truth', 'leaderboard'];
+      navIds.forEach(k => {
+        const btn = document.getElementById(`nav-btn-${k}`);
+        if (btn) {
+          if (k === tabKey) {
+            btn.className = 'flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-primary font-bold transition-colors cursor-pointer';
+          } else {
+            btn.className = 'flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors cursor-pointer';
+          }
+        }
+      });
+
+      const activeSection = document.getElementById(`tab-${tabKey}`);
+      if (activeSection) activeSection.classList.add('active');
+
+      const activeChip = document.getElementById(`tab-btn-${tabKey}`);
+      if (activeChip) {
+        activeChip.classList.remove('bg-surface-container-high', 'text-on-surface');
+        activeChip.classList.add('bg-primary', 'text-white', 'shadow-sm');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderAuditsList() {
+      const container = document.getElementById('auditsListContainer');
+      if (!container) return;
+
+      const q = (document.getElementById('auditSearchInput')?.value || '').trim().toLowerCase();
+      
+      const filtered = auditsState.filter(item => {
+        const matchCat = activeCatFilter === 'all' || item.category === activeCatFilter;
+        const matchQuery = !q || 
+          item.name.toLowerCase().includes(q) || 
+          item.token.toLowerCase().includes(q) || 
+          item.lane.toLowerCase().includes(q) ||
+          item.catLabel.toLowerCase().includes(q);
+        return matchCat && matchQuery;
+      });
+
+      const pendingCount = auditsState.filter(a => a.status === 'pending').length;
+      const badgeEl = document.getElementById('badgePendingAudits');
+      if (badgeEl) badgeEl.textContent = pendingCount;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">task</span>
+            <p class="font-bold text-sm">No pending audits found matching this filter.</p>
+            <p class="text-xs text-outline mt-0.5">Try clearing your search query or selecting "All".</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const isVerified = item.status === 'verified';
+        return `
+          <div class="p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm border ${isVerified ? 'border-emerald-300 bg-emerald-50/20' : 'border-outline-variant/30'} flex flex-col gap-2.5 transition-all">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${getCategoryBadgeStyle(item.category)}">${item.catLabel}</span>
+                  <span class="text-[11px] font-mono font-bold text-on-surface-variant">${item.token}</span>
+                </div>
+                <h3 class="font-bold text-sm text-on-surface truncate mt-1">${item.name}</h3>
+                <span class="text-[11px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+                  <span class="material-symbols-outlined text-[13px] text-primary">location_on</span>
+                  <span class="truncate">${item.lane}</span>
+                </span>
+              </div>
+
+              <div class="text-right shrink-0">
+                <span class="text-[10px] text-on-surface-variant block">Gazetted Cap</span>
+                <span class="text-xs font-extrabold text-primary font-mono">${item.capRate}</span>
+              </div>
+            </div>
+
+            <!-- Checkpoints list -->
+            <div class="bg-surface-container-low/80 p-2.5 rounded-xl flex flex-col gap-1 text-[11px] text-on-surface-variant">
+              ${item.checklist.map(chk => `
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[14px] ${isVerified ? 'text-emerald-700' : 'text-primary'}">check_circle</span>
+                  <span>${chk}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 pt-1">
+              ${isVerified ? `
+                <div class="w-full h-9 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-emerald-300">
+                  <span class="material-symbols-outlined text-sm">verified</span>
+                  <span>Verified On-Site by You (+50 Pts)</span>
+                </div>
+              ` : `
+                <button onclick="verifyAudit(${item.id})" class="flex-1 h-9 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-transform cursor-pointer">
+                  <span class="material-symbols-outlined text-sm">check_circle</span>
+                  <span>✓ Verify On-Site (+50 Pts)</span>
+                </button>
+                <button onclick="prefillUpload('${item.name} (${item.token})')" class="h-9 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center gap-1 cursor-pointer">
+                  <span class="material-symbols-outlined text-xs text-primary">photo_camera</span>
+                  <span class="hidden sm:inline">Photo Proof</span>
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getCategoryBadgeStyle(cat) {
+      if (cat === 'dharamshala') return 'bg-purple-100 text-purple-900';
+      if (cat === 'pooja') return 'bg-amber-100 text-amber-900';
+      if (cat === 'food') return 'bg-orange-100 text-orange-900';
+      if (cat === 'transit') return 'bg-blue-100 text-blue-900';
+      return 'bg-emerald-100 text-emerald-900';
+    }
+
+    function filterAuditCategory(cat) {
+      activeCatFilter = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.classList.remove('active', 'bg-primary', 'text-white');
+        btn.classList.add('bg-surface-container', 'text-on-surface');
+      });
+      event.target.classList.remove('bg-surface-container', 'text-on-surface');
+      event.target.classList.add('active', 'bg-primary', 'text-white');
+      renderAuditsList();
+    }
+
+    function filterAuditsList() {
+      renderAuditsList();
+    }
+
+    function verifyAudit(id) {
+      const item = auditsState.find(a => a.id === id);
+      if (!item) return;
+
+      item.status = 'verified';
+      userPoints += 50;
+      userAudits += 1;
+
+      // Update counters
+      document.getElementById('statVolunteerPoints').textContent = userPoints.toLocaleString();
+      document.getElementById('statAuditedCount').textContent = userAudits;
+
+      // Persist
+      localStorage.setItem('kumbhsetu_user_points', userPoints);
+      localStorage.setItem('kumbhsetu_audited_count', userAudits);
+      const verifiedList = auditsState.filter(a => a.status === 'verified').map(a => a.id);
+      localStorage.setItem('kumbhsetu_verified_audits', JSON.stringify(verifiedList));
+
+      showToast(`✓ "${item.name}" verified! +50 Seva Points awarded.`);
+      renderAuditsList();
+    }
+
+    function prefillUpload(stallName) {
+      switchTab('upload');
+      const select = document.getElementById('uploadStallSelect');
+      if (select) {
+        let found = false;
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].text.includes(stallName) || stallName.includes(select.options[i].value)) {
+            select.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          select.value = 'Other Custom Stall / Shop';
+        }
+      }
+    }
+
+    function previewUploadImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const preview = document.getElementById('uploadImgPreview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+        if (preview && placeholder) {
+          preview.src = evt.target.result;
+          preview.classList.remove('hidden');
+          placeholder.classList.add('hidden');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleAuditUpload(e) {
+      e.preventDefault();
+      const stall = document.getElementById('uploadStallSelect').value;
+      if (!stall) {
+        alert('Please choose a stall from the registry.');
+        return;
+      }
+
+      userPoints += 75;
+      userAudits += 1;
+      document.getElementById('statVolunteerPoints').textContent = userPoints.toLocaleString();
+      document.getElementById('statAuditedCount').textContent = userAudits;
+
+      localStorage.setItem('kumbhsetu_user_points', userPoints);
+      localStorage.setItem('kumbhsetu_audited_count', userAudits);
+
+      showToast('✓ Photo evidence submitted! +75 Seva Points earned.');
+
+      // Prepend to gallery
+      const previewSrc = document.getElementById('uploadImgPreview')?.src || 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=300&q=80';
+      const gallery = document.getElementById('recentPhotosList');
+      if (gallery) {
+        const newCard = document.createElement('div');
+        newCard.className = 'bg-surface-container-low rounded-xl p-2 flex flex-col gap-1 text-[11px] border border-emerald-300 animate-pulse';
+        newCard.innerHTML = `
+          <img src="${previewSrc}" alt="Audit" class="w-full h-24 object-cover rounded-lg"/>
+          <span class="font-bold truncate text-on-surface">${stall.split('(')[0]}</span>
+          <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-[13px]">check_circle</span> Just Now (+75 pts)
+          </span>
+        `;
+        gallery.insertBefore(newCard, gallery.firstChild);
+      }
+
+      // Reset form
+      e.target.reset();
+      document.getElementById('uploadImgPreview')?.classList.add('hidden');
+      document.getElementById('uploadPlaceholder')?.classList.remove('hidden');
+
+      setTimeout(() => switchTab('audits'), 1200);
+    }
+
+    function shareFactCheck(title) {
+      if (navigator.share) {
+        navigator.share({
+          title: `Simhastha Fact Check: ${title}`,
+          text: `Official KumbhSetu PIB Clarification regarding ${title}. Check authentic ground reality before forwarding rumors!`,
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        showToast('Link copied to clipboard for sharing!');
+      }
+    }
+
+    function renderLeaderboard() {
+      const container = document.getElementById('leaderboardTableBody');
+      if (!container) return;
+
+      container.innerHTML = VOLUNTEERS_LEADERBOARD.map(v => {
+        const isUser = v.isUser;
+        return `
+          <div class="px-4 py-3 flex items-center justify-between text-xs ${isUser ? 'bg-amber-100/60 font-bold' : 'hover:bg-surface-container-low'}">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="w-6 font-mono text-center ${v.rank <= 3 ? 'font-bold text-amber-800 text-sm' : 'text-on-surface-variant'}">${v.rank}</span>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-on-surface truncate ${isUser ? 'text-primary font-bold' : 'font-semibold'}">${v.name}</span>
+                  <span class="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase ${v.badge.includes('Gold') ? 'bg-amber-200 text-amber-950' : 'bg-slate-200 text-slate-800'}">${v.badge}</span>
+                </div>
+                <span class="text-[10px] text-on-surface-variant truncate">${v.college}</span>
+              </div>
+            </div>
+
+            <div class="text-right shrink-0">
+              <span class="font-extrabold text-amber-800 block font-mono text-xs">${v.points.toLocaleString()} pts</span>
+              <span class="text-[10px] text-emerald-700 font-semibold">${v.audits} Audits</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  </script>
+
+  <script src="supabase.js"></script>
+  <script src="i18n.js"></script>
+</body>
+</html>

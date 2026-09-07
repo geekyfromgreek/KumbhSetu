@@ -22,14 +22,18 @@
 </div>
 </div>
 <div class="flex items-center gap-2 flex-wrap">
-<button class="h-9 px-3 rounded-full bg-primary text-on-primary font-label-sm text-xs font-semibold flex items-center gap-1 shadow-sm active:scale-95 transition-transform" onclick="openGuideRegisterModal()" type="button">
-<span class="material-symbols-outlined text-[16px]">add_a_photo</span>
-<span>Register Guide (Camera AR)</span>
-</button>
-<button class="h-9 px-3 rounded-full bg-surface-container text-on-surface font-label-sm text-xs font-semibold flex items-center gap-1 border border-outline-variant/40 shadow-sm active:scale-95 transition-transform" onclick="openKumbhveerUploadModal()" type="button">
-<span class="material-symbols-outlined text-[16px] text-primary">upload_file</span>
-<span>Upload Stall Photo</span>
-</button>
+  <a href="kumbhveer_portal.html" class="h-9 px-3 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-950 font-label-sm text-xs font-semibold flex items-center gap-1 border border-amber-300 shadow-sm active:scale-95 transition-transform">
+    <span class="material-symbols-outlined text-[16px] text-primary">volunteer_activism</span>
+    <span>Kumbhveer Desk</span>
+  </a>
+  <button class="h-9 px-3 rounded-full bg-primary text-on-primary font-label-sm text-xs font-semibold flex items-center gap-1 shadow-sm active:scale-95 transition-transform" onclick="openGuideRegisterModal()" type="button">
+    <span class="material-symbols-outlined text-[16px]">add_a_photo</span>
+    <span>Register Guide</span>
+  </button>
+  <button class="h-9 px-3 rounded-full bg-surface-container text-on-surface font-label-sm text-xs font-semibold flex items-center gap-1 border border-outline-variant/40 shadow-sm active:scale-95 transition-transform" onclick="openKumbhveerUploadModal()" type="button">
+    <span class="material-symbols-outlined text-[16px] text-primary">upload_file</span>
+    <span>Upload Stall Photo</span>
+  </button>
 </div>
 </div>
 <!-- Quick Metric Sparks -->
@@ -942,7 +946,7 @@ Kumbhveer volunteers can upload on-site audit photos directly from gallery or st
         formData.append('selfie_file', fileInput.files[0]);
       }
 
-      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '') + '') + '/api/v1/verification/guide/register', {
+      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '') + '') + '') + '/api/v1/verification/guide/register', {
         method: 'POST',
         body: formData
       });

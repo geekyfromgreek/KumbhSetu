@@ -9169,49 +9169,34 @@
   function ensureLanguageButtonOnPage() {
     if (document.getElementById('lang-switch-group')) return;
 
-    // Check if any language trigger already exists anywhere on page
-    if (document.querySelector('.lang-dropdown-trigger, [aria-label*="Language" i], [aria-label*="language" i], [data-action="language"], [data-lang-trigger]')) {
+    // Check if any language trigger or translation button already exists anywhere on page
+    const existingTriggers = document.querySelectorAll('.lang-dropdown-trigger, [aria-label*="Language" i], [aria-label*="language" i], [data-action="language"], [data-lang-trigger], #kumbh-floating-lang-btn');
+    if (existingTriggers.length > 0) {
+      // If duplicates exist, remove excess
+      if (existingTriggers.length > 1) {
+        for (let i = 1; i < existingTriggers.length; i++) {
+          if (existingTriggers[i].id !== 'kumbh-floating-lang-btn') {
+            existingTriggers[i].remove();
+          }
+        }
+      }
       return;
     }
 
     const header = document.querySelector('header');
     if (header) {
-      // Check if header already contains a language trigger or button
-      if (header.querySelector('.lang-dropdown-trigger, [aria-label*="Language" i]')) {
-        return;
-      }
-      // Target the real top-level right container of header
-      const headerRight = header.lastElementChild;
-      if (headerRight && !headerRight.querySelector('[aria-label*="Language" i], .lang-dropdown-trigger')) {
-        let hasTranslate = false;
-        headerRight.querySelectorAll('button').forEach(b => {
-          if (b.innerHTML.includes('translate') || b.textContent.includes('मरा') || b.textContent.includes('English')) hasTranslate = true;
-        });
-        if (!hasTranslate) {
-          const langPill = document.createElement('button');
-          langPill.type = 'button';
-          langPill.setAttribute('aria-label', 'Toggle Language');
-          langPill.className = 'lang-dropdown-trigger h-8 px-2 sm:px-2.5 rounded-full bg-surface-container-high hover:bg-surface-container flex items-center gap-1 text-on-surface text-[11px] font-semibold transition-colors cursor-pointer';
-          langPill.innerHTML = `
-            <span class="material-symbols-outlined text-primary text-[15px]">translate</span>
-            <span class="kumbh-active-lang-label">${getSavedLang() === 'mr' ? 'मराठी' : (getSavedLang() === 'hi' ? 'हिंदी' : 'English')}</span>
-            <span class="material-symbols-outlined text-outline text-[14px]">expand_more</span>
-          `;
-          headerRight.insertBefore(langPill, headerRight.firstChild);
+      let existingBtn = null;
+      header.querySelectorAll('button, a').forEach(b => {
+        const text = (b.textContent || '').trim();
+        const html = b.innerHTML || '';
+        const label = (b.getAttribute('aria-label') || '').toLowerCase();
+        if (label.includes('lang') || html.includes('translate') || text.includes('मरा') || text.includes('English') || text.includes('हिंदी')) {
+          existingBtn = b;
         }
-      }
-    } else {
-      if (!document.getElementById('kumbh-floating-lang-btn')) {
-        const floatContainer = document.createElement('div');
-        floatContainer.id = 'kumbh-floating-lang-btn';
-        floatContainer.className = 'fixed top-3 right-3 z-50';
-        floatContainer.innerHTML = `
-          <button type="button" aria-label="Toggle Language" class="lang-dropdown-trigger flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/95 backdrop-blur-md text-on-surface shadow-md border border-outline-variant/30 text-xs font-semibold hover:bg-surface-container cursor-pointer transition-all">
-            <span class="material-symbols-outlined text-primary text-[16px]">translate</span>
-            <span class="kumbh-float-lang-text">${getSavedLang() === 'mr' ? 'मराठी' : (getSavedLang() === 'hi' ? 'हिंदी' : 'English')}</span>
-          </button>
-        `;
-        document.body.appendChild(floatContainer);
+      });
+      if (existingBtn) {
+        existingBtn.classList.add('lang-dropdown-trigger');
+        return;
       }
     }
   }

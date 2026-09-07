@@ -150,17 +150,35 @@
       </div>
     </div>
 
-    <!-- Minimalistic Destination Search Option -->
+    <!-- Universal Mandir & Destination Search Option -->
     <div class="relative flex items-center">
       <span class="material-symbols-outlined absolute left-2.5 text-primary text-[17px] pointer-events-none">search</span>
-      <input type="text" id="circuit-destination-search" list="circuit-destinations-list" placeholder="Search destination (e.g. Ramkund, Trimbak, Tapovan)..." class="w-full h-8 sm:h-9 pl-8 pr-8 rounded-lg bg-surface-container-low text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary placeholder:text-on-surface-variant/70 shadow-2xs" oninput="handleDestinationSearch(this.value)">
+      <input type="text" id="circuit-destination-search" list="circuit-destinations-list" placeholder="Search any mandir or location (e.g. Kalaram, Trimbak, Someshwar, Muktidham)..." class="w-full h-8 sm:h-9 pl-8 pr-8 rounded-lg bg-surface-container-low text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary placeholder:text-on-surface-variant/70 shadow-2xs" oninput="handleDestinationSearch(this.value)" onkeydown="if(event.key==='Enter')handleDestinationSearch(this.value, true)">
       <datalist id="circuit-destinations-list">
-        <option value="Ramkund Main Holy Ghat">
-        <option value="Kapaleshwar Mandir">
-        <option value="Sita Gufa (Panchavati)">
-        <option value="Tapovan Sadhu Gram">
+        <option value="Shri Kalaram Mandir (Panchavati)">
+        <option value="Trimbakeshwar Jyotirlinga Mandir">
+        <option value="Ramkund Main Holy Snan Ghat">
+        <option value="Someshwar Mahadev Mandir & Waterfalls">
+        <option value="Muktidham Mandir (Nashik Road)">
+        <option value="Navshya Ganpati Mandir (Anandwalli)">
+        <option value="Sundarnarayan Mandir (Panchavati)">
+        <option value="Kapaleshwar Mahadev Mandir">
+        <option value="Lakshman Ghat & Sita Gufa">
+        <option value="Tapovan Sadhu Gram & Kapila Sangam">
         <option value="Kushavarta Kund (Trimbakeshwar)">
-        <option value="Brahmagiri Mountain Source">
+        <option value="Brahmagiri Mountain & Ganga Dwar">
+        <option value="Anjaneri Hill (Hanuman Janmasthal)">
+        <option value="Naroshankar Mandir (Tarabai Bell)">
+        <option value="BAPS Shri Swaminarayan Mandir">
+        <option value="Ichhamani Ganesh Mandir (Upnagar)">
+        <option value="Dutondya Maruti Mandir">
+        <option value="Ganga Godavari Mandir">
+        <option value="Bhaktidham Temple (Peth Road)">
+        <option value="Shree Balaji Mandir (Gangapur Road)">
+        <option value="Gajpantha Jain Teerth (Mhasrul)">
+        <option value="Sant Nivrutti Nath Maharaj Samadhi">
+        <option value="Nashik Road Railway Station">
+        <option value="CBS Central Bus Stand">
       </datalist>
       <button type="button" onclick="clearDestinationSearch()" id="circuit-clear-search-btn" class="absolute right-2 text-outline hover:text-on-surface hidden p-0.5 cursor-pointer" title="Clear">
         <span class="material-symbols-outlined text-[15px]">close</span>
@@ -740,7 +758,7 @@ Helpline: 1800-233-0202
   async function loadFactChecks() {
     const activeApiBase = window.API_BASE_URL || (function() {
       const h = window.location.hostname;
-      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '';
+      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '';
     })();
     try {
       const res = await fetch(activeApiBase + '/api/v1/reports/fact-checks');
@@ -796,7 +814,7 @@ Helpline: 1800-233-0202
 
     const activeApiBase = window.API_BASE_URL || (function() {
       const h = window.location.hostname;
-      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '';
+      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '';
     })();
 
     try {
@@ -1142,7 +1160,211 @@ Helpline: 1800-233-0202
   let circuitMap = null;
   let circuitMarkers = [];
   let circuitPolyline = null;
+  let customMandirMarker = null;
   let selectedStopIndex = 0;
+  let searchDebounceTimer = null;
+
+  // Extensive Nashik & Trimbakeshwar Mandirs and Sacred Landmarks Database
+  const NASHIK_DESTINATIONS = [
+    {
+      name: "Shri Kalaram Mandir (Panchavati)",
+      short: "Kalaram Mandir",
+      category: "mandir",
+      coords: [20.0055, 73.7940],
+      dist: "1.2 km from Ramkund",
+      desc: "Historic black stone temple built in 1782 dedicated to Lord Rama, Sita and Lakshman in Panchavati.",
+      transitCost: "Panchavati to Kalaram: 5 min walk / ₹15 shared auto",
+      navUrl: "https://maps.google.com/?q=Kalaram+Temple,Panchavati,Nashik",
+      color: "#ea580c"
+    },
+    {
+      name: "Trimbakeshwar Jyotirlinga Mandir",
+      short: "Trimbakeshwar Mandir",
+      category: "mandir",
+      coords: [19.9320, 73.5315],
+      dist: "28 km west",
+      desc: "One of the 12 sacred Jyotirlingas with three-faced Linga representing Brahma, Vishnu & Rudra at Brahmagiri base.",
+      transitCost: "CBS to Trimbak: ₹45 MSRTC Bus / ₹450-₹500 Meter Auto",
+      navUrl: "https://maps.google.com/?q=Trimbakeshwar+Shiva+Temple",
+      color: "#d97706"
+    },
+    {
+      name: "Someshwar Mahadev Mandir & Waterfalls",
+      short: "Someshwar Mandir",
+      category: "mandir",
+      coords: [20.0250, 73.7430],
+      dist: "8.5 km northwest",
+      desc: "Ancient Shiva temple on the banks of Godavari with scenic waterfalls and Lord Ganesha shrine.",
+      transitCost: "CBS to Someshwar: ₹120 Meter Auto / ₹15 Citylink Bus Route 11",
+      navUrl: "https://maps.google.com/?q=Someshwar+Temple,Nashik",
+      color: "#0284c7"
+    },
+    {
+      name: "Muktidham Mandir (Nashik Road)",
+      short: "Muktidham Mandir",
+      category: "mandir",
+      coords: [19.9480, 73.8410],
+      dist: "9.2 km southeast",
+      desc: "Pure white Makrana marble temple featuring exact replicas of all 12 Jyotirlingas and 18 chapters of Bhagavad Gita.",
+      transitCost: "Ramkund to Muktidham: ₹80 Meter Auto / ₹15 Citylink Bus",
+      navUrl: "https://maps.google.com/?q=Muktidham+Temple,Nashik+Road",
+      color: "#d97706"
+    },
+    {
+      name: "Navshya Ganpati Mandir (Anandwalli)",
+      short: "Navshya Ganpati",
+      category: "mandir",
+      coords: [20.0095, 73.7485],
+      dist: "5.5 km west",
+      desc: "300-year-old historic Peshwa-era Ganesha temple revered for fulfilling wishes ('Navas').",
+      transitCost: "Ramkund to Anandwalli: ₹50 Auto / ₹10 Citylink Bus",
+      navUrl: "https://maps.google.com/?q=Navshya+Ganpati+Temple,Anandwalli,Nashik",
+      color: "#c2410c"
+    },
+    {
+      name: "Sundarnarayan Mandir (Panchavati)",
+      short: "Sundarnarayan Mandir",
+      category: "mandir",
+      coords: [19.9960, 73.7900],
+      dist: "400 m south of Ramkund",
+      desc: "Peshwa architectural masterpiece dedicated to Lord Vishnu; designed so rays of rising sun fall directly on deity feet.",
+      transitCost: "Walking distance from Ramkund (4 mins)",
+      navUrl: "https://maps.google.com/?q=Sundarnarayan+Temple,Nashik",
+      color: "#9333ea"
+    },
+    {
+      name: "Anjaneri Hill (Hanuman Janmasthal)",
+      short: "Anjaneri Hill",
+      category: "mandir",
+      coords: [19.9210, 73.5780],
+      dist: "22 km west",
+      desc: "Sacred mountain believed to be the birthplace of Lord Hanuman with hilltop Anjani Mata temple.",
+      transitCost: "CBS to Anjaneri Phata: ₹35 MSRTC Bus / ₹350 Auto",
+      navUrl: "https://maps.google.com/?q=Anjaneri+Hill,Nashik",
+      color: "#dc2626"
+    },
+    {
+      name: "Naroshankar Mandir (Tarabai Bell)",
+      short: "Naroshankar Mandir",
+      category: "mandir",
+      coords: [19.9970, 73.7945],
+      dist: "300 m east of Ramkund",
+      desc: "Famous for the historic 5-metal Portuguese bronze bell captured from Vasai Fort by Chimaji Appa in 1739.",
+      transitCost: "Walking distance along Godavari river walk",
+      navUrl: "https://maps.google.com/?q=Naroshankar+Temple,Panchavati,Nashik",
+      color: "#475569"
+    },
+    {
+      name: "BAPS Shri Swaminarayan Mandir",
+      short: "Swaminarayan Mandir",
+      category: "mandir",
+      coords: [20.0240, 73.8050],
+      dist: "4.5 km northeast",
+      desc: "Magnificent carved pink stone temple complex on Peth Road with peaceful gardens and cultural exhibition.",
+      transitCost: "Panchavati to BAPS Mandir: ₹40 Auto / ₹10 Citylink Bus",
+      navUrl: "https://maps.google.com/?q=BAPS+Shri+Swaminarayan+Mandir,Nashik",
+      color: "#b45309"
+    },
+    {
+      name: "Ichhamani Ganesh Mandir (Upnagar)",
+      short: "Ichhamani Ganesh",
+      category: "mandir",
+      coords: [19.9680, 73.8180],
+      dist: "6.8 km south",
+      desc: "Popular wish-fulfilling Ganesha shrine visited by thousands of pilgrims en route to Nashik Road.",
+      transitCost: "CBS to Ichhamani: ₹50 Auto / ₹10 Bus",
+      navUrl: "https://maps.google.com/?q=Ichhamani+Ganesh+Temple,Nashik",
+      color: "#ea580c"
+    },
+    {
+      name: "Dutondya Maruti Mandir",
+      short: "Dutondya Maruti",
+      category: "mandir",
+      coords: [19.9972, 73.7918],
+      dist: "50 m from Ramkund",
+      desc: "Two-faced idol of Lord Hanuman standing inside the bed of River Godavari. Submergence level marks flood gauge.",
+      transitCost: "Directly on Ramkund Ghat steps",
+      navUrl: "https://maps.google.com/?q=Dutondya+Maruti,Ramkund,Nashik",
+      color: "#d97706"
+    },
+    {
+      name: "Ganga Godavari Mandir",
+      short: "Ganga Godavari Mandir",
+      category: "mandir",
+      coords: [19.9976, 73.7922],
+      dist: "80 m from Ramkund",
+      desc: "Ancient temple opened only once every 12 years during Simhastha Kumbh Mela when Jupiter enters Leo.",
+      transitCost: "Directly on Ramkund Snan Ghat",
+      navUrl: "https://maps.google.com/?q=Ganga+Godavari+Temple,Ramkund,Nashik",
+      color: "#059669"
+    },
+    {
+      name: "Bhaktidham Temple (Peth Road)",
+      short: "Bhaktidham Mandir",
+      category: "mandir",
+      coords: [20.0210, 73.7980],
+      dist: "3.8 km north",
+      desc: "Beautiful temple complex housing shrines of all major Indian deities and religious literature stalls.",
+      transitCost: "Panchavati to Bhaktidham: ₹35 Auto / ₹10 Bus",
+      navUrl: "https://maps.google.com/?q=Bhaktidham+Temple,Nashik",
+      color: "#4f46e5"
+    },
+    {
+      name: "Shree Balaji Mandir (Gangapur Road)",
+      short: "Balaji Mandir",
+      category: "mandir",
+      coords: [20.0160, 73.7650],
+      dist: "5.2 km west",
+      desc: "South-Indian architectural Venkateswara temple on Gangapur Road with Tirupati-style laddu prasadam.",
+      transitCost: "CBS to Balaji Mandir: ₹60 Auto / ₹12 Bus",
+      navUrl: "https://maps.google.com/?q=Balaji+Temple,Gangapur+Road,Nashik",
+      color: "#7c3aed"
+    },
+    {
+      name: "Gajpantha Jain Teerth (Mhasrul)",
+      short: "Gajpantha Teerth",
+      category: "mandir",
+      coords: [20.0510, 73.8150],
+      dist: "8 km north",
+      desc: "Ancient Digambar Jain pilgrimage site situated on a scenic hill with 450 steps and historic monolith statues.",
+      transitCost: "CBS to Gajpantha: ₹120 Auto / ₹20 Bus",
+      navUrl: "https://maps.google.com/?q=Gajpantha+Jain+Temple,Nashik",
+      color: "#0891b2"
+    },
+    {
+      name: "Sant Nivrutti Nath Maharaj Samadhi",
+      short: "Nivrutti Nath Samadhi",
+      category: "mandir",
+      coords: [19.9360, 73.5350],
+      dist: "29 km west (Trimbakeshwar)",
+      desc: "Sacred Samadhi of Sant Nivrutti Nath (elder brother and guru of Sant Dnyaneshwar Maharaj).",
+      transitCost: "Trimbak Temple to Nivrutti Nath: 8 min walk / ₹10 E-rickshaw",
+      navUrl: "https://maps.google.com/?q=Sant+Nivruttinath+Samadhi+Mandir,Trimbakeshwar",
+      color: "#ea580c"
+    },
+    {
+      name: "Nashik Road Railway Station",
+      short: "Nashik Station",
+      category: "transit",
+      coords: [19.9547, 73.8340],
+      dist: "9 km southeast",
+      desc: "Primary rail gateway connecting Central Railway lines from Mumbai, Delhi, Varanasi, and Pune.",
+      transitCost: "Station to Ramkund: ₹80 Meter Auto / ₹15 Citylink Bus",
+      navUrl: "https://maps.google.com/?q=Nashik+Road+Railway+Station",
+      color: "#2563eb"
+    },
+    {
+      name: "CBS Central Bus Stand",
+      short: "CBS Bus Stand",
+      category: "transit",
+      coords: [19.9970, 73.7820],
+      dist: "1.8 km west of Ramkund",
+      desc: "Central MSRTC depot and municipal bus transit hub for all intercity express coaches and city shuttles.",
+      transitCost: "CBS to Ramkund: ₹25 Auto / ₹10 Citylink Bus",
+      navUrl: "https://maps.google.com/?q=Central+Bus+Stand,Nashik",
+      color: "#059669"
+    }
+  ];
 
   function initCircuitMap() {
     const mapContainer = document.getElementById('kumbh-circuit-map');
@@ -1157,10 +1379,9 @@ Helpline: 1800-233-0202
         scrollWheelZoom: false
       });
 
-      // CartoDB Voyager tiles
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-        subdomains: 'abcd',
+      // Clean OpenStreetMap tiles (no watermarks, clear road labels)
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19
       }).addTo(circuitMap);
 
@@ -1192,7 +1413,7 @@ Helpline: 1800-233-0202
         lineCap: 'round'
       }).addTo(circuitMap);
 
-      // Add numbered circular marker pins for each stop
+      // Add numbered circular marker pins for core circuit stops
       CIRCUIT_STOPS.forEach((stop, idx) => {
         const iconHtml = `
           <div style="background-color:${stop.color}; width:28px; height:28px; border-radius:50%; border:2.5px solid white; box-shadow:0 3px 8px rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:12px; font-family:sans-serif; cursor:pointer;">
@@ -1227,7 +1448,14 @@ Helpline: 1800-233-0202
         circuitMarkers.push(marker);
       });
 
-      // Refresh layout size & auto-fit bounds into sleek rectangular view
+      // Map Click / Tap to set Custom Location anywhere
+      circuitMap.on('click', (e) => {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+        setCustomMapLocation([lat, lng], `Custom Spot (${lat.toFixed(3)}, ${lng.toFixed(3)})`);
+      });
+
+      // Refresh layout size & auto-fit bounds
       setTimeout(() => {
         if (circuitMap) circuitMap.invalidateSize();
       }, 400);
@@ -1240,8 +1468,8 @@ Helpline: 1800-233-0202
     }
   }
 
-  // --- Minimalistic Destination Search & Focus ---
-  function handleDestinationSearch(query) {
+  // --- Universal Mandir & Destination Search Engine ---
+  function handleDestinationSearch(query, isImmediate = false) {
     const clearBtn = document.getElementById('circuit-clear-search-btn');
     const q = (query || '').trim().toLowerCase();
     if (clearBtn) {
@@ -1251,10 +1479,14 @@ Helpline: 1800-233-0202
       if (circuitMap) {
         circuitMap.flyTo([19.965, 73.66], 11, { duration: 0.6 });
       }
+      if (customMandirMarker && circuitMap) {
+        circuitMap.removeLayer(customMandirMarker);
+        customMandirMarker = null;
+      }
       return;
     }
 
-    // Match against CIRCUIT_STOPS
+    // 1. Check Core CIRCUIT_STOPS (0..5)
     const matchIdx = CIRCUIT_STOPS.findIndex(s => 
       s.name.toLowerCase().includes(q) || 
       (s.desc && s.desc.toLowerCase().includes(q)) ||
@@ -1263,6 +1495,169 @@ Helpline: 1800-233-0202
 
     if (matchIdx !== -1) {
       focusCircuitStop(matchIdx);
+      return;
+    }
+
+    // 2. Check 24+ NASHIK_DESTINATIONS (Kalaram, Someshwar, Muktidham, Navshya Ganpati, etc.)
+    const mandirMatch = NASHIK_DESTINATIONS.find(d => 
+      d.name.toLowerCase().includes(q) || 
+      d.short.toLowerCase().includes(q) ||
+      (d.desc && d.desc.toLowerCase().includes(q))
+    );
+
+    if (mandirMatch) {
+      focusMandirDestination(mandirMatch);
+      return;
+    }
+
+    // 3. Fallback: Real-Time OpenStreetMap Nominatim Geocoding for Custom Location
+    if (q.length >= 3) {
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      const delay = isImmediate ? 0 : 500;
+      searchDebounceTimer = setTimeout(() => {
+        geocodeCustomLocation(q);
+      }, delay);
+    }
+  }
+
+  async function geocodeCustomLocation(rawQuery) {
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(rawQuery + ' Nashik')}&bounded=1&viewbox=73.4,20.15,73.95,19.85&limit=1`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data && data.length > 0) {
+        const item = data[0];
+        const lat = parseFloat(item.lat);
+        const lng = parseFloat(item.lon);
+        const label = item.display_name.split(',')[0] || rawQuery;
+        setCustomMapLocation([lat, lng], label);
+      }
+    } catch (err) {
+      console.log('Geocoding note:', err);
+    }
+  }
+
+  function focusMandirDestination(dest) {
+    // Update Stop card DOM
+    const badgeEl = document.getElementById('circuit-stop-badge');
+    const titleEl = document.getElementById('circuit-stop-title');
+    const distEl = document.getElementById('circuit-stop-dist');
+    const descEl = document.getElementById('circuit-stop-desc');
+    const costEl = document.getElementById('circuit-stop-cost');
+    const navEl = document.getElementById('circuit-stop-nav');
+
+    if (badgeEl) {
+      badgeEl.textContent = "🛕";
+      badgeEl.style.backgroundColor = dest.color || "#a03b00";
+    }
+    if (titleEl) titleEl.textContent = dest.name;
+    if (distEl) distEl.textContent = dest.dist;
+    if (descEl) descEl.textContent = dest.desc;
+    if (costEl) costEl.textContent = dest.transitCost;
+    if (navEl) navEl.href = dest.navUrl;
+
+    // Reset chip highlights
+    document.querySelectorAll('.circuit-chip').forEach(chip => {
+      chip.className = "circuit-chip px-2.5 py-1 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high text-[11px] font-semibold shrink-0 cursor-pointer transition-all";
+    });
+
+    // Drop or update custom Mandir marker
+    if (circuitMap) {
+      if (customMandirMarker) circuitMap.removeLayer(customMandirMarker);
+
+      const mandirIcon = L.divIcon({
+        html: `
+          <div style="background-color:${dest.color || '#a03b00'}; width:32px; height:32px; border-radius:50%; border:3px solid white; box-shadow:0 4px 12px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:white; font-size:16px; cursor:pointer;">
+            🛕
+          </div>
+        `,
+        className: 'custom-mandir-pin',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16]
+      });
+
+      customMandirMarker = L.marker(dest.coords, { icon: mandirIcon }).addTo(circuitMap);
+      
+      const popupHtml = `
+        <div style="font-family:sans-serif; min-width:190px; padding:2px;">
+          <div style="font-weight:700; font-size:12px; color:#a03b00; margin-bottom:3px;">🛕 ${dest.name}</div>
+          <div style="font-size:11px; color:#475569; line-height:1.3; margin-bottom:6px;">${dest.desc}</div>
+          <div style="font-size:11px; font-weight:700; color:#d97706; padding:3px 6px; background:#fef3c7; border-radius:4px; margin-bottom:6px;">${dest.transitCost}</div>
+          <a href="${dest.navUrl}" target="_blank" style="display:block; text-align:center; background:#a03b00; color:white; border-radius:4px; padding:4px 8px; font-size:10px; font-weight:700; text-decoration:none;">Open in Google Maps</a>
+        </div>
+      `;
+
+      customMandirMarker.bindPopup(popupHtml).openPopup();
+      circuitMap.flyTo(dest.coords, 14, { duration: 0.8 });
+    }
+  }
+
+  function setCustomMapLocation(coords, name) {
+    // Calculate distance from Ramkund [19.9975, 73.7915]
+    const R = 6371; // km
+    const dLat = (coords[0] - 19.9975) * Math.PI / 180;
+    const dLon = (coords[1] - 73.7915) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(19.9975 * Math.PI / 180) * Math.cos(coords[0] * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const straightDist = R * c;
+    const roadDist = Math.max(0.5, (straightDist * 1.32)).toFixed(1);
+
+    // Estimate private auto and bus fares
+    const autoFare = Math.round(26 + Math.max(0, (roadDist - 1.5) * 16.5));
+    const busFare = roadDist > 15 ? 35 : (roadDist > 8 ? 20 : 10);
+    const transitText = `Ramkund to ${name}: ~₹${autoFare} Meter Auto / ₹${busFare} Citylink Bus (${roadDist} km)`;
+    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${coords[0]},${coords[1]}`;
+
+    // Update DOM
+    const badgeEl = document.getElementById('circuit-stop-badge');
+    const titleEl = document.getElementById('circuit-stop-title');
+    const distEl = document.getElementById('circuit-stop-dist');
+    const descEl = document.getElementById('circuit-stop-desc');
+    const costEl = document.getElementById('circuit-stop-cost');
+    const navEl = document.getElementById('circuit-stop-nav');
+
+    if (badgeEl) {
+      badgeEl.textContent = "📍";
+      badgeEl.style.backgroundColor = "#a03b00";
+    }
+    if (titleEl) titleEl.textContent = name;
+    if (distEl) distEl.textContent = `${roadDist} km from Ramkund Base`;
+    if (descEl) descEl.textContent = `Custom pinned location in Nashik Simhastha zone (${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}). Direct transit & navigation available.`;
+    if (costEl) costEl.textContent = transitText;
+    if (navEl) navEl.href = navUrl;
+
+    // Drop Pin
+    if (circuitMap) {
+      if (customMandirMarker) circuitMap.removeLayer(customMandirMarker);
+
+      const pinIcon = L.divIcon({
+        html: `
+          <div style="background-color:#a03b00; width:32px; height:32px; border-radius:50%; border:3px solid white; box-shadow:0 4px 12px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:white; font-size:15px; cursor:pointer;">
+            📍
+          </div>
+        `,
+        className: 'custom-pin',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16]
+      });
+
+      customMandirMarker = L.marker(coords, { icon: pinIcon }).addTo(circuitMap);
+      
+      const popupHtml = `
+        <div style="font-family:sans-serif; min-width:180px; padding:2px;">
+          <div style="font-weight:700; font-size:12px; color:#a03b00; margin-bottom:3px;">📍 ${name}</div>
+          <div style="font-size:11px; color:#475569; line-height:1.3; margin-bottom:4px;">${roadDist} km from Ramkund</div>
+          <div style="font-size:11px; font-weight:700; color:#d97706; padding:3px 6px; background:#fef3c7; border-radius:4px; margin-bottom:6px;">${transitText}</div>
+          <a href="${navUrl}" target="_blank" style="display:block; text-align:center; background:#a03b00; color:white; border-radius:4px; padding:4px 8px; font-size:10px; font-weight:700; text-decoration:none;">Directions in Google Maps</a>
+        </div>
+      `;
+
+      customMandirMarker.bindPopup(popupHtml).openPopup();
+      circuitMap.flyTo(coords, 14, { duration: 0.8 });
     }
   }
 
@@ -1276,6 +1671,11 @@ Helpline: 1800-233-0202
     selectedStopIndex = idx;
     const stop = CIRCUIT_STOPS[idx];
     if (!stop) return;
+
+    if (customMandirMarker && circuitMap) {
+      circuitMap.removeLayer(customMandirMarker);
+      customMandirMarker = null;
+    }
 
     // Update stop card DOM
     const badgeEl = document.getElementById('circuit-stop-badge');

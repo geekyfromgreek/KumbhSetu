@@ -256,6 +256,41 @@
 
     </section>
 
+    <!-- Universal Mandir & Destination Search for Fares -->
+    <div class="relative flex items-center mb-1">
+      <span class="material-symbols-outlined absolute left-3 text-primary text-[18px] pointer-events-none">search</span>
+      <input type="text" id="fare-destination-search" list="fare-destinations-list" placeholder="Search any mandir or destination (e.g. Kalaram, Trimbak, Someshwar, Muktidham)..." class="w-full h-10 pl-9 pr-9 rounded-xl bg-surface-container-lowest text-xs text-on-surface border border-primary/30 focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-on-surface-variant/70 shadow-xs font-semibold" oninput="handleFareDestinationSearch(this.value)" onkeydown="if(event.key==='Enter')handleFareDestinationSearch(this.value, true)">
+      <datalist id="fare-destinations-list">
+        <option value="Shri Kalaram Mandir (Panchavati)">
+        <option value="Trimbakeshwar Jyotirlinga Mandir">
+        <option value="Ramkund Main Holy Snan Ghat">
+        <option value="Someshwar Mahadev Mandir & Waterfalls">
+        <option value="Muktidham Mandir (Nashik Road)">
+        <option value="Navshya Ganpati Mandir (Anandwalli)">
+        <option value="Sundarnarayan Mandir (Panchavati)">
+        <option value="Kapaleshwar Mahadev Mandir">
+        <option value="Lakshman Ghat & Sita Gufa">
+        <option value="Tapovan Sadhu Gram & Kapila Sangam">
+        <option value="Kushavarta Kund (Trimbakeshwar)">
+        <option value="Brahmagiri Mountain & Ganga Dwar">
+        <option value="Anjaneri Hill (Hanuman Janmasthal)">
+        <option value="Naroshankar Mandir (Tarabai Bell)">
+        <option value="BAPS Shri Swaminarayan Mandir">
+        <option value="Ichhamani Ganesh Mandir (Upnagar)">
+        <option value="Dutondya Maruti Mandir">
+        <option value="Ganga Godavari Mandir">
+        <option value="Bhaktidham Temple (Peth Road)">
+        <option value="Shree Balaji Mandir (Gangapur Road)">
+        <option value="Gajpantha Jain Teerth (Mhasrul)">
+        <option value="Sant Nivrutti Nath Maharaj Samadhi">
+        <option value="Nashik Road Railway Station">
+        <option value="CBS Central Bus Stand">
+      </datalist>
+      <button type="button" onclick="clearFareDestinationSearch()" id="fare-clear-search-btn" class="absolute right-2.5 text-outline hover:text-on-surface hidden p-0.5 cursor-pointer" title="Clear">
+        <span class="material-symbols-outlined text-[16px]">close</span>
+      </button>
+    </div>
+
     <!-- Route Calculator Box (Synced 2-Way with Map) -->
     <section class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-primary/20 relative overflow-hidden">
       <div class="flex items-center gap-3">
@@ -273,6 +308,10 @@
               <option value="muktidham">Muktidham Temple</option>
               <option value="someshwar">Someshwar Waterfalls</option>
               <option value="kalaram">Shree Kalaram Mandir</option>
+              <option value="navshya">Navshya Ganpati Mandir</option>
+              <option value="sundarnarayan">Sundarnarayan Mandir</option>
+              <option value="swaminarayan">BAPS Swaminarayan Mandir</option>
+              <option value="kapaleshwar">Kapaleshwar Mahadev Mandir</option>
               <option value="custom" id="opt-from-custom" class="hidden">📍 Custom Pinned Location</option>
             </select>
           </div>
@@ -293,6 +332,10 @@
               <option value="someshwar">Someshwar Waterfalls (11 km)</option>
               <option value="tapovan">Tapovan Sadhu Gram (3.2 km)</option>
               <option value="kalaram">Shree Kalaram Mandir</option>
+              <option value="navshya">Navshya Ganpati Mandir</option>
+              <option value="sundarnarayan">Sundarnarayan Mandir</option>
+              <option value="swaminarayan">BAPS Swaminarayan Mandir</option>
+              <option value="kapaleshwar">Kapaleshwar Mahadev Mandir</option>
               <option value="custom" id="opt-to-custom" class="hidden">📍 Custom Pinned Location</option>
             </select>
           </div>
@@ -435,7 +478,7 @@
   </nav>
 
   <script>
-    // Known Nashik Coordinates & Landmarks Database
+    // Known Nashik Coordinates & Landmarks Database (Expanded with 24+ Mandirs & Hubs)
     const LANDMARKS = {
       'ramkund': { name: 'Ramkund Main Ghat (Panchavati)', lat: 19.9975, lng: 73.7915, distKey: 'ramkund' },
       'station': { name: 'Nashik Road Railway Station', lat: 19.9547, lng: 73.8340, distKey: 'station' },
@@ -444,8 +487,100 @@
       'tapovan': { name: 'Tapovan Sadhu Gram Hub', lat: 19.9920, lng: 73.8150, distKey: 'tapovan' },
       'muktidham': { name: 'Muktidham Temple', lat: 19.9480, lng: 73.8410, distKey: 'muktidham' },
       'someshwar': { name: 'Someshwar Waterfalls', lat: 20.0250, lng: 73.7430, distKey: 'someshwar' },
-      'kalaram': { name: 'Shree Kalaram Mandir', lat: 20.0055, lng: 73.7940, distKey: 'kalaram' }
+      'kalaram': { name: 'Shree Kalaram Mandir', lat: 20.0055, lng: 73.7940, distKey: 'kalaram' },
+      'navshya': { name: 'Navshya Ganpati Mandir (Anandwalli)', lat: 20.0095, lng: 73.7485, distKey: 'navshya' },
+      'sundarnarayan': { name: 'Sundarnarayan Mandir (Panchavati)', lat: 19.9960, lng: 73.7900, distKey: 'sundarnarayan' },
+      'swaminarayan': { name: 'BAPS Shri Swaminarayan Mandir', lat: 20.0240, lng: 73.8050, distKey: 'swaminarayan' },
+      'kapaleshwar': { name: 'Kapaleshwar Mahadev Mandir', lat: 19.9988, lng: 73.7925, distKey: 'kapaleshwar' },
+      'anjaneri': { name: 'Anjaneri Hill (Hanuman Janmasthal)', lat: 19.9210, lng: 73.5780, distKey: 'anjaneri' },
+      'sitagufa': { name: 'Lakshman Ghat & Sita Gufa', lat: 20.0010, lng: 73.7950, distKey: 'sitagufa' },
+      'brahmagiri': { name: 'Brahmagiri Mountain & Ganga Dwar', lat: 19.9380, lng: 73.5180, distKey: 'brahmagiri' },
+      'kushavarta': { name: 'Kushavarta Kund (Trimbak)', lat: 19.9325, lng: 73.5305, distKey: 'kushavarta' },
+      'naroshankar': { name: 'Naroshankar Mandir (Tarabai Bell)', lat: 19.9970, lng: 73.7945, distKey: 'naroshankar' },
+      'ichhamani': { name: 'Ichhamani Ganesh Mandir (Upnagar)', lat: 19.9680, lng: 73.8180, distKey: 'ichhamani' },
+      'dutondya': { name: 'Dutondya Maruti Mandir', lat: 19.9972, lng: 73.7918, distKey: 'dutondya' },
+      'gangagodavari': { name: 'Ganga Godavari Mandir', lat: 19.9976, lng: 73.7922, distKey: 'gangagodavari' },
+      'bhaktidham': { name: 'Bhaktidham Temple (Peth Road)', lat: 20.0210, lng: 73.7980, distKey: 'bhaktidham' },
+      'balaji': { name: 'Shree Balaji Mandir (Gangapur Rd)', lat: 20.0160, lng: 73.7650, distKey: 'balaji' },
+      'gajpantha': { name: 'Gajpantha Jain Teerth (Mhasrul)', lat: 20.0510, lng: 73.8150, distKey: 'gajpantha' },
+      'nivruttinath': { name: 'Sant Nivrutti Nath Maharaj Samadhi', lat: 19.9360, lng: 73.5350, distKey: 'nivruttinath' }
     };
+
+    let fareSearchDebounceTimer = null;
+
+    function handleFareDestinationSearch(query, isImmediate = false) {
+      const clearBtn = document.getElementById('fare-clear-search-btn');
+      const q = (query || '').trim().toLowerCase();
+      if (clearBtn) {
+        clearBtn.classList.toggle('hidden', q.length === 0);
+      }
+      if (!q) return;
+
+      // Check in LANDMARKS
+      let matchedKey = null;
+      for (const [key, item] of Object.entries(LANDMARKS)) {
+        if (item.name.toLowerCase().includes(q) || key.toLowerCase().includes(q)) {
+          matchedKey = key;
+          break;
+        }
+      }
+
+      if (matchedKey) {
+        const item = LANDMARKS[matchedKey];
+        dropCoords = [item.lat, item.lng];
+        dropName = item.name;
+        if (dropMarker) {
+          dropMarker.setLatLng(dropCoords);
+          dropMarker.setPopupContent('<b>Destination Point</b><br/>' + dropName);
+        }
+        syncDropdownWithCustom('to', dropName);
+        drawRouteAndComputeFares();
+        if (map) {
+          map.fitBounds(L.latLngBounds([pickupCoords, dropCoords]), { padding: [50, 50], maxZoom: 15 });
+          dropMarker.openPopup();
+        }
+        return;
+      }
+
+      // Nominatim Geocoding fallback for custom queries
+      if (q.length >= 3) {
+        if (fareSearchDebounceTimer) clearTimeout(fareSearchDebounceTimer);
+        const delay = isImmediate ? 0 : 500;
+        fareSearchDebounceTimer = setTimeout(async () => {
+          try {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q + ' Nashik')}&bounded=1&viewbox=73.4,20.15,73.95,19.85&limit=1`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data && data.length > 0) {
+              const item = data[0];
+              const lat = parseFloat(item.lat);
+              const lng = parseFloat(item.lon);
+              const label = item.display_name.split(',')[0] || query;
+              dropCoords = [lat, lng];
+              dropName = label;
+              if (dropMarker) {
+                dropMarker.setLatLng(dropCoords);
+                dropMarker.setPopupContent('<b>Custom Destination</b><br/>' + dropName);
+              }
+              syncDropdownWithCustom('to', dropName);
+              drawRouteAndComputeFares();
+              if (map) {
+                map.fitBounds(L.latLngBounds([pickupCoords, dropCoords]), { padding: [50, 50], maxZoom: 15 });
+                dropMarker.openPopup();
+              }
+            }
+          } catch (e) {
+            console.log('Fare search geocode note:', e);
+          }
+        }, delay);
+      }
+    }
+
+    function clearFareDestinationSearch() {
+      const input = document.getElementById('fare-destination-search');
+      if (input) input.value = '';
+      handleFareDestinationSearch('');
+    }
 
     // Calibrated Road Distance Matrix for Core Pilgrimage Routes (in km)
     const ROAD_DISTANCE_MATRIX = {
@@ -1126,11 +1261,10 @@
           zoomOffset: -1
         });
       } else {
-        // Free, high-performance CartoDB Voyager (No API key required)
-        currentTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; <a href="https://carto.com/">CARTO</a>, OSM',
-          maxZoom: 19,
-          subdomains: 'abcd'
+        // Free OpenStreetMap Standard Tiles (No watermark, clear road labels)
+        currentTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19
         });
       }
 
