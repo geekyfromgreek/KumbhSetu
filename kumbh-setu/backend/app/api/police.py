@@ -9,6 +9,17 @@ from datetime import datetime, timezone
 from pydantic import BaseModel
 import uuid
 import time
+import os
+import httpx
+from pathlib import Path
+from dotenv import load_dotenv
+
+env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
+SUPABASE_URL = (os.getenv("SUPABASE_URL") or "https://asparwhkzpnnittnhsic.supabase.co").rstrip("/")
+SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY", "")
+
 from ..schemas.schemas import EscalationResponse, EscalationUpdate, CaseStatus
 from ..core.security import require_police, CurrentUser
 from ..db.supabase_client import get_connection, now_iso, rows_to_list
@@ -55,6 +66,7 @@ class DispatchRequest(BaseModel):
     hotspot_name: str
     officer_badge: str = "MH-15-POLICE-0482"
     unit_name: str = "Sector 2 Flying Squad Alpha"
+    severity: Optional[str] = "critical"
 
 
 @router.get("/hotspots")
@@ -124,9 +136,10 @@ def dispatch_patrol(req: DispatchRequest):
         "hotspot_name": req.hotspot_name,
         "officer_badge": req.officer_badge,
         "unit_name": req.unit_name,
+        "severity": req.severity,
         "dispatched_at": int(time.time()),
         "eta_minutes": 4,
-        "message": f"Flying squad {req.unit_name} dispatched to {req.hotspot_name}."
+        "message": f"Flying squad {req.unit_name} [{(req.severity or 'critical').upper()}] dispatched to {req.hotspot_name}."
     }
 
 
@@ -221,9 +234,50 @@ async def update_escalation(
             "UPDATE reports SET status = ?, updated_at = ? WHERE id = ?",
             ("Forwarded to Fact-Check", now, row["report_id"])
         )
+    elif update.status == CaseStatus.RESOLVED:
+        conn.execute(
+            "UPDATE reports SET status = 'Resolved', updated_at = ? WHERE id = ?",
+            (now, row["report_id"])
+        )
 
     conn.commit()
-    return {"message": "Escalation updated", "id": escalation_id}
+
+    # Synchronize to Supabase escalations & reports
+    if SUPABASE_SERVICE_ROLE_KEY:
+        try:
+            async with httpx.AsyncClient() as client:
+                sb_updates = {"status": updates.get("status", row["status"]), "updated_at": now}
+                if "assigned_to" in updates:
+                    sb_updates["assigned_to"] = updates["assigned_to"]
+                if "notes" in updates:
+                    sb_updates["notes"] = updates["notes"]
+
+                await client.patch(
+                    f"{SUPABASE_URL}/rest/v1/escalations?id=eq.{escalation_id}",
+                    headers={
+                        "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    json=sb_updates,
+                    timeout=5.0
+                )
+
+                if update.status == CaseStatus.RESOLVED and row["report_id"]:
+                    await client.patch(
+                        f"{SUPABASE_URL}/rest/v1/reports?id=eq.{row['report_id']}",
+                        headers={
+                            "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                            "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                            "Content-Type": "application/json"
+                        },
+                        json={"status": "Resolved", "updated_at": now},
+                        timeout=5.0
+                    )
+        except Exception as sb_err:
+            print(f"[PoliceSupabaseSync] Error: {sb_err}")
+
+    return {"message": "Escalation updated", "id": escalation_id, "status": updates.get("status", "Updated")}
 
 
 @router.get("/case-log")

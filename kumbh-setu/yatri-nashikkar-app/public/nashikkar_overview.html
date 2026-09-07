@@ -1,405 +1,1040 @@
 <!DOCTYPE html>
-
-<html class="h-full" lang="en"><head>
+<html class="h-full" lang="en">
+<head>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#EA580C">
-  <link rel="apple-touch-icon" href="icon-192.png"><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;min-height:100%;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="api_config.js"></script><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "inverse-primary": "#ffb597", "on-secondary": "#ffffff", "on-surface": "#1b1b20", "on-surface-variant": "#584239", "primary-container": "#c64f0e", "surface-dim": "#dbd9e0", "on-primary-container": "#fffbff", "surface-variant": "#e4e1e8", "error": "#ba1a1a", "secondary-fixed": "#ffdad8", "tertiary-fixed": "#ffddb5", "secondary-container": "#fd8a88", "tertiary-container": "#976c31", "on-secondary-fixed": "#410007", "surface-container-lowest": "#ffffff", "on-tertiary-container": "#fffbff", "background": "#fbf8ff", "on-primary": "#ffffff", "secondary-fixed-dim": "#ffb3b0", "on-primary-fixed-variant": "#7d2d00", "tertiary-fixed-dim": "#f1bd79", "surface-bright": "#fbf8ff", "outline": "#8c7167", "on-tertiary": "#ffffff", "surface": "#fbf8ff", "surface-container-low": "#f5f2f9", "surface-container-high": "#eae7ee", "on-secondary-container": "#752125", "on-error": "#ffffff", "secondary": "#9e4041", "on-secondary-fixed-variant": "#7f292b", "on-tertiary-fixed-variant": "#633f04", "surface-tint": "#a43d00", "inverse-surface": "#303035", "tertiary": "#7b541a", "on-primary-fixed": "#360f00", "surface-container-highest": "#e4e1e8", "primary-fixed-dim": "#ffb597", "on-error-container": "#93000a", "error-container": "#ffdad6", "primary-fixed": "#ffdbcd", "outline-variant": "#e0c0b4", "primary": "#a03b00", "on-background": "#1b1b20", "surface-container": "#f0edf4", "on-tertiary-fixed": "#2a1800", "inverse-on-surface": "#f2eff6" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-md": "1rem", "space-2xl": "3rem", "layout-max-width": "75rem", "layout-margin-mobile": "1rem", "space-sm": "0.75rem", "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "space-3xl": "4rem", "space-lg": "1.5rem", "layout-margin-tablet": "2rem", "space-2xs": "0.25rem", "layout-margin-desktop": "3rem", "gutter-mobile": "0.75rem", "space-xl": "2rem" }, "fontFamily": { "body-md": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-lg": ["Inter"], "headline-md": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "display-lg-mobile": ["Plus Jakarta Sans"], "label-md": ["Inter"], "body-sm": ["Inter"] }, "fontSize": { "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}], "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}], "label-lg": ["15px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}], "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600"}], "display-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.005em", "fontWeight": "600"}], "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600"}], "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400"}], "headline-xl-mobile": ["26px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}], "label-sm": ["11px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600"}], "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700"}], "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600"}], "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.005em", "fontWeight": "400"}] } } } };</script></head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-layout-margin-mobile flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs min-w-0"><img alt="Kumbh Setu Emblem Wordmark" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-2xs"><span class="font-label-sm text-label-sm text-secondary uppercase font-semibold tracking-wider truncate">Nashikkar Portal</span><span class="px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[10px] uppercase font-bold tracking-tight shrink-0">Citizen</span></div><span class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">Overview</span></div></div><div class="flex items-center gap-space-xs shrink-0"><button aria-label="Toggle Language" class="h-11 px-space-xs flex items-center justify-center gap-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high active:bg-surface-dim transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-secondary">translate</span><span class="font-medium">EN | मरा</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface px-layout-margin-mobile"><div class="flex flex-col w-full gap-space-md">
-<!-- Municipal Operational Zone Header -->
-<section class="rounded-xl bg-surface-container-high p-space-md shadow-sm relative overflow-hidden">
-<div class="flex flex-col gap-space-2xs relative z-10">
-<div class="flex items-center gap-space-xs">
-      <span class="inline-flex items-center px-space-xs py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider font-semibold">
-          Active Field Audits
-        </span>
-<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
-          Simhastha 2027 Field Node
-        </span>
-</div>
-<h1 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">
-        Nashik Municipal Civic Coordination
-      </h1>
-<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
-        Zone 2 (Panchavati / Ramkund Sector)
-      </p>
-</div>
-<div class="mt-space-sm pt-space-xs flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm border-t-0 bg-surface-container-lowest/60 -mx-space-md -mb-space-md px-space-md py-space-xs">
-<span class="flex items-center gap-1">
-<span class="material-symbols-outlined text-[15px] text-tertiary">schedule</span>
-        Gazette Cycle: Morning Sync 08:30 AM
-      </span>
-<span class="font-semibold text-secondary flex items-center gap-0.5">
-        Sector 02-B High Vigilance
-      </span>
-</div>
-</section>
-<!-- Quick Shortcut Actions -->
-<section class="flex gap-space-xs overflow-x-auto pb-1 -mx-layout-margin-mobile px-layout-margin-mobile scroll-smooth">
-<button class="shrink-0 flex items-center gap-space-xs px-space-sm h-12 rounded bg-primary text-on-primary font-label-lg text-label-lg shadow-sm active:scale-95 transition-transform" onclick="window.location.href='report_issue.html'" type="button">
-<span class="material-symbols-outlined text-[20px]">report_problem</span>
-<span>+ Report Civic Issue</span>
-</button>
-<button class="shrink-0 flex items-center gap-space-xs px-space-sm h-12 rounded bg-secondary text-on-secondary font-label-lg text-label-lg shadow-sm active:scale-95 transition-transform" onclick="window.location.href='price_flags.html'" type="button">
-<span class="material-symbols-outlined text-[20px]">warning</span>
-<span>Inspect Price Flags (6)</span>
-</button>
-<button class="shrink-0 flex items-center gap-space-xs px-space-sm h-12 rounded bg-surface-container-high text-on-surface font-label-lg text-label-lg shadow-sm active:scale-95 transition-transform" onclick="window.location.href='fare_board.html'" type="button">
-<span class="material-symbols-outlined text-[20px] text-tertiary">price_change</span>
-<span>Gazette Rates</span>
-</button>
-<button class="shrink-0 flex items-center gap-space-xs px-space-sm h-12 rounded bg-surface-container-high text-on-surface font-label-lg text-label-lg shadow-sm active:scale-95 transition-transform" onclick="window.location.href='kumbhveer_portal.html'" type="button">
-<span class="material-symbols-outlined text-[20px] text-primary">volunteer_activism</span>
-<span>Volunteer Desk</span>
-</button>
-</section>
-<!-- Operational Snapshot KPI Grid -->
-<section class="flex flex-col gap-space-xs">
-<div class="flex items-center justify-between">
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Operational Snapshot</h2>
-<span class="font-label-sm text-label-sm text-primary font-semibold">Real-time Telemetry</span>
-</div>
-<div class="grid grid-cols-2 gap-space-xs">
-<!-- KPI 1 -->
-<div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between min-w-0">
-<div class="flex items-start justify-between gap-1">
-<span class="p-1.5 rounded bg-surface-container text-primary flex items-center justify-center">
-<span class="material-symbols-outlined text-[18px]">assignment_turned_in</span>
-</span>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-semibold">Queue</span>
-</div>
-<div class="mt-space-sm">
-<div class="font-headline-xl-mobile text-headline-xl-mobile font-bold text-on-surface leading-none">14</div>
-<div class="font-label-md text-label-md text-on-surface font-semibold mt-1">Civic Grievances</div>
-<div class="font-body-sm text-body-sm text-on-surface-variant truncate text-[12px] leading-tight mt-0.5">Municipal review queue</div>
-</div>
-</div>
-<!-- KPI 2 -->
-<div class="p-space-sm rounded-xl bg-secondary-fixed text-on-secondary-fixed shadow-sm flex flex-col justify-between min-w-0">
-<div class="flex items-start justify-between gap-1">
-<span class="p-1.5 rounded bg-secondary text-on-secondary flex items-center justify-center">
-<span class="material-symbols-outlined text-[18px]">flag</span>
-</span>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-on-secondary-fixed text-secondary-fixed font-semibold animate-pulse">Critical</span>
-</div>
-<div class="mt-space-sm">
-<div class="font-headline-xl-mobile text-headline-xl-mobile font-bold text-on-secondary-fixed leading-none">6</div>
-<div class="font-label-md text-label-md text-on-secondary-fixed font-bold mt-1">Active Price Flags</div>
-<div class="font-body-sm text-body-sm text-on-secondary-fixed-variant truncate text-[12px] leading-tight mt-0.5">Reported by Yatris</div>
-</div>
-</div>
-<!-- KPI 3 -->
-<div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between min-w-0">
-<div class="flex items-start justify-between gap-1">
-<span class="p-1.5 rounded bg-surface-container text-tertiary flex items-center justify-center">
-<span class="material-symbols-outlined text-[18px]">nature_people</span>
-</span>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-semibold">Volunteers</span>
-</div>
-<div class="mt-space-sm">
-<div class="font-headline-xl-mobile text-headline-xl-mobile font-bold text-on-surface leading-none">9</div>
-<div class="font-label-md text-label-md text-on-surface font-semibold mt-1">In-Progress</div>
-<div class="font-body-sm text-body-sm text-on-surface-variant truncate text-[12px] leading-tight mt-0.5">Students on field</div>
-</div>
-</div>
-<!-- KPI 4 -->
-<div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between min-w-0">
-<div class="flex items-start justify-between gap-1">
-<span class="p-1.5 rounded bg-surface-container text-primary flex items-center justify-center">
-<span class="material-symbols-outlined text-[18px]">task_alt</span>
-</span>
-<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-semibold">Today</span>
-</div>
-<div class="mt-space-sm">
-<div class="font-headline-xl-mobile text-headline-xl-mobile font-bold text-on-surface leading-none">182</div>
-<div class="font-label-md text-label-md text-on-surface font-semibold mt-1">Community Audits</div>
-<div class="font-body-sm text-body-sm text-on-surface-variant truncate text-[12px] leading-tight mt-0.5">Auto, stays &amp; food rates</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Wide Row KPI 5 & Escalation Badge -->
-<div class="p-space-sm rounded-xl bg-surface-container shadow-sm flex items-center justify-between">
-<div class="flex items-center gap-space-sm">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined text-[22px]">gavel</span>
-</div>
-<div>
-<div class="font-label-lg text-label-lg font-bold text-on-surface">3 Reports Sent Onward</div>
-<div class="font-body-sm text-body-sm text-on-surface-variant">Escalated to Municipal Magistrate</div>
-</div>
-</div>
-<button class="px-space-xs py-1 rounded bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-semibold active:bg-surface-dim" type="button">
-        Review
-      </button>
-</div>
-</section>
-<!-- Recent Urgent Price Alerts -->
-<section class="flex flex-col gap-space-xs">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-space-2xs">
-<span class="material-symbols-outlined text-secondary text-[20px]">notifications_active</span>
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Urgent Price Alerts</h2>
-</div>
-<span class="font-label-sm text-label-sm text-secondary font-semibold">Live Yatri Feed</span>
-</div>
-<!-- Alert Card 1 -->
-<article class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-xs transition-colors hover:bg-surface-container-low" id="alert-1">
-<div class="flex items-start justify-between gap-space-xs">
-<div class="flex items-center gap-space-2xs">
-<span class="px-2 py-0.5 rounded bg-error text-on-error font-label-sm text-label-sm font-bold tracking-wide uppercase">
-            Auto Fare Gouging
-          </span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">Ramkund Stand</span>
-</div>
-<span class="font-label-sm text-label-sm text-secondary font-medium">3m ago</span>
-</div>
-<div class="flex flex-col">
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface">Sai Auto Stand (Bay 4)</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-          Demanding <strong class="text-error font-bold font-headline-sm">₹180</strong> against municipal cap of <strong class="text-primary font-bold">₹110</strong> (Route: Panchavati Ghat to CBS Central).
-        </p>
-</div>
-<div class="flex items-center gap-2 py-1 px-2 rounded bg-error-container text-on-error-container font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-[16px]">trending_up</span>
-<span>3 verified yatri complaints received in past 30 minutes</span>
-</div>
-<div class="flex items-center gap-space-xs pt-1">
-<button class="flex-1 h-10 rounded bg-secondary text-on-secondary font-label-md text-label-md font-semibold flex items-center justify-center gap-1 active:scale-98 transition-transform" onclick="handleAction(this, 'Flag Reviewed for Sai Auto Stand')" type="button">
-<span class="material-symbols-outlined text-[18px]">verified_user</span>
-          Review Flag
-        </button>
-<button class="h-10 px-space-sm rounded bg-surface-container text-on-surface font-label-md text-label-md font-semibold active:bg-surface-container-high flex items-center gap-1 cursor-pointer" onclick="handleAction(this, 'Audit Note Logged for Sai Auto Stand')" type="button">
-          <span class="material-symbols-outlined text-[16px]">rule</span>
-          Log Note
-        </button>
-</div>
-</article>
-<!-- Alert Card 2 -->
-<article class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-xs transition-colors hover:bg-surface-container-low" id="alert-2">
-<div class="flex items-start justify-between gap-space-xs">
-<div class="flex items-center gap-space-2xs">
-<span class="px-2 py-0.5 rounded bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-bold tracking-wide uppercase">
-            Stay Tariff Gap
-          </span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">Sita Gufa Lane</span>
-</div>
-<span class="font-label-sm text-label-sm text-on-surface-variant">18m ago</span>
-</div>
-<div class="flex flex-col">
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface">Panchavati Guest House</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-          Standard Dorm Bed mismatch. Asking ₹650/night offline; registered Simhastha Portal cap ₹350/night.
-        </p>
-</div>
-<div class="flex items-center gap-space-xs pt-1">
-<button class="flex-1 h-10 rounded bg-primary text-on-primary font-label-md text-label-md font-semibold flex items-center justify-center gap-1 active:scale-98 transition-transform" onclick="handleAction(this, 'Volunteer Assigned to Panchavati Guest House')" type="button">
-<span class="material-symbols-outlined text-[18px]">check_circle</span>
-          Verify On-Site
-        </button>
-<button class="h-10 px-space-sm rounded bg-surface-container text-on-surface font-label-md text-label-md font-semibold active:bg-surface-container-high" type="button">
-          Call Owner
-        </button>
-</div>
-</article>
-</section>
-<!-- Kumbhveer College Volunteer Desk & Rewards Leaderboard -->
-<section class="flex flex-col gap-space-xs">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-space-2xs">
-<span class="material-symbols-outlined text-primary text-[20px]">school</span>
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Kumbhveer College Leaderboard</h2>
-</div>
-<div class="flex items-center gap-1.5">
-  <a href="kumbhveer_portal.html" class="px-2.5 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-950 font-label-sm text-xs font-bold flex items-center gap-1 border border-amber-300 shadow-2xs transition-all">
-    <span class="material-symbols-outlined text-sm text-primary">volunteer_activism</span>
-    <span>Volunteer Desk</span>
-  </a>
-  <span class="font-label-sm text-label-sm text-primary font-bold" id="kv-total-count-badge">21 Active</span>
-</div>
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Nashikkar Portal — KumbhSetu</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..600,0..1,0&display=swap" rel="stylesheet"/>
+  
+  <style>
+    @layer base {
+      html, body { width: 100%; margin: 0; padding: 0; min-height: 100%; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
 
-<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
-<div class="flex items-center justify-between border-b border-surface-container pb-2">
-<span class="font-label-sm text-xs text-on-surface-variant">Top Verifiers across 15+ Nashik Colleges</span>
-<span class="font-label-sm text-xs text-primary font-semibold">Honesty Points &amp; Rewards</span>
-</div>
+  <script src="api_config.js"></script>
+  <script src="supabase.js"></script>
+  <script src="supabase_realtime.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#a03b00",
+            "primary-container": "#c64f0e",
+            "on-primary": "#ffffff",
+            "secondary": "#9e4041",
+            "secondary-container": "#fd8a88",
+            "secondary-fixed": "#ffdad8",
+            "on-secondary-fixed": "#410007",
+            "tertiary": "#7b541a",
+            "tertiary-container": "#976c31",
+            "surface": "#fbf8ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f5f2f9",
+            "surface-container": "#f0edf4",
+            "surface-container-high": "#eae7ee",
+            "surface-container-highest": "#e4e1e8",
+            "on-surface": "#1b1b20",
+            "on-surface-variant": "#584239",
+            "outline": "#8c7167",
+            "outline-variant": "#e0c0b4",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6"
+          },
+          fontFamily: {
+            "body": ["Inter", "sans-serif"],
+            "headline": ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
 
-<div id="volunteer-leaderboard-list" class="flex flex-col gap-2">
-  <!-- Dynamic volunteer entries loaded via JS / API -->
-</div>
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen flex flex-col">
 
-<!-- Expand / Collapse All 21 Kumbhveers -->
-<button type="button" id="btn-toggle-volunteers" onclick="toggleVolunteerList()" class="w-full py-2 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-primary font-label-md text-xs font-bold flex items-center justify-center gap-1 transition-all cursor-pointer">
-  <span class="material-symbols-outlined text-[16px]" id="toggle-icon">expand_more</span>
-  <span id="toggle-text">View All 21 Kumbhveers</span>
-</button>
-</div>
-</section>
-
-<!-- Visual Zone Monitoring Snippet -->
-<section class="rounded-xl bg-surface-container-low p-space-sm flex flex-col gap-space-xs shadow-sm">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-space-2xs">
-<span class="material-symbols-outlined text-tertiary text-[20px]">map</span>
-<span class="font-label-lg text-label-lg font-semibold text-on-surface">Sector 2 Heatmap</span>
-</div>
-<span class="font-label-sm text-label-sm text-primary font-bold">14 Active Volunteers</span>
-</div>
-<div class="w-full h-36 bg-cover bg-center rounded-lg shadow-inner relative flex items-end p-space-xs" data-location="Panchavati, Nashik, Maharashtra" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD35sc_5abDjvUTDPEyFOyhPCkWKHXrZUXJtU2xNjU7m99ekehj8arl5gfpIe8SwTDpbbdaMojwv00NSMv465KtGUNhh7THVCRRiT4T0t2bmJKQHg5cXxELfyKZvAaLy6ySwhKpuIx-Y392-X2YXN-mlDpVTaGz79D-of1euUrWxDXNQAzMHCcubQ4ozWY0IItIvaunW_tVd-SpPqFpEMIk63CBFYgYe_ZB-fMr_Md1PO1DXIruXEL4')">
-<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent rounded-lg"></div>
-<div class="relative z-10 flex items-center justify-between w-full text-on-primary">
-<span class="font-label-sm text-label-sm font-semibold flex items-center gap-1">
-<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed animate-ping"></span>
-          Ramkund Ghat Central Hub
-        </span>
-<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container-lowest/80 text-on-surface font-bold backdrop-blur-sm">
-          98% Verified Compliance
-        </span>
-</div>
-</div>
-</section>
-<!-- Interactive Action Confirmation Toast Container -->
-<div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-sm pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4" id="toast-slot">
-<div class="bg-inverse-surface text-inverse-on-surface p-space-sm rounded-lg shadow-xl flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-inverse-primary text-[22px]">verified</span>
-<span class="font-label-md text-label-md leading-tight" id="toast-message">Verification Action Recorded Successfully</span>
-</div>
-</div>
-</div>
-<script>
-  function handleAction(buttonEl, actionLabel) {
-    buttonEl.disabled = true;
-    buttonEl.classList.add('opacity-70');
-    buttonEl.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span> Processing...';
-    
-    setTimeout(() => {
-      buttonEl.innerHTML = '<span class="material-symbols-outlined text-[18px]">done_all</span> Logged';
-      buttonEl.classList.remove('bg-primary', 'bg-secondary');
-      buttonEl.classList.add('bg-surface-container-highest', 'text-on-surface');
+  <!-- Fixed Top Header (Non-Colliding, Fully Mobile Responsive) -->
+  <header class="fixed top-0 w-full z-40 bg-surface/95 backdrop-blur-xl border-b border-outline-variant/20 shadow-xs pt-safe">
+    <div class="h-14 px-3 sm:px-4 flex items-center justify-between gap-2 max-w-5xl mx-auto">
       
-      const toast = document.getElementById('toast-slot');
-      const toastMsg = document.getElementById('toast-message');
-      toastMsg.textContent = actionLabel;
-      toast.classList.remove('opacity-0', 'translate-y-4');
-      toast.classList.add('opacity-100', 'translate-y-0');
+      <!-- Brand & Sector Indicator -->
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        <a href="index.html" class="shrink-0 flex items-center">
+          <img alt="Kumbh Setu Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+        </a>
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5 flex-nowrap">
+            <span class="font-headline font-bold text-xs sm:text-sm text-on-surface truncate tracking-tight">KumbhSetu Nashik</span>
+            <span id="portal-badge-tag" class="px-1.5 py-0.2 rounded-full font-bold text-[9px] uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 shrink-0">Citizen</span>
+          </div>
+          <span class="text-[10px] text-on-surface-variant font-medium truncate flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0"></span>
+            <span class="truncate">Zone 2 (Panchavati &amp; Ramkund)</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Header Controls: Language & Account Menu -->
+      <div class="flex items-center gap-1.5 shrink-0">
+        <!-- Language Switcher Pill -->
+        <button type="button" onclick="if(window.KumbhI18n)window.KumbhI18n.openModal();" aria-label="Select Language" class="lang-dropdown-trigger h-8 px-2.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1.5 text-xs font-semibold transition-colors border border-outline-variant/25 cursor-pointer">
+          <span class="material-symbols-outlined text-[16px] text-secondary">translate</span>
+          <span class="text-[11px] font-medium" id="lang-btn-text">मरा / EN</span>
+        </button>
+
+        <!-- Account / Drawer Menu Button -->
+        <button type="button" onclick="toggleAdminMenu()" id="btn-admin-profile" class="h-8 pl-1.5 pr-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary flex items-center gap-1.5 shadow-sm transition-all cursor-pointer" title="Open Navigation Menu">
+          <div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center font-bold text-[10px]" id="header-avatar-badge">
+            NK
+          </div>
+          <span class="text-[11px] font-bold" id="header-user-role-label">Nakul</span>
+          <span class="material-symbols-outlined text-[15px] -ml-1 opacity-80">expand_more</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface px-3 sm:px-4 max-w-5xl mx-auto">
+    <div class="flex flex-col w-full gap-3 sm:gap-4 mt-1">
+
+      <!-- Personal Citizen / Kumbhveer Profile Hero Card -->
+      <section class="rounded-2xl bg-gradient-to-br from-surface-container-lowest via-surface-container-low to-surface-container p-4 sm:p-5 shadow-xs border border-outline-variant/30 relative overflow-hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-primary text-on-primary flex items-center justify-center font-headline font-black text-base shadow-sm shrink-0 ring-2 ring-primary/20" id="dash-user-avatar">
+              NK
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h1 class="font-headline text-base sm:text-lg text-on-surface font-extrabold tracking-tight" id="dash-user-name">
+                  Namaste, Nakul Karpe
+                </h1>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300" id="dash-user-badge">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                  Verified Citizen
+                </span>
+              </div>
+              <p class="text-xs text-on-surface-variant flex items-center gap-1.5 mt-0.5 flex-wrap">
+                <span class="font-medium text-primary" id="dash-user-email">nakul@kumbhsetu.in</span>
+                <span>•</span>
+                <span id="dash-user-id" class="font-mono text-[11px] text-on-surface-variant">Govt ID: MH-15-CITIZEN-007</span>
+                <span>•</span>
+                <span class="text-on-surface-variant" id="dash-user-sector">Panchavati &amp; Ramkund Sector</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            <a href="report_issue.html" class="h-8 sm:h-9 px-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-bold text-xs flex items-center gap-1.5 shadow-xs transition-all active:scale-98">
+              <span class="material-symbols-outlined text-[16px]">add_circle</span>
+              <span>Report Issue</span>
+            </a>
+            <button onclick="toggleAdminMenu()" type="button" class="h-8 sm:h-9 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer border border-outline-variant/30">
+              <span class="material-symbols-outlined text-[16px]">account_circle</span>
+              <span>Profile</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-3 pt-2.5 flex items-center justify-between text-on-surface-variant text-[11px] font-medium border-t border-outline-variant/20 -mx-4 -mb-4 px-4 py-2 bg-surface-container-lowest/80 backdrop-blur-xs">
+          <span class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+            Simhastha 2027 Civic Telemetry Active
+          </span>
+          <span class="font-bold text-secondary flex items-center gap-0.5">
+            Sector 02-B Live
+          </span>
+        </div>
+      </section>
+
+      <!-- Quick 4-Action Grid (100% Mobile Responsive, No Weird Horizontal Clipped Scroll) -->
+      <section>
+        <div class="grid grid-cols-2 gap-2 sm:gap-3">
+          
+          <!-- Action 1: Report Civic Issue -->
+          <a href="report_issue.html" class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary shadow-xs flex items-center gap-2.5 transition-all group active:scale-98">
+            <div class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+              <span class="material-symbols-outlined text-[20px]">report_problem</span>
+            </div>
+            <div class="min-w-0">
+              <span class="font-bold text-xs text-on-surface block truncate">Report Issue</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">Overcharging / Civic</span>
+            </div>
+          </a>
+
+          <!-- Action 2: Inspect Price Flags -->
+          <a href="price_flags.html" class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-secondary shadow-xs flex items-center gap-2.5 transition-all group active:scale-98">
+            <div class="w-9 h-9 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center shrink-0 group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+              <span class="material-symbols-outlined text-[20px]">warning</span>
+            </div>
+            <div class="min-w-0">
+              <span class="font-bold text-xs text-on-surface block truncate">Price Flags</span>
+              <span class="text-[10px] text-secondary font-bold truncate block" id="action-price-flags-label">6 Active Reports</span>
+            </div>
+          </a>
+
+          <!-- Action 3: Fair Rates & Citylink -->
+          <a href="fare_board.html" class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-amber-600 shadow-xs flex items-center gap-2.5 transition-all group active:scale-98">
+            <div class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-800 flex items-center justify-center shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+              <span class="material-symbols-outlined text-[20px]">payments</span>
+            </div>
+            <div class="min-w-0">
+              <span class="font-bold text-xs text-on-surface block truncate">Fair Rates</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">CityLink &amp; Autos</span>
+            </div>
+          </a>
+
+          <!-- Action 4: Volunteer Desk -->
+          <a href="kumbhveer_portal.html" class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-emerald-600 shadow-xs flex items-center gap-2.5 transition-all group active:scale-98">
+            <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-700 group-hover:text-white transition-colors">
+              <span class="material-symbols-outlined text-[20px]">volunteer_activism</span>
+            </div>
+            <div class="min-w-0">
+              <span class="font-bold text-xs text-on-surface block truncate">Kumbhveers</span>
+              <span class="text-[10px] text-emerald-800 font-bold truncate block" id="action-volunteers-label">21 Active Verifiers</span>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Operational Snapshot KPI Grid -->
+      <section class="flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <h2 class="font-headline font-bold text-sm text-on-surface">Operational Snapshot</h2>
+          <span class="text-[11px] font-semibold text-primary">Real-time Telemetry</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 sm:gap-3">
+          <!-- KPI 1: Grievances -->
+          <div class="p-3 rounded-xl bg-surface-container-lowest shadow-xs border border-outline-variant/30 flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <span class="p-1 rounded-md bg-surface-container text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[16px]">assignment_turned_in</span>
+              </span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-amber-100 text-amber-900 uppercase">Queue</span>
+            </div>
+            <div class="mt-2">
+              <div class="font-headline text-2xl font-black text-on-surface leading-none" id="kpi-grievances-count">14</div>
+              <div class="text-xs font-bold text-on-surface mt-1">Civic Grievances</div>
+              <div class="text-[10px] text-on-surface-variant truncate mt-0.5">Municipal review queue</div>
+            </div>
+          </div>
+
+          <!-- KPI 2: Price Flags -->
+          <div class="p-3 rounded-xl bg-red-50 text-red-950 shadow-xs border border-red-200 flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <span class="p-1 rounded-md bg-red-600 text-white flex items-center justify-center">
+                <span class="material-symbols-outlined text-[16px]">flag</span>
+              </span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-red-200 text-red-900 uppercase animate-pulse">Critical</span>
+            </div>
+            <div class="mt-2">
+              <div class="font-headline text-2xl font-black text-red-950 leading-none" id="kpi-price-flags-count">6</div>
+              <div class="text-xs font-bold text-red-900 mt-1">Active Price Flags</div>
+              <div class="text-[10px] text-red-700 truncate mt-0.5">Reported by Yatris</div>
+            </div>
+          </div>
+
+          <!-- KPI 3: Volunteers -->
+          <div class="p-3 rounded-xl bg-surface-container-lowest shadow-xs border border-outline-variant/30 flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <span class="p-1 rounded-md bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[16px]">groups</span>
+              </span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800 uppercase">Field</span>
+            </div>
+            <div class="mt-2">
+              <div class="font-headline text-2xl font-black text-on-surface leading-none" id="kpi-volunteers-count">21</div>
+              <div class="text-xs font-bold text-on-surface mt-1">Active Kumbhveers</div>
+              <div class="text-[10px] text-on-surface-variant truncate mt-0.5">Students on field</div>
+            </div>
+          </div>
+
+          <!-- KPI 4: Community Audits -->
+          <div class="p-3 rounded-xl bg-surface-container-lowest shadow-xs border border-outline-variant/30 flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <span class="p-1 rounded-md bg-surface-container text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[16px]">task_alt</span>
+              </span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-surface-container-high text-primary uppercase">Today</span>
+            </div>
+            <div class="mt-2">
+              <div class="font-headline text-2xl font-black text-on-surface leading-none" id="kpi-audits-count">182</div>
+              <div class="text-xs font-bold text-on-surface mt-1">Community Audits</div>
+              <div class="text-[10px] text-on-surface-variant truncate mt-0.5">Rates &amp; hygiene verified</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wide Row: Magistrate Escalation Notice -->
+        <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/30 shadow-xs flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-full bg-secondary/15 text-secondary flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[18px]">gavel</span>
+            </div>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-on-surface truncate" id="kpi-escalations-label">3 Cases Escalated Onward</div>
+              <div class="text-[10px] text-on-surface-variant truncate">Municipal Magistrate for compound penalty</div>
+            </div>
+          </div>
+          <a href="police_escalations.html" class="px-2.5 py-1.5 rounded-lg bg-surface-container-highest hover:bg-surface-dim text-on-surface text-xs font-bold shrink-0 transition-colors">
+            Review
+          </a>
+        </div>
+      </section>
+
+      <!-- Urgent Price Alerts Feed (Live Local Alerts) -->
+      <section class="flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-secondary text-[18px]">notifications_active</span>
+            <h2 class="font-headline font-bold text-sm text-on-surface">Urgent Price Alerts</h2>
+          </div>
+          <a href="price_flags.html" class="text-[11px] font-bold text-secondary hover:underline" id="alerts-view-all-link">View All (6) →</a>
+        </div>
+
+        <div id="urgent-alerts-container" class="flex flex-col gap-2.5">
+          <!-- Alert Card 1: Sai Auto Stand -->
+          <article class="p-3.5 rounded-xl bg-surface-container-lowest shadow-xs border border-outline-variant/30 flex flex-col gap-2 hover:bg-surface-container-low transition-colors" id="alert-1">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="px-1.5 py-0.5 rounded font-bold text-[9px] uppercase tracking-wider bg-red-100 text-red-800 border border-red-200">
+                  Auto Fare Gouging
+                </span>
+                <span class="text-xs font-semibold text-on-surface">Sai Auto Stand (Bay 4)</span>
+              </div>
+              <span class="text-[10px] text-secondary font-medium shrink-0">3m ago</span>
+            </div>
+
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Demanding <strong class="text-error font-bold">₹180</strong> against estimated price of <strong class="text-primary font-bold">₹110</strong> (Route: Panchavati Ghat to CBS Central).
+            </p>
+
+            <div class="flex items-center gap-1.5 py-1 px-2 rounded-lg bg-red-50 text-red-800 text-[10px] font-medium border border-red-200">
+              <span class="material-symbols-outlined text-[14px]">trending_up</span>
+              <span>3 verified yatri complaints received in past 30 minutes</span>
+            </div>
+
+            <div class="flex items-center gap-2 pt-1">
+              <a href="price_flags.html" class="flex-1 h-9 rounded-lg bg-secondary text-on-secondary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs">
+                <span class="material-symbols-outlined text-[16px]">verified_user</span>
+                Review Flag
+              </a>
+              <button onclick="handleAction(this, 'Audit Note Logged for Sai Auto Stand')" type="button" class="h-9 px-3 rounded-lg bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high transition-colors flex items-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-[15px]">edit_note</span>
+                Log Note
+              </button>
+            </div>
+          </article>
+
+          <!-- Alert Card 2: Panchavati Guest House -->
+          <article class="p-3.5 rounded-xl bg-surface-container-lowest shadow-xs border border-outline-variant/30 flex flex-col gap-2 hover:bg-surface-container-low transition-colors" id="alert-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="px-1.5 py-0.5 rounded font-bold text-[9px] uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
+                  Stay Tariff Gap
+                </span>
+                <span class="text-xs font-semibold text-on-surface">Panchavati Guest House</span>
+              </div>
+              <span class="text-[10px] text-on-surface-variant shrink-0">18m ago</span>
+            </div>
+
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Standard Dorm Bed mismatch. Asking <strong class="text-error font-bold">₹650/night</strong> offline; estimated price <strong class="text-primary font-bold">₹350/night</strong>.
+            </p>
+
+            <div class="flex items-center gap-2 pt-1">
+              <a href="kumbhveer_portal.html" class="flex-1 h-9 rounded-lg bg-primary text-on-primary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs">
+                <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                Verify On-Site
+              </a>
+              <a href="tel:18002330244" class="h-9 px-3 rounded-lg bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-[15px]">call</span>
+                Call Owner
+              </a>
+            </div>
+          </article>
+        </div>
+
+      </section>
+
+      <!-- Kumbhveer College Volunteer Desk & Rewards Leaderboard -->
+      <section class="flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-primary text-[18px]">school</span>
+            <h2 class="font-headline font-bold text-sm text-on-surface">Kumbhveer Leaderboard</h2>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <a href="kumbhveer_portal.html" class="px-2 py-0.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-950 text-[10px] font-bold flex items-center gap-1 border border-amber-300 transition-colors">
+              <span class="material-symbols-outlined text-[13px] text-primary">volunteer_activism</span>
+              <span>Volunteer Desk</span>
+            </a>
+            <span class="text-[11px] font-bold text-primary" id="kv-total-count-badge">21 Active</span>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-xl p-3 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2">
+          <div class="flex items-center justify-between border-b border-surface-container pb-2 text-[11px]">
+            <span class="text-on-surface-variant font-medium">Top Student Verifiers across Nashik</span>
+            <span class="text-primary font-bold">Points &amp; Rewards</span>
+          </div>
+
+          <div id="volunteer-leaderboard-list" class="flex flex-col gap-2">
+            <!-- Dynamic volunteer entries loaded via JS / API -->
+          </div>
+
+          <!-- Expand / Collapse All 21 Kumbhveers -->
+          <button type="button" id="btn-toggle-volunteers" onclick="toggleVolunteerList()" class="w-full py-2 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-primary text-xs font-bold flex items-center justify-center gap-1 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[16px]" id="toggle-icon">expand_more</span>
+            <span id="toggle-text">View All 21 Kumbhveers</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Local Emergency & Helpline Hotlines -->
+      <section class="flex flex-col gap-2 mb-2">
+        <h2 class="font-headline font-bold text-sm text-on-surface flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-secondary text-[18px]">emergency</span>
+          Municipal &amp; Emergency Hotlines
+        </h2>
+
+        <div class="grid grid-cols-3 gap-2">
+          <a href="tel:112" class="p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-red-500 shadow-xs flex flex-col items-center justify-center text-center gap-1 transition-all active:scale-98">
+            <span class="w-7 h-7 rounded-full bg-red-100 text-red-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-[16px]">local_police</span>
+            </span>
+            <span class="text-[11px] font-bold text-on-surface">Police</span>
+            <span class="text-[10px] text-red-700 font-extrabold font-mono">112</span>
+          </a>
+
+          <a href="tel:18002330244" class="p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary shadow-xs flex flex-col items-center justify-center text-center gap-1 transition-all active:scale-98">
+            <span class="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-[16px]">apartment</span>
+            </span>
+            <span class="text-[11px] font-bold text-on-surface">NMC Control</span>
+            <span class="text-[9px] text-primary font-bold font-mono">1800-233-0244</span>
+          </a>
+
+          <a href="tel:108" class="p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-emerald-600 shadow-xs flex flex-col items-center justify-center text-center gap-1 transition-all active:scale-98">
+            <span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center">
+              <span class="material-symbols-outlined text-[16px]">medical_services</span>
+            </span>
+            <span class="text-[11px] font-bold text-on-surface">Ambulance</span>
+            <span class="text-[10px] text-emerald-800 font-extrabold font-mono">108</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Interactive Action Confirmation Toast Container -->
+  <div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-sm pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4" id="toast-slot">
+    <div class="bg-inverse-surface text-inverse-on-surface p-3 rounded-xl shadow-xl flex items-center gap-2 border border-white/10" style="background-color: #1b1b20; color: #ffffff;">
+      <span class="material-symbols-outlined text-emerald-400 text-[20px]">verified</span>
+      <span class="text-xs font-medium leading-tight" id="toast-message">Action Recorded Successfully</span>
+    </div>
+  </div>
+
+  <!-- Navigation Drawer Menu Modal (NO BOOKINGS, Completely Nashikkar-Focused) -->
+  <div id="adminMenuModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-surface-container-lowest rounded-2xl max-w-md w-full p-4 sm:p-5 space-y-4 shadow-2xl border border-outline-variant/30 max-h-[92vh] overflow-y-auto">
+      
+      <!-- Top Header -->
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-[20px]">account_circle</span>
+          </div>
+          <div>
+            <h3 class="font-headline font-bold text-on-surface text-sm sm:text-base leading-tight">Nashikkar Portal Menu</h3>
+            <span class="text-[11px] text-on-surface-variant" id="modal-role-subtitle">Resident &amp; Municipal Desk Services</span>
+          </div>
+        </div>
+        <button onclick="toggleAdminMenu()" class="text-on-surface-variant hover:text-on-surface p-1 rounded-full hover:bg-surface-container cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Active User Card -->
+      <div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/30 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm shrink-0" id="admin-user-avatar">
+          NK
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-1.5">
+            <span class="font-bold text-xs text-on-surface" id="admin-user-name">Nashikkar Citizen</span>
+            <span class="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold" id="admin-user-badge">Resident</span>
+          </div>
+          <span class="text-[11px] text-on-surface-variant truncate block" id="admin-user-email">citizen@kumbhsetu.in</span>
+          <span class="text-[10px] text-primary font-semibold">Ward 14 (Panchavati / Ramkund)</span>
+        </div>
+      </div>
+
+      <!-- Navigation Desks & Services (No Bookings!) -->
+      <div class="space-y-1.5">
+        <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider block">Desks &amp; Services</span>
+        
+        <div class="grid grid-cols-2 gap-2">
+          <a href="nashikkar_overview.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-secondary text-[20px]">dashboard</span>
+            <div class="min-w-0">
+              <span class="text-xs font-bold text-on-surface block truncate">Overview</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">Civic Snapshot</span>
+            </div>
+          </a>
+
+          <a href="price_flags.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-error text-[20px]">warning</span>
+            <div class="min-w-0">
+              <span class="text-xs font-bold text-on-surface block truncate">Price Flags</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">6 Active Flags</span>
+            </div>
+          </a>
+
+          <a href="kumbhveer_portal.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-primary text-[20px]">volunteer_activism</span>
+            <div class="min-w-0">
+              <span class="text-xs font-bold text-on-surface block truncate">Volunteer Desk</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">21 Kumbhveers</span>
+            </div>
+          </a>
+
+          <a href="police_hotspots.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-blue-700 text-[20px]">radar</span>
+            <div class="min-w-0">
+              <span class="text-xs font-bold text-on-surface block truncate">Police AI Radar</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">Live Hotspots</span>
+            </div>
+          </a>
+
+          <a href="vendor_registration.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-secondary text-[20px]">badge</span>
+            <div class="min-w-0">
+              <span class="text-xs font-bold text-on-surface block truncate">Vendors</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">Registry &amp; KYC</span>
+            </div>
+          </a>
+
+          <a href="marketplace.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-amber-700 text-[20px]">storefront</span>
+            <div class="min-w-0">
+              <span class="text-xs font-bold text-on-surface block truncate">Marketplace</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">Local Bazaar</span>
+            </div>
+          </a>
+
+          <a href="report_issue.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-primary text-[20px]">report_problem</span>
+            <div class="min-w-0">
+              <span class="text-xs font-bold text-on-surface block truncate">Report Issue</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">Civic Grievance</span>
+            </div>
+          </a>
+
+          <a href="reports_analytics.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-purple-700 text-[20px]">summarize</span>
+            <div class="min-w-0">
+              <span class="text-xs font-bold text-on-surface block truncate">Reports</span>
+              <span class="text-[10px] text-on-surface-variant truncate block">Civic Analytics</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Role Switcher / Log Out -->
+      <div class="pt-2 border-t border-outline-variant/20 flex flex-col gap-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-on-surface-variant font-medium">Switch Role:</span>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <a href="nashikkar_login.html?role=nashikkar" class="text-primary font-semibold hover:underline">Resident</a>
+            <span>•</span>
+            <a href="nashikkar_login.html?role=admin" class="text-primary font-semibold hover:underline">Admin</a>
+            <span>•</span>
+            <a href="nashikkar_login.html?role=kumbhveer" class="text-primary font-semibold hover:underline">Kumbhveer</a>
+            <span>•</span>
+            <a href="nashikkar_login.html?role=vendor" class="text-primary font-semibold hover:underline">Vendor</a>
+          </div>
+        </div>
+        <a href="nashikkar_login.html" class="w-full py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-error font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+          <span class="material-symbols-outlined text-[16px]">logout</span>
+          <span>Log Out / Switch Account</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Navigation (100% Mobile Responsive, NO "Bookings" Tab) -->
+  <nav class="fixed bottom-0 w-full z-40 pb-safe bg-surface/95 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-2px_10px_rgba(0,0,0,0.04)]">
+    <div class="flex justify-around items-center h-16 px-1 max-w-5xl mx-auto">
+      
+      <!-- Tab 1: Overview -->
+      <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-14 h-12 transition-colors text-primary font-bold" data-path="overview" href="nashikkar_overview.html">
+        <span class="material-symbols-outlined text-[22px]">dashboard</span>
+        <span class="text-[10px] leading-tight">Overview</span>
+      </a>
+
+      <!-- Tab 2: Price Flags -->
+      <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="flags" href="price_flags.html">
+        <span class="material-symbols-outlined text-[22px]">warning</span>
+        <span class="text-[10px] leading-tight">Flags</span>
+      </a>
+
+      <!-- Tab 3: Market -->
+      <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="market" href="marketplace.html">
+        <span class="material-symbols-outlined text-[22px]">storefront</span>
+        <span class="text-[10px] leading-tight">Market</span>
+      </a>
+
+      <!-- Tab 4: Kumbhveers (Replaces Bookings) -->
+      <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="kumbhveer" href="kumbhveer_portal.html">
+        <span class="material-symbols-outlined text-[22px]">volunteer_activism</span>
+        <span class="text-[10px] leading-tight">Volunteers</span>
+      </a>
+
+      <!-- Tab 5: Vendors -->
+      <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="vendors" href="vendor_registration.html">
+        <span class="material-symbols-outlined text-[22px]">badge</span>
+        <span class="text-[10px] leading-tight">Vendors</span>
+      </a>
+
+    </div>
+  </nav>
+
+  <!-- Core Scripts -->
+  <script>
+    function handleAction(buttonEl, actionLabel) {
+      buttonEl.disabled = true;
+      buttonEl.classList.add('opacity-70');
+      const originalHtml = buttonEl.innerHTML;
+      buttonEl.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">progress_activity</span>';
       
       setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', 'translate-y-4');
-      }, 3000);
-    }, 600);
-  }
+        buttonEl.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span> Done';
+        buttonEl.classList.remove('bg-primary', 'bg-secondary');
+        buttonEl.classList.add('bg-surface-container-highest', 'text-on-surface');
+        
+        const toast = document.getElementById('toast-slot');
+        const toastMsg = document.getElementById('toast-message');
+        if (toast && toastMsg) {
+          toastMsg.textContent = actionLabel;
+          toast.classList.remove('opacity-0', 'translate-y-4');
+          toast.classList.add('opacity-100', 'translate-y-0');
+          
+          setTimeout(() => {
+            toast.classList.remove('opacity-100', 'translate-y-0');
+            toast.classList.add('opacity-0', 'translate-y-4');
+          }, 3000);
+        }
+      }, 500);
+    }
 
-  const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '');
-  let allVolunteers = [];
-  let showAllVolunteers = false;
+    const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || 'http://localhost:8000'));
+    let allVolunteers = [];
+    let showAllVolunteers = false;
 
-  const fallbackVolunteers = [
-    { rank: 1, volunteer_name: "Divya Sonawane", college_name: "K.T.H.M. College, Nashik", audits_completed: 22, points: 480, voucher_credits_inr: 960, tier: "Gold Kumbhveer Leader", badges: ["Ghat Hero", "Price Guardian", "PIB Ground Truth"] },
-    { rank: 2, volunteer_name: "Rahul Jadhav", college_name: "Sandip University Engineering", audits_completed: 18, points: 420, voucher_credits_inr: 840, tier: "Silver Kumbhveer Sevak", badges: ["Vendor Onboarding", "FSSAI Helper"] },
-    { rank: 3, volunteer_name: "Pooja Deshmukh", college_name: "KK Wagh Institute of Engg.", audits_completed: 15, points: 360, voucher_credits_inr: 720, tier: "Silver Kumbhveer Sevak", badges: ["Language Mitra", "Queue Warden"] },
-    { rank: 4, volunteer_name: "Akash Bhalerao", college_name: "MET Bhujbal Knowledge City", audits_completed: 13, points: 310, voucher_credits_inr: 620, tier: "Bronze Kumbhveer Mitra", badges: ["Fast Responder", "Civic Mitra"] },
-    { rank: 5, volunteer_name: "Snehal Patil", college_name: "G.E.S. R.Y.K. Science College", audits_completed: 12, points: 290, voucher_credits_inr: 580, tier: "Bronze Kumbhveer Mitra", badges: ["Water Point Auditor", "Sanitation Champion"] },
-    { rank: 6, volunteer_name: "Aditya Shinde", college_name: "NDMVP Samaj's College of Engg.", audits_completed: 11, points: 275, voucher_credits_inr: 550, tier: "Bronze Kumbhveer Mitra", badges: ["Tariff Guardian", "Lost & Found Scout"] },
-    { rank: 7, volunteer_name: "Tanvi Kulkarni", college_name: "Government Polytechnic Nashik", audits_completed: 10, points: 260, voucher_credits_inr: 520, tier: "Bronze Kumbhveer Mitra", badges: ["Yatri Sahayak", "First Aid Trained"] },
-    { rank: 8, volunteer_name: "Omkar Gite", college_name: "Guru Gobind Singh College of Engg.", audits_completed: 9, points: 245, voucher_credits_inr: 490, tier: "Kumbhveer Sevak", badges: ["Auto Fare Inspector", "Sector 3 Lead"] },
-    { rank: 9, volunteer_name: "Priyanka Gaikwad", college_name: "H.P.T. Arts & R.Y.K. Science", audits_completed: 9, points: 230, voucher_credits_inr: 460, tier: "Kumbhveer Sevak", badges: ["Women Safety Mitra", "Heritage Guide"] },
-    { rank: 10, volunteer_name: "Chetan Wagh", college_name: "Matoshri College of Engg., Eklahare", audits_completed: 8, points: 215, voucher_credits_inr: 430, tier: "Kumbhveer Sevak", badges: ["Crowd Flow Monitor", "Ghat Warden"] },
-    { rank: 11, volunteer_name: "Neha Borde", college_name: "SNJB KBJ College of Engineering", audits_completed: 8, points: 200, voucher_credits_inr: 400, tier: "Kumbhveer Sevak", badges: ["Fact-Check Seva", "Digital Mitra"] },
-    { rank: 12, volunteer_name: "Pratik Pawar", college_name: "B.Y.K. College of Commerce", audits_completed: 7, points: 190, voucher_credits_inr: 380, tier: "Kumbhveer Sevak", badges: ["Bazaar Price Verifier", "Fair Trade Mitra"] },
-    { rank: 13, volunteer_name: "Sayali More", college_name: "Sapkal Knowledge Hub, Nashik", audits_completed: 7, points: 175, voucher_credits_inr: 350, tier: "Kumbhveer Sevak", badges: ["Prasad Hygiene Auditor", "FSSAI Helper"] },
-    { rank: 14, volunteer_name: "Kunal Chaudhari", college_name: "Sinhgad Institute of Tech Nashik", audits_completed: 6, points: 165, voucher_credits_inr: 330, tier: "Kumbhveer Sevak", badges: ["GPS Transit Tracker", "Bus Mitra"] },
-    { rank: 15, volunteer_name: "Rutuja Joshi", college_name: "K.V.N. Naik Institute of Engg.", audits_completed: 6, points: 150, voucher_credits_inr: 300, tier: "Kumbhveer Mitra", badges: ["Medical Seva Volunteer", "Emergency Mitra"] },
-    { rank: 16, volunteer_name: "Saurabh Pagare", college_name: "K.T.H.M. College (NSS Wing)", audits_completed: 5, points: 140, voucher_credits_inr: 280, tier: "Kumbhveer Mitra", badges: ["Tapovan Camp Warden", "Night Vigil"] },
-    { rank: 17, volunteer_name: "Aniket Gangurde", college_name: "Sandip Polytechnic, Mahiravani", audits_completed: 5, points: 130, voucher_credits_inr: 260, tier: "Kumbhveer Mitra", badges: ["Route Signage Guide", "Language Mitra"] },
-    { rank: 18, volunteer_name: "Shreya Mahajan", college_name: "Symbiosis Operations Mgmt Nashik", audits_completed: 4, points: 120, voucher_credits_inr: 240, tier: "Kumbhveer Mitra", badges: ["Logistics Assistant", "Audit Analyst"] },
-    { rank: 19, volunteer_name: "Rohit Tambe", college_name: "MGV Pharmacy College Panchavati", audits_completed: 4, points: 110, voucher_credits_inr: 220, tier: "Kumbhveer Mitra", badges: ["Clean Ghats Volunteer", "Medicine Desk"] },
-    { rank: 20, volunteer_name: "Manasi Dhole", college_name: "MET Institute of Technology", audits_completed: 4, points: 100, voucher_credits_inr: 200, tier: "Kumbhveer Mitra", badges: ["Information Desk Mitra", "Yatri Guide"] },
-    { rank: 21, volunteer_name: "Harshada Khairnar", college_name: "Shatabdi Institute of Tech", audits_completed: 3, points: 90, voucher_credits_inr: 180, tier: "Kumbhveer Mitra", badges: ["Eco-Kumbh Green Scout", "River Guard"] }
-  ];
+    const fallbackVolunteers = [
+      { rank: 1, volunteer_name: "Divya Sonawane", college_name: "K.T.H.M. College, Nashik", audits_completed: 22, points: 480, voucher_credits_inr: 960, tier: "Gold Kumbhveer Leader", badges: ["Ghat Hero", "Price Guardian"] },
+      { rank: 2, volunteer_name: "Rahul Jadhav", college_name: "Sandip University Engineering", audits_completed: 18, points: 420, voucher_credits_inr: 840, tier: "Silver Kumbhveer Sevak", badges: ["Vendor Onboarding"] },
+      { rank: 3, volunteer_name: "Pooja Deshmukh", college_name: "KK Wagh Institute of Engg.", audits_completed: 15, points: 360, voucher_credits_inr: 720, tier: "Silver Kumbhveer Sevak", badges: ["Language Mitra"] },
+      { rank: 4, volunteer_name: "Akash Bhalerao", college_name: "MET Bhujbal Knowledge City", audits_completed: 13, points: 310, voucher_credits_inr: 620, tier: "Bronze Kumbhveer Mitra", badges: ["Fast Responder"] },
+      { rank: 5, volunteer_name: "Snehal Patil", college_name: "G.E.S. R.Y.K. Science College", audits_completed: 12, points: 290, voucher_credits_inr: 580, tier: "Bronze Kumbhveer Mitra", badges: ["Water Point Auditor"] },
+      { rank: 6, volunteer_name: "Aditya Shinde", college_name: "NDMVP Samaj's College of Engg.", audits_completed: 11, points: 275, voucher_credits_inr: 550, tier: "Bronze Kumbhveer Mitra", badges: ["Tariff Guardian"] },
+      { rank: 7, volunteer_name: "Tanvi Kulkarni", college_name: "Government Polytechnic Nashik", audits_completed: 10, points: 260, voucher_credits_inr: 520, tier: "Bronze Kumbhveer Mitra", badges: ["Yatri Sahayak"] },
+      { rank: 8, volunteer_name: "Omkar Gite", college_name: "Guru Gobind Singh College of Engg.", audits_completed: 9, points: 245, voucher_credits_inr: 490, tier: "Kumbhveer Sevak", badges: ["Auto Fare Inspector"] },
+      { rank: 9, volunteer_name: "Priyanka Gaikwad", college_name: "H.P.T. Arts & R.Y.K. Science", audits_completed: 9, points: 230, voucher_credits_inr: 460, tier: "Kumbhveer Sevak", badges: ["Women Safety Mitra"] },
+      { rank: 10, volunteer_name: "Chetan Wagh", college_name: "Matoshri College of Engg., Eklahare", audits_completed: 8, points: 215, voucher_credits_inr: 430, tier: "Kumbhveer Sevak", badges: ["Crowd Flow Monitor"] },
+      { rank: 11, volunteer_name: "Neha Borde", college_name: "SNJB KBJ College of Engineering", audits_completed: 8, points: 200, voucher_credits_inr: 400, tier: "Kumbhveer Sevak", badges: ["Fact-Check Seva"] },
+      { rank: 12, volunteer_name: "Pratik Pawar", college_name: "B.Y.K. College of Commerce", audits_completed: 7, points: 190, voucher_credits_inr: 380, tier: "Kumbhveer Sevak", badges: ["Bazaar Price Verifier"] },
+      { rank: 13, volunteer_name: "Sayali More", college_name: "Sapkal Knowledge Hub, Nashik", audits_completed: 7, points: 175, voucher_credits_inr: 350, tier: "Kumbhveer Sevak", badges: ["Prasad Hygiene Auditor"] },
+      { rank: 14, volunteer_name: "Kunal Chaudhari", college_name: "Sinhgad Institute of Tech Nashik", audits_completed: 6, points: 165, voucher_credits_inr: 330, tier: "Kumbhveer Sevak", badges: ["GPS Transit Tracker"] },
+      { rank: 15, volunteer_name: "Rutuja Joshi", college_name: "K.V.N. Naik Institute of Engg.", audits_completed: 6, points: 150, voucher_credits_inr: 300, tier: "Kumbhveer Mitra", badges: ["Medical Seva Volunteer"] },
+      { rank: 16, volunteer_name: "Saurabh Pagare", college_name: "K.T.H.M. College (NSS Wing)", audits_completed: 5, points: 140, voucher_credits_inr: 280, tier: "Kumbhveer Mitra", badges: ["Tapovan Camp Warden"] },
+      { rank: 17, volunteer_name: "Aniket Gangurde", college_name: "Sandip Polytechnic, Mahiravani", audits_completed: 5, points: 130, voucher_credits_inr: 260, tier: "Kumbhveer Mitra", badges: ["Route Signage Guide"] },
+      { rank: 18, volunteer_name: "Shreya Mahajan", college_name: "Symbiosis Operations Mgmt Nashik", audits_completed: 4, points: 120, voucher_credits_inr: 240, tier: "Kumbhveer Mitra", badges: ["Logistics Assistant"] },
+      { rank: 19, volunteer_name: "Rohit Tambe", college_name: "MGV Pharmacy College Panchavati", audits_completed: 4, points: 110, voucher_credits_inr: 220, tier: "Kumbhveer Mitra", badges: ["Clean Ghats Volunteer"] },
+      { rank: 20, volunteer_name: "Manasi Dhole", college_name: "MET Institute of Technology", audits_completed: 4, points: 100, voucher_credits_inr: 200, tier: "Kumbhveer Mitra", badges: ["Information Desk Mitra"] },
+      { rank: 21, volunteer_name: "Harshada Khairnar", college_name: "Shatabdi Institute of Tech", audits_completed: 3, points: 90, voucher_credits_inr: 180, tier: "Kumbhveer Mitra", badges: ["Eco-Kumbh Green Scout"] }
+    ];
 
-  async function loadVolunteerLeaderboard() {
-    try {
-      const res = await fetch(`${activeApiBase}/api/v1/reports/volunteers/leaderboard`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.leaderboard && data.leaderboard.length > 0) {
-          allVolunteers = data.leaderboard.map((v, i) => ({ ...v, rank: i + 1 }));
+    async function loadVolunteerLeaderboard() {
+      try {
+        const res = await fetch(`${activeApiBase}/api/v1/reports/volunteers/leaderboard`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.leaderboard && data.leaderboard.length > 0) {
+            allVolunteers = data.leaderboard.map((v, i) => ({ ...v, rank: i + 1 }));
+          } else {
+            allVolunteers = fallbackVolunteers;
+          }
         } else {
           allVolunteers = fallbackVolunteers;
         }
-      } else {
+      } catch (e) {
         allVolunteers = fallbackVolunteers;
       }
-    } catch (e) {
-      allVolunteers = fallbackVolunteers;
-    }
-    renderVolunteers();
-  }
-
-  function renderVolunteers() {
-    const listEl = document.getElementById('volunteer-leaderboard-list');
-    const badgeEl = document.getElementById('kv-total-count-badge');
-    if (!listEl) return;
-
-    if (badgeEl) {
-      badgeEl.textContent = `${allVolunteers.length} Kumbhveers Active`;
+      renderVolunteers();
     }
 
-    const itemsToRender = showAllVolunteers ? allVolunteers : allVolunteers.slice(0, 5);
-    listEl.innerHTML = '';
+    function renderVolunteers() {
+      const listEl = document.getElementById('volunteer-leaderboard-list');
+      const badgeEl = document.getElementById('kv-total-count-badge');
+      if (!listEl) return;
 
-    itemsToRender.forEach((vol) => {
-      let rankBadge = '<span class="w-6 h-6 rounded-full bg-surface-container-high text-on-surface font-bold text-xs flex items-center justify-center">' + vol.rank + '</span>';
-      if (vol.rank === 1) rankBadge = '<span class="w-6 h-6 rounded-full bg-amber-500 text-white font-bold text-xs flex items-center justify-center shadow-xs">1</span>';
-      else if (vol.rank === 2) rankBadge = '<span class="w-6 h-6 rounded-full bg-slate-400 text-white font-bold text-xs flex items-center justify-center shadow-xs">2</span>';
-      else if (vol.rank === 3) rankBadge = '<span class="w-6 h-6 rounded-full bg-amber-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">3</span>';
+      if (badgeEl) {
+        badgeEl.textContent = `${allVolunteers.length} Active`;
+      }
 
-      const firstBadge = Array.isArray(vol.badges) && vol.badges.length > 0 ? vol.badges[0] : (vol.tier || 'Kumbhveer');
+      const currentUserName = (localStorage.getItem('kumbhsetu_logged_name') || 'Nakul').toLowerCase();
+      const itemsToRender = showAllVolunteers ? allVolunteers : allVolunteers.slice(0, 5);
+      listEl.innerHTML = '';
 
-      const item = document.createElement('div');
-      item.className = 'flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors border border-outline-variant/20';
-      item.innerHTML = `
-        <div class="flex items-center gap-2.5 min-w-0">
-          ${rankBadge}
-          <div class="flex flex-col min-w-0">
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="font-label-md text-xs font-bold text-on-surface truncate">${vol.volunteer_name}</span>
-              <span class="px-1.5 py-0.2 rounded bg-primary/10 text-primary text-[9px] font-semibold">${firstBadge}</span>
+      itemsToRender.forEach((vol) => {
+        let rankBadge = `<span class="w-6 h-6 rounded-full bg-surface-container text-on-surface font-bold text-xs flex items-center justify-center">${vol.rank}</span>`;
+        if (vol.rank === 1) rankBadge = `<span class="w-6 h-6 rounded-full bg-amber-500 text-white font-bold text-xs flex items-center justify-center shadow-xs">1</span>`;
+        else if (vol.rank === 2) rankBadge = `<span class="w-6 h-6 rounded-full bg-slate-400 text-white font-bold text-xs flex items-center justify-center shadow-xs">2</span>`;
+        else if (vol.rank === 3) rankBadge = `<span class="w-6 h-6 rounded-full bg-amber-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">3</span>`;
+
+        const isUserMatch = vol.volunteer_name && vol.volunteer_name.toLowerCase().includes(currentUserName);
+        const firstBadge = Array.isArray(vol.badges) && vol.badges.length > 0 ? vol.badges[0] : (vol.tier || 'Kumbhveer');
+
+        const item = document.createElement('div');
+        item.className = `flex items-center justify-between p-2.5 rounded-xl ${isUserMatch ? 'bg-amber-50 border-amber-300 ring-1 ring-amber-400/40 shadow-xs' : 'bg-surface-container-low hover:bg-surface-container'} transition-colors border border-outline-variant/20`;
+        item.innerHTML = `
+          <div class="flex items-center gap-2.5 min-w-0">
+            ${rankBadge}
+            <div class="flex flex-col min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-xs font-bold text-on-surface truncate">${vol.volunteer_name}</span>
+                ${isUserMatch ? '<span class="px-1.5 py-0.2 rounded bg-amber-500 text-white text-[9px] font-bold">You</span>' : ''}
+                <span class="px-1.5 py-0.2 rounded bg-primary/10 text-primary text-[9px] font-semibold">${firstBadge}</span>
+              </div>
+              <span class="text-[10px] text-on-surface-variant truncate">${vol.college_name} • ${vol.audits_completed || 0} audits</span>
             </div>
-            <span class="font-body-sm text-[11px] text-on-surface-variant truncate">${vol.college_name} • ${vol.audits_completed || 0} field audits</span>
           </div>
-        </div>
-        <div class="text-right shrink-0">
-          <span class="font-headline-sm text-sm font-bold text-primary">${vol.points} pts</span>
-          <span class="font-label-sm text-[10px] text-emerald-800 bg-emerald-100 font-semibold px-1.5 py-0.5 rounded block mt-0.5">₹${vol.voucher_credits_inr || (vol.points * 2)} Voucher</span>
-        </div>
-      `;
-      listEl.appendChild(item);
-    });
+          <div class="text-right shrink-0">
+            <span class="text-xs font-bold text-primary">${vol.points} pts</span>
+            <span class="text-[9px] text-emerald-800 bg-emerald-100 font-bold px-1.5 py-0.5 rounded block mt-0.5">₹${vol.voucher_credits_inr || (vol.points * 2)} Voucher</span>
+          </div>
+        `;
+        listEl.appendChild(item);
+      });
 
-    const toggleBtn = document.getElementById('btn-toggle-volunteers');
-    const toggleTxt = document.getElementById('toggle-text');
-    const toggleIcon = document.getElementById('toggle-icon');
-    if (toggleBtn && toggleTxt && toggleIcon) {
-      if (allVolunteers.length <= 5) {
-        toggleBtn.classList.add('hidden');
-      } else {
-        toggleBtn.classList.remove('hidden');
-        toggleTxt.textContent = showAllVolunteers ? 'Show Top 5 Kumbhveers' : `View All ${allVolunteers.length} Kumbhveers`;
-        toggleIcon.textContent = showAllVolunteers ? 'expand_less' : 'expand_more';
+      const toggleBtn = document.getElementById('btn-toggle-volunteers');
+      const toggleTxt = document.getElementById('toggle-text');
+      const toggleIcon = document.getElementById('toggle-icon');
+      if (toggleBtn && toggleTxt && toggleIcon) {
+        if (allVolunteers.length <= 5) {
+          toggleBtn.classList.add('hidden');
+        } else {
+          toggleBtn.classList.remove('hidden');
+          toggleTxt.textContent = showAllVolunteers ? 'Show Top 5' : `View All ${allVolunteers.length} Kumbhveers`;
+          toggleIcon.textContent = showAllVolunteers ? 'expand_less' : 'expand_more';
+        }
       }
     }
-  }
 
-  function toggleVolunteerList() {
-    showAllVolunteers = !showAllVolunteers;
-    renderVolunteers();
-  }
+    function toggleVolunteerList() {
+      showAllVolunteers = !showAllVolunteers;
+      renderVolunteers();
+    }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    loadVolunteerLeaderboard();
-  });
-</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)]" data-active-classes="text-secondary font-semibold"><div class="flex justify-around items-center h-16 px-space-2xs"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-14 h-12 transition-colors text-secondary font-semibold" data-path="overview" href="nashikkar_overview.html"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="text-[10px] font-semibold leading-tight">Overview</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="flags" href="price_flags.html"><span class="material-symbols-outlined text-[20px]">warning</span><span class="text-[10px] font-semibold leading-tight">Price Flags</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="volunteer" href="kumbhveer_portal.html"><span class="material-symbols-outlined text-[20px]">volunteer_activism</span><span class="text-[10px] font-semibold leading-tight">Volunteer</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="report" href="report_issue.html"><span class="material-symbols-outlined text-[20px]">report_problem</span><span class="text-[10px] font-semibold leading-tight">Report</span></a><a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="fares" href="fare_board.html"><span class="material-symbols-outlined text-[20px]">price_change</span><span class="text-[10px] font-semibold leading-tight">Gazette</span></a></div></nav><script src="i18n.js"></script>
-</body></html>
+    function toggleAdminMenu() {
+      const modal = document.getElementById('adminMenuModal');
+      if (!modal) return;
+      if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Resolve registered user identity (Nakul or logged in user)
+      let profile = null;
+      try {
+        const stored = localStorage.getItem('kumbhsetu_user_profile');
+        if (stored) profile = JSON.parse(stored);
+      } catch (e) {}
+
+      let userNameVal = localStorage.getItem('kumbhsetu_logged_name') || profile?.name;
+      let userEmailVal = localStorage.getItem('kumbhsetu_logged_email') || profile?.email;
+      let userGovtId = profile?.govtId;
+      let userRoleVal = profile?.role || localStorage.getItem('kumbhsetu_nashikkar_role') || 'resident';
+      let userLocationVal = profile?.extra || 'Ramkund & Panchavati Sector';
+
+      // If name or email missing, fetch from backend citizens API
+      if (!userNameVal || !userEmailVal) {
+        try {
+          const cRes = await fetch(`${activeApiBase}/api/v1/auth/citizens`);
+          if (cRes.ok) {
+            const cData = await cRes.json();
+            if (cData.citizens && cData.citizens.length > 0) {
+              const matched = userEmailVal ? cData.citizens.find(c => c.email === userEmailVal) : cData.citizens[0];
+              if (matched) {
+                userNameVal = userNameVal || matched.name;
+                userEmailVal = userEmailVal || matched.email;
+                userGovtId = userGovtId || matched.govt_id;
+                userLocationVal = userLocationVal || matched.address;
+              }
+            }
+          }
+        } catch (e) {}
+      }
+
+      // Default to Nakul Karpe if still empty
+      if (!userNameVal) userNameVal = 'Nakul Karpe';
+      if (!userEmailVal) userEmailVal = 'nakul@kumbhsetu.in';
+      if (!userGovtId) userGovtId = 'MH-15-CITIZEN-007';
+
+      // Derive clean initials
+      const nameParts = userNameVal.trim().split(/\s+/);
+      const initials = nameParts.length > 1
+        ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+        : nameParts[0].slice(0, 2).toUpperCase();
+
+      // Bind to Dashboard Hero
+      const dashName = document.getElementById('dash-user-name');
+      const dashEmail = document.getElementById('dash-user-email');
+      const dashId = document.getElementById('dash-user-id');
+      const dashAvatar = document.getElementById('dash-user-avatar');
+      const dashBadge = document.getElementById('dash-user-badge');
+      const dashSector = document.getElementById('dash-user-sector');
+
+      if (dashName) dashName.textContent = `Namaste, ${userNameVal}`;
+      if (dashEmail) dashEmail.textContent = userEmailVal;
+      if (dashId) dashId.textContent = `Govt ID: ${userGovtId}`;
+      if (dashAvatar) dashAvatar.textContent = initials;
+      if (dashSector) dashSector.textContent = userLocationVal;
+      if (dashBadge) {
+        const isKv = userRoleVal === 'kumbhveer';
+        const isVnd = userRoleVal === 'vendor';
+        dashBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${isKv ? 'bg-amber-600' : (isVnd ? 'bg-blue-600' : 'bg-emerald-600')}"></span>${isKv ? 'Kumbhveer Sevak' : (isVnd ? 'Civic Vendor' : 'Verified Citizen')}`;
+        dashBadge.className = `inline-flex items-center gap-1 px-2 py-0.5 rounded-full ${isKv ? 'bg-amber-100 text-amber-900 border-amber-300' : (isVnd ? 'bg-blue-100 text-blue-900 border-blue-300' : 'bg-emerald-100 text-emerald-800 border-emerald-300')} text-[10px] font-bold border`;
+      }
+
+      // Bind to Header Menu Button
+      const headerRoleLabel = document.getElementById('header-user-role-label');
+      const headerAvatarBadge = document.getElementById('header-avatar-badge');
+      const portalBadge = document.getElementById('portal-badge-tag');
+
+      if (headerRoleLabel) headerRoleLabel.textContent = nameParts[0];
+      if (headerAvatarBadge) headerAvatarBadge.textContent = initials;
+      if (portalBadge) {
+        portalBadge.textContent = userRoleVal === 'kumbhveer' ? 'Kumbhveer' : (userRoleVal === 'vendor' ? 'Vendor' : 'Citizen');
+      }
+
+      // Bind to Account Drawer Menu
+      const adminName = document.getElementById('admin-user-name');
+      const adminEmail = document.getElementById('admin-user-email');
+      const adminAvatar = document.getElementById('admin-user-avatar');
+      const adminBadge = document.getElementById('admin-user-badge');
+
+      if (adminName) adminName.textContent = userNameVal;
+      if (adminEmail) adminEmail.textContent = userEmailVal;
+      if (adminAvatar) adminAvatar.textContent = initials;
+      if (adminBadge) {
+        adminBadge.textContent = userRoleVal === 'kumbhveer' ? 'Kumbhveer' : (userRoleVal === 'vendor' ? 'Vendor' : 'Resident');
+      }
+
+      // 2. Load Volunteer Leaderboard
+      loadVolunteerLeaderboard();
+
+      // 3. Real-Time Dashboard Wiring
+      initRealtimeDashboard();
+    });
+
+    async function initRealtimeDashboard() {
+      const hasSupabase = await KumbhRealtime.ready();
+      console.log('[Dashboard] Real-time mode:', hasSupabase ? 'Supabase Live' : 'FastAPI Fallback');
+
+      // 1. Fetch initial stats
+      await refreshDashboardStats();
+
+      // 2. Subscribe to real-time changes on key tables
+      KumbhRealtime.subscribe('reports', '*', (payload) => {
+        console.log('[Dashboard] reports changed:', payload.eventType);
+        refreshDashboardStats();
+        showRealtimeToast('New civic report received', 'report_problem');
+      });
+
+      KumbhRealtime.subscribe('vendors', '*', (payload) => {
+        console.log('[Dashboard] vendors changed:', payload.eventType);
+        refreshDashboardStats();
+        showRealtimeToast('Vendor registration updated', 'storefront');
+      });
+
+      KumbhRealtime.subscribe('listings', '*', (payload) => {
+        console.log('[Dashboard] listings changed:', payload.eventType);
+        refreshDashboardStats();
+      });
+
+      KumbhRealtime.subscribe('escalations', '*', (payload) => {
+        console.log('[Dashboard] escalations changed:', payload.eventType);
+        refreshDashboardStats();
+        showRealtimeToast('Police escalation updated', 'gavel');
+      });
+
+      KumbhRealtime.subscribe('volunteer_rewards', '*', (payload) => {
+        console.log('[Dashboard] volunteers changed:', payload.eventType);
+        loadVolunteerLeaderboard();
+      });
+    }
+
+    async function refreshDashboardStats() {
+      try {
+        const stats = await KumbhRealtime.dashboardStats();
+
+        // Update KPI counters with animation
+        animateCounter('kpi-grievances-count', stats.reports_total || stats.reports_new || 14);
+        animateCounter('kpi-price-flags-count', stats.price_flags || 6);
+        animateCounter('kpi-volunteers-count', stats.volunteers_active || 21);
+        animateCounter('kpi-audits-count', stats.listings_total || 182);
+
+        // Update action grid labels
+        const flagsLabel = document.getElementById('action-price-flags-label');
+        if (flagsLabel) flagsLabel.textContent = `${stats.price_flags || 6} Active Reports`;
+
+        // Update escalations label
+        const escLabel = document.getElementById('kpi-escalations-label');
+        if (escLabel) escLabel.textContent = `${stats.escalations_total || 3} Cases Escalated Onward`;
+
+        // Update alerts link
+        const alertsLink = document.getElementById('alerts-view-all-link');
+        if (alertsLink) alertsLink.textContent = `View All (${stats.price_flags || 6}) →`;
+
+        // Update live telemetry badge
+        const liveBadge = document.querySelector('.animate-ping');
+        if (liveBadge && stats.source === 'supabase') {
+          liveBadge.classList.add('bg-emerald-600');
+        }
+
+        // Refresh urgent live alerts feed
+        await loadUrgentAlerts();
+
+        console.log('[Dashboard] Stats refreshed:', stats.source, stats);
+      } catch (e) {
+        console.warn('[Dashboard] Stats refresh error:', e);
+      }
+    }
+
+    async function loadUrgentAlerts() {
+      const container = document.getElementById('urgent-alerts-container');
+      if (!container || !window.KumbhRealtime) return;
+
+      try {
+        const reports = await KumbhRealtime.getReports({ limit: 4 });
+        if (reports && reports.length > 0) {
+          container.innerHTML = reports.map(r => {
+            const isEscalated = r.status === 'Escalated to Police';
+            const isTestOrNew = r.listing_name?.includes('Test') || r.status === 'New';
+            return `
+              <article class="p-3.5 rounded-xl bg-surface-container-lowest shadow-xs border ${isTestOrNew ? 'border-primary ring-1 ring-primary/40' : 'border-outline-variant/30'} flex flex-col gap-2 hover:bg-surface-container-low transition-colors">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="px-1.5 py-0.5 rounded font-bold text-[9px] uppercase tracking-wider ${isEscalated ? 'bg-purple-100 text-purple-900 border border-purple-200' : 'bg-red-100 text-red-800 border border-red-200'}">
+                      ${r.issue_type || 'Civic Violation'}
+                    </span>
+                    <span class="text-xs font-semibold text-on-surface">${r.listing_name}</span>
+                  </div>
+                  <span class="text-[10px] text-secondary font-medium shrink-0 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
+                    Live
+                  </span>
+                </div>
+
+                <p class="text-xs text-on-surface-variant leading-relaxed">
+                  ${r.description || 'Reported by Yatri via Kumbh Setu. Spot check required.'}
+                </p>
+
+                <div class="flex items-center gap-1.5 py-1 px-2 rounded-lg bg-surface-container text-on-surface-variant text-[10px] font-medium">
+                  <span class="material-symbols-outlined text-[14px] text-primary">verified_user</span>
+                  <span>Category: <strong>${r.category || 'Civic'}</strong> • Status: <strong class="${r.status === 'Resolved' ? 'text-emerald-700' : 'text-primary'}">${r.status || 'New'}</strong></span>
+                </div>
+
+                <div class="flex items-center gap-2 pt-1">
+                  <a href="price_flags.html" class="flex-1 h-9 rounded-lg bg-secondary text-on-secondary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs">
+                    <span class="material-symbols-outlined text-[16px]">verified_user</span>
+                    Review Flag
+                  </a>
+                  <a href="kumbhveer_portal.html" class="h-9 px-3 rounded-lg bg-primary text-on-primary text-xs font-bold hover:bg-primary-container transition-colors flex items-center gap-1 active:scale-98">
+                    <span class="material-symbols-outlined text-[15px]">school</span>
+                    Verify
+                  </a>
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        console.warn('Error loading urgent alerts:', err);
+      }
+    }
+
+    function animateCounter(elementId, targetValue) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+
+      const current = parseInt(el.textContent) || 0;
+      if (current === targetValue) return;
+
+      // Quick counter animation
+      const duration = 600;
+      const startTime = performance.now();
+      const diff = targetValue - current;
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        el.textContent = Math.round(current + diff * eased);
+
+        if (progress < 1) requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+
+      // Flash effect
+      el.style.transition = 'color 0.3s';
+      el.style.color = '#c64f0e';
+      setTimeout(() => { el.style.color = ''; }, 800);
+    }
+
+    function showRealtimeToast(message, icon) {
+      const toast = document.getElementById('toast-slot');
+      const toastMsg = document.getElementById('toast-message');
+      if (toast && toastMsg) {
+        toastMsg.innerHTML = `<span class="material-symbols-outlined text-[16px] mr-1">${icon || 'sync'}</span> ${message}`;
+        toast.classList.remove('opacity-0', 'translate-y-4');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+          toast.classList.remove('opacity-100', 'translate-y-0');
+          toast.classList.add('opacity-0', 'translate-y-4');
+        }, 4000);
+      }
+    }
+  </script>
+
+  <script src="i18n.js"></script>
+</body>
+</html>

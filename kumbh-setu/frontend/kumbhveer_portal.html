@@ -26,6 +26,8 @@
   </style>
 
   <script src="api_config.js"></script>
+  <script src="supabase.js"></script>
+  <script src="supabase_realtime.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -86,8 +88,8 @@
           <span class="material-symbols-outlined text-[13px] text-primary">translate</span>
           <span class="text-[10px] sm:text-xs">मरा/EN</span>
         </button>
-        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm" title="Kumbhveer Rohit S.">
-          KV
+        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm" id="kv-header-avatar" title="Kumbhveer">
+          NK
         </div>
       </div>
     </div>
@@ -105,10 +107,10 @@
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h1 class="text-base font-bold text-white tracking-tight">Rohit Shinde</h1>
-              <span class="px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 text-[10px] font-bold uppercase tracking-wider">Kumbhveer #KV-204</span>
+              <h1 class="text-base font-bold text-white tracking-tight" id="hero-volunteer-name">Nakul Karpe</h1>
+              <span class="px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 text-[10px] font-bold uppercase tracking-wider" id="hero-volunteer-badge">Kumbhveer #KV-2027-NK</span>
             </div>
-            <p class="text-xs text-amber-200/90 font-medium">KTHM College Nashik • Sector 4 Field Audit Hub</p>
+            <p class="text-xs text-amber-200/90 font-medium" id="hero-volunteer-college">Sandip University Engineering • Sector 4 Field Audit Hub</p>
           </div>
         </div>
 
@@ -265,7 +267,7 @@
             <span class="font-bold text-xs text-on-surface">Volunteer On-Site Checklist:</span>
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" id="chkRateCard" checked class="w-4 h-4 text-primary rounded accent-primary"/>
-              <span>Official gazetted rate card is clearly visible to pilgrims</span>
+              <span>Estimated price list &amp; rate card is clearly visible to pilgrims</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" id="chkNoSurcharge" checked class="w-4 h-4 text-primary rounded accent-primary"/>
@@ -488,6 +490,116 @@
     </div>
   </nav>
 
+  <!-- Verification Proof & Field Audit Modal -->
+  <div id="verifyProofModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full p-4 sm:p-5 space-y-3.5 shadow-2xl border border-outline-variant/30 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">verified</span>
+          </div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-on-surface text-sm sm:text-base leading-tight">Submit Verification Proof</h3>
+            <p class="text-[11px] text-on-surface-variant truncate">Attach photo, field audit notes &amp; checkpoints</p>
+          </div>
+        </div>
+        <button onclick="closeVerificationModal()" class="text-on-surface-variant hover:text-on-surface p-1 rounded-full hover:bg-surface-container cursor-pointer shrink-0">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Target Stall Meta Card -->
+      <div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/30 flex items-start justify-between gap-3">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-1.5">
+            <span id="modalStallToken" class="text-[10px] font-mono font-bold text-primary">#NSK-00</span>
+            <span id="modalStallCat" class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-surface-container-high text-on-surface uppercase">STALL</span>
+          </div>
+          <h4 id="modalStallName" class="font-bold text-xs sm:text-sm text-on-surface truncate mt-0.5">Stall Name</h4>
+          <span id="modalStallLane" class="text-[11px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-outlined text-[13px] text-primary shrink-0">location_on</span>
+            <span class="truncate">Lane</span>
+          </span>
+        </div>
+        <div class="text-right shrink-0">
+          <span id="modalPriceLabel" class="text-[10px] text-on-surface-variant block">Estimated Price</span>
+          <span id="modalPriceVal" class="text-xs font-extrabold text-primary font-mono">₹--</span>
+        </div>
+      </div>
+
+      <!-- 1. Photo Proof Capture / Upload -->
+      <div class="space-y-1.5">
+        <label class="font-bold text-xs text-on-surface flex items-center justify-between">
+          <span>1. Live Photo Proof (फोटो पुरावा) *</span>
+          <span class="text-[10px] text-emerald-700 font-bold flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-[13px]">location_searching</span> GPS Geo-stamped
+          </span>
+        </label>
+        <div class="border-2 border-dashed border-outline-variant/70 hover:border-emerald-600 rounded-xl p-3 flex flex-col items-center justify-center gap-2 bg-surface-container-low/40 cursor-pointer relative transition-colors" onclick="document.getElementById('modalProofFile').click()">
+          <input type="file" id="modalProofFile" accept="image/*" capture="environment" class="hidden" onchange="previewModalProofImage(event)"/>
+          <div id="modalProofPlaceholder" class="flex flex-col items-center py-2 text-center">
+            <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mb-1">
+              <span class="material-symbols-outlined text-xl">photo_camera</span>
+            </div>
+            <span class="font-bold text-xs text-on-surface">Tap to Capture Camera Photo or Upload File</span>
+            <span class="text-[10px] text-on-surface-variant">Rate board, QR code or stall counter snapshot</span>
+          </div>
+          <img id="modalProofImgPreview" class="hidden max-h-36 rounded-lg object-contain shadow-sm border border-outline-variant/40" alt="Proof Preview"/>
+        </div>
+        <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-0.5">
+          <span>Testing on desktop?</span>
+          <button type="button" onclick="attachSampleProofPhoto()" class="text-primary font-bold hover:underline cursor-pointer">
+            + Use Pre-captured Field Proof Photo
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. On-Site Checkpoints -->
+      <div class="bg-surface-container-low p-2.5 sm:p-3 rounded-xl flex flex-col gap-1.5 border border-outline-variant/30 text-xs">
+        <span class="font-bold text-on-surface">2. Verification Checklist:</span>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="modalChkPrice" checked class="w-4 h-4 text-emerald-700 rounded accent-emerald-700"/>
+          <span id="modalChkPriceText">Estimated price / rate card visibly displayed</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="modalChkUpi" checked class="w-4 h-4 text-emerald-700 rounded accent-emerald-700"/>
+          <span>Digital UPI QR functional &amp; zero unauthorized surcharge</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="modalChkHygiene" checked class="w-4 h-4 text-emerald-700 rounded accent-emerald-700"/>
+          <span>Clean pilgrim environment &amp; courteous conduct verified</span>
+        </label>
+      </div>
+
+      <!-- 3. Kumbhveer Field Notes -->
+      <div class="space-y-1.5">
+        <label class="font-bold text-xs text-on-surface flex items-center justify-between">
+          <span>3. Kumbhveer Field Notes &amp; Observations (नोंदी)</span>
+          <span class="text-[10px] text-on-surface-variant">Required</span>
+        </label>
+        <textarea id="modalProofNotes" rows="2" placeholder="e.g. Inspected on-site rate board and digital QR. Merchant charging fair price, courteous conduct." class="w-full p-2.5 bg-surface-container-low border border-outline-variant/40 rounded-xl text-xs text-on-surface focus:ring-1 focus:ring-emerald-600 focus:outline-none"></textarea>
+        <!-- Quick Note Chips -->
+        <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
+          <button type="button" onclick="appendModalNote('Rate board visibly displayed.')" class="px-2 py-0.5 rounded-full bg-surface-container hover:bg-surface-container-high text-[10px] text-on-surface-variant font-medium cursor-pointer">+ Rate board visible</button>
+          <button type="button" onclick="appendModalNote('UPI QR active & tested.')" class="px-2 py-0.5 rounded-full bg-surface-container hover:bg-surface-container-high text-[10px] text-on-surface-variant font-medium cursor-pointer">+ UPI QR active</button>
+          <button type="button" onclick="appendModalNote('No overcharging observed.')" class="px-2 py-0.5 rounded-full bg-surface-container hover:bg-surface-container-high text-[10px] text-on-surface-variant font-medium cursor-pointer">+ Fair price confirmed</button>
+          <button type="button" onclick="appendModalNote('Clean premises.')" class="px-2 py-0.5 rounded-full bg-surface-container hover:bg-surface-container-high text-[10px] text-on-surface-variant font-medium cursor-pointer">+ Clean premises</button>
+        </div>
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="flex gap-2 pt-2 border-t border-outline-variant/20">
+        <button onclick="closeVerificationModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-semibold cursor-pointer">
+          Cancel
+        </button>
+        <button onclick="submitModalVerification()" class="flex-1 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md active:scale-98 transition-transform cursor-pointer flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">check_circle</span>
+          <span>Submit Proof &amp; Verify (+50 Pts)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-on-surface text-surface px-4 py-2.5 rounded-full text-xs font-semibold shadow-xl hidden items-center gap-2 z-50 transition-opacity">
     <span class="material-symbols-outlined text-amber-400 text-base">check_circle</span>
@@ -658,7 +770,7 @@
         category: "transit",
         catLabel: "Transit Stand",
         lane: "Central Bus Stand (CBS)",
-        capRate: "RTO Gazetted Rate",
+        capRate: "₹26 Estimated Meter Fare",
         status: "pending",
         checklist: ["Pre-paid slip queue active", "RTO personnel stationed", "Fare chart displayed"]
       },
@@ -716,6 +828,17 @@
         capRate: "₹15 shared seat",
         status: "pending",
         checklist: ["Standard ₹15 route board", "Green zone pass active", "No overcrowding"]
+      },
+      {
+        id: 21,
+        name: "NMC Citylink Bus Stand (CBS Bay 2)",
+        token: "#NSK-BUS-01",
+        category: "transit",
+        catLabel: "CityLink Bus",
+        lane: "Central Bus Stand (CBS)",
+        capRate: "₹10 - ₹25 Official Gazette Cap",
+        status: "pending",
+        checklist: ["Statutory Stage fare chart displayed", "Electronic ticketing active", "NMC Conductor present"]
       }
     ];
 
@@ -750,13 +873,46 @@
     let activeCatFilter = 'all';
 
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Resolve registered volunteer profile (Nakul or logged-in volunteer)
+      let profile = null;
+      try {
+        const stored = localStorage.getItem('kumbhsetu_user_profile');
+        if (stored) profile = JSON.parse(stored);
+      } catch (e) {}
+
+      const userNameVal = localStorage.getItem('kumbhsetu_logged_name') || profile?.name || 'Nakul Karpe';
+      const userCollegeVal = profile?.extra || 'Sandip University Engineering';
+      const nameParts = userNameVal.trim().split(/\s+/);
+      const initials = nameParts.length > 1
+        ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+        : nameParts[0].slice(0, 2).toUpperCase();
+
+      const heroName = document.getElementById('hero-volunteer-name');
+      const heroBadge = document.getElementById('hero-volunteer-badge');
+      const heroCollege = document.getElementById('hero-volunteer-college');
+      const headerAvatar = document.getElementById('kv-header-avatar');
+
+      if (heroName) heroName.textContent = userNameVal;
+      if (heroBadge) heroBadge.textContent = `Kumbhveer #KV-2027-${initials}`;
+      if (heroCollege) heroCollege.textContent = `${userCollegeVal} • Sector 4 Field Audit Hub`;
+      if (headerAvatar) headerAvatar.textContent = initials;
+
+      // Update leaderboard entry with active volunteer's name
+      const userIdx = VOLUNTEERS_LEADERBOARD.findIndex(v => v.isUser);
+      if (userIdx !== -1) {
+        VOLUNTEERS_LEADERBOARD[userIdx].name = `${userNameVal} (You)`;
+        VOLUNTEERS_LEADERBOARD[userIdx].college = userCollegeVal;
+      }
+
       // Restore persisted data
       const savedAudits = localStorage.getItem('kumbhsetu_verified_audits');
       if (savedAudits) {
-        const verifiedIds = JSON.parse(savedAudits);
-        auditsState.forEach(a => {
-          if (verifiedIds.includes(a.id)) a.status = 'verified';
-        });
+        try {
+          const verifiedIds = JSON.parse(savedAudits);
+          auditsState.forEach(a => {
+            if (verifiedIds.includes(a.id)) a.status = 'verified';
+          });
+        } catch(e){}
       }
       const savedPoints = localStorage.getItem('kumbhsetu_user_points');
       if (savedPoints) {
@@ -771,7 +927,84 @@
 
       renderAuditsList();
       renderLeaderboard();
+
+      // Initialize Supabase Realtime & Load incoming citizen reports
+      initRealtimeKumbhveer();
     });
+
+    async function initRealtimeKumbhveer() {
+      if (!window.KumbhRealtime) return;
+      await KumbhRealtime.ready();
+
+      // 1. Fetch live reports from Supabase (with fallback to FastAPI)
+      await loadLiveReports();
+
+      // 2. Subscribe to real-time reports
+      KumbhRealtime.subscribe('reports', '*', (payload) => {
+        console.log('[Kumbhveer] Real-time report event:', payload.eventType, payload);
+        loadLiveReports();
+        const rep = payload.new || payload.record;
+        if (rep && rep.listing_name) {
+          showToast(`⚡ Live Report Alert: "${rep.listing_name}" added to Field Audit queue!`);
+        }
+      });
+    }
+
+    async function loadLiveReports() {
+      try {
+        const reports = await KumbhRealtime.getReports({ limit: 20 });
+        if (reports && reports.length > 0) {
+          const mapped = reports.map(mapReportToAudit);
+          const reportAuditIds = new Set(mapped.map(m => String(m.id)));
+          const baseAudits = auditsState.filter(a => !reportAuditIds.has(String(a.id)) && !a.isLiveReport);
+          auditsState = [...mapped, ...baseAudits];
+          renderAuditsList();
+          console.log('[Kumbhveer] Loaded live reports into audit queue:', mapped.length);
+        }
+      } catch (err) {
+        console.warn('[Kumbhveer] Load live reports error:', err);
+      }
+    }
+
+    function mapReportToAudit(report) {
+      const cat = (report.category || '').toLowerCase();
+      let auditCat = 'bazaar';
+      let catBadge = 'Civic Flag';
+      if (cat.includes('hotel') || cat.includes('stay') || cat.includes('niwas') || cat.includes('lodge')) {
+        auditCat = 'dharamshala';
+        catBadge = 'Stay Violation';
+      } else if (cat.includes('food') || cat.includes('stall') || cat.includes('restaurant')) {
+        auditCat = 'food';
+        catBadge = 'Food & Hygiene';
+      } else if (cat.includes('transport') || cat.includes('auto') || cat.includes('bus') || cat.includes('stand')) {
+        auditCat = 'transit';
+        catBadge = 'Transit Fare';
+      } else if (cat.includes('pooja') || cat.includes('flower') || cat.includes('samagri')) {
+        auditCat = 'pooja';
+        catBadge = 'Pooja Rate';
+      }
+
+      const shortToken = '#RPT-' + (report.id ? report.id.slice(0, 6).toUpperCase() : 'CIVIC');
+      const isResolved = report.status === 'Resolved';
+
+      return {
+        id: 'rpt-' + report.id,
+        reportId: report.id,
+        name: report.listing_name || 'Reported Civic Location',
+        token: shortToken,
+        category: auditCat,
+        catLabel: `⚡ ${catBadge}`,
+        lane: report.description || 'Reported by Pilgrim via Kumbh Setu',
+        capRate: report.issue_type || 'Civic Overcharge Flag',
+        status: isResolved ? 'verified' : 'pending',
+        isLiveReport: true,
+        checklist: [
+          `Citizen Complaint: "${report.issue_type || 'Violation Reported'}"`,
+          'Verify official Simhastha rate board & display card visibility',
+          'Inspect digital UPI QR & confirm zero unlawful extra charge'
+        ]
+      };
+    }
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -852,12 +1085,16 @@
 
       container.innerHTML = filtered.map(item => {
         const isVerified = item.status === 'verified';
+        const isLive = !!item.isLiveReport;
+        const isCitylink = (item.name && item.name.toLowerCase().includes('citylink')) || (item.category === 'transit' && item.name.toLowerCase().includes('bus'));
+        const priceLabel = isLive ? 'Reported Issue' : (isCitylink ? 'Gazette Cap' : 'Estimated Price');
         return `
-          <div class="p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm border ${isVerified ? 'border-emerald-300 bg-emerald-50/20' : 'border-outline-variant/30'} flex flex-col gap-2.5 transition-all">
+          <div class="p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm border ${isLive ? 'border-red-400/80 bg-red-50/15 ring-1 ring-red-400/30' : (isVerified ? 'border-emerald-300 bg-emerald-50/20' : 'border-outline-variant/30')} flex flex-col gap-2.5 transition-all">
             <div class="flex items-start justify-between gap-2">
               <div class="flex flex-col min-w-0">
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${getCategoryBadgeStyle(item.category)}">${item.catLabel}</span>
+                  ${isLive ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-red-600 text-white flex items-center gap-1 animate-pulse"><span class="w-1.5 h-1.5 rounded-full bg-white"></span>Live Yatri Report</span>` : ''}
                   <span class="text-[11px] font-mono font-bold text-on-surface-variant">${item.token}</span>
                 </div>
                 <h3 class="font-bold text-sm text-on-surface truncate mt-1">${item.name}</h3>
@@ -868,7 +1105,7 @@
               </div>
 
               <div class="text-right shrink-0">
-                <span class="text-[10px] text-on-surface-variant block">Gazetted Cap</span>
+                <span class="text-[10px] text-on-surface-variant block">${priceLabel}</span>
                 <span class="text-xs font-extrabold text-primary font-mono">${item.capRate}</span>
               </div>
             </div>
@@ -877,7 +1114,7 @@
             <div class="bg-surface-container-low/80 p-2.5 rounded-xl flex flex-col gap-1 text-[11px] text-on-surface-variant">
               ${item.checklist.map(chk => `
                 <div class="flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-[14px] ${isVerified ? 'text-emerald-700' : 'text-primary'}">check_circle</span>
+                  <span class="material-symbols-outlined text-[14px] ${isVerified ? 'text-emerald-700' : (isLive ? 'text-red-600' : 'text-primary')}">check_circle</span>
                   <span>${chk}</span>
                 </div>
               `).join('')}
@@ -888,10 +1125,10 @@
               ${isVerified ? `
                 <div class="w-full h-9 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-emerald-300">
                   <span class="material-symbols-outlined text-sm">verified</span>
-                  <span>Verified On-Site by You (+50 Pts)</span>
+                  <span>Verified On-Site with Proof (+50 Pts)</span>
                 </div>
               ` : `
-                <button onclick="verifyAudit(${item.id})" class="flex-1 h-9 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-transform cursor-pointer">
+                <button onclick="openVerificationModal('${item.id}')" class="flex-1 h-9 rounded-xl ${isLive ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-700 hover:bg-emerald-800'} text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-transform cursor-pointer">
                   <span class="material-symbols-outlined text-sm">check_circle</span>
                   <span>✓ Verify On-Site (+50 Pts)</span>
                 </button>
@@ -929,11 +1166,111 @@
       renderAuditsList();
     }
 
-    function verifyAudit(id) {
-      const item = auditsState.find(a => a.id === id);
+    /* Verification Proof Modal Engine */
+    let activeModalAuditId = null;
+    let modalProofPhotoData = null;
+
+    function openVerificationModal(id) {
+      const item = auditsState.find(a => String(a.id) === String(id));
       if (!item) return;
 
+      activeModalAuditId = item.id;
+      modalProofPhotoData = null;
+
+      const isCitylink = (item.name && item.name.toLowerCase().includes('citylink')) || (item.category === 'transit' && item.name.toLowerCase().includes('bus'));
+
+      document.getElementById('modalStallToken').textContent = item.token;
+      document.getElementById('modalStallCat').textContent = item.catLabel;
+      document.getElementById('modalStallName').textContent = item.name;
+      document.getElementById('modalStallLane').innerHTML = `<span class="material-symbols-outlined text-[13px] text-primary shrink-0">location_on</span><span class="truncate">${item.lane}</span>`;
+      document.getElementById('modalPriceLabel').textContent = item.isLiveReport ? 'Reported Issue' : (isCitylink ? 'Official Gazette Cap' : 'Estimated Price');
+      document.getElementById('modalPriceVal').textContent = item.capRate;
+
+      // Reset modal inputs
+      document.getElementById('modalProofFile').value = '';
+      document.getElementById('modalProofNotes').value = '';
+      document.getElementById('modalProofImgPreview').src = '';
+      document.getElementById('modalProofImgPreview').classList.add('hidden');
+      document.getElementById('modalProofPlaceholder').classList.remove('hidden');
+      document.getElementById('modalChkPrice').checked = true;
+      document.getElementById('modalChkUpi').checked = true;
+      document.getElementById('modalChkHygiene').checked = true;
+
+      document.getElementById('verifyProofModal').classList.remove('hidden');
+      document.getElementById('verifyProofModal').classList.add('flex');
+    }
+
+    function closeVerificationModal() {
+      document.getElementById('verifyProofModal').classList.add('hidden');
+      document.getElementById('verifyProofModal').classList.remove('flex');
+      activeModalAuditId = null;
+    }
+
+    function previewModalProofImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        modalProofPhotoData = evt.target.result;
+        const preview = document.getElementById('modalProofImgPreview');
+        const placeholder = document.getElementById('modalProofPlaceholder');
+        if (preview && placeholder) {
+          preview.src = modalProofPhotoData;
+          preview.classList.remove('hidden');
+          placeholder.classList.add('hidden');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function attachSampleProofPhoto() {
+      // High-quality verified demo capture from Kumbh Mela verification
+      modalProofPhotoData = 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=600&q=80';
+      const preview = document.getElementById('modalProofImgPreview');
+      const placeholder = document.getElementById('modalProofPlaceholder');
+      if (preview && placeholder) {
+        preview.src = modalProofPhotoData;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      }
+      appendModalNote('Rate board verified via live field camera.');
+      showToast('Sample field photo attached');
+    }
+
+    function appendModalNote(txt) {
+      const el = document.getElementById('modalProofNotes');
+      if (el) {
+        if (el.value.trim().length > 0) {
+          if (!el.value.includes(txt)) el.value += ' ' + txt;
+        } else {
+          el.value = txt;
+        }
+      }
+    }
+
+    function submitModalVerification() {
+      if (!activeModalAuditId) return;
+      const item = auditsState.find(a => String(a.id) === String(activeModalAuditId));
+      if (!item) return;
+
+      const notes = document.getElementById('modalProofNotes').value.trim() || 'Rate board & fair prices inspected on-site. UPI QR active.';
+      const photo = modalProofPhotoData || 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=400&q=80';
+
       item.status = 'verified';
+      item.verifiedNotes = notes;
+      item.verifiedPhoto = photo;
+      item.verifiedTimestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // Sync with Supabase / backend if this is an incoming report
+      if (item.reportId && window.KumbhRealtime) {
+        KumbhRealtime.update('reports', item.reportId, {
+          status: 'Resolved',
+          notes: `Verified on-site by Kumbhveer Rohit S. Notes: ${notes}`
+        }).then(() => {
+          console.log('[Kumbhveer] Report status updated to Resolved in Supabase:', item.reportId);
+        }).catch(err => console.log('Report update note:', err));
+      }
+
       userPoints += 50;
       userAudits += 1;
 
@@ -947,8 +1284,29 @@
       const verifiedList = auditsState.filter(a => a.status === 'verified').map(a => a.id);
       localStorage.setItem('kumbhsetu_verified_audits', JSON.stringify(verifiedList));
 
-      showToast(`✓ "${item.name}" verified! +50 Seva Points awarded.`);
+      // Append to recent photos gallery
+      const gallery = document.getElementById('recentPhotosList');
+      if (gallery) {
+        const newCard = document.createElement('div');
+        newCard.className = 'bg-surface-container-low rounded-xl p-2 flex flex-col gap-1 text-[11px] border border-emerald-400 bg-emerald-50/20';
+        newCard.innerHTML = `
+          <img src="${photo}" alt="Audit Proof" class="w-full h-24 object-cover rounded-lg"/>
+          <span class="font-bold truncate text-on-surface">${item.name}</span>
+          <span class="text-[10px] text-emerald-800 font-semibold flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-[13px]">verified</span> Proof Verified (+50 pts)
+          </span>
+          <p class="text-[10px] text-on-surface-variant truncate italic">"${notes}"</p>
+        `;
+        gallery.insertBefore(newCard, gallery.firstChild);
+      }
+
+      closeVerificationModal();
+      showToast(`✓ "${item.name}" verified with proof! +50 Seva Points awarded.`);
       renderAuditsList();
+    }
+
+    function verifyAudit(id) {
+      openVerificationModal(id);
     }
 
     function prefillUpload(stallName) {

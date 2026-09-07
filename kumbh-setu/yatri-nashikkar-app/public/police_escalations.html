@@ -1,411 +1,1087 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Police Escalations Terminal — KumbhSetu 2027</title>
+  
+  <style>
+    @layer base {
+      html, body { width: 100vw; margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
 
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="api_config.js"></script><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "inverse-primary": "#ffb597", "on-secondary": "#ffffff", "on-surface": "#1b1b20", "on-surface-variant": "#584239", "primary-container": "#c64f0e", "surface-dim": "#dbd9e0", "on-primary-container": "#fffbff", "surface-variant": "#e4e1e8", "error": "#ba1a1a", "secondary-fixed": "#ffdad8", "tertiary-fixed": "#ffddb5", "secondary-container": "#fd8a88", "tertiary-container": "#976c31", "on-secondary-fixed": "#410007", "surface-container-lowest": "#ffffff", "on-tertiary-container": "#fffbff", "background": "#fbf8ff", "on-primary": "#ffffff", "secondary-fixed-dim": "#ffb3b0", "on-primary-fixed-variant": "#7d2d00", "tertiary-fixed-dim": "#f1bd79", "surface-bright": "#fbf8ff", "outline": "#8c7167", "on-tertiary": "#ffffff", "surface": "#fbf8ff", "surface-container-low": "#f5f2f9", "surface-container-high": "#eae7ee", "on-secondary-container": "#752125", "on-error": "#ffffff", "secondary": "#9e4041", "on-secondary-fixed-variant": "#7f292b", "on-tertiary-fixed-variant": "#633f04", "surface-tint": "#a43d00", "inverse-surface": "#303035", "tertiary": "#7b541a", "on-primary-fixed": "#360f00", "surface-container-highest": "#e4e1e8", "primary-fixed-dim": "#ffb597", "on-error-container": "#93000a", "error-container": "#ffdad6", "primary-fixed": "#ffdbcd", "outline-variant": "#e0c0b4", "primary": "#a03b00", "on-background": "#1b1b20", "surface-container": "#f0edf4", "on-tertiary-fixed": "#2a1800", "inverse-on-surface": "#f2eff6" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-md": "1rem", "space-2xl": "3rem", "layout-max-width": "75rem", "layout-margin-mobile": "1rem", "space-sm": "0.75rem", "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "space-3xl": "4rem", "space-lg": "1.5rem", "layout-margin-tablet": "2rem", "space-2xs": "0.25rem", "layout-margin-desktop": "3rem", "gutter-mobile": "0.75rem", "space-xl": "2rem" }, fontFamily: { "body-md": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-lg": ["Inter"], "headline-md": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "display-lg-mobile": ["Plus Jakarta Sans"], "label-md": ["Inter"], "body-sm": ["Inter"] }, fontSize: { "body-md": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "400" }], "headline-xl": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }], "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "0em", fontWeight: "600" }], "display-lg": ["44px", { lineHeight: "52px", letterSpacing: "-0.02em", fontWeight: "700" }], "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.005em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "600" }], "body-lg": ["18px", { lineHeight: "28px", letterSpacing: "-0.005em", fontWeight: "400" }], "headline-xl-mobile": ["26px", { lineHeight: "34px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-sm": ["11px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "600" }], "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.015em", fontWeight: "700" }], "label-md": ["13px", { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "600" }], "body-sm": ["14px", { lineHeight: "20px", letterSpacing: "0.005em", fontWeight: "400" }] } } } };</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/></head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-layout-margin-mobile flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs min-w-0 flex-1"><img alt="Kumbh Setu Emblem Wordmark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-secondary text-[16px]">shield</span><span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold truncate">Nashik 2027 • Police Unit</span></div><span class="font-headline-sm text-headline-sm text-on-surface truncate font-bold">Escalations</span></div></div><div class="flex items-center gap-space-2xs shrink-0"><span class="inline-flex items-center px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed rounded font-label-sm text-label-sm font-bold tracking-tight">SEC-04</span><button aria-label="Language Toggle" class="min-h-[44px] min-w-[44px] flex items-center justify-center text-on-surface-variant font-label-md text-label-md font-bold hover:text-on-surface transition-colors" type="button"><span class="px-space-2xs py-0.5 bg-surface-container-high rounded text-on-surface">मरा / EN</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-layout-margin-mobile gap-space-md">
-<!-- Officer Duty Presence Strip -->
-<div class="w-full bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex items-center justify-between gap-space-sm">
-<div class="flex items-center gap-space-xs min-w-0">
-<div class="relative shrink-0">
-<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-sm text-headline-sm font-bold shadow-sm">
+  <script src="api_config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#a03b00",
+            "primary-container": "#c64f0e",
+            "on-primary": "#ffffff",
+            "secondary": "#9e4041",
+            "secondary-container": "#fd8a88",
+            "secondary-fixed": "#ffdad8",
+            "secondary-fixed-dim": "#ffb3b0",
+            "on-secondary-fixed": "#410007",
+            "tertiary": "#7b541a",
+            "tertiary-container": "#976c31",
+            "tertiary-fixed": "#ffddb5",
+            "tertiary-fixed-dim": "#f1bd79",
+            "on-tertiary-fixed": "#2a1800",
+            "surface": "#fbf8ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f5f2f9",
+            "surface-container": "#f0edf4",
+            "surface-container-high": "#eae7ee",
+            "surface-container-highest": "#e4e1e8",
+            "on-surface": "#1b1b20",
+            "on-surface-variant": "#584239",
+            "outline": "#8c7167",
+            "outline-variant": "#e0c0b4",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "inverse-surface": "#303035",
+            "inverse-on-surface": "#f2eff6",
+            "inverse-primary": "#ffb597"
+          },
+          spacing: {
+            "space-2xs": "0.25rem",
+            "space-xs": "0.5rem",
+            "space-sm": "0.75rem",
+            "space-md": "1rem",
+            "layout-margin-mobile": "1rem"
+          },
+          fontFamily: {
+            "body": ["Inter", "sans-serif"],
+            "headline": ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..600,0..1,0&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+</head>
+
+<body class="bg-surface font-body text-on-surface flex flex-col min-h-screen antialiased">
+
+  <!-- Fixed Top Police Header -->
+  <header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl border-b border-outline-variant/20 shadow-xs">
+    <div class="h-16 px-3 sm:px-4 flex items-center justify-between gap-2 max-w-5xl mx-auto">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        <a href="nashikkar_overview.html" aria-label="Back to Overview" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors flex items-center justify-center rounded-full hover:bg-surface-container-high shrink-0 cursor-pointer" title="Back to Overview / आढावा मागे जा">
+          <span class="material-symbols-outlined text-[22px]">arrow_back</span>
+        </a>
+        <a href="police_hotspots.html" class="shrink-0 flex items-center" title="Police Hotspots">
+          <img alt="Kumbh Setu Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+        </a>
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="material-symbols-outlined text-secondary text-[16px]">shield</span>
+            <span class="text-[11px] uppercase tracking-wider text-secondary font-bold truncate">Nashik Police • 2027</span>
+            <a href="nashikkar_login.html?role=admin" class="px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold flex items-center gap-1 shrink-0 hover:bg-slate-800 transition-colors shadow-xs" title="Admin Login / प्रशासक लॉगिन">
+              <span class="material-symbols-outlined text-[13px] text-amber-400">admin_panel_settings</span>
+              <span>Admin Login</span>
+            </a>
+          </div>
+          <span class="font-headline text-sm font-bold text-on-surface truncate">Escalations Terminal</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <span class="px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed rounded text-xs font-bold font-mono">SEC-04</span>
+        <button type="button" onclick="if(window.KumbhI18n)window.KumbhI18n.openModal();" aria-label="Select Language" class="lang-dropdown-trigger h-8 px-2 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1 text-xs font-semibold cursor-pointer border border-outline-variant/30">
+          <span class="material-symbols-outlined text-[15px] text-secondary">translate</span>
+          <span class="text-[11px]">मरा / EN</span>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs">
           VP
         </div>
-<span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-secondary ring-2 ring-surface-container-lowest"></span>
-</div>
-<div class="flex flex-col min-w-0">
-<div class="flex items-center gap-space-2xs">
-<span class="font-label-lg text-label-lg text-on-surface font-bold truncate">Insp. Vikram Patil</span>
-<span class="material-symbols-outlined text-primary text-[16px] shrink-0" style="font-variation-settings: 'FILL' 1;">verified</span>
-</div>
-<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Sector 2 Desk • Duty Active (Shift B)</span>
-</div>
-</div>
-<div class="flex items-center gap-space-2xs shrink-0">
-<button onclick="window.location.href='police_hotspots.html'" class="px-space-xs py-1 rounded-full bg-red-950 text-red-300 border border-red-800 font-label-sm text-label-sm flex items-center gap-1 active:scale-95 transition-transform" type="button">
-<span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-<span class="font-bold">AI Hotspot Radar</span>
-</button>
-<button class="px-space-xs py-1 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center gap-1 active:scale-95 transition-transform" type="button">
-<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-<span><span onclick="window.location.href='police_case_log.html'">Case Logs</span></span>
-</button>
-</div>
-</div>
-<!-- AI Radar Live Simulation Alert Strip -->
-<div onclick="window.location.href='police_hotspots.html'" class="cursor-pointer bg-gradient-to-r from-red-950/80 to-slate-900 border border-red-800/80 rounded-xl p-space-sm flex items-center justify-between gap-2 shadow-sm hover:border-red-600 transition-colors">
-  <div class="flex items-center gap-2 min-w-0">
-    <div class="w-8 h-8 rounded-lg bg-red-900/80 flex items-center justify-center text-red-300 shrink-0">
-      <span class="material-symbols-outlined text-[20px]">radar</span>
-    </div>
-    <div class="min-w-0">
-      <div class="flex items-center gap-1.5">
-        <span class="text-xs font-bold text-white">Live ML Hotspot Radar Active</span>
-        <span class="px-1.5 py-0.2 rounded bg-red-500 text-white text-[10px] font-bold">17 Clusters</span>
       </div>
-      <p class="text-[11px] text-slate-300 truncate">DBSCAN haversine clustering & XGBoost severity triage streaming live from Nashik admin records.</p>
     </div>
-  </div>
-  <span class="material-symbols-outlined text-red-400 text-[20px] shrink-0">arrow_forward</span>
-</div>
-<!-- Sector & Scope Filter Drawer -->
-<div class="flex flex-col gap-space-xs">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-1.5 text-on-surface-variant font-label-md text-label-md">
-<span class="material-symbols-outlined text-[18px] text-tertiary">location_on</span>
-<span class="font-bold text-on-surface">Sector 2 Ramkund</span>
-<span class="text-on-surface-variant/60 font-normal">• 1.4 km radius</span>
-</div>
-<button class="text-primary font-label-md text-label-md flex items-center gap-0.5 active:opacity-75" type="button">
-<span>Change</span>
-<span class="material-symbols-outlined text-[16px]">expand_more</span>
-</button>
-</div>
-<!-- Scrollable Priority Pills -->
-<div class="flex items-center gap-space-xs overflow-x-auto pb-1 -mx-layout-margin-mobile px-layout-margin-mobile scrollbar-none" id="filterBar">
-<button class="filter-btn active shrink-0 px-space-sm py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm transition-all flex items-center gap-1.5" data-filter="all" type="button">
-<span>All Priority</span>
-<span class="px-1.5 py-0.2 rounded-full bg-on-primary/20 text-on-primary text-label-sm font-body-sm">8</span>
-</button>
-<button class="filter-btn shrink-0 px-space-sm py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md font-semibold transition-all flex items-center gap-1.5" data-filter="high" type="button">
-<span>High Priority</span>
-<span class="px-1.5 py-0.2 rounded-full bg-secondary-fixed text-on-secondary-fixed text-label-sm font-body-sm font-bold">2</span>
-</button>
-<button class="filter-btn shrink-0 px-space-sm py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md font-semibold transition-all flex items-center gap-1.5" data-filter="medium" type="button">
-<span>Medium</span>
-<span class="px-1.5 py-0.2 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-label-sm font-body-sm">4</span>
-</button>
-<button class="filter-btn shrink-0 px-space-sm py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md font-semibold transition-all flex items-center gap-1.5" data-filter="forwarded" type="button">
-<span>Forwarded</span>
-<span class="px-1.5 py-0.2 rounded-full bg-surface-container-highest text-on-surface-variant text-label-sm font-body-sm">2</span>
-</button>
-</div>
-</div>
-<!-- Incident Cards Stream -->
-<div class="flex flex-col gap-space-sm" id="incidentsStream">
-<!-- Incident Card 1: High Priority (Overcharging) -->
-<div class="incident-card high bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden transition-all duration-300">
-<div class="w-1.5 absolute left-0 top-0 bottom-0 bg-secondary"></div>
-<!-- Card Header -->
-<div class="flex items-start justify-between gap-space-xs pl-space-2xs">
-<div class="flex flex-wrap items-center gap-space-xs">
-<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold tracking-tight">
-<span class="material-symbols-outlined text-[14px]">warning</span>
-            High Priority
-          </span>
-<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px] text-tertiary">schedule</span>
-            14m ago
-          </span>
-</div>
-<span class="font-label-sm text-label-sm text-secondary font-bold px-2 py-0.5 bg-secondary-fixed-dim/30 rounded">
-          SOS-9041
-        </span>
-</div>
-<!-- Card Title & Violation Data -->
-<div class="flex flex-col gap-1 pl-space-2xs">
-<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">
-          Organized Auto Fare Extortion (+63% over gazette cap)
-        </h2>
-<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
-<span class="material-symbols-outlined text-[16px] text-primary shrink-0">near_me</span>
-<span class="font-semibold text-on-surface">Sai Auto Stand</span>
-<span class="text-outline-variant">•</span>
-<span class="truncate">Bay 4, Ramkund West Gate</span>
-</div>
-</div>
-<!-- Corroboration & Visual Proof Clip -->
-<div class="pl-space-2xs">
-<div class="bg-surface-container-low rounded-lg p-space-xs flex items-center justify-between gap-space-xs">
-<div class="flex items-center gap-2 min-w-0">
-<div class="w-7 h-7 rounded bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed shrink-0">
-<span class="material-symbols-outlined text-[16px]">receipt_long</span>
-</div>
-<div class="flex flex-col min-w-0">
-<span class="font-label-sm text-label-sm font-bold text-on-surface truncate">Nashikkar Admin Escalation</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant truncate">3 corroborating Yatri digital receipts attached</span>
-</div>
-</div>
-<button class="shrink-0 px-2 py-1 bg-surface-container text-on-surface font-label-sm text-label-sm rounded font-medium flex items-center gap-1 active:scale-95" type="button">
-<span>View Bills</span>
-<span class="material-symbols-outlined text-[14px]">attach_file</span>
-</button>
-</div>
-</div>
-<!-- Quick Location Context Map snippet -->
-<div class="pl-space-2xs">
-<div class="w-full h-24 rounded-lg bg-surface-container-high bg-cover bg-center relative overflow-hidden flex items-end p-space-xs" data-location="Ramkund West Gate, Panchavati, Nashik, Maharashtra" style="">
-<div class="bg-inverse-surface/85 backdrop-blur-sm px-2 py-1 rounded text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1 shadow-sm">
-<span class="material-symbols-outlined text-[14px] text-inverse-primary">location_pin</span>
-<span>Mobile Unit Alpha-2 nearby (320m)</span>
-</div>
-</div>
-</div>
-<!-- Action Button Group -->
-<div class="pt-space-xs flex items-center gap-space-xs pl-space-2xs">
-<button class="ack-btn flex-1 py-2.5 px-space-xs rounded bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all" type="button">
-<span class="material-symbols-outlined text-[18px]">check_circle</span>
-<span>Acknowledge</span>
-</button>
-<button class="assign-btn flex-1 py-2.5 px-space-xs rounded bg-surface-container text-on-surface font-label-md text-label-md font-bold shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all" type="button">
-<span class="material-symbols-outlined text-[18px] text-tertiary">alt_route</span>
-<span>Assign Unit</span>
-</button>
-<button aria-label="Forward to Fact-Check / PIB" class="w-10 h-10 rounded bg-surface-container-high text-on-surface-variant flex items-center justify-center active:scale-95 shrink-0" type="button">
-<span class="material-symbols-outlined text-[20px]">share</span>
-</button>
-</div>
-</div>
-<!-- Incident Card 2: Medium Priority (Tariff Violation) -->
-<div class="incident-card medium bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden transition-all duration-300">
-<div class="w-1.5 absolute left-0 top-0 bottom-0 bg-tertiary"></div>
-<!-- Card Header -->
-<div class="flex items-start justify-between gap-space-xs pl-space-2xs">
-<div class="flex flex-wrap items-center gap-space-xs">
-<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold tracking-tight">
-<span class="material-symbols-outlined text-[14px]">storefront</span>
-            Medium Priority
-          </span>
-<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px] text-tertiary">schedule</span>
-            48m ago
-          </span>
-</div>
-<span class="font-label-sm text-label-sm text-tertiary font-bold px-2 py-0.5 bg-tertiary-fixed-dim/30 rounded">
-          SOS-8987
-        </span>
-</div>
-<!-- Card Title & Violation Data -->
-<div class="flex flex-col gap-1 pl-space-2xs">
-<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">
-          Unauthorized Private Dharamshala charging ₹2,500 without tariff seal
-        </h2>
-<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
-<span class="material-symbols-outlined text-[16px] text-tertiary shrink-0">hotel</span>
-<span class="font-semibold text-on-surface">Ganga Ghat Guesthouse</span>
-<span class="text-outline-variant">•</span>
-<span class="truncate">Tapovan Lane 3</span>
-</div>
-</div>
-<!-- Field Source Details -->
-<div class="pl-space-2xs">
-<div class="bg-surface-container-low rounded-lg p-space-xs flex items-center justify-between gap-space-xs">
-<div class="flex items-center gap-2 min-w-0">
-<div class="w-7 h-7 rounded bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-[16px]">badge</span>
-</div>
-<div class="flex flex-col min-w-0">
-<span class="font-label-sm text-label-sm font-bold text-on-surface truncate">Kumbhveer Field Inspection</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Official municipal rate cap: ₹450 / day</span>
-</div>
-</div>
-<span class="text-secondary font-label-sm text-label-sm font-bold shrink-0">
-            +455%
-          </span>
-</div>
-</div>
-<!-- Field Photo Verification Clip -->
-<div class="pl-space-2xs">
-<div class="relative w-full h-20 rounded-lg overflow-hidden bg-surface-container">
-<img class="w-full h-full object-cover" data-alt="A documentary handheld camera photo of an impromptu handwritten room tariff sign outside an Indian guesthouse in Nashik, Maharashtra, warm morning light, candid police observation capture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2qLlQ4EEDRfsuGKZS3FUjmS-L6l56cj3gsrnaw81ERW25HLupfhbt8rzebTxE0SgNIME5iWPOOFkQ3jPeMfiSv7VgoVnWQfJmxBFlSGmk_uh_j4QoO9w_IJ4qEysaAs4gIQqyyp267uyK9p8iWye8Qr3zoe66JGScAPRyFjPPMILPxouiDfDI2T3d5T1CWBu69DPE9AMaUsyk9mGnOEOk9G2GbLmR_y-ycX_4TJ99P_vOXXD-K9-X"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
-<span class="text-surface-container-lowest font-label-sm text-label-sm">Photo logged by Officer KV-12</span>
-</div>
-</div>
-</div>
-<!-- Action Button Group -->
-<div class="pt-space-xs flex items-center gap-space-xs pl-space-2xs">
-<button class="ack-btn flex-1 py-2.5 px-space-xs rounded bg-surface-container-high text-on-surface font-label-md text-label-md font-bold shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all" type="button">
-<span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
-<span>Acknowledge</span>
-</button>
-<button class="assign-btn flex-1 py-2.5 px-space-xs rounded bg-surface-container text-on-surface font-label-md text-label-md font-bold shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all" type="button">
-<span class="material-symbols-outlined text-[18px] text-tertiary">alt_route</span>
-<span>Assign Unit</span>
-</button>
-<button aria-label="Forward to Municipal Inspector" class="w-10 h-10 rounded bg-surface-container-high text-on-surface-variant flex items-center justify-center active:scale-95 shrink-0" type="button">
-<span class="material-symbols-outlined text-[20px]">share</span>
-</button>
-</div>
-</div>
-<!-- Incident Card 3: Fact-Check Alert (Misinformation) -->
-<div class="incident-card fact-check bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden transition-all duration-300">
-<div class="w-1.5 absolute left-0 top-0 bottom-0 bg-primary-container"></div>
-<!-- Card Header -->
-<div class="flex items-start justify-between gap-space-xs pl-space-2xs">
-<div class="flex flex-wrap items-center gap-space-xs">
-<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold tracking-tight">
-<span class="material-symbols-outlined text-[14px]">policy</span>
-            Fact-Check Alert
-          </span>
-<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px] text-tertiary">schedule</span>
-            1h 10m ago
-          </span>
-</div>
-<span class="font-label-sm text-label-sm text-primary font-bold px-2 py-0.5 bg-primary-fixed/40 rounded">
-          MIS-102
-        </span>
-</div>
-<!-- Card Title & Misinformation Details -->
-<div class="flex flex-col gap-1 pl-space-2xs">
-<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">
-          Viral social media post alleging bridge closure at Ramkund
-        </h2>
-<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
-<span class="material-symbols-outlined text-[16px] text-primary shrink-0">hub</span>
-<span class="font-semibold text-on-surface">System Flag</span>
-<span class="text-outline-variant">•</span>
-<span class="truncate">Social Media Intelligence Grid (7.4k shares)</span>
-</div>
-</div>
-<!-- Social Claim & Live Fact Reality -->
-<div class="pl-space-2xs flex flex-col gap-2">
-<div class="p-space-xs rounded-lg bg-error-container/40 text-on-error-container flex items-start gap-2">
-<span class="material-symbols-outlined text-[18px] text-error shrink-0">cancel</span>
-<div class="flex flex-col min-w-0">
-<span class="font-label-sm text-label-sm font-bold">Claim: "Lakshman Jhula barricaded due to high Godavari current"</span>
-<span class="font-label-sm text-label-sm text-on-error-container/80">False panic narrative spreading on regional messaging channels</span>
-</div>
-</div>
-<div class="p-space-xs rounded-lg bg-surface-container-low flex items-center justify-between gap-2">
-<div class="flex items-center gap-2 min-w-0">
-<span class="material-symbols-outlined text-[18px] text-secondary shrink-0">fact_check</span>
-<div class="flex flex-col min-w-0">
-<span class="font-label-sm text-label-sm font-bold text-on-surface">PIB & Nashik Police Advisory Prepared</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">Bridge is operating normally with 4 pedestrian channels</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Action Button Group -->
-<div class="pt-space-xs flex items-center gap-space-xs pl-space-2xs">
-<button class="flex-1 py-2.5 px-space-xs rounded bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all" type="button">
-<span class="material-symbols-outlined text-[18px]">verified</span>
-<span>View PIB Verification</span>
-</button>
-<button class="dismiss-btn px-space-md py-2.5 rounded bg-surface-container text-on-surface font-label-md text-label-md font-bold shadow-sm flex items-center justify-center gap-1 active:scale-95 transition-all" type="button">
-<span class="material-symbols-outlined text-[18px] text-on-surface-variant">close</span>
-<span>Dismiss</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Micro Dispatch Toast (Hidden by default) -->
-<div class="fixed bottom-20 left-4 right-4 z-40 bg-inverse-surface text-inverse-on-surface p-space-sm rounded-xl shadow-lg flex items-center justify-between gap-space-xs transform translate-y-32 transition-transform duration-300 pointer-events-none" id="dispatchToast">
-<div class="flex items-center gap-space-xs min-w-0">
-<span class="material-symbols-outlined text-inverse-primary text-[20px] shrink-0">done_all</span>
-<span class="font-label-md text-label-md truncate" id="toastMessage">Escalation acknowledged. Sector Unit notified.</span>
-</div>
-<button class="text-inverse-primary font-label-md text-label-md font-bold shrink-0 pointer-events-auto active:opacity-75" id="toastUndo" type="button">
-      Undo
-    </button></div>
-</div>
-<!-- End of Feed State: Warm Institutional Touch -->
-<div class="w-full py-space-md flex flex-col items-center justify-center gap-1 text-center">
-<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant mb-1">
-<span class="material-symbols-outlined text-[20px]">verified_user</span>
-</div>
-<span class="font-label-md text-label-md font-bold text-on-surface">Sector 2 Command Connected</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant max-w-xs">
-      Nashik Municipal Corporation & Kumbh Police Control syncs automatically every 30 seconds.
-    </span>
-</div>
-<script>
-  (function() {
-    // Filter Pill Interaction
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.incident-card');
-    const toast = document.getElementById('dispatchToast');
-    const toastMessage = document.getElementById('toastMessage');
+  </header>
 
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => {
-          b.classList.remove('bg-primary', 'text-on-primary', 'font-bold', 'active');
-          b.classList.add('bg-surface-container-high', 'text-on-surface-variant', 'font-semibold');
-        });
-        btn.classList.add('bg-primary', 'text-on-primary', 'font-bold', 'active');
-        btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+  <!-- Main Feed Container -->
+  <main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen max-w-5xl mx-auto">
+    <div class="flex flex-col w-full px-3 sm:px-4 gap-3 mt-2">
 
-        const filter = btn.dataset.filter;
+      <!-- Officer Duty Presence Strip -->
+      <div class="w-full bg-surface-container-lowest rounded-xl p-3 shadow-xs border border-outline-variant/30 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="relative shrink-0">
+            <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline font-bold text-sm shadow-xs">
+              VP
+            </div>
+            <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs sm:text-sm font-bold text-on-surface truncate">Insp. Vikram Patil</span>
+              <span class="material-symbols-outlined text-primary text-[15px] shrink-0" style="font-variation-settings: 'FILL' 1;">verified</span>
+            </div>
+            <span class="text-[11px] text-on-surface-variant truncate">Sector 2 Desk • Duty Active (Shift B)</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button onclick="window.location.href='police_hotspots.html'" class="px-2.5 py-1 rounded-full bg-red-950 text-red-200 border border-red-800 text-[11px] font-bold flex items-center gap-1 cursor-pointer active:scale-95 transition-transform" type="button">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+            <span>AI Radar</span>
+          </button>
+          <button onclick="window.location.href='police_case_log.html'" class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface text-[11px] font-semibold flex items-center gap-1 cursor-pointer active:scale-95 transition-transform" type="button">
+            <span class="material-symbols-outlined text-[14px] text-primary">assignment</span>
+            <span>Case Logs</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- AI Radar Quick Triage Banner -->
+      <div onclick="window.location.href='police_hotspots.html'" class="cursor-pointer bg-gradient-to-r from-red-950 via-slate-900 to-stone-900 border border-red-800/80 rounded-xl p-3 flex items-center justify-between gap-2 shadow-xs hover:border-red-600 transition-colors">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-8 h-8 rounded-lg bg-red-900/90 flex items-center justify-center text-red-300 shrink-0">
+            <span class="material-symbols-outlined text-[18px]">radar</span>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-bold text-white">Live ML Hotspot Radar Connected</span>
+              <span class="px-1.5 py-0.2 rounded bg-red-600 text-white text-[9px] font-bold">17 Clusters Active</span>
+            </div>
+            <p class="text-[11px] text-slate-300 truncate">DBSCAN spatial clustering streaming live from Nashik civic reports &amp; Yatri SOS alerts.</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-red-400 text-[18px] shrink-0">arrow_forward</span>
+      </div>
+
+      <!-- Sector Scope & Operational Telemetry -->
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+            <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+            <span class="font-bold text-on-surface">Sector 2 Ramkund Core</span>
+            <span class="text-on-surface-variant/60">• 1.4 km Radius</span>
+          </div>
+          
+          <!-- Live Acknowledged Counter -->
+          <div class="flex items-center gap-1.5 text-[11px] font-bold">
+            <span class="text-on-surface-variant">Acknowledged:</span>
+            <span id="ackCountDisplay" class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono">0 / 10</span>
+          </div>
+        </div>
+
+        <!-- Scrollable Priority Filter Pills -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 -mx-3 px-3 sm:mx-0 sm:px-0" id="filterBar">
+          <button class="filter-btn active shrink-0 px-3 py-1.5 rounded-full bg-primary text-on-primary text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer" data-filter="all" type="button">
+            <span>All Priority</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-white/20 text-white text-[10px] font-mono" id="pill-all-count">10</span>
+          </button>
+          <button class="filter-btn shrink-0 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer hover:bg-surface-container" data-filter="high" type="button">
+            <span>High Priority</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-red-100 text-red-800 text-[10px] font-bold font-mono" id="pill-high-count">4</span>
+          </button>
+          <button class="filter-btn shrink-0 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer hover:bg-surface-container" data-filter="medium" type="button">
+            <span>Medium Priority</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold font-mono" id="pill-medium-count">5</span>
+          </button>
+          <button class="filter-btn shrink-0 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer hover:bg-surface-container" data-filter="forwarded" type="button">
+            <span>Forwarded / Alerts</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-purple-100 text-purple-900 text-[10px] font-bold font-mono" id="pill-fwd-count">1</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Incident Cards Stream (Expanded with Multiple High, Medium, & Routine Entries to Acknowledge) -->
+      <div class="flex flex-col gap-3" id="incidentsStream">
+
+        <!-- Incident 1: High Priority (Auto Extortion) -->
+        <div class="incident-card high bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-9041">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-red-600"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-[10px] font-bold uppercase tracking-wider border border-red-300">
+                <span class="material-symbols-outlined text-[13px]">warning</span>
+                High Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                4m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-red-800 font-bold px-2 py-0.5 bg-red-100 border border-red-200 rounded font-mono">SOS-9041</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Organized Auto Fare Extortion (+63% over estimated price)
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">near_me</span>
+              <span class="font-bold text-on-surface">Sai Auto Stand (Bay 4)</span>
+              <span>•</span>
+              <span class="truncate">Panchavati Ghat to CBS Central (Demanding ₹180 vs estimated ₹110)</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-red-100 text-red-800 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">receipt_long</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">Nashikkar Citizen Escalation</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">3 corroborating Yatri digital receipts attached</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-red-700 font-mono shrink-0">+63% Gouge</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Mobile Unit Alpha-2 nearby (320m away)
+              </span>
+              <span class="font-semibold text-primary">ETA 2m</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-secondary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 2: High Priority (Ghat Locker Tout Ring) -->
+        <div class="incident-card high bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-9088">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-red-600"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-[10px] font-bold uppercase tracking-wider border border-red-300">
+                <span class="material-symbols-outlined text-[13px]">warning</span>
+                High Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                11m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-red-800 font-bold px-2 py-0.5 bg-red-100 border border-red-200 rounded font-mono">SOS-9088</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Illegal Ghat Locker Tout Ring &amp; Bather Harassment
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">lock</span>
+              <span class="font-bold text-on-surface">Ramkund Ghat Steps (South Bank)</span>
+              <span>•</span>
+              <span class="truncate">Touts extorting ₹200 for plastic bucket bag deposit without NMC coupon</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-red-100 text-red-800 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">groups</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">5 Citizen SOS Complaints Logged</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">Touts aggressively blocking female changing cubicles</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-red-700 font-mono shrink-0">Tout Ring</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Mobile Unit Bravo-1 nearby (180m away)
+              </span>
+              <span class="font-semibold text-primary">ETA 1m</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-secondary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 3: High Priority (Emergency Medical Corridor Obstruction) -->
+        <div class="incident-card high bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-9112">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-red-600"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-[10px] font-bold uppercase tracking-wider border border-red-300">
+                <span class="material-symbols-outlined text-[13px]">emergency</span>
+                High Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                18m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-red-800 font-bold px-2 py-0.5 bg-red-100 border border-red-200 rounded font-mono">SOS-9112</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Emergency Medical Corridor Bottleneck Obstruction
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">ambulance</span>
+              <span class="font-bold text-on-surface">Kapileshwar Temple Access Lane</span>
+              <span>•</span>
+              <span class="truncate">Unlicensed flower stalls blocking dedicated 108 ambulance passage</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-red-100 text-red-800 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">videocam</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">NMC Traffic CCTV Feed Alert</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">Critical ambulance clearance requested by Civil Hospital</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-red-700 font-mono shrink-0">Route Block</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Beat Squad 4 nearby (240m away)
+              </span>
+              <span class="font-semibold text-primary">ETA 2m</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-secondary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 4: High Priority (Boat Safety & Extortion) -->
+        <div class="incident-card high bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-9204">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-red-600"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-[10px] font-bold uppercase tracking-wider border border-red-300">
+                <span class="material-symbols-outlined text-[13px]">sailing</span>
+                High Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                25m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-red-800 font-bold px-2 py-0.5 bg-red-100 border border-red-200 rounded font-mono">SOS-9204</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Unregistered Godavari Boat Operator &amp; Safety Violation
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">water</span>
+              <span class="font-bold text-on-surface">Godavari Boat Club Reach • Tapovan</span>
+              <span>•</span>
+              <span class="truncate">Carrying 14 passengers on 8-capacity country boat without life vests (₹350/seat)</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-red-100 text-red-800 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">lifepreserver</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">River Police Ground Sighting</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">Zero safety flotation devices on board; immediate impound required</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-red-700 font-mono shrink-0">Life Safety</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Water Rescue Patrol 3 on station (410m away)
+              </span>
+              <span class="font-semibold text-primary">ETA 3m</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-secondary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 5: Medium Priority (Private Dharamshala Tariff) -->
+        <div class="incident-card medium bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-8987">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-amber-500"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold uppercase tracking-wider border border-amber-300">
+                <span class="material-symbols-outlined text-[13px]">hotel</span>
+                Medium Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                34m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-amber-900 font-bold px-2 py-0.5 bg-amber-100 border border-amber-300 rounded font-mono">SOS-8987</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Unauthorized Private Dharamshala charging ₹2,500 without tariff seal
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-tertiary shrink-0">hotel</span>
+              <span class="font-bold text-on-surface">Ganga Ghat Guesthouse</span>
+              <span>•</span>
+              <span class="truncate">Tapovan Lane 3 (Asking ₹2,500 vs estimated price ₹450/day)</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">badge</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">Kumbhveer Field Inspection (Officer KV-12)</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">Estimated price cap: ₹450 / day • Photo of handwritten rate board attached</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-secondary font-mono shrink-0">+455% Gap</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Beat Patrol Charlie-2 nearby (650m away)
+              </span>
+              <span class="font-semibold text-primary">ETA 4m</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-bold border border-outline-variant/30 shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 6: Medium Priority (Water MRP Extortion) -->
+        <div class="incident-card medium bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-8894">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-amber-500"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold uppercase tracking-wider border border-amber-300">
+                <span class="material-symbols-outlined text-[13px]">water_bottle</span>
+                Medium Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                42m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-amber-900 font-bold px-2 py-0.5 bg-amber-100 border border-amber-300 rounded font-mono">SOS-8894</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Packaged Drinking Water MRP Extortion (+75% gouging)
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">storefront</span>
+              <span class="font-bold text-on-surface">CBS Central Bus Station (Platform 2)</span>
+              <span>•</span>
+              <span class="truncate">Charging ₹35 for ₹20 MRP bottle; barcode intentionally defaced</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">qr_code_scanner</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">4 Passenger Complaints Logged</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">Vendor refusing digital billing &amp; threatening yatris</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-secondary font-mono shrink-0">+75% MRP</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Transit Beat Officer nearby (90m away)
+              </span>
+              <span class="font-semibold text-primary">ETA 1m</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-bold border border-outline-variant/30 shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 7: Medium Priority (Prasad Sweets & UPI Diversion) -->
+        <div class="incident-card medium bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-9150">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-amber-500"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold uppercase tracking-wider border border-amber-300">
+                <span class="material-symbols-outlined text-[13px]">bakery_dining</span>
+                Medium Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                50m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-amber-900 font-bold px-2 py-0.5 bg-amber-100 border border-amber-300 rounded font-mono">SOS-9150</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Prasad Stall Hygiene &amp; Substandard Rate Gouging
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">storefront</span>
+              <span class="font-bold text-on-surface">Godavari Ghat 2 (Ramkund Parikrama)</span>
+              <span>•</span>
+              <span class="truncate">Charging ₹150 for substandard ₹60 sweets box; personal QR diverting municipal cess</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">health_and_safety</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">Food Safety (FSSAI) Joint Audit Logged</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">Unsealed peda containers exposed to open flies; sample seized</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-secondary font-mono shrink-0">Hygiene &amp; Tax</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Municipal Flying Squad Beta nearby (500m away)
+              </span>
+              <span class="font-semibold text-primary">ETA 3m</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-bold border border-outline-variant/30 shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 8: Medium Priority (Fake VIP Pass Fraud) -->
+        <div class="incident-card medium bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-8762">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-amber-500"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold uppercase tracking-wider border border-amber-300">
+                <span class="material-symbols-outlined text-[13px]">badge</span>
+                Medium Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                1h 5m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-amber-900 font-bold px-2 py-0.5 bg-amber-100 border border-amber-300 rounded font-mono">SOS-8762</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              VIP Fast-Track Darshan Pass Counterfeiting Ring
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">temple_hindu</span>
+              <span class="font-bold text-on-surface">Panchavati Kalaram Temple (East Gate)</span>
+              <span>•</span>
+              <span class="truncate">Touts peddling fake ₹500 laminated "VIP fast-track tokens" to out-of-state pilgrims</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">gavel</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">Temple Trust Security Handoff</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">2 fraudulent passes seized; suspect photo captured on entry CCTV</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-secondary font-mono shrink-0">Counterfeit</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Temple Outpost Squad on site (50m away)
+              </span>
+              <span class="font-semibold text-primary">ETA Immediate</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-bold border border-outline-variant/30 shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 9: Medium Priority (Tent City Tariff Gouge) -->
+        <div class="incident-card medium bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="SOS-8830">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-amber-500"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold uppercase tracking-wider border border-amber-300">
+                <span class="material-symbols-outlined text-[13px]">camping</span>
+                Medium Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                1h 22m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-amber-900 font-bold px-2 py-0.5 bg-amber-100 border border-amber-300 rounded font-mono">SOS-8830</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Unauthorized Tent City Mattress Tariff Spurt
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">villa</span>
+              <span class="font-bold text-on-surface">Sadhugram Sector 4 (Outer Ring)</span>
+              <span>•</span>
+              <span class="truncate">Charging ₹1,200 for floor mattress vs municipal subsidized rate of ₹200</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">receipt</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface truncate">Sector Warden Telemetry Verification</span>
+                  <span class="text-[11px] text-on-surface-variant truncate">6 Pilgrim complaints confirmed; warning issued to tent contractor</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-secondary font-mono shrink-0">+500% Markup</span>
+            </div>
+          </div>
+
+          <div class="pl-2">
+            <div class="h-8 rounded-lg bg-surface-container-high px-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-primary">location_pin</span>
+                Sector 4 Mobile Van nearby (750m away)
+              </span>
+              <span class="font-semibold text-primary">ETA 5m</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-bold border border-outline-variant/30 shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">alt_route</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 10: Forwarded / Fact-Check Alert -->
+        <div class="incident-card fact-check bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200" data-sos="MIS-102">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-purple-600"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[10px] font-bold uppercase tracking-wider border border-purple-300">
+                <span class="material-symbols-outlined text-[13px]">policy</span>
+                Fact-Check Alert
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                1h 45m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-purple-900 font-bold px-2 py-0.5 bg-purple-100 border border-purple-300 rounded font-mono">MIS-102</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Viral social media post alleging bridge closure at Ramkund
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">hub</span>
+              <span class="font-bold text-on-surface">Social Media Cyber Grid</span>
+              <span>•</span>
+              <span class="truncate">Lakshman Jhula Footbridge (7.4k shares across WhatsApp channels)</span>
+            </div>
+          </div>
+
+          <div class="pl-2 flex flex-col gap-2">
+            <div class="p-2.5 rounded-lg bg-red-50 text-red-900 border border-red-200 flex items-start gap-2 text-xs">
+              <span class="material-symbols-outlined text-[16px] text-red-600 shrink-0">cancel</span>
+              <div class="flex flex-col min-w-0">
+                <span class="font-bold">False Claim: "Bridge closed due to sudden Godavari flood surge"</span>
+                <span class="text-[11px] text-red-700">Dangerous rumor creating unnecessary panic along Ramkund ghats</span>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="material-symbols-outlined text-[16px] text-emerald-700 shrink-0">fact_check</span>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-bold text-on-surface">PIB &amp; Nashik Police Advisory Active</span>
+                  <span class="text-[11px] text-emerald-800 truncate">Bridge operating normally with 4 pedestrian lanes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="dismiss-btn px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[16px] text-on-surface-variant">archive</span>
+              <span>Archive</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- End of Feed State: Warm Institutional Touch -->
+      <div class="w-full py-6 flex flex-col items-center justify-center gap-1 text-center">
+        <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant mb-1">
+          <span class="material-symbols-outlined text-[20px]">verified_user</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Sector 2 Police Command Connected</span>
+        <span class="text-[11px] text-on-surface-variant max-w-xs">
+          Nashik Police &amp; Municipal Control syncs automatically every 30 seconds.
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Micro Dispatch Toast -->
+    <div class="fixed bottom-20 left-4 right-4 z-40 bg-inverse-surface text-inverse-on-surface p-3 rounded-xl shadow-xl flex items-center justify-between gap-2 transform translate-y-32 transition-transform duration-300 pointer-events-none" id="dispatchToast" style="background-color: #1b1b20; color: #ffffff;">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="material-symbols-outlined text-emerald-400 text-[20px] shrink-0">done_all</span>
+        <span class="text-xs font-medium truncate" id="toastMessage">Escalation acknowledged. Sector Unit notified.</span>
+      </div>
+      <button class="text-amber-400 text-xs font-bold shrink-0 pointer-events-auto active:opacity-75 cursor-pointer" id="toastUndo" onclick="document.getElementById('dispatchToast').classList.add('translate-y-32', 'pointer-events-none')" type="button">
+        Dismiss
+      </button>
+    </div>
+  </main>
+
+  <!-- Police Bottom Navigation Bar -->
+  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)] border-t border-outline-variant/20">
+    <div class="flex justify-around items-center h-14 sm:h-15 px-1 max-w-5xl mx-auto">
+      <a aria-current="page" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-primary font-bold transition-colors" data-path="escalations" href="police_escalations.html">
+        <span class="material-symbols-outlined text-[20px]">emergency</span>
+        <span class="text-[10px] font-bold leading-tight tracking-tight truncate max-w-full">Escalations</span>
+      </a>
+      <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="hotspots" href="police_hotspots.html">
+        <span class="material-symbols-outlined text-[20px]">radar</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">AI Radar</span>
+      </a>
+      <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="case-detail" href="police_case_detail.html">
+        <span class="material-symbols-outlined text-[20px]">quick_reference</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Case Detail</span>
+      </a>
+      <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="case-log" href="police_case_log.html">
+        <span class="material-symbols-outlined text-[20px]">assignment</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Case Log</span>
+      </a>
+      <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="police-settings" href="police_settings.html">
+        <span class="material-symbols-outlined text-[20px]">tune</span>
+        <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Settings</span>
+      </a>
+    </div>
+  </nav>
+
+  <script>
+    (function() {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.incident-card');
+      const toast = document.getElementById('dispatchToast');
+      const toastMessage = document.getElementById('toastMessage');
+      const ackDisplay = document.getElementById('ackCountDisplay');
+
+      let acknowledgedCount = 0;
+      const totalCount = cards.length;
+
+      function updateCounts() {
+        let highCount = 0;
+        let medCount = 0;
+        let fwdCount = 0;
+
         cards.forEach(card => {
-          if (filter === 'all') {
-            card.style.display = 'flex';
-          } else if (filter === 'high') {
-            card.style.display = card.classList.contains('high') ? 'flex' : 'none';
-          } else if (filter === 'medium') {
-            card.style.display = card.classList.contains('medium') ? 'flex' : 'none';
-          } else if (filter === 'forwarded') {
-            card.style.display = card.classList.contains('fact-check') ? 'flex' : 'none';
+          if (card.classList.contains('high')) highCount++;
+          else if (card.classList.contains('medium')) medCount++;
+          else if (card.classList.contains('fact-check')) fwdCount++;
+        });
+
+        const pillAll = document.getElementById('pill-all-count');
+        const pillHigh = document.getElementById('pill-high-count');
+        const pillMed = document.getElementById('pill-medium-count');
+        const pillFwd = document.getElementById('pill-fwd-count');
+
+        if (pillAll) pillAll.textContent = cards.length;
+        if (pillHigh) pillHigh.textContent = highCount;
+        if (pillMed) pillMed.textContent = medCount;
+        if (pillFwd) pillFwd.textContent = fwdCount;
+      }
+
+      updateCounts();
+
+      // Filter Pill Interaction
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => {
+            b.classList.remove('bg-primary', 'text-on-primary', 'font-bold', 'active');
+            b.classList.add('bg-surface-container-high', 'text-on-surface-variant', 'font-semibold');
+          });
+          btn.classList.add('bg-primary', 'text-on-primary', 'font-bold', 'active');
+          btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+
+          const filter = btn.dataset.filter;
+          cards.forEach(card => {
+            if (filter === 'all') {
+              card.style.display = 'flex';
+            } else if (filter === 'high') {
+              card.style.display = card.classList.contains('high') ? 'flex' : 'none';
+            } else if (filter === 'medium') {
+              card.style.display = card.classList.contains('medium') ? 'flex' : 'none';
+            } else if (filter === 'forwarded') {
+              card.style.display = card.classList.contains('fact-check') ? 'flex' : 'none';
+            }
+          });
+        });
+      });
+
+      // Toast feedback
+      function triggerToast(msg) {
+        if (!toast) return;
+        toastMessage.textContent = msg;
+        toast.classList.remove('translate-y-32', 'pointer-events-none');
+        setTimeout(() => {
+          toast.classList.add('translate-y-32', 'pointer-events-none');
+        }, 3500);
+      }
+
+      // Dynamic Acknowledge Handler on all cards
+      document.querySelectorAll('.ack-btn').forEach((btn) => {
+        btn.addEventListener('click', function() {
+          const parentCard = btn.closest('.incident-card');
+          const sosId = parentCard ? (parentCard.getAttribute('data-sos') || 'SOS-ALERT') : 'SOS-ALERT';
+          
+          btn.classList.remove('bg-primary', 'bg-surface-container-high', 'text-on-primary', 'text-on-surface');
+          btn.classList.add('bg-emerald-700', 'text-white');
+          btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span><span>Acknowledged</span>';
+          btn.disabled = true;
+
+          // Add verified badge to header slot
+          if (parentCard) {
+            const badgeSlot = parentCard.querySelector('.ack-badge-slot');
+            if (badgeSlot) {
+              badgeSlot.innerHTML = '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Acked</span>';
+            }
+          }
+
+          acknowledgedCount++;
+          if (ackDisplay) {
+            ackDisplay.textContent = `${acknowledgedCount} / ${totalCount}`;
+            ackDisplay.className = 'px-2 py-0.5 rounded-full bg-emerald-600 text-white font-bold text-[11px] font-mono shadow-xs';
+          }
+
+          triggerToast(`🚨 Escalation #${sosId} acknowledged & locked to Insp. Vikram Patil`);
+        });
+      });
+
+      // Dynamic Assign Unit Handler
+      document.querySelectorAll('.assign-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const parentCard = btn.closest('.incident-card');
+          const sosId = parentCard ? (parentCard.getAttribute('data-sos') || 'SOS-ALERT') : 'SOS-ALERT';
+          
+          btn.classList.remove('bg-surface-container', 'text-on-surface');
+          btn.classList.add('bg-primary', 'text-on-primary');
+          btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">local_police</span><span>Dispatched</span>';
+          btn.disabled = true;
+
+          triggerToast(`🚓 Flying Squad Patrol dispatched to #${sosId} centroid.`);
+        });
+      });
+
+      // Fact-check Archive
+      document.querySelectorAll('.dismiss-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const parentCard = btn.closest('.incident-card');
+          if (parentCard) {
+            parentCard.style.opacity = '0.3';
+            parentCard.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+              parentCard.style.display = 'none';
+              triggerToast('Fact-check alert archived to sector intelligence log');
+            }, 250);
           }
         });
       });
-    });
+    })();
+  </script>
 
-    // One-Tap Card Actions with delightful feedback
-    function triggerToast(msg) {
-      if (!toast) return;
-      toastMessage.textContent = msg;
-      toast.classList.remove('translate-y-32', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('translate-y-32', 'pointer-events-none');
-      }, 3500);
-    }
-
-    document.querySelectorAll('.ack-btn').forEach((btn, idx) => {
-      btn.addEventListener('click', function() {
-        const parentCard = btn.closest('.incident-card');
-        btn.classList.add('bg-secondary', 'text-on-secondary');
-        btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">done</span><span>Acknowledged</span>';
-        btn.disabled = true;
-        triggerToast('Escalation #' + (idx === 0 ? 'SOS-9041' : 'SOS-8987') + ' locked to Insp. Vikram Patil');
-      });
-    });
-
-    document.querySelectorAll('.assign-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        triggerToast('Dispatching nearest Beat Patrol to location...');
-      });
-    });
-
-    document.querySelectorAll('.dismiss-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const parentCard = btn.closest('.incident-card');
-        if (parentCard) {
-          parentCard.style.opacity = '0.3';
-          parentCard.style.transform = 'scale(0.98)';
-          setTimeout(() => {
-            parentCard.style.display = 'none';
-            triggerToast('Fact-check alert archived to sector intelligence log');
-          }, 250);
-        }
-      });
-    });
-  })();
-</script></main>
-<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)] border-t border-outline-variant/20" data-active-classes="text-primary font-bold">
-  <div class="flex justify-around items-center h-14 sm:h-15 px-1 max-w-5xl mx-auto">
-    <a aria-current="page" class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-primary font-bold transition-colors" data-path="escalations" href="police_escalations.html">
-      <span class="material-symbols-outlined text-[20px]">emergency</span>
-      <span class="text-[10px] font-bold leading-tight tracking-tight truncate max-w-full">Escalations</span>
-    </a>
-    <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="hotspots" href="police_hotspots.html">
-      <span class="material-symbols-outlined text-[20px]">radar</span>
-      <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">AI Radar</span>
-    </a>
-    <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="case-detail" href="police_case_detail.html">
-      <span class="material-symbols-outlined text-[20px]">quick_reference</span>
-      <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Case Detail</span>
-    </a>
-    <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="case-log" href="police_case_log.html">
-      <span class="material-symbols-outlined text-[20px]">assignment</span>
-      <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Case Log</span>
-    </a>
-    <a class="flex-1 flex flex-col items-center justify-center py-1 text-center min-w-0 text-on-surface-variant hover:text-primary transition-colors" data-path="police-settings" href="police_settings.html">
-      <span class="material-symbols-outlined text-[20px]">tune</span>
-      <span class="text-[10px] font-semibold leading-tight tracking-tight truncate max-w-full">Settings</span>
-    </a>
-  </div>
-</nav>
-<script src="i18n.js"></script>
-</body></html>
+  <script src="i18n.js"></script>
+</body>
+</html>

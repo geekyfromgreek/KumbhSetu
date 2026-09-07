@@ -248,9 +248,9 @@
           
           <div class="flex flex-wrap items-center justify-between gap-2 pt-1 font-label-sm text-[11px] text-on-surface-variant">
             <div class="flex items-center gap-3">
-              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-secondary"></span> Priority &gt; 50 (Critical)</span>
-              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-primary"></span> Priority 30–50 (High)</span>
-              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span> Priority &lt; 30 (Moderate)</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-600 shadow-2xs"></span> <strong class="text-red-700">Red:</strong> Critical (&gt; 50)</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-yellow-500 shadow-2xs"></span> <strong class="text-yellow-700">Yellow:</strong> High (30–50)</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-600 shadow-2xs"></span> <strong class="text-emerald-700">Green:</strong> Moderate (&lt; 30)</span>
             </div>
             <span class="text-[10px] text-outline">Click cluster to view details &amp; dispatch</span>
           </div>
@@ -299,7 +299,7 @@
           <span class="material-symbols-outlined text-secondary text-[24px]">local_police</span>
           <h3 class="font-headline-sm font-bold text-on-surface text-base">Rapid Patrol Dispatch</h3>
         </div>
-        <button onclick="closeDispatchModal()" class="text-on-surface-variant hover:text-on-surface p-1 rounded-full hover:bg-surface-container">
+        <button onclick="closeDispatchModal()" class="text-on-surface-variant hover:text-on-surface p-1 rounded-full hover:bg-surface-container cursor-pointer">
           <span class="material-symbols-outlined text-[20px]">close</span>
         </button>
       </div>
@@ -309,6 +309,31 @@
           <div class="text-on-surface-variant">Target Hotspot:</div>
           <div id="modalHotspotName" class="text-on-surface font-bold text-sm">Ramkund Approach Lane</div>
           <div id="modalHotspotMeta" class="text-on-surface-variant">Zone: Ramkund / Panchavati Core • Priority: 74.87</div>
+        </div>
+
+        <!-- Option for Severity Select Before Dispatch -->
+        <div>
+          <label class="text-on-surface font-semibold block mb-1 flex items-center justify-between">
+            <span>Select Dispatch Severity Level (तीव्रता निवडा):</span>
+            <span id="selectedSeverityBadge" class="text-[10px] font-bold px-2 py-0.5 rounded uppercase text-red-800 bg-red-100 border border-red-300">Critical</span>
+          </label>
+          <div class="grid grid-cols-3 gap-2" id="severityOptions">
+            <button type="button" onclick="setDispatchSeverity('critical')" id="sev-btn-critical" class="p-2 rounded-xl border-2 border-red-600 bg-red-50 flex flex-col items-center gap-1 transition-all cursor-pointer shadow-xs">
+              <span class="w-3 h-3 rounded-full bg-red-600"></span>
+              <span class="font-bold text-[11px] text-red-800">Critical</span>
+              <span class="text-[9px] text-red-700/80">Priority &gt; 50</span>
+            </button>
+            <button type="button" onclick="setDispatchSeverity('high')" id="sev-btn-high" class="p-2 rounded-xl border border-outline-variant/40 bg-surface-container-low flex flex-col items-center gap-1 transition-all cursor-pointer hover:bg-yellow-50 opacity-75">
+              <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+              <span class="font-bold text-[11px] text-yellow-800">High</span>
+              <span class="text-[9px] text-yellow-700/80">Priority 30–50</span>
+            </button>
+            <button type="button" onclick="setDispatchSeverity('moderate')" id="sev-btn-moderate" class="p-2 rounded-xl border border-outline-variant/40 bg-surface-container-low flex flex-col items-center gap-1 transition-all cursor-pointer hover:bg-emerald-50 opacity-75">
+              <span class="w-3 h-3 rounded-full bg-emerald-600"></span>
+              <span class="font-bold text-[11px] text-emerald-800">Moderate</span>
+              <span class="text-[9px] text-emerald-700/80">Priority &lt; 30</span>
+            </button>
+          </div>
         </div>
 
         <div>
@@ -322,8 +347,8 @@
 
         <div>
           <label class="text-on-surface font-semibold block mb-1">Action Order:</label>
-          <div class="p-2.5 bg-surface-container-low border border-outline-variant/40 rounded-lg text-on-surface-variant">
-            Enforce statutory rate ceiling, issue digital compound fine (₹5,000) for repeat price gouging, and disperse rogue touts.
+          <div id="dispatchActionOrder" class="p-2.5 bg-surface-container-low border border-outline-variant/40 rounded-lg text-on-surface font-medium leading-relaxed">
+            🔴 Immediate Emergency Intercept: Disperse tout ring, enforce statutory rate card, issue digital compound fine (₹5,000), and report rogue operators.
           </div>
         </div>
       </div>
@@ -438,6 +463,12 @@
       }
     }
 
+    function getClusterColor(priority) {
+      if (priority >= 50) return '#dc2626'; // Vibrant Red (Critical)
+      if (priority >= 30) return '#eab308'; // Vibrant Yellow (High)
+      return '#16a34a'; // Vibrant Green (Moderate / Low)
+    }
+
     function renderHotspotsOnMap(hotspots) {
       circles.forEach(c => map.removeLayer(c));
       markers.forEach(m => map.removeLayer(m));
@@ -445,23 +476,21 @@
       markers = [];
 
       hotspots.forEach((h) => {
-        let color = '#7b541a'; // Tertiary
-        if (h.priority >= 50) color = '#9e4041'; // Secondary / Critical red
-        else if (h.priority >= 30) color = '#a03b00'; // Primary / High orange
+        const color = getClusterColor(h.priority);
 
         const circle = L.circle([h.lat, h.lng], {
           radius: Math.max(h.radius_m, 120),
           color: color,
           fillColor: color,
-          fillOpacity: 0.25,
-          weight: 2
+          fillOpacity: 0.3,
+          weight: 2.5
         }).addTo(map);
 
         circle.bindPopup(`
           <div class="text-xs p-1 font-body-sm">
             <div class="font-bold text-on-surface text-sm">Rank #${h.rank}: ${h.label}</div>
             <div class="text-on-surface-variant mt-1">Zone: <strong class="text-on-surface">${h.zone}</strong></div>
-            <div class="text-on-surface-variant">Patrol Priority: <strong class="text-secondary font-bold">${h.priority.toFixed(2)}</strong></div>
+            <div class="text-on-surface-variant">Patrol Priority: <strong style="color: ${color};" class="font-bold">${h.priority.toFixed(2)}</strong></div>
             <div class="text-on-surface-variant">Total Reports: <strong>${h.reports.toLocaleString()}</strong> (Critical: ${h.critical})</div>
             <div class="text-on-surface-variant">Top Issue: <strong class="text-primary">${h.top_issue}</strong></div>
             <div class="mt-2.5">
@@ -475,11 +504,11 @@
         circles.push(circle);
 
         const marker = L.circleMarker([h.lat, h.lng], {
-          radius: 6,
+          radius: 7,
           color: '#FFFFFF',
           fillColor: color,
           fillOpacity: 1.0,
-          weight: 2
+          weight: 2.5
         }).addTo(map);
 
         marker.on('click', () => {
@@ -499,19 +528,22 @@
       container.innerHTML = '';
 
       hotspots.slice(0, 10).forEach(h => {
-        let badgeColor = 'text-on-tertiary-fixed bg-tertiary-fixed border-tertiary/30';
-        let barColor = 'bg-tertiary';
+        let badgeColor = 'text-emerald-800 bg-emerald-100 border-emerald-300';
+        let barColor = 'bg-emerald-600';
+        let priorityLabel = 'Moderate';
         if (h.priority >= 50) {
-          badgeColor = 'text-on-secondary-fixed bg-secondary-fixed border-secondary/30';
-          barColor = 'bg-secondary';
+          badgeColor = 'text-red-800 bg-red-100 border-red-300';
+          barColor = 'bg-red-600';
+          priorityLabel = 'Critical';
         } else if (h.priority >= 30) {
-          badgeColor = 'text-on-primary-fixed bg-primary-fixed border-primary/30';
-          barColor = 'bg-primary';
+          badgeColor = 'text-yellow-800 bg-yellow-100 border-yellow-300';
+          barColor = 'bg-yellow-500';
+          priorityLabel = 'High';
         }
 
         const isRecent = h.cluster_id === recentlyUpdatedClusterId;
         const card = document.createElement('div');
-        card.className = `border rounded-xl p-2.5 transition-all cursor-pointer shadow-xs ${isRecent ? 'border-secondary bg-secondary-fixed/20 ring-2 ring-secondary/40 scale-[1.02] shadow-md' : 'bg-surface-container-low hover:bg-surface-container border-outline-variant/30'}`;
+        card.className = `border rounded-xl p-2.5 transition-all cursor-pointer shadow-xs ${isRecent ? 'border-red-500 bg-red-50/30 ring-2 ring-red-400/40 scale-[1.02] shadow-md' : 'bg-surface-container-low hover:bg-surface-container border-outline-variant/30'}`;
         card.onclick = () => {
           map.flyTo([h.lat, h.lng], 15);
           const circleIdx = allHotspots.findIndex(x => x.cluster_id === h.cluster_id);
@@ -611,9 +643,7 @@
     function updateMapClusterVisual(target) {
       if (!map) return;
 
-      let color = '#7b541a';
-      if (target.priority >= 50) color = '#9e4041';
-      else if (target.priority >= 30) color = '#a03b00';
+      const color = getClusterColor(target.priority);
 
       const circleIdx = allHotspots.findIndex(h => h.cluster_id === target.cluster_id);
       if (circleIdx >= 0 && circles[circleIdx]) {
@@ -812,10 +842,58 @@
       }
     }
 
+    let currentDispatchSeverity = 'critical';
+
+    function setDispatchSeverity(sev) {
+      currentDispatchSeverity = sev;
+      const btnCrit = document.getElementById('sev-btn-critical');
+      const btnHigh = document.getElementById('sev-btn-high');
+      const btnMod = document.getElementById('sev-btn-moderate');
+      const badge = document.getElementById('selectedSeverityBadge');
+      const actionOrder = document.getElementById('dispatchActionOrder');
+
+      // Reset base styling
+      const baseInactive = 'p-2 rounded-xl border border-outline-variant/40 bg-surface-container-low flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70 hover:opacity-100';
+
+      btnCrit.className = baseInactive + ' hover:bg-red-50';
+      btnHigh.className = baseInactive + ' hover:bg-yellow-50';
+      btnMod.className = baseInactive + ' hover:bg-emerald-50';
+
+      if (sev === 'critical') {
+        btnCrit.className = 'p-2 rounded-xl border-2 border-red-600 bg-red-50 flex flex-col items-center gap-1 transition-all cursor-pointer shadow-xs opacity-100 ring-2 ring-red-300';
+        badge.textContent = 'Critical';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded uppercase text-red-800 bg-red-100 border border-red-300';
+        if (actionOrder) {
+          actionOrder.textContent = '🔴 Immediate Emergency Intercept: Disperse tout ring, enforce rate compliance, issue digital compound fine (₹5,000) for repeat violation, and alert flying squads.';
+        }
+      } else if (sev === 'high') {
+        btnHigh.className = 'p-2 rounded-xl border-2 border-yellow-500 bg-yellow-50 flex flex-col items-center gap-1 transition-all cursor-pointer shadow-xs opacity-100 ring-2 ring-yellow-300';
+        badge.textContent = 'High Priority';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded uppercase text-yellow-800 bg-yellow-100 border border-yellow-300';
+        if (actionOrder) {
+          actionOrder.textContent = '🟡 High Priority Patrol: Conduct physical spot inspection, audit on-site pricing against estimated rates, caution vendor, and record photo verification.';
+        }
+      } else {
+        btnMod.className = 'p-2 rounded-xl border-2 border-emerald-600 bg-emerald-50 flex flex-col items-center gap-1 transition-all cursor-pointer shadow-xs opacity-100 ring-2 ring-emerald-300';
+        badge.textContent = 'Moderate';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded uppercase text-emerald-800 bg-emerald-100 border border-emerald-300';
+        if (actionOrder) {
+          actionOrder.textContent = '🟢 Routine Area Vigilance: Maintain visible patrol presence, verify fair prices, distribute citizen guidance advisory, and monitor crowd density.';
+        }
+      }
+    }
+
     function openDispatchModal(clusterId, name, zone, priority) {
       selectedCluster = { clusterId, name, zone, priority };
       document.getElementById('modalHotspotName').textContent = name;
       document.getElementById('modalHotspotMeta').textContent = `Zone: ${zone} • Priority Score: ${priority.toFixed(1)}`;
+      
+      // Automatically preselect severity based on cluster priority score
+      let autoSev = 'moderate';
+      if (priority >= 50) autoSev = 'critical';
+      else if (priority >= 30) autoSev = 'high';
+      setDispatchSeverity(autoSev);
+
       document.getElementById('dispatchModal').classList.remove('hidden');
       document.getElementById('dispatchModal').classList.add('flex');
     }
@@ -828,6 +906,7 @@
     async function confirmDispatch() {
       if (!selectedCluster) return;
       const unit = document.getElementById('dispatchUnit').value;
+      const sevLabel = currentDispatchSeverity.toUpperCase();
 
       try {
         const res = await fetch(`${API_BASE}/api/v1/police/dispatch-patrol`, {
@@ -837,16 +916,17 @@
             cluster_id: selectedCluster.clusterId,
             hotspot_name: selectedCluster.name,
             officer_badge: 'MH-15-POLICE-0482',
-            unit_name: unit
+            unit_name: unit,
+            severity: currentDispatchSeverity
           })
         });
         const result = await res.json();
         closeDispatchModal();
-        showToast(`🚨 Patrol Unit Dispatched: ${unit} heading to ${selectedCluster.name}`);
+        showToast(`🚨 [${sevLabel}] Patrol Unit Dispatched: ${unit} heading to ${selectedCluster.name}`);
       } catch (err) {
         console.error('Dispatch error:', err);
         closeDispatchModal();
-        showToast(`🚨 Patrol Dispatched to ${selectedCluster.name}`);
+        showToast(`🚨 [${sevLabel}] Patrol Dispatched to ${selectedCluster.name}`);
       }
     }
   </script>

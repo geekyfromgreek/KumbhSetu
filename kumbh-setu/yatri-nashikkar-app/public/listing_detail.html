@@ -538,10 +538,10 @@
     }
     if (price) {
       const decodedPrice = decodeURIComponent(price);
-      const isBazaarOrRange = (cat && (cat.toLowerCase().includes('bazaar') || cat.toLowerCase().includes('stall') || cat.toLowerCase().includes('shopping') || cat.toLowerCase().includes('food') || cat.toLowerCase().includes('eatery'))) || decodedPrice.includes('–') || decodedPrice.includes('-');
+      const isCitylink = (cat && cat.toLowerCase().includes('citylink')) || (nameParam && nameParam.toLowerCase().includes('citylink'));
       document.getElementById('detail-price-val').textContent = decodedPrice;
-      document.getElementById('detail-price-label').textContent = isBazaarOrRange ? 'Estimated Fair Range (अंदाजे दर)' : 'Municipal Gazette Cap';
-      document.getElementById('detail-price-unit').textContent = isBazaarOrRange ? 'reference range (no fixed cap)' : 'statutory ceiling';
+      document.getElementById('detail-price-label').textContent = isCitylink ? 'Municipal Gazette Cap (अधिकृत दर)' : 'Estimated Price (अंदाजे दर)';
+      document.getElementById('detail-price-unit').textContent = isCitylink ? 'statutory bus stage fare' : 'estimated fair rate';
     }
 
     if (descParam) {
