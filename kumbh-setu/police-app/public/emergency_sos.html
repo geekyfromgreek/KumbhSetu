@@ -265,7 +265,7 @@
 
     async function loadEmergencyServices(type = 'all') {
       try {
-        const url = `${window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + ''}/api/v1/marketplace/emergency?type=${encodeURIComponent(type)}&limit=30`;
+        const url = `${window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + ''}/api/v1/marketplace/emergency?type=${encodeURIComponent(type)}&limit=30`;
         const res = await fetch(url);
         if (!res.ok) return;
         const data = await res.json();

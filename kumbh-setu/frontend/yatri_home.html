@@ -150,126 +150,21 @@
       </div>
     </div>
 
-    <!-- NEW: Transit Fare & Route Calculator (Search Pick-up & Drop-off) -->
-    <div class="bg-surface-container-low rounded-xl p-2.5 border border-outline-variant/30 flex flex-col gap-2">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-1.5 text-xs font-bold text-on-surface">
-          <span class="material-symbols-outlined text-primary text-[16px]">commute</span>
-          <span>Transit Fare &amp; Route Search</span>
-        </div>
-        <span class="text-[9px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">Govt Regulated Fares</span>
-      </div>
-
-      <!-- Pick-up and Drop-off Inputs with Swap Button -->
-      <div class="grid grid-cols-[1fr_auto_1fr] gap-1.5 items-center">
-        <!-- Pick-up -->
-        <div class="flex flex-col gap-0.5 min-w-0">
-          <label class="text-[9px] font-bold text-on-surface-variant flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[11px] text-green-700">trip_origin</span>
-            <span>Pick-up Spot</span>
-          </label>
-          <select id="transit-pickup-select" onchange="calculateTransitFare()" class="w-full h-8 px-2 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-[11px] font-semibold text-on-surface focus:outline-none focus:border-primary truncate cursor-pointer">
-            <option value="nashik_road" selected>Nashik Road Rly Stn</option>
-            <option value="cbs_bus">CBS Central Bus Stand</option>
-            <option value="ramkund">Ramkund Main Ghat</option>
-            <option value="tapovan">Tapovan Sadhu Gram</option>
-            <option value="dwarka">Dwarka Highway Circle</option>
-            <option value="trimbak_mandir">Trimbakeshwar Mandir</option>
-            <option value="kushavarta">Kushavarta Kund</option>
-            <option value="sita_gufa">Sita Gufa / Panchavati</option>
-            <option value="kapaleshwar">Kapaleshwar Mandir</option>
-            <option value="brahmagiri">Brahmagiri Mountain Base</option>
-          </select>
-        </div>
-
-        <!-- Swap Button -->
-        <button type="button" onclick="swapTransitLocations()" title="Swap Pick-up &amp; Drop-off" class="w-7 h-7 rounded-full bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface flex items-center justify-center transition-colors shrink-0 shadow-xs cursor-pointer mt-3">
-          <span class="material-symbols-outlined text-[15px]">swap_horiz</span>
-        </button>
-
-        <!-- Drop-off -->
-        <div class="flex flex-col gap-0.5 min-w-0">
-          <label class="text-[9px] font-bold text-on-surface-variant flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[11px] text-red-600">location_on</span>
-            <span>Drop-off Destination</span>
-          </label>
-          <select id="transit-dropoff-select" onchange="calculateTransitFare()" class="w-full h-8 px-2 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-[11px] font-semibold text-on-surface focus:outline-none focus:border-primary truncate cursor-pointer">
-            <option value="ramkund">Ramkund Main Ghat</option>
-            <option value="trimbak_mandir" selected>Trimbakeshwar Mandir</option>
-            <option value="kushavarta">Kushavarta Kund</option>
-            <option value="tapovan">Tapovan Sadhu Gram</option>
-            <option value="sita_gufa">Sita Gufa / Panchavati</option>
-            <option value="kapaleshwar">Kapaleshwar Mandir</option>
-            <option value="cbs_bus">CBS Central Bus Stand</option>
-            <option value="nashik_road">Nashik Road Rly Stn</option>
-            <option value="dwarka">Dwarka Highway Circle</option>
-            <option value="brahmagiri">Brahmagiri Mountain Base</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Quick Route Presets -->
-      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-        <span class="text-[9px] text-outline font-semibold shrink-0">Popular:</span>
-        <button type="button" onclick="setTransitPreset('nashik_road', 'ramkund')" class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-[9px] font-bold text-on-surface-variant shrink-0 transition-colors cursor-pointer">
-          Station ➔ Ramkund
-        </button>
-        <button type="button" onclick="setTransitPreset('ramkund', 'trimbak_mandir')" class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-[9px] font-bold text-on-surface-variant shrink-0 transition-colors cursor-pointer">
-          Ramkund ➔ Trimbak
-        </button>
-        <button type="button" onclick="setTransitPreset('cbs_bus', 'tapovan')" class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-[9px] font-bold text-on-surface-variant shrink-0 transition-colors cursor-pointer">
-          CBS ➔ Tapovan
-        </button>
-        <button type="button" onclick="setTransitPreset('trimbak_mandir', 'brahmagiri')" class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-[9px] font-bold text-on-surface-variant shrink-0 transition-colors cursor-pointer">
-          Trimbak ➔ Brahmagiri
-        </button>
-      </div>
-
-      <!-- Live Calculated Fare Card -->
-      <div id="transit-fare-result" class="p-2 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex flex-col gap-1.5 shadow-xs">
-        <div class="flex items-center justify-between text-[11px]">
-          <div class="flex items-center gap-1 text-on-surface font-bold">
-            <span class="material-symbols-outlined text-primary text-[14px]">straighten</span>
-            <span id="transit-distance-text">~28.5 km</span>
-            <span class="text-outline">•</span>
-            <span id="transit-duration-text" class="text-on-surface-variant font-medium">~45 min travel</span>
-          </div>
-          <a id="transit-gmaps-link" href="https://maps.google.com" target="_blank" class="text-primary font-bold text-[10px] hover:underline flex items-center gap-0.5">
-            <span>Google Maps</span>
-            <span class="material-symbols-outlined text-[12px]">open_in_new</span>
-          </a>
-        </div>
-
-        <!-- Fare Breakdown Chips -->
-        <div class="grid grid-cols-3 gap-1 text-center">
-          <div class="bg-surface-container-low p-1.5 rounded-md border border-outline-variant/20 flex flex-col items-center">
-            <span class="text-[9px] text-on-surface-variant font-semibold">Citylink Bus</span>
-            <span id="transit-bus-fare" class="text-xs font-bold text-primary">₹45</span>
-            <span class="text-[8px] text-emerald-700 font-bold">Fixed Gov</span>
-          </div>
-          <div class="bg-surface-container-low p-1.5 rounded-md border border-outline-variant/20 flex flex-col items-center">
-            <span class="text-[9px] text-on-surface-variant font-semibold">Meter Auto</span>
-            <span id="transit-auto-fare" class="text-xs font-bold text-amber-800">₹420</span>
-            <span class="text-[8px] text-outline">NMC Meter</span>
-          </div>
-          <div class="bg-surface-container-low p-1.5 rounded-md border border-outline-variant/20 flex flex-col items-center">
-            <span class="text-[9px] text-on-surface-variant font-semibold">Shared Shuttle</span>
-            <span id="transit-shared-fare" class="text-xs font-bold text-secondary">₹60</span>
-            <span class="text-[8px] text-outline">Per Seat</span>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-0.5 text-[10px]">
-          <span class="text-outline text-[9px] flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[11px] text-emerald-700">verified</span>
-            Official Simhastha Transit Chart
-          </span>
-          <a href="fare_board.html" class="text-primary font-bold hover:underline flex items-center gap-0.5 text-[10px]">
-            <span>Full Fare Board</span>
-            <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
-          </a>
-        </div>
-      </div>
+    <!-- Minimalistic Destination Search Option -->
+    <div class="relative flex items-center">
+      <span class="material-symbols-outlined absolute left-2.5 text-primary text-[17px] pointer-events-none">search</span>
+      <input type="text" id="circuit-destination-search" list="circuit-destinations-list" placeholder="Search destination (e.g. Ramkund, Trimbak, Tapovan)..." class="w-full h-8 sm:h-9 pl-8 pr-8 rounded-lg bg-surface-container-low text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary placeholder:text-on-surface-variant/70 shadow-2xs" oninput="handleDestinationSearch(this.value)">
+      <datalist id="circuit-destinations-list">
+        <option value="Ramkund Main Holy Ghat">
+        <option value="Kapaleshwar Mandir">
+        <option value="Sita Gufa (Panchavati)">
+        <option value="Tapovan Sadhu Gram">
+        <option value="Kushavarta Kund (Trimbakeshwar)">
+        <option value="Brahmagiri Mountain Source">
+      </datalist>
+      <button type="button" onclick="clearDestinationSearch()" id="circuit-clear-search-btn" class="absolute right-2 text-outline hover:text-on-surface hidden p-0.5 cursor-pointer" title="Clear">
+        <span class="material-symbols-outlined text-[15px]">close</span>
+      </button>
     </div>
 
     <!-- Interactive Circuit Leaflet Map (Sleek Widescreen Rectangular, ISOLATED STACKING CONTEXT) -->
@@ -845,7 +740,7 @@ Helpline: 1800-233-0202
   async function loadFactChecks() {
     const activeApiBase = window.API_BASE_URL || (function() {
       const h = window.location.hostname;
-      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '';
+      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '';
     })();
     try {
       const res = await fetch(activeApiBase + '/api/v1/reports/fact-checks');
@@ -901,7 +796,7 @@ Helpline: 1800-233-0202
 
     const activeApiBase = window.API_BASE_URL || (function() {
       const h = window.location.hostname;
-      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '';
+      return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '';
     })();
 
     try {
@@ -1334,10 +1229,7 @@ Helpline: 1800-233-0202
 
       // Refresh layout size & auto-fit bounds into sleek rectangular view
       setTimeout(() => {
-        if (circuitMap) {
-          circuitMap.invalidateSize();
-          calculateTransitFare();
-        }
+        if (circuitMap) circuitMap.invalidateSize();
       }, 400);
 
       window.addEventListener('resize', () => {
@@ -1348,149 +1240,36 @@ Helpline: 1800-233-0202
     }
   }
 
-  // --- Live Kumbh Transit Fare & Route Calculator ---
-  const TRANSIT_HUBS = {
-    'ramkund': { name: 'Ramkund Main Ghat', coords: [19.9975, 73.7915], label: 'Panchavati Ghat' },
-    'nashik_road': { name: 'Nashik Road Railway Station', coords: [19.9540, 73.8340], label: 'Main Railway Junction' },
-    'cbs_bus': { name: 'CBS Central Bus Stand', coords: [19.9930, 73.7820], label: 'City Bus Terminal' },
-    'tapovan': { name: 'Tapovan Sadhu Gram', coords: [19.9910, 73.8180], label: 'Sadhu Gram Camp' },
-    'dwarka': { name: 'Dwarka Highway Circle', coords: [19.9880, 73.8050], label: 'Highway Junction' },
-    'trimbak_mandir': { name: 'Trimbakeshwar Mandir', coords: [19.9320, 73.5310], label: 'Jyotirlinga Temple' },
-    'kushavarta': { name: 'Kushavarta Kund', coords: [19.9325, 73.5305], label: 'Shahi Snan Kund' },
-    'sita_gufa': { name: 'Sita Gufa / Panchavati', coords: [20.0010, 73.7950], label: '5 Banyan Trees' },
-    'kapaleshwar': { name: 'Kapaleshwar Mandir', coords: [19.9988, 73.7925], label: 'Shiva Temple' },
-    'brahmagiri': { name: 'Brahmagiri Mountain Base', coords: [19.9380, 73.5180], label: 'Godavari Source' }
-  };
-
-  let transitSearchPolyline = null;
-  let transitPickupMarker = null;
-  let transitDropoffMarker = null;
-
-  function calcHaversineKm(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
-
-  function calculateTransitFare() {
-    const pSelect = document.getElementById('transit-pickup-select');
-    const dSelect = document.getElementById('transit-dropoff-select');
-    if (!pSelect || !dSelect) return;
-
-    const pKey = pSelect.value;
-    const dKey = dSelect.value;
-
-    const pHub = TRANSIT_HUBS[pKey] || TRANSIT_HUBS['nashik_road'];
-    const dHub = TRANSIT_HUBS[dKey] || TRANSIT_HUBS['trimbak_mandir'];
-
-    // Straight-line distance multiplied by 1.25 road winding factor
-    const directDist = calcHaversineKm(pHub.coords[0], pHub.coords[1], dHub.coords[0], dHub.coords[1]);
-    const roadDist = Math.max(0.8, directDist * 1.25);
-    const distText = roadDist < 1 ? `${Math.round(roadDist * 1000)} m` : `~${roadDist.toFixed(1)} km`;
-
-    // Speed approx: City 24 km/h, Highway 42 km/h
-    const avgSpeed = roadDist > 15 ? 42 : 24;
-    const durationMin = Math.max(5, Math.round((roadDist / avgSpeed) * 60));
-
-    // Regulated Fare calculation:
-    // Citylink Bus Fare: Under 4km: ₹10, 4-9km: ₹15, 9-18km: ₹25, >18km: ₹45
-    let busFare = 10;
-    if (roadDist > 18) busFare = 45;
-    else if (roadDist > 9) busFare = 25;
-    else if (roadDist > 4) busFare = 15;
-
-    // Regulated NMC Meter Auto Fare: Base ₹24 for 1.5 km + ₹15/km
-    const meterFare = Math.round(24 + Math.max(0, roadDist - 1.5) * 15);
-
-    // Shared Auto / Shuttle Fare: Local ₹15-₹25, Highway ₹60-₹75
-    let sharedFare = 15;
-    if (roadDist > 18) sharedFare = 60;
-    else if (roadDist > 6) sharedFare = 25;
-
-    // Update DOM
-    const distEl = document.getElementById('transit-distance-text');
-    const durEl = document.getElementById('transit-duration-text');
-    const busEl = document.getElementById('transit-bus-fare');
-    const autoEl = document.getElementById('transit-auto-fare');
-    const sharedEl = document.getElementById('transit-shared-fare');
-    const gmapsLink = document.getElementById('transit-gmaps-link');
-
-    if (distEl) distEl.textContent = distText;
-    if (durEl) durEl.textContent = `~${durationMin} min travel`;
-    if (busEl) busEl.textContent = `₹${busFare}`;
-    if (autoEl) autoEl.textContent = `₹${meterFare}`;
-    if (sharedEl) sharedEl.textContent = `₹${sharedFare}`;
-
-    if (gmapsLink) {
-      gmapsLink.href = `https://www.google.com/maps/dir/?api=1&origin=${pHub.coords[0]},${pHub.coords[1]}&destination=${dHub.coords[0]},${dHub.coords[1]}&travelmode=driving`;
+  // --- Minimalistic Destination Search & Focus ---
+  function handleDestinationSearch(query) {
+    const clearBtn = document.getElementById('circuit-clear-search-btn');
+    const q = (query || '').trim().toLowerCase();
+    if (clearBtn) {
+      clearBtn.classList.toggle('hidden', q.length === 0);
     }
-
-    // Update Leaflet Map route highlight
-    if (circuitMap && typeof L !== 'undefined') {
-      try {
-        if (transitSearchPolyline) circuitMap.removeLayer(transitSearchPolyline);
-        if (transitPickupMarker) circuitMap.removeLayer(transitPickupMarker);
-        if (transitDropoffMarker) circuitMap.removeLayer(transitDropoffMarker);
-
-        // Distinct route
-        transitSearchPolyline = L.polyline([pHub.coords, dHub.coords], {
-          color: '#dc2626',
-          weight: 4.5,
-          dashArray: '8, 8',
-          opacity: 0.95
-        }).addTo(circuitMap);
-
-        // Start pin (Green)
-        const pIcon = L.divIcon({
-          html: `<div style="background:#16a34a; width:26px; height:26px; border-radius:50%; border:2.5px solid white; box-shadow:0 3px 6px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:800;">A</div>`,
-          className: 'custom-route-start',
-          iconSize: [26, 26],
-          iconAnchor: [13, 13]
-        });
-        transitPickupMarker = L.marker(pHub.coords, { icon: pIcon }).addTo(circuitMap);
-        transitPickupMarker.bindPopup(`<b>Pick-up:</b> ${pHub.name}`);
-
-        // Destination pin (Red)
-        const dIcon = L.divIcon({
-          html: `<div style="background:#dc2626; width:26px; height:26px; border-radius:50%; border:2.5px solid white; box-shadow:0 3px 6px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:800;">B</div>`,
-          className: 'custom-route-end',
-          iconSize: [26, 26],
-          iconAnchor: [13, 13]
-        });
-        transitDropoffMarker = L.marker(dHub.coords, { icon: dIcon }).addTo(circuitMap);
-        transitDropoffMarker.bindPopup(`<b>Drop-off:</b> ${dHub.name}<br><b>Est. Fare:</b> Bus ₹${busFare} / Auto ₹${meterFare}`);
-
-        // Smooth zoom to fit both pickup and drop-off points
-        const bounds = L.latLngBounds([pHub.coords, dHub.coords]);
-        circuitMap.fitBounds(bounds, { padding: [25, 25], maxZoom: 14 });
-      } catch (err) {
-        console.warn('Transit map highlight note:', err);
+    if (!q) {
+      if (circuitMap) {
+        circuitMap.flyTo([19.965, 73.66], 11, { duration: 0.6 });
       }
+      return;
+    }
+
+    // Match against CIRCUIT_STOPS
+    const matchIdx = CIRCUIT_STOPS.findIndex(s => 
+      s.name.toLowerCase().includes(q) || 
+      (s.desc && s.desc.toLowerCase().includes(q)) ||
+      (s.dist && s.dist.toLowerCase().includes(q))
+    );
+
+    if (matchIdx !== -1) {
+      focusCircuitStop(matchIdx);
     }
   }
 
-  function swapTransitLocations() {
-    const pSelect = document.getElementById('transit-pickup-select');
-    const dSelect = document.getElementById('transit-dropoff-select');
-    if (!pSelect || !dSelect) return;
-    const temp = pSelect.value;
-    pSelect.value = dSelect.value;
-    dSelect.value = temp;
-    calculateTransitFare();
-    showToast('⇄ Pick-up & Drop-off swapped');
-  }
-
-  function setTransitPreset(pKey, dKey) {
-    const pSelect = document.getElementById('transit-pickup-select');
-    const dSelect = document.getElementById('transit-dropoff-select');
-    if (pSelect) pSelect.value = pKey;
-    if (dSelect) dSelect.value = dKey;
-    calculateTransitFare();
+  function clearDestinationSearch() {
+    const input = document.getElementById('circuit-destination-search');
+    if (input) input.value = '';
+    handleDestinationSearch('');
   }
 
   function focusCircuitStop(idx) {

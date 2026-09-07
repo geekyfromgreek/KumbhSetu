@@ -822,7 +822,7 @@
 
   <script src="i18n.js"></script>
   <script>
-    const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '');
+    const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '');
     let activeItemForPrice = '';
     let currentInquiryForReply = null;
     let localCustomProductCount = 0;

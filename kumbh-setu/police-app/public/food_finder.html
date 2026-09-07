@@ -340,7 +340,7 @@ Prices shown are vendor-declared and indicative community ranges. Administration
 
   async function loadFoodListings(tag = 'all', search = '') {
     try {
-      const url = `${window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + ''}/api/v1/marketplace/food-finder?tag=${encodeURIComponent(tag)}&search=${encodeURIComponent(search)}&limit=50`;
+      const url = `${window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + ''}/api/v1/marketplace/food-finder?tag=${encodeURIComponent(tag)}&search=${encodeURIComponent(search)}&limit=50`;
       const res = await fetch(url);
       if (!res.ok) return;
       const data = await res.json();
