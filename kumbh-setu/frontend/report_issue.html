@@ -501,19 +501,29 @@
     }
   }
 
-  // Upload simulation
+  let uploadedFileBase64 = null;
+
+  // Upload simulation & Base64 capture
   function handleFileSelected(event) {
     const input = event.target;
     if (input.files && input.files[0]) {
+      const file = input.files[0];
       document.getElementById('upload-empty-state').classList.add('hidden');
       document.getElementById('upload-preview').classList.remove('hidden');
-      document.getElementById('file-name-label').textContent = input.files[0].name;
+      document.getElementById('file-name-label').textContent = file.name;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedFileBase64 = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
   function removeUploadedFile(e) {
     e.stopPropagation();
     document.getElementById('file-upload').value = '';
+    uploadedFileBase64 = null;
     document.getElementById('upload-preview').classList.add('hidden');
     document.getElementById('upload-empty-state').classList.remove('hidden');
   }
@@ -560,6 +570,8 @@
       listing_name: location || 'Nashik Service Provider',
       issue_type: finalIssueType,
       description: fullDesc,
+      photo_url: uploadedFileBase64,
+      image_url: uploadedFileBase64,
       reporter_phone: phone || '9876543210'
     };
 
@@ -581,6 +593,8 @@
             listing_name: location || 'Nashik Service Provider',
             issue_type: finalIssueType,
             description: fullDesc,
+            photo_url: uploadedFileBase64,
+            image_url: uploadedFileBase64,
             reporter_phone: phone || '9876543210',
             status: 'New',
             created_at: now,

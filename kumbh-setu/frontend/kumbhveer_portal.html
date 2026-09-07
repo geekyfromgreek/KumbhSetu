@@ -600,6 +600,109 @@
     </div>
   </div>
 
+  <!-- Report Details, Citizen Description & Image Evidence Modal -->
+  <div id="reportDetailModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full p-4 sm:p-5 space-y-3.5 shadow-2xl border border-outline-variant/30 max-h-[90vh] overflow-y-auto">
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="w-9 h-9 rounded-full bg-red-100 text-red-700 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[22px]">report</span>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span id="rdmToken" class="text-xs font-mono font-bold text-red-700">#RPT-000000</span>
+              <span id="rdmBadge" class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-red-600 text-white uppercase">STAY VIOLATION</span>
+              <span id="rdmStatusBadge" class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300">Pending Field Audit</span>
+            </div>
+            <h3 id="rdmTitle" class="font-bold text-on-surface text-sm sm:text-base leading-tight truncate mt-0.5">Location Name</h3>
+          </div>
+        </div>
+        <button onclick="closeReportDetailModal()" class="text-on-surface-variant hover:text-on-surface p-1 rounded-full hover:bg-surface-container cursor-pointer shrink-0">
+          <span class="material-symbols-outlined text-[22px]">close</span>
+        </button>
+      </div>
+
+      <!-- Citizen Grievance Description Card -->
+      <div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-2">
+        <div class="flex items-center justify-between text-xs flex-wrap gap-1">
+          <span class="font-bold text-on-surface flex items-center gap-1">
+            <span class="material-symbols-outlined text-red-600 text-[16px]">campaign</span>
+            <span>Reported Issue: <strong id="rdmIssueType" class="text-red-700 font-extrabold">Violation Type</strong></span>
+          </span>
+          <span id="rdmDemandedPrice" class="font-mono font-bold text-primary text-xs bg-primary/10 px-2 py-0.5 rounded">Demanded: ₹--</span>
+        </div>
+
+        <!-- Description Notes Box -->
+        <div class="p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/20 text-xs text-on-surface leading-relaxed">
+          <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Citizen Complaint &amp; Description (तक्रार तपशील):</span>
+          <p id="rdmNotes" class="text-on-surface font-medium whitespace-pre-wrap text-xs">Pilgrim grievance details...</p>
+        </div>
+
+        <!-- Location & Metadata -->
+        <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-outline-variant/20">
+          <span class="flex items-center gap-1 truncate max-w-[70%]">
+            <span class="material-symbols-outlined text-[13px] text-primary shrink-0">location_on</span>
+            <span id="rdmLocation" class="truncate">Location</span>
+          </span>
+          <span id="rdmTime" class="font-mono text-[10px] shrink-0">Live</span>
+        </div>
+      </div>
+
+      <!-- Attached Image Evidence Section -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-xs text-on-surface flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-primary text-[17px]">photo_library</span>
+            <span>Attached Image Evidence (पुरावा छायाचित्र)</span>
+          </span>
+          <span id="rdmImageCountTag" class="text-[10px] font-bold text-emerald-800 px-2 py-0.5 rounded bg-emerald-100">Photo Attached</span>
+        </div>
+
+        <!-- Image Box -->
+        <div id="rdmImageBox" class="relative rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-low flex flex-col items-center justify-center min-h-[160px] p-1">
+          <img id="rdmImage" src="" alt="Citizen Attached Proof" class="w-full max-h-60 object-contain rounded-lg cursor-zoom-in transition-transform hover:scale-[1.01]" onclick="openFullImageZoom(this.src)"/>
+          
+          <!-- Empty State if no image was attached by citizen -->
+          <div id="rdmNoImageBox" class="p-5 text-center text-on-surface-variant flex flex-col items-center gap-1 hidden">
+            <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-outline mb-1">
+              <span class="material-symbols-outlined text-xl">no_photography</span>
+            </div>
+            <span class="font-bold text-xs text-on-surface">No Photo Attached by Citizen</span>
+            <span class="text-[10px] text-on-surface-variant max-w-xs">Citizen submitted textual description. Verify rate board &amp; conditions physically on-site.</span>
+            <button type="button" onclick="attachDemoProofToActiveReport()" class="mt-2 text-[11px] text-primary font-bold hover:underline cursor-pointer">
+              + Load Sample Bill / Evidence Photo
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between text-[10px] text-on-surface-variant">
+          <span id="rdmReporterInfo">Citizen mobile authenticated</span>
+          <span id="rdmZoomHint">Tap image to zoom full screen</span>
+        </div>
+      </div>
+
+      <!-- Action Area -->
+      <div class="pt-2 border-t border-outline-variant/20 space-y-2">
+        <button id="rdmVerifyBtn" onclick="verifyReportFromDetailModal()" class="w-full h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-lg">verified</span>
+          <span>✓ Verify On-Site (+50 Pts)</span>
+        </button>
+        <button type="button" onclick="attachCounterProofFromDetailModal()" class="w-full h-8.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-sm text-primary">add_a_photo</span>
+          <span>Upload Field Counter-Proof Photo (Optional)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Image Zoom Lightbox Modal -->
+  <div id="imageZoomModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-60 hidden items-center justify-center p-3 cursor-zoom-out" onclick="closeFullImageZoom()">
+    <div class="relative max-w-4xl max-h-[90vh] flex flex-col items-center">
+      <img id="zoomImage" src="" alt="Enlarged Evidence" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/20"/>
+      <span class="text-white text-xs mt-2 bg-black/60 px-3 py-1 rounded-full font-mono">Tap anywhere to close</span>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-on-surface text-surface px-4 py-2.5 rounded-full text-xs font-semibold shadow-xl hidden items-center gap-2 z-50 transition-opacity">
     <span class="material-symbols-outlined text-amber-400 text-base">check_circle</span>
@@ -618,6 +721,8 @@
         lane: "Trimbak Road, Sector 4",
         capRate: "₹350 / bed",
         status: "pending",
+        notes: "Pilgrims reported dharamshala overcharging for dorm bed deposits. Rate card placed at reception, dorm hygiene & zero unauthorized extra fee must be verified.",
+        imageUrl: "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=800&q=80",
         checklist: ["Rate card placed at reception", "Dorm hygiene verified", "No extra booking fee"]
       },
       {
@@ -629,6 +734,8 @@
         lane: "Ramkund North Steps",
         capRate: "₹50 brass diya",
         status: "pending",
+        notes: "Flower and brass diya prices inspected on ghat steps. Flower price tag displayed, brass item MRP confirmed, digital UPI active.",
+        imageUrl: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800&q=80",
         checklist: ["Flower price tag displayed", "Brass item MRP confirmed", "Digital UPI active"]
       },
       {
@@ -640,6 +747,8 @@
         lane: "Ramkund East Gate",
         capRate: "₹120 / box",
         status: "pending",
+        notes: "Food safety standards and weight scale check queued. Food safety license displayed, certified weight scale, sealed packaging.",
+        imageUrl: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=800&q=80",
         checklist: ["Food safety license displayed", "Weight scale certified", "Packaged seal intact"]
       },
       {
@@ -651,6 +760,8 @@
         lane: "Panchavati Ghat Bay 4",
         capRate: "₹26 base meter",
         status: "pending",
+        notes: "Ghat bay auto tariff inspection. RTO tariff board must be legible, pre-paid token booth functional, zero meter refusal.",
+        imageUrl: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80",
         checklist: ["RTO tariff chart board legible", "Pre-paid token booth open", "Zero meter refusal"]
       },
       {
@@ -662,6 +773,8 @@
         lane: "Sita Gufa Road",
         capRate: "₹80 thali cap",
         status: "pending",
+        notes: "Pilgrim bhojnalaya tariff verification. Thali menu board posted, clean drinking water provided, digital UPI receipt issued.",
+        imageUrl: "https://images.unsplash.com/photo-1613292443284-c77ffb2a0bb5?w=800&q=80",
         checklist: ["Thali menu board posted", "Clean drinking water provided", "Digital receipt issued"]
       },
       {
@@ -966,6 +1079,36 @@
       }
     }
 
+    function parseReportDescription(rawDesc) {
+      if (!rawDesc) return { location: '', demanded: '', notes: '', issues: '', categories: '' };
+      let location = '';
+      let demanded = '';
+      let notes = '';
+      let issues = '';
+      let categories = '';
+
+      const catMatch = rawDesc.match(/Selected Categories:\s*\[(.*?)\]/i);
+      if (catMatch) categories = catMatch[1].trim();
+
+      const issueMatch = rawDesc.match(/Issues:\s*\[(.*?)\]/i);
+      if (issueMatch) issues = issueMatch[1].trim();
+
+      const locMatch = rawDesc.match(/Location:\s*([^.]+?)(?=\.\s*(?:Demanded|Notes|$))/i);
+      if (locMatch) location = locMatch[1].trim();
+
+      const priceMatch = rawDesc.match(/Demanded Price:\s*([^.]+?)(?=\.\s*Notes|$)/i);
+      if (priceMatch) demanded = priceMatch[1].trim();
+
+      const notesMatch = rawDesc.match(/Notes:\s*(.*)/i);
+      if (notesMatch) notes = notesMatch[1].trim();
+
+      if (!notes && !location && !demanded) {
+        notes = rawDesc;
+      }
+
+      return { location, demanded, notes, issues, categories };
+    }
+
     function mapReportToAudit(report) {
       const cat = (report.category || '').toLowerCase();
       let auditCat = 'bazaar';
@@ -984,22 +1127,44 @@
         catBadge = 'Pooja Rate';
       }
 
-      const shortToken = '#RPT-' + (report.id ? report.id.slice(0, 6).toUpperCase() : 'CIVIC');
-      const isResolved = report.status === 'Resolved';
+      const shortToken = '#RPT-' + (report.id ? String(report.id).slice(0, 6).toUpperCase() : 'CIVIC');
+      const isResolved = report.status === 'Resolved' || report.status === 'Verified';
+
+      const parsed = parseReportDescription(report.description);
+      const cleanLocation = parsed.location || report.listing_name || 'Ramkund & Panchavati Sector';
+      const cleanNotes = parsed.notes || 'Pilgrim reported grievance / civic violation';
+      const cleanDemanded = parsed.demanded || '';
+
+      let photoEvidence = report.image_url || report.photo_url || report.photo || null;
+      if (!photoEvidence) {
+        const locLower = cleanLocation.toLowerCase();
+        if (locLower.includes('ccm')) {
+          photoEvidence = 'https://images.unsplash.com/photo-1554415707-9e4c09d48d53?w=800&q=80';
+        } else if (locLower.includes('godavari')) {
+          photoEvidence = 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=800&q=80';
+        }
+      }
 
       return {
         id: 'rpt-' + report.id,
         reportId: report.id,
-        name: report.listing_name || 'Reported Civic Location',
+        name: report.listing_name || cleanLocation,
         token: shortToken,
         category: auditCat,
         catLabel: `⚡ ${catBadge}`,
-        lane: report.description || 'Reported by Pilgrim via Kumbh Setu',
-        capRate: report.issue_type || 'Civic Overcharge Flag',
+        lane: cleanLocation,
+        demandedPrice: cleanDemanded,
+        rawDescription: report.description,
+        notes: cleanNotes,
+        imageUrl: photoEvidence,
+        issueType: report.issue_type || parsed.issues || 'Grievance Reported',
+        capRate: cleanDemanded ? `₹${cleanDemanded.replace(/^₹/, '')}` : (report.issue_type || 'Civic Flag'),
         status: isResolved ? 'verified' : 'pending',
         isLiveReport: true,
+        createdAt: report.created_at || new Date().toISOString(),
+        reporterPhone: report.reporter_phone || 'Citizen Mobile Verified',
         checklist: [
-          `Citizen Complaint: "${report.issue_type || 'Violation Reported'}"`,
+          `Citizen Complaint: "${report.issue_type || parsed.issues || 'Violation Reported'}"`,
           'Verify official Simhastha rate board & display card visibility',
           'Inspect digital UPI QR & confirm zero unlawful extra charge'
         ]
@@ -1064,6 +1229,7 @@
           item.name.toLowerCase().includes(q) || 
           item.token.toLowerCase().includes(q) || 
           item.lane.toLowerCase().includes(q) ||
+          (item.notes && item.notes.toLowerCase().includes(q)) ||
           item.catLabel.toLowerCase().includes(q);
         return matchCat && matchQuery;
       });
@@ -1088,18 +1254,24 @@
         const isLive = !!item.isLiveReport;
         const isCitylink = (item.name && item.name.toLowerCase().includes('citylink')) || (item.category === 'transit' && item.name.toLowerCase().includes('bus'));
         const priceLabel = isLive ? 'Reported Issue' : (isCitylink ? 'Gazette Cap' : 'Estimated Price');
+        const hasImage = !!item.imageUrl;
+
         return `
-          <div class="p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm border ${isLive ? 'border-red-400/80 bg-red-50/15 ring-1 ring-red-400/30' : (isVerified ? 'border-emerald-300 bg-emerald-50/20' : 'border-outline-variant/30')} flex flex-col gap-2.5 transition-all">
+          <div onclick="openReportDetailModal('${item.id}')" class="p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm border ${isLive ? 'border-red-400/80 bg-red-50/15 ring-1 ring-red-400/30' : (isVerified ? 'border-emerald-300 bg-emerald-50/20' : 'border-outline-variant/30')} flex flex-col gap-2.5 transition-all hover:border-primary/60 hover:shadow-md cursor-pointer group">
             <div class="flex items-start justify-between gap-2">
               <div class="flex flex-col min-w-0">
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${getCategoryBadgeStyle(item.category)}">${item.catLabel}</span>
                   ${isLive ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-red-600 text-white flex items-center gap-1 animate-pulse"><span class="w-1.5 h-1.5 rounded-full bg-white"></span>Live Yatri Report</span>` : ''}
                   <span class="text-[11px] font-mono font-bold text-on-surface-variant">${item.token}</span>
+                  ${hasImage ? `<span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-blue-100 text-blue-800 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">photo_camera</span>Photo Attached</span>` : ''}
                 </div>
-                <h3 class="font-bold text-sm text-on-surface truncate mt-1">${item.name}</h3>
+                <h3 class="font-bold text-sm text-on-surface group-hover:text-primary transition-colors flex items-center gap-1.5 mt-1">
+                  <span>${item.name}</span>
+                  <span class="text-[11px] text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center">Inspect →</span>
+                </h3>
                 <span class="text-[11px] text-on-surface-variant flex items-center gap-1 mt-0.5">
-                  <span class="material-symbols-outlined text-[13px] text-primary">location_on</span>
+                  <span class="material-symbols-outlined text-[13px] text-primary shrink-0">location_on</span>
                   <span class="truncate">${item.lane}</span>
                 </span>
               </div>
@@ -1110,8 +1282,22 @@
               </div>
             </div>
 
+            <!-- Citizen Notes Callout if available -->
+            ${item.notes ? `
+              <div class="bg-surface-container-low/90 px-3 py-2 rounded-xl flex items-start gap-2 text-xs text-on-surface border border-outline-variant/20">
+                <span class="material-symbols-outlined text-red-600 text-[16px] shrink-0 mt-0.5">rate_review</span>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">Description / Citizen Notes:</span>
+                  <p class="text-[11px] text-on-surface font-medium line-clamp-2 leading-tight">${item.notes}</p>
+                </div>
+                ${hasImage ? `
+                  <img src="${item.imageUrl}" alt="Proof Thumbnail" class="w-10 h-10 rounded-lg object-cover border border-outline-variant/50 shrink-0 ml-1"/>
+                ` : ''}
+              </div>
+            ` : ''}
+
             <!-- Checkpoints list -->
-            <div class="bg-surface-container-low/80 p-2.5 rounded-xl flex flex-col gap-1 text-[11px] text-on-surface-variant">
+            <div class="bg-surface-container-low/70 p-2.5 rounded-xl flex flex-col gap-1 text-[11px] text-on-surface-variant">
               ${item.checklist.map(chk => `
                 <div class="flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-[14px] ${isVerified ? 'text-emerald-700' : (isLive ? 'text-red-600' : 'text-primary')}">check_circle</span>
@@ -1121,20 +1307,20 @@
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex items-center gap-2 pt-1">
+            <div class="flex items-center gap-2 pt-1" onclick="event.stopPropagation()">
               ${isVerified ? `
                 <div class="w-full h-9 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-emerald-300">
                   <span class="material-symbols-outlined text-sm">verified</span>
                   <span>Verified On-Site with Proof (+50 Pts)</span>
                 </div>
               ` : `
+                <button onclick="openReportDetailModal('${item.id}')" class="px-3 h-9 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center gap-1.5 cursor-pointer">
+                  <span class="material-symbols-outlined text-xs text-primary">visibility</span>
+                  <span>Inspect Report</span>
+                </button>
                 <button onclick="openVerificationModal('${item.id}')" class="flex-1 h-9 rounded-xl ${isLive ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-700 hover:bg-emerald-800'} text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-transform cursor-pointer">
                   <span class="material-symbols-outlined text-sm">check_circle</span>
                   <span>✓ Verify On-Site (+50 Pts)</span>
-                </button>
-                <button onclick="prefillUpload('${item.name} (${item.token})')" class="h-9 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center gap-1 cursor-pointer">
-                  <span class="material-symbols-outlined text-xs text-primary">photo_camera</span>
-                  <span class="hidden sm:inline">Photo Proof</span>
                 </button>
               `}
             </div>
@@ -1303,6 +1489,176 @@
       closeVerificationModal();
       showToast(`✓ "${item.name}" verified with proof! +50 Seva Points awarded.`);
       renderAuditsList();
+    }
+
+    /* ── Report Details, Citizen Evidence & On-Site Verification Engine ── */
+    let activeDetailReportId = null;
+
+    function openReportDetailModal(id) {
+      const item = auditsState.find(a => String(a.id) === String(id));
+      if (!item) return;
+
+      activeDetailReportId = item.id;
+
+      // Header tokens
+      document.getElementById('rdmToken').textContent = item.token || '#RPT-CIVIC';
+      document.getElementById('rdmBadge').textContent = (item.catLabel || 'Civic Flag').replace(/^⚡\s*/, '');
+      document.getElementById('rdmTitle').textContent = item.name || 'Reported Civic Location';
+
+      // Status
+      const statusBadge = document.getElementById('rdmStatusBadge');
+      if (item.status === 'verified') {
+        statusBadge.textContent = '✓ Verified On-Site';
+        statusBadge.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300';
+      } else {
+        statusBadge.textContent = 'Pending Field Audit';
+        statusBadge.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300';
+      }
+
+      // Metadata
+      document.getElementById('rdmLocation').textContent = item.lane || item.name || 'Panchavati Sector';
+      document.getElementById('rdmIssueType').textContent = item.issueType || item.capRate || 'Civic Violation / Misbehavior';
+      
+      const demandedEl = document.getElementById('rdmDemandedPrice');
+      if (item.demandedPrice) {
+        demandedEl.textContent = 'Demanded: ' + (item.demandedPrice.startsWith('₹') ? item.demandedPrice : '₹' + item.demandedPrice);
+        demandedEl.classList.remove('hidden');
+      } else {
+        demandedEl.classList.add('hidden');
+      }
+
+      document.getElementById('rdmNotes').textContent = item.notes || item.rawDescription || 'No detailed textual description was attached by the citizen.';
+      document.getElementById('rdmTime').textContent = item.createdAt ? new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Live Yatri Report';
+
+      // Images / Evidence
+      const imgEl = document.getElementById('rdmImage');
+      const noImgBox = document.getElementById('rdmNoImageBox');
+      const countTag = document.getElementById('rdmImageCountTag');
+      const reporterInfo = document.getElementById('rdmReporterInfo');
+
+      if (reporterInfo) {
+        reporterInfo.textContent = item.reporterPhone ? `Reporter: ${item.reporterPhone}` : 'Citizen Mobile Authenticated';
+      }
+
+      if (item.imageUrl) {
+        imgEl.src = item.imageUrl;
+        imgEl.classList.remove('hidden');
+        noImgBox.classList.add('hidden');
+        countTag.textContent = 'Photo Attached';
+        countTag.className = 'text-[10px] font-bold text-emerald-800 px-2 py-0.5 rounded bg-emerald-100';
+      } else {
+        imgEl.src = '';
+        imgEl.classList.add('hidden');
+        noImgBox.classList.remove('hidden');
+        countTag.textContent = 'No Media';
+        countTag.className = 'text-[10px] font-bold text-on-surface-variant px-2 py-0.5 rounded bg-surface-container-high';
+      }
+
+      // Verify Button state
+      const verifyBtn = document.getElementById('rdmVerifyBtn');
+      if (item.status === 'verified') {
+        verifyBtn.disabled = true;
+        verifyBtn.innerHTML = '<span class="material-symbols-outlined text-lg">verified</span><span>Already Verified On-Site (+50 Pts)</span>';
+        verifyBtn.className = 'w-full h-11 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-sm flex items-center justify-center gap-2 border border-emerald-300 cursor-default';
+      } else {
+        verifyBtn.disabled = false;
+        verifyBtn.innerHTML = '<span class="material-symbols-outlined text-lg">verified</span><span>✓ Verify On-Site (+50 Pts)</span>';
+        verifyBtn.className = 'w-full h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all cursor-pointer';
+      }
+
+      document.getElementById('reportDetailModal').classList.remove('hidden');
+      document.getElementById('reportDetailModal').classList.add('flex');
+    }
+
+    function closeReportDetailModal() {
+      document.getElementById('reportDetailModal').classList.add('hidden');
+      document.getElementById('reportDetailModal').classList.remove('flex');
+      activeDetailReportId = null;
+    }
+
+    function verifyReportFromDetailModal() {
+      if (!activeDetailReportId) return;
+      const id = activeDetailReportId;
+      const item = auditsState.find(a => String(a.id) === String(id));
+      if (!item || item.status === 'verified') return;
+
+      const notes = `Verified on-site by Kumbhveer Rohit S. Complaint inspected: ${item.issueType || 'Civic flag'}. Municipal rate card verified.`;
+      const photo = item.imageUrl || modalProofPhotoData || 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=400&q=80';
+
+      item.status = 'verified';
+      item.verifiedNotes = notes;
+      item.verifiedPhoto = photo;
+      item.verifiedTimestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // Sync with Supabase / backend if this is an incoming report
+      if (item.reportId && window.KumbhRealtime) {
+        KumbhRealtime.update('reports', item.reportId, {
+          status: 'Resolved',
+          notes: notes
+        }).then(() => {
+          console.log('[Kumbhveer] Report status updated to Resolved in Supabase:', item.reportId);
+        }).catch(err => console.log('Report update note:', err));
+      }
+
+      userPoints += 50;
+      userAudits += 1;
+
+      document.getElementById('statVolunteerPoints').textContent = userPoints.toLocaleString();
+      document.getElementById('statAuditedCount').textContent = userAudits;
+
+      localStorage.setItem('kumbhsetu_user_points', userPoints);
+      localStorage.setItem('kumbhsetu_audited_count', userAudits);
+      const verifiedList = auditsState.filter(a => a.status === 'verified').map(a => a.id);
+      localStorage.setItem('kumbhsetu_verified_audits', JSON.stringify(verifiedList));
+
+      // Append to recent photos gallery
+      const gallery = document.getElementById('recentPhotosList');
+      if (gallery) {
+        const newCard = document.createElement('div');
+        newCard.className = 'bg-surface-container-low rounded-xl p-2 flex flex-col gap-1 text-[11px] border border-emerald-400 bg-emerald-50/20';
+        newCard.innerHTML = `
+          <img src="${photo}" alt="Audit Proof" class="w-full h-24 object-cover rounded-lg"/>
+          <span class="font-bold truncate text-on-surface">${item.name}</span>
+          <span class="text-[10px] text-emerald-800 font-semibold flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-[13px]">verified</span> Proof Verified (+50 pts)
+          </span>
+          <p class="text-[10px] text-on-surface-variant truncate italic">"${notes}"</p>
+        `;
+        gallery.insertBefore(newCard, gallery.firstChild);
+      }
+
+      closeReportDetailModal();
+      showToast(`✓ "${item.name}" verified on-site! +50 Seva Points awarded.`);
+      renderAuditsList();
+    }
+
+    function attachCounterProofFromDetailModal() {
+      if (!activeDetailReportId) return;
+      const reportId = activeDetailReportId;
+      closeReportDetailModal();
+      openVerificationModal(reportId);
+    }
+
+    function attachDemoProofToActiveReport() {
+      if (!activeDetailReportId) return;
+      const item = auditsState.find(a => String(a.id) === String(activeDetailReportId));
+      if (item) {
+        item.imageUrl = 'https://images.unsplash.com/photo-1554415707-9e4c09d48d53?w=800&q=80';
+        openReportDetailModal(activeDetailReportId);
+        showToast('Sample evidence photo attached');
+      }
+    }
+
+    function openFullImageZoom(src) {
+      if (!src) return;
+      document.getElementById('zoomImage').src = src;
+      document.getElementById('imageZoomModal').classList.remove('hidden');
+      document.getElementById('imageZoomModal').classList.add('flex');
+    }
+
+    function closeFullImageZoom() {
+      document.getElementById('imageZoomModal').classList.add('hidden');
+      document.getElementById('imageZoomModal').classList.remove('flex');
     }
 
     function verifyAudit(id) {
