@@ -252,23 +252,56 @@
     const parentCard = buttonElement.closest('article');
     const reportId = parentCard.getAttribute('data-id') || parentCard.dataset?.id;
     const entityTitle = parentCard.querySelector('h2')?.textContent?.trim() || 'Civic Violation';
+    const noteElement = parentCard.querySelector('.text-slate-950');
+    const parsedNote = noteElement ? noteElement.textContent.replace(/"/g, '').trim() : '';
     
     if (confirm(`Confirm citizen verification for "${entityTitle}" to log on-ground complaint & notify Nashik Police Desk?`)) {
       buttonElement.disabled = true;
       buttonElement.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Escalating...</span>`;
 
       try {
-        if (reportId && window.KumbhRealtime) {
-          await KumbhRealtime.update('reports', reportId, {
-            status: 'Escalated to Police',
-            notes: `Citizen verified on-ground. Escalated to Nashik Police Desk for ${entityTitle}`
-          });
+        if (window.KumbhRealtime) {
+          // 1. Update status in reports table
+          if (reportId) {
+            await KumbhRealtime.update('reports', reportId, {
+              status: 'Escalated to Police',
+              notes: `Citizen verified on-ground. Escalated to Nashik Police Desk: ${parsedNote || entityTitle}`
+            });
+          }
+
+          // 2. Build and persist formal escalation docket for Police Desk
+          const escalationDocket = {
+            id: 'esc-' + (reportId ? reportId.slice(-6) : Date.now().toString().slice(-6)),
+            report_id: reportId || 'rpt-' + Date.now(),
+            case_number: 'ESC-' + Math.floor(1000 + Math.random() * 9000),
+            listing_name: entityTitle,
+            location_name: entityTitle,
+            category: 'Price Watchdog',
+            priority: 'High',
+            status: 'pending',
+            description: parsedNote || `Citizen verified violation at ${entityTitle}. Escalated for flying squad spot check.`,
+            escalated_at: new Date().toISOString(),
+            escalated_by: 'Citizen Watchdog / Kumbhveer'
+          };
+
+          try {
+            await KumbhRealtime.insert('escalations', escalationDocket);
+          } catch(insErr) {
+            console.warn('[Escalations] Insert into table error:', insErr);
+          }
+
+          // 3. Backup in localStorage so Police Dashboard displays it instantly across tabs
+          try {
+            const localEsc = JSON.parse(localStorage.getItem('kumbhsetu_live_escalations') || '[]');
+            localEsc.unshift(escalationDocket);
+            localStorage.setItem('kumbhsetu_live_escalations', JSON.stringify(localEsc));
+          } catch(lsErr) { /* ok */ }
         }
       } catch (err) {
         console.warn('Police escalation note:', err);
       }
 
-      buttonElement.innerHTML = `<span class="material-symbols-outlined text-[18px]">local_police</span><span>Sent to Police Desk</span>`;
+      buttonElement.innerHTML = `<span class="material-symbols-outlined text-[18px]">local_police</span><span>Sent to Police Desk ✓</span>`;
       buttonElement.classList.remove('bg-secondary');
       buttonElement.classList.add('bg-surface-container-highest', 'text-on-surface-variant');
 
@@ -402,6 +435,44 @@
     });
   }
 
+  // Helper to parse detailed grievance note, demanded price, and issue from description
+  function parseReportDetails(desc, r) {
+    let notes = '';
+    let demanded = '';
+    let issues = r.issue_type || '';
+    let location = r.listing_name || '';
+    let category = r.category || '';
+
+    if (desc && typeof desc === 'string') {
+      const notesMatch = desc.match(/Notes:\s*(.*?)(?:$)/i);
+      if (notesMatch && notesMatch[1]) notes = notesMatch[1].trim();
+
+      const demandedMatch = desc.match(/Demanded Price:\s*(.*?)(?:\.\s*Notes:|$)/i);
+      if (demandedMatch && demandedMatch[1]) demanded = demandedMatch[1].trim();
+
+      const locMatch = desc.match(/Location:\s*(.*?)(?:\.\s*Demanded Price:|$)/i);
+      if (locMatch && locMatch[1]) location = locMatch[1].trim();
+
+      const issuesMatch = desc.match(/Issues:\s*\[(.*?)\]/i);
+      if (issuesMatch && issuesMatch[1]) issues = issuesMatch[1].trim();
+
+      const catMatch = desc.match(/Selected Categories:\s*\[(.*?)\]/i);
+      if (catMatch && catMatch[1]) category = catMatch[1].trim();
+    }
+
+    if (!notes) {
+      notes = desc || 'Civic grievance reported by pilgrim via Kumbh Setu. Spot check required.';
+    }
+
+    return {
+      notes,
+      demanded: demanded || 'Disputed / Excess',
+      issues: issues || r.issue_type || 'Overcharging / Disobedience',
+      location: location || r.listing_name || 'Ramkund Area, Nashik',
+      category: category || r.category || 'Civic Service'
+    };
+  }
+
   async function loadLivePriceFlags() {
     const feed = document.getElementById('flagsFeed');
     if (!feed || !window.KumbhRealtime) return;
@@ -415,26 +486,27 @@
 
       // Render data-driven cards from Supabase / Backend reports table
       feed.innerHTML = reports.map(r => {
-        const isEscalated = r.status === 'Escalated to Police';
-        const isResolved = r.status === 'Resolved';
+        const isEscalated = r.status === 'Escalated to Police' || r.status === 'escalated';
+        const isResolved = r.status === 'Resolved' || r.status === 'resolved';
         const cardStatus = isEscalated ? 'escalated' : (isResolved ? 'resolved' : (r.status === 'Under Review' ? 'review' : 'new'));
+        const parsed = parseReportDetails(r.description, r);
 
         return `
-          <article class="flag-card flex flex-col gap-space-sm p-space-md bg-surface-container-lowest rounded-xl shadow-sm border ${isResolved ? 'border-emerald-300' : (isEscalated ? 'border-purple-300 ring-1 ring-purple-400/30' : 'border-red-300 ring-1 ring-red-400/30')} transition-all duration-200 hover:shadow-md" data-id="${r.id}" data-status="${cardStatus}">
-            <div class="flex items-start justify-between gap-space-xs">
+          <article class="flag-card flex flex-col gap-3 p-4 bg-surface-container-lowest rounded-xl shadow-sm border ${isResolved ? 'border-emerald-300' : (isEscalated ? 'border-purple-400 ring-2 ring-purple-400/30' : 'border-red-300 ring-1 ring-red-400/30')} transition-all duration-200 hover:shadow-md" data-id="${r.id}" data-status="${cardStatus}">
+            <div class="flex items-start justify-between gap-2">
               <div class="flex flex-col min-w-0">
                 <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="px-2 py-0.5 rounded ${isResolved ? 'bg-emerald-100 text-emerald-800' : (isEscalated ? 'bg-purple-100 text-purple-900' : 'bg-red-100 text-red-800')} font-label-sm text-[11px] uppercase tracking-wider font-semibold">
-                    ${r.category || 'Civic Violation'}
+                  <span class="px-2 py-0.5 rounded ${isResolved ? 'bg-emerald-100 text-emerald-800' : (isEscalated ? 'bg-purple-100 text-purple-900' : 'bg-red-100 text-red-800')} font-label-sm text-[11px] uppercase tracking-wider font-bold">
+                    ${parsed.category}
                   </span>
                   <span class="px-1.5 py-0.2 rounded ${isResolved ? 'bg-emerald-600' : (isEscalated ? 'bg-purple-600' : 'bg-red-600')} text-white font-bold text-[9px] uppercase tracking-wider ${isResolved ? '' : 'animate-pulse'}">
-                    ● ${isResolved ? 'Resolved' : (isEscalated ? 'Police Docket' : 'Live Yatri Flag')}
+                    ● ${isResolved ? 'Resolved' : (isEscalated ? 'Police Docket Active' : 'Live Yatri Flag')}
                   </span>
                   <span class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1">
                     <span class="material-symbols-outlined text-[13px]">schedule</span> ${r.time_ago || 'Recent'}
                   </span>
                 </div>
-                <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate mt-1">${r.listing_name || 'Civic Service Provider'}</h2>
+                <h2 class="font-headline-sm text-base font-bold text-on-surface truncate mt-1">${parsed.location}</h2>
               </div>
               <div class="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full ${isResolved ? 'bg-emerald-100 text-emerald-800' : (isEscalated ? 'bg-purple-100 text-purple-900' : 'bg-red-100 text-red-800')} font-label-sm text-label-sm font-semibold">
                 <span class="material-symbols-outlined text-[14px]">${isResolved ? 'task_alt' : (isEscalated ? 'local_police' : 'priority_high')}</span>
@@ -442,23 +514,34 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-2 p-space-sm rounded-lg bg-surface-container-low">
+            <!-- PROMINENT COMPLAINT BOX: Displays clearly what the issue is about -->
+            <div class="flex flex-col gap-2 p-3 rounded-xl bg-amber-50/90 border border-amber-300 text-amber-950 shadow-2xs">
               <div class="flex items-center justify-between">
-                <span class="font-body-sm text-body-sm text-on-surface-variant">Reported Violation:</span>
-                <span class="font-label-sm text-label-sm text-error font-bold flex items-center gap-0.5">
-                  <span class="material-symbols-outlined text-[15px]">trending_up</span> ${r.issue_type || 'Overcharging / Price Gouging'}
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-amber-900 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[17px] text-amber-700">chat_error</span>
+                  <span>Citizen / Pilgrim Complaint:</span>
+                </span>
+                <span class="px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-[10px] font-extrabold uppercase tracking-tight border border-red-200 flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-[12px]">warning</span> ${parsed.issues}
                 </span>
               </div>
-              <p class="text-xs text-on-surface-variant leading-relaxed">
-                ${r.description || 'Civic grievance reported by pilgrim via Kumbh Setu. Spot check required.'}
-              </p>
-              ${r.notes ? `
-                <div class="mt-1 pt-1 border-t border-outline-variant/20 text-[11px] text-emerald-800 flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[14px]">verified</span>
-                  <span>Review Note: ${r.notes}</span>
-                </div>
-              ` : ''}
+              <div class="p-2.5 rounded-lg bg-white border border-amber-200/80 text-slate-900 shadow-2xs">
+                <p class="text-sm font-bold text-slate-950 leading-snug">
+                  "${parsed.notes}"
+                </p>
+              </div>
+              <div class="flex items-center justify-between text-xs pt-1 border-t border-amber-200/60 text-slate-700">
+                <span>Demanded: <strong class="text-red-700 font-extrabold">${parsed.demanded}</strong></span>
+                <span>Location: <strong class="text-slate-900 font-medium">${parsed.location}</strong></span>
+              </div>
             </div>
+
+            ${isEscalated ? `
+              <div class="p-2 rounded-lg bg-purple-50 border border-purple-200 text-purple-900 text-xs flex items-center gap-1.5 font-medium">
+                <span class="material-symbols-outlined text-[16px] text-purple-700 shrink-0">local_police</span>
+                <span>Transferred to <strong>Nashik Police Kumbh Desk</strong>. Case logged in Sector 04 Flying Squad queue.</span>
+              </div>
+            ` : ''}
 
             <div class="flex items-center gap-2 pt-1">
               ${isResolved ? `
@@ -467,9 +550,9 @@
                   <span>Resolved ✓</span>
                 </div>
               ` : `
-                <button onclick="triggerEscalatePolice(this)" type="button" class="flex-1 h-10 rounded-lg bg-secondary text-on-secondary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs cursor-pointer">
+                <button onclick="triggerEscalatePolice(this)" type="button" class="flex-1 h-10 rounded-lg ${isEscalated ? 'bg-surface-container-highest text-on-surface-variant cursor-not-allowed' : 'bg-secondary text-on-secondary cursor-pointer hover:bg-secondary/90'} text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs" ${isEscalated ? 'disabled' : ''}>
                   <span class="material-symbols-outlined text-[16px]">local_police</span>
-                  Escalate to Police
+                  ${isEscalated ? 'Sent to Police Desk ✓' : 'Escalate to Police'}
                 </button>
                 <button onclick="markCardResolved(this)" type="button" class="flex-1 h-10 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs cursor-pointer">
                   <span class="material-symbols-outlined text-[16px]">check_circle</span>

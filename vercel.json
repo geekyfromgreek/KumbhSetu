@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "public": true,
-  "cleanUrls": true,
-  "trailingSlash": false,
   "buildCommand": "",
   "outputDirectory": "kumbh-setu/frontend",
   "routes": [

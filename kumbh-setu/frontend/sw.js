@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kumbhsetu-v1';
+const CACHE_NAME = 'kumbhsetu-v5';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -7,19 +7,28 @@ const STATIC_ASSETS = [
   '/listing_detail.html',
   '/fare_board.html',
   '/guide_detail.html',
+  '/booking_confirmation.html',
   '/bookings_queue.html',
   '/police_escalations.html',
+  '/police_hotspots.html',
+  '/police_case_log.html',
+  '/police_case_detail.html',
+  '/police_login.html',
+  '/police_settings.html',
   '/kumbhveer_portal.html',
   '/marketplace_management.html',
+  '/vendor_registration.html',
   '/food_finder.html',
   '/emergency_sos.html',
   '/nashikkar_login.html',
   '/nashikkar_overview.html',
   '/report_issue.html',
+  '/reports_analytics.html',
   '/price_flags.html',
   '/i18n.js',
   '/supabase.js',
   '/supabase_realtime.js',
+  '/api_config.js',
   '/manifest.json'
 ];
 
@@ -40,6 +49,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log('[SW] Clearing old cache:', key);
             return caches.delete(key);
           }
         })
@@ -50,23 +60,37 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Pass-through for external API calls and Supabase
-  if (event.request.url.includes('supabase.co') || event.request.url.includes(':8000') || event.request.method !== 'GET') {
+  const url = event.request.url;
+
+  // Pass-through for external API calls, Supabase, Render backend, and non-GET requests
+  if (
+    url.includes('supabase.co') ||
+    url.includes('onrender.com') ||
+    url.includes('/api/') ||
+    url.includes(':8000') ||
+    event.request.method !== 'GET'
+  ) {
     return;
   }
 
+  // Network-first strategy with cache fallback (prevents stale redirect errors)
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Fetch in background to update cache
-        fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+        }
+        return networkResponse;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cached) => {
+          if (cached) return cached;
+          // Fallback for navigation requests
+          if (event.request.mode === 'navigate') {
+            return caches.match(event.request.url) || caches.match('/index.html');
           }
-        }).catch(() => {});
-        return cachedResponse;
-      }
-      return fetch(event.request).catch(() => caches.match('/yatri_home.html'));
-    })
+        });
+      })
   );
 });

@@ -1,0 +1,7 @@
+# Heavy Machine Learning & Offline Training Dependencies
+# Used for train_kumbh_models.py and local GPU inference
+deepface>=0.0.93
+tf-keras>=2.16.0
+scikit-learn>=1.4.0
+xgboost>=2.0.0
+scipy>=1.11.0
