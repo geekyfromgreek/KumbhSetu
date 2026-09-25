@@ -10,13 +10,13 @@
   const host = window.location.hostname || "localhost";
   const proto = window.location.protocol === 'https:' ? 'https:' : 'http:';
   if (host.includes('vercel.app') || host.includes('render.com') || (proto === 'https:' && !host.match(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.)/))) {
-    window.API_BASE_URL = "https://kumbhsetu-api.onrender.com";
+    window.API_BASE_URL = "";
   } else if (host === "localhost" || host === "127.0.0.1") {
     window.API_BASE_URL = "http://localhost:8000";
   } else if (host) {
     window.API_BASE_URL = `${proto}//${host}:8000`;
   } else {
-    window.API_BASE_URL = "https://kumbhsetu-api.onrender.com";
+    window.API_BASE_URL = "";
   }
   window.API_BASE = window.API_BASE_URL;
 

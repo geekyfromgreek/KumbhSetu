@@ -67,6 +67,8 @@ self.addEventListener('fetch', (event) => {
     url.includes('supabase.co') ||
     url.includes('onrender.com') ||
     url.includes('/api/') ||
+    url.includes('onrender.com') ||
+    url.includes('/api/') ||
     url.includes(':8000') ||
     event.request.method !== 'GET'
   ) {
