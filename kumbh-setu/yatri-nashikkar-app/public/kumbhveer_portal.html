@@ -70,10 +70,10 @@
   <header class="fixed top-0 w-full z-50 bg-surface/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe border-b border-outline-variant/20">
     <div class="h-14 sm:h-16 px-3 sm:px-4 flex items-center justify-between gap-2 max-w-4xl mx-auto">
       <div class="flex items-center gap-2 min-w-0 flex-1">
-        <a href="nashikkar_overview.html" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors cursor-pointer rounded-full active:bg-surface-container shrink-0" title="Back to Overview">
+        <a href="index.html" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors cursor-pointer rounded-full active:bg-surface-container shrink-0" title="Back to Home / मुख्यपृष्ठावर जा">
           <span class="material-symbols-outlined text-[20px]">arrow_back</span>
         </a>
-        <img alt="Kumbh Setu" class="h-7 sm:h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+        <img alt="Kumbh Setu" class="h-7 sm:h-8 w-auto object-contain shrink-0" src="logo.png"/>
         <div class="flex flex-col min-w-0">
           <div class="flex items-center gap-1.5">
             <span class="text-xs sm:text-sm font-bold text-on-surface truncate">कुंभवीर कक्ष • Volunteer Desk</span>
@@ -88,7 +88,11 @@
           <span class="material-symbols-outlined text-[13px] text-primary">translate</span>
           <span class="text-[10px] sm:text-xs">मरा/EN</span>
         </button>
-        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm" id="kv-header-avatar" title="Kumbhveer">
+        <button type="button" id="btn-edit-kv-profile" onclick="openKvProfileModal()" class="h-7 sm:h-8 px-2.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 border border-amber-500/30 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors" title="Edit Profile / नाव व कॉलेज बदला">
+          <span class="material-symbols-outlined text-[14px] text-amber-700">edit_note</span>
+          <span class="text-[10px] sm:text-xs">Edit Info</span>
+        </button>
+        <div onclick="openKvProfileModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm cursor-pointer hover:ring-2 hover:ring-amber-500" id="kv-header-avatar" title="Click to edit profile">
           NK
         </div>
       </div>
@@ -538,6 +542,73 @@
     </section>
 
   </main>
+
+  <!-- Kumbhveer Profile Edit Modal (Center Pop-up) -->
+  <div id="kvProfileModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-surface-container-lowest w-full max-w-md rounded-2xl p-5 shadow-2xl border border-outline-variant/30 space-y-4 my-8">
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-[20px]">badge</span>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">Edit Kumbhveer Profile</h3>
+            <p class="text-[11px] text-on-surface-variant">Update volunteer name &amp; college info</p>
+          </div>
+        </div>
+        <button onclick="closeKvProfileModal()" class="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <form id="kvProfileForm" onsubmit="handleKvProfileSubmit(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="font-bold text-on-surface block mb-1">Volunteer Full Name *</label>
+          <input type="text" id="modal-kv-name" required placeholder="e.g. Nakul Karpe" class="w-full bg-surface-container-low border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface text-xs font-semibold focus:ring-2 focus:ring-primary focus:outline-none"/>
+        </div>
+
+        <div>
+          <label class="font-bold text-on-surface block mb-1">Select College / University *</label>
+          <select id="modal-kv-college-select" onchange="handleCollegeSelectChange(this)" class="w-full bg-surface-container-low border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface text-xs font-medium focus:ring-2 focus:ring-primary focus:outline-none">
+            <option value="Sandip University Engineering">Sandip University, Nashik (Engineering)</option>
+            <option value="K.K. Wagh Institute of Engineering Education & Research">K.K. Wagh Institute of Engineering Education &amp; Research</option>
+            <option value="MET Bhujbal Knowledge City">MET Bhujbal Knowledge City, Adgaon</option>
+            <option value="Matoshri College of Engineering & Research">Matoshri College of Engineering &amp; Research, Eklahare</option>
+            <option value="Gokhale Education Society's R.H. Sapat College of Engineering">Gokhale Education Society (GES) R.H. Sapat College</option>
+            <option value="MVP Samaj's KBT College of Engineering">MVP Samaj's KBT College of Engineering, Nashik</option>
+            <option value="Symbiosis Skills & Professional University">Symbiosis Centre / University, Nashik</option>
+            <option value="Other">Other / Type Manually...</option>
+          </select>
+        </div>
+
+        <div id="modal-kv-custom-college-wrap" class="hidden">
+          <label class="font-bold text-on-surface block mb-1">Custom College Name</label>
+          <input type="text" id="modal-kv-college-custom" placeholder="Type your college / institute name" class="w-full bg-surface-container-low border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface text-xs focus:ring-2 focus:ring-primary focus:outline-none"/>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-on-surface block mb-1">Phone Number</label>
+            <input type="tel" id="modal-kv-phone" placeholder="+91 98220 10291" class="w-full bg-surface-container-low border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface text-xs focus:ring-2 focus:ring-primary focus:outline-none"/>
+          </div>
+          <div>
+            <label class="font-bold text-on-surface block mb-1">Volunteer Roll / ID</label>
+            <input type="text" id="modal-kv-roll" placeholder="KV-2027-NK" class="w-full bg-surface-container-low border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface text-xs font-mono focus:ring-2 focus:ring-primary focus:outline-none"/>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-outline-variant/20 flex gap-2">
+          <button type="button" onclick="closeKvProfileModal()" class="flex-1 py-2.5 rounded-lg bg-surface-container-high text-on-surface font-semibold hover:bg-surface-container-highest cursor-pointer">
+            Cancel
+          </button>
+          <button type="submit" id="btn-save-kv-profile" class="flex-1 py-2.5 rounded-lg bg-amber-700 hover:bg-amber-800 text-white font-bold shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-[16px]">save</span>
+            <span>Save &amp; Update</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Specialized Kumbhveer Bottom Navigation (5 Strict Volunteer Options) -->
   <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)] border-t border-outline-variant/20">
@@ -2309,6 +2380,181 @@
         `;
       }).join('');
     }
+
+    // ==========================================
+    // KUMBHVEER PROFILE EDIT & PERSISTENCE
+    // ==========================================
+    function openKvProfileModal() {
+      const modal = document.getElementById('kvProfileModal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      // Populate current values
+      const curName = document.getElementById('hero-volunteer-name')?.textContent?.trim() || 'Nakul Karpe';
+      const curCollege = document.getElementById('hero-volunteer-college')?.textContent?.split('•')[0]?.trim() || 'Sandip University Engineering';
+
+      if (document.getElementById('modal-kv-name')) document.getElementById('modal-kv-name').value = curName;
+      
+      const collegeSelect = document.getElementById('modal-kv-college-select');
+      const customWrap = document.getElementById('modal-kv-custom-college-wrap');
+      const customInput = document.getElementById('modal-kv-college-custom');
+
+      if (collegeSelect) {
+        let matched = false;
+        for (let opt of collegeSelect.options) {
+          if (opt.value.toLowerCase() === curCollege.toLowerCase() || curCollege.toLowerCase().includes(opt.value.toLowerCase())) {
+            collegeSelect.value = opt.value;
+            matched = true;
+            break;
+          }
+        }
+        if (!matched && curCollege) {
+          collegeSelect.value = 'Other';
+          if (customWrap) customWrap.classList.remove('hidden');
+          if (customInput) customInput.value = curCollege;
+        } else {
+          if (customWrap) customWrap.classList.add('hidden');
+        }
+      }
+    }
+
+    function closeKvProfileModal() {
+      const modal = document.getElementById('kvProfileModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function handleCollegeSelectChange(sel) {
+      const customWrap = document.getElementById('modal-kv-custom-college-wrap');
+      if (!customWrap) return;
+      if (sel.value === 'Other') {
+        customWrap.classList.remove('hidden');
+        document.getElementById('modal-kv-college-custom')?.focus();
+      } else {
+        customWrap.classList.add('hidden');
+      }
+    }
+
+    async function handleKvProfileSubmit(e) {
+      e.preventDefault();
+      const saveBtn = document.getElementById('btn-save-kv-profile');
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Saving...';
+      }
+
+      const vName = document.getElementById('modal-kv-name')?.value?.trim() || 'Nakul Karpe';
+      const sel = document.getElementById('modal-kv-college-select')?.value;
+      const customCol = document.getElementById('modal-kv-college-custom')?.value?.trim();
+      const cName = (sel === 'Other' && customCol) ? customCol : sel;
+      const phone = document.getElementById('modal-kv-phone')?.value?.trim() || '+91 98220 10291';
+      const roll = document.getElementById('modal-kv-roll')?.value?.trim() || 'KV-2027-NK';
+
+      const payload = {
+        volunteer_name: vName,
+        college_name: cName,
+        phone_number: phone,
+        roll_number: roll
+      };
+
+      try {
+        const res = await fetch(`${activeApiBase}/api/v1/auth/kumbhveer/profile`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error('Server responded with ' + res.status);
+        }
+
+        const data = await res.json();
+        const p = data.profile || payload;
+
+        // Apply immediately to UI
+        updateKvProfileUI(p.volunteer_name, p.college_name, p.roll_number);
+
+        // Cache to localStorage
+        try {
+          localStorage.setItem('kumbh_kv_profile', JSON.stringify(p));
+        } catch (err) {}
+
+        closeKvProfileModal();
+        showToast('✓ Volunteer profile updated & saved to backend!');
+      } catch (err) {
+        console.error('Failed to update Kumbhveer profile:', err);
+        // Fallback local update
+        updateKvProfileUI(vName, cName, roll);
+        try {
+          localStorage.setItem('kumbh_kv_profile', JSON.stringify(payload));
+        } catch (e) {}
+        closeKvProfileModal();
+        showToast('✓ Profile updated locally (' + err.message + ')');
+      } finally {
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">save</span><span>Save &amp; Update</span>';
+        }
+      }
+    }
+
+    function updateKvProfileUI(vName, cName, roll) {
+      if (document.getElementById('hero-volunteer-name')) {
+        document.getElementById('hero-volunteer-name').textContent = vName;
+      }
+      if (document.getElementById('hero-volunteer-college')) {
+        document.getElementById('hero-volunteer-college').textContent = `${cName} • Sector 4 Field Audit Hub`;
+      }
+      if (document.getElementById('hero-volunteer-badge') && roll) {
+        document.getElementById('hero-volunteer-badge').textContent = `Kumbhveer #${roll}`;
+      }
+      if (document.getElementById('kv-header-avatar')) {
+        const initials = vName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() || 'KV';
+        document.getElementById('kv-header-avatar').textContent = initials;
+      }
+
+      // Also update top rank in local leaderboard array if present
+      if (typeof VOLUNTEERS_LEADERBOARD !== 'undefined' && VOLUNTEERS_LEADERBOARD.length > 0) {
+        VOLUNTEERS_LEADERBOARD[0].name = vName + ' (You)';
+        VOLUNTEERS_LEADERBOARD[0].college = cName;
+        renderLeaderboard();
+      }
+    }
+
+    async function loadKvProfile() {
+      // 1. Check localStorage first for instant display
+      try {
+        const cached = localStorage.getItem('kumbh_kv_profile');
+        if (cached) {
+          const p = JSON.parse(cached);
+          updateKvProfileUI(p.volunteer_name, p.college_name, p.roll_number);
+        }
+      } catch (e) {}
+
+      // 2. Fetch authoritative from backend
+      try {
+        const res = await fetch(`${activeApiBase}/api/v1/auth/kumbhveer/profile`);
+        if (res.ok) {
+          const p = await res.json();
+          if (p && p.volunteer_name) {
+            updateKvProfileUI(p.volunteer_name, p.college_name, p.roll_number);
+            try {
+              localStorage.setItem('kumbh_kv_profile', JSON.stringify(p));
+            } catch (err) {}
+          }
+        }
+      } catch (e) {
+        console.warn('loadKvProfile fetch error:', e);
+      }
+    }
+
+    // Call on load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadKvProfile();
+    });
   </script>
 
   <script src="supabase.js"></script>

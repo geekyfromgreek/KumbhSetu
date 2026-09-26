@@ -83,11 +83,11 @@
   <header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl border-b border-outline-variant/20 shadow-xs">
     <div class="h-16 px-3 sm:px-4 flex items-center justify-between gap-2 max-w-5xl mx-auto">
       <div class="flex items-center gap-2 min-w-0 flex-1">
-        <a href="nashikkar_overview.html" aria-label="Back to Overview" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors flex items-center justify-center rounded-full hover:bg-surface-container-high shrink-0 cursor-pointer" title="Back to Overview / आढावा मागे जा">
+        <a href="index.html" aria-label="Back to Main Landing Page" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors flex items-center justify-center rounded-full hover:bg-surface-container-high shrink-0 cursor-pointer" title="Back to Main Portal / मुख्यपृष्ठावर जा">
           <span class="material-symbols-outlined text-[22px]">arrow_back</span>
         </a>
         <a href="police_hotspots.html" class="shrink-0 flex items-center" title="Police Hotspots">
-          <img alt="Kumbh Setu Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+          <img alt="Kumbh Setu Emblem" class="h-8 w-auto object-contain" src="logo.png"/>
         </a>
         <div class="flex flex-col min-w-0">
           <div class="flex items-center gap-1.5 flex-wrap">
@@ -171,10 +171,16 @@
             <span class="text-on-surface-variant/60">• 1.4 km Radius</span>
           </div>
           
-          <!-- Live Acknowledged Counter -->
-          <div class="flex items-center gap-1.5 text-[11px] font-bold">
-            <span class="text-on-surface-variant">Acknowledged:</span>
-            <span id="ackCountDisplay" class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono">0 / 10</span>
+          <!-- Live Acknowledged Counter & Schedule Action -->
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 text-[11px] font-bold">
+              <span class="text-on-surface-variant">Acknowledged:</span>
+              <span id="ackCountDisplay" class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono">0 / 10</span>
+            </div>
+            <button onclick="openPoliceScheduleVerifModal(null, 'POL-VERIF-' + Math.floor(1000 + Math.random()*9000), 'General Commercial Cluster', 'Ramkund West')" class="px-2.5 py-1 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-1 shadow-sm active:scale-95 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[15px]">assignment_add</span>
+              <span>Schedule Verification</span>
+            </button>
           </div>
         </div>
 
@@ -191,6 +197,10 @@
           <button class="filter-btn shrink-0 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer hover:bg-surface-container" data-filter="medium" type="button">
             <span>Medium Priority</span>
             <span class="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold font-mono" id="pill-medium-count">5</span>
+          </button>
+          <button class="filter-btn shrink-0 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer hover:bg-surface-container" data-filter="low" type="button">
+            <span>Low Priority</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-900 text-[10px] font-bold font-mono" id="pill-low-count">2</span>
           </button>
           <button class="filter-btn shrink-0 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer hover:bg-surface-container" data-filter="forwarded" type="button">
             <span>Forwarded / Alerts</span>
@@ -899,7 +909,126 @@
 
       </div>
 
-      <!-- End of Feed State: Warm Institutional Touch -->
+      
+        <!-- Incident 11: Low Priority (Shoe Stand Token Clarification) -->
+        <div class="incident-card low bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200 cursor-pointer hover:border-primary/50" data-sos="SOS-8650" data-priority="low">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-blue-500"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold uppercase tracking-wider border border-blue-300">
+                <span class="material-symbols-outlined text-[13px]">info</span>
+                Low Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                25m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-blue-900 font-bold px-2 py-0.5 bg-blue-100 border border-blue-200 rounded font-mono">SOS-8650</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Shoe Counter Free Token Inquiry &amp; Queue Regulated
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">near_me</span>
+              <span class="font-bold text-on-surface">Kalaram Temple South Gate</span>
+              <span>•</span>
+              <span class="truncate">Footwear Token Stand (Yatri query regarding token return timing)</span>
+            </div>
+          </div>
+
+          <div class="pl-2 flex flex-col gap-2">
+            <div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20 flex items-start gap-2 text-xs">
+              <span class="material-symbols-outlined text-blue-600 text-[16px] shrink-0 mt-0.5">verified_user</span>
+              <div class="flex flex-col min-w-0">
+                <span class="font-bold text-on-surface">Routine Civic Verification</span>
+                <p class="text-on-surface-variant text-[11px] mt-0.5">Zero extortion detected. Stand operating under 100% free municipal coupon mandate.</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-primary">local_police</span> Sector Volunteer Stationed</span>
+              <span class="text-emerald-700 font-bold">Stable</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-1.5 sm:py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[15px]">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-1.5 sm:py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[15px]">directions_run</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incident 12: Low Priority (Signage Spelling Clarification) -->
+        <div class="incident-card low bg-surface-container-lowest rounded-xl p-3.5 sm:p-4 shadow-xs border border-outline-variant/30 flex flex-col gap-2.5 relative overflow-hidden transition-all duration-200 cursor-pointer hover:border-primary/50" data-sos="SOS-8542" data-priority="low">
+          <div class="w-1.5 absolute left-0 top-0 bottom-0 bg-blue-500"></div>
+          
+          <div class="flex items-start justify-between gap-2 pl-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold uppercase tracking-wider border border-blue-300">
+                <span class="material-symbols-outlined text-[13px]">info</span>
+                Low Priority
+              </span>
+              <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-tertiary">schedule</span>
+                42m ago
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="ack-badge-slot"></div>
+              <span class="text-xs text-blue-900 font-bold px-2 py-0.5 bg-blue-100 border border-blue-200 rounded font-mono">SOS-8542</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 pl-2">
+            <h2 class="font-headline font-bold text-sm text-on-surface">
+              Information Board Signage Spelling Clarification
+            </h2>
+            <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[14px] text-primary shrink-0">near_me</span>
+              <span class="font-bold text-on-surface">Ramkund East Entry Archway</span>
+              <span>•</span>
+              <span class="truncate">Ghat Sector 2 Directional Wayfinding Board</span>
+            </div>
+          </div>
+
+          <div class="pl-2 flex flex-col gap-2">
+            <div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20 flex items-start gap-2 text-xs">
+              <span class="material-symbols-outlined text-blue-600 text-[16px] shrink-0 mt-0.5">signpost</span>
+              <div class="flex flex-col min-w-0">
+                <span class="font-bold text-on-surface">Signage Route Correction</span>
+                <p class="text-on-surface-variant text-[11px] mt-0.5">Municipal signage contractor notified to update English transliteration for Trimbak shuttle.</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-primary">signpost</span> Wayfinding Ticket #W-41</span>
+              <span class="text-emerald-700 font-bold">Logged</span>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2 pl-2">
+            <button class="ack-btn flex-1 py-1.5 sm:py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[15px]">check_circle</span>
+              <span>Acknowledge</span>
+            </button>
+            <button class="assign-btn flex-1 py-1.5 sm:py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold border border-outline-variant/30 flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[15px]">directions_run</span>
+              <span>Assign Unit</span>
+            </button>
+          </div>
+        </div>
+
+<!-- End of Feed State: Warm Institutional Touch -->
       <div class="w-full py-6 flex flex-col items-center justify-center gap-1 text-center">
         <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant mb-1">
           <span class="material-symbols-outlined text-[20px]">verified_user</span>
@@ -923,6 +1052,307 @@
       </button>
     </div>
   </main>
+
+  
+  <!-- Police Escalation Card Action & Details Popup Modal -->
+  <div id="policeCaseActionModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-surface-container-lowest text-on-surface rounded-2xl p-4 sm:p-5 max-w-lg w-full shadow-2xl border border-outline-variant/30 flex flex-col gap-3.5 my-auto animate-fadeIn">
+      <!-- Header -->
+      <div class="flex items-start justify-between border-b border-outline-variant/20 pb-2.5">
+        <div class="flex flex-col gap-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold px-2 py-0.5 rounded font-mono text-primary bg-primary-fixed" id="camDocketId">#SOS-9041</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-red-100 text-red-800" id="camPriorityBadge">High Priority</span>
+            <span class="text-[11px] text-on-surface-variant" id="camTimeAgo">4m ago</span>
+          </div>
+          <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface leading-snug" id="camTitle">Organized Auto Fare Extortion</h3>
+        </div>
+        <button type="button" onclick="closePoliceCaseActionModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors shrink-0 cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Case Details Dossier Bento -->
+      <div class="flex flex-col gap-2 bg-surface-container-low p-3 rounded-xl border border-outline-variant/20 text-xs">
+        <div class="flex items-center gap-1.5 text-on-surface font-semibold">
+          <span class="material-symbols-outlined text-primary text-[16px]">location_on</span>
+          <span id="camLocation">Sai Auto Stand (Bay 4) • Panchavati Ghat to CBS Central</span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/20 text-on-surface flex items-start gap-2">
+          <span class="material-symbols-outlined text-secondary text-[16px] shrink-0 mt-0.5">report_problem</span>
+          <div class="flex flex-col min-w-0">
+            <span class="font-bold text-[11px] text-secondary uppercase">Reported Infraction &amp; Evidence</span>
+            <p class="text-on-surface-variant text-[11px] mt-0.5" id="camEvidence">Demanding ₹180 vs estimated ₹110 (+63% over gazetted ceiling). 3 corroborating Yatri digital receipts attached.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-[11px]">
+          <div class="p-2 rounded-lg bg-surface-container-lowest flex items-center gap-1.5 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-blue-600 text-[16px]">local_police</span>
+            <div class="min-w-0">
+              <span class="text-on-surface-variant block text-[10px]">Nearest Patrol Squad</span>
+              <span class="font-bold text-on-surface truncate block" id="camSquad">Unit Alpha-2 (ETA 2m)</span>
+            </div>
+          </div>
+          <div class="p-2 rounded-lg bg-surface-container-lowest flex items-center gap-1.5 border border-outline-variant/20">
+            <span class="material-symbols-outlined text-emerald-600 text-[16px]">verified</span>
+            <div class="min-w-0">
+              <span class="text-on-surface-variant block text-[10px]">Enforcement Status</span>
+              <span class="font-bold text-emerald-700 truncate block" id="camStatus">Under Review</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Relevant Enforcement Actions Menu -->
+      <div class="flex flex-col gap-2">
+        <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Relevant Case Enforcement Actions</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <!-- Action 1: Acknowledge -->
+          <button type="button" id="camBtnAck" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-left flex items-center gap-2 cursor-pointer transition-colors active:scale-98">
+            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[18px]">verified</span>
+            </div>
+            <div class="min-w-0">
+              <span class="font-bold text-xs block text-on-surface">Acknowledge Case</span>
+              <span class="text-[10px] text-on-surface-variant block truncate">Assign to Insp. Patil</span>
+            </div>
+          </button>
+
+          <!-- Action 2: Deploy Squad -->
+          <button type="button" id="camBtnDeploy" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-left flex items-center gap-2 cursor-pointer transition-colors active:scale-98">
+            <div class="w-8 h-8 rounded-lg bg-red-100 text-red-800 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[18px]">directions_run</span>
+            </div>
+            <div class="min-w-0">
+              <span class="font-bold text-xs block text-on-surface">Deploy Flying Squad</span>
+              <span class="text-[10px] text-on-surface-variant block truncate">Dispatch Alpha / Bravo</span>
+            </div>
+          </button>
+
+          <!-- Action 3: Schedule Verification -->
+          <button type="button" id="camBtnSchedule" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-left flex items-center gap-2 cursor-pointer transition-colors active:scale-98">
+            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[18px]">assignment_turned_in</span>
+            </div>
+            <div class="min-w-0">
+              <span class="font-bold text-xs block text-on-surface">Schedule Field Audit</span>
+              <span class="text-[10px] text-on-surface-variant block truncate">Assign Kumbhveer</span>
+            </div>
+          </button>
+
+          <!-- Action 4: Instant Spot Resolve -->
+          <button type="button" id="camBtnResolve" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-left flex items-center gap-2 cursor-pointer transition-colors active:scale-98">
+            <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[18px]">gavel</span>
+            </div>
+            <div class="min-w-0">
+              <span class="font-bold text-xs block text-on-surface">Mark Resolved</span>
+              <span class="text-[10px] text-on-surface-variant block truncate">Compound spot penalty</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Action 5: Deep Dive into Full Case Dossier -->
+        <button type="button" id="camBtnDossier" class="w-full mt-1 py-2.5 px-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">quick_reference</span>
+          <span>Open Full Case Dossier &amp; Timeline (Case Detail)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acknowledge Modal (Centered Dialog) -->
+  <div id="ackModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-surface rounded-2xl p-4 sm:p-5 max-w-md w-full shadow-2xl border border-outline-variant/30 flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">verified</span>
+          </span>
+          <div>
+            <h3 class="font-headline text-sm font-bold text-on-surface">Acknowledge Escalation</h3>
+            <span class="text-[11px] text-on-surface-variant font-mono" id="ackModalCaseNumber">#SOS-ALERT</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeAckModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/20 text-xs">
+        <span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Target Incident</span>
+        <p class="font-bold text-on-surface text-xs sm:text-sm mt-0.5 truncate" id="ackModalIncidentTitle">Incident Details</p>
+      </div>
+
+      <div class="flex flex-col gap-2.5">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Duty Officer</label>
+            <input type="text" id="ackOfficerName" value="Insp. Vikram Patil" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg px-2.5 py-1.5 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary font-semibold" />
+          </div>
+          <div>
+            <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Badge ID</label>
+            <input type="text" id="ackOfficerBadge" value="MH-15-POLICE-0482" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg px-2.5 py-1.5 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary font-mono" />
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Triage Priority Assessment</label>
+          <select id="ackTriageDecision" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg px-2.5 py-2 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+            <option value="Confirmed Incident - In Patrol Queue">Confirmed Incident — Priority Action Queue</option>
+            <option value="Immediate Intervention Requested">Immediate Intervention Requested</option>
+            <option value="Under Video Surveillance Verification">Under Video Surveillance Verification</option>
+            <option value="Monitoring Station Telemetry">Monitoring Station Telemetry</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Officer Docket Note (Optional)</label>
+          <textarea id="ackOfficerNote" rows="2" placeholder="e.g. CCTV verified at Bay 4. Alert acknowledged and locked to Sector 2 desk..." class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg p-2 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-on-surface-variant/50 resize-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-1 border-t border-outline-variant/20">
+        <button type="button" onclick="closeAckModal()" class="flex-1 py-2 rounded-xl bg-surface-container-high text-on-surface font-semibold text-xs hover:bg-surface-container transition-colors">
+          Cancel
+        </button>
+        <button type="button" id="confirmAckBtn" onclick="submitAcknowledgment()" class="flex-1 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md transition-all active:scale-98">
+          <span class="material-symbols-outlined text-[15px]">verified</span>
+          <span>Confirm &amp; Lock</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dispatch Patrol Unit Modal (Centered Dialog) -->
+  <div id="dispatchSquadModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-surface rounded-2xl p-4 sm:p-5 max-w-md w-full shadow-2xl border border-outline-variant/30 flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">local_police</span>
+          </span>
+          <div>
+            <h3 class="font-headline text-sm font-bold text-on-surface">Dispatch Police Flying Squad</h3>
+            <span class="text-[11px] text-on-surface-variant font-mono" id="dispatchModalCaseNumber">#SOS-ALERT</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeDispatchSquadModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/20 text-xs">
+        <span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Deployment Location</span>
+        <p class="font-bold text-on-surface text-xs sm:text-sm mt-0.5 truncate" id="dispatchModalLocation">Ramkund Precinct</p>
+      </div>
+
+      <div class="flex flex-col gap-2.5">
+        <div>
+          <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Select Flying Squad / Patrol Unit</label>
+          <select id="dispatchSelectUnit" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg px-2.5 py-2 text-xs text-on-surface font-semibold focus:outline-none focus:ring-1 focus:ring-primary">
+            <option value="Sector 2 Flying Squad Alpha (MH-15-POL-048)">Sector 2 Flying Squad Alpha (MH-15-POL-048)</option>
+            <option value="Sector 2 Beat Patrol QRT Bravo (Motorcycle 12)">Sector 2 Beat Patrol QRT Bravo (Motorcycle 12)</option>
+            <option value="Rapid Action Interceptor Unit 03">Rapid Action Interceptor Unit 03</option>
+            <option value="Riverfront Ghat Police Patrol Boat 02">Riverfront Ghat Police Patrol Boat 02</option>
+            <option value="Traffic Enforcement Flying Squad Delta">Traffic Enforcement Flying Squad Delta</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Dispatch Priority</label>
+          <div class="grid grid-cols-3 gap-1.5" id="dispatchPrioritySelector">
+            <button type="button" onclick="setSquadPriority('critical')" id="prio-critical" class="py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-red-600 bg-red-50 text-red-700">🚨 Critical</button>
+            <button type="button" onclick="setSquadPriority('high')" id="prio-high" class="py-1.5 px-2 rounded-lg text-xs font-bold border border-outline-variant/40 bg-surface-container-high text-on-surface">⚡ High</button>
+            <button type="button" onclick="setSquadPriority('standard')" id="prio-standard" class="py-1.5 px-2 rounded-lg text-xs font-bold border border-outline-variant/40 bg-surface-container-high text-on-surface">Standard</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Tactical Directive / Field Instructions</label>
+          <textarea id="dispatchTacticalDirective" rows="2" placeholder="e.g. Intercept vehicle at Bay 4, conduct fare meter inspection, ensure immediate restitution to pilgrim." class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg p-2 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-on-surface-variant/50 resize-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-1 border-t border-outline-variant/20">
+        <button type="button" onclick="closeDispatchSquadModal()" class="flex-1 py-2 rounded-xl bg-surface-container-high text-on-surface font-semibold text-xs hover:bg-surface-container transition-colors">
+          Cancel
+        </button>
+        <button type="button" id="confirmDispatchBtn" onclick="submitSquadDispatch()" class="flex-1 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs flex items-center justify-center gap-1 shadow-md transition-all active:scale-98">
+          <span class="material-symbols-outlined text-[15px]">send</span>
+          <span>Deploy Patrol</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Police Schedule Field Verification Modal -->
+  <div id="policeScheduleVerifModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-surface rounded-2xl p-4 sm:p-5 max-w-md w-full shadow-2xl border border-outline-variant/30 flex flex-col gap-3.5 animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-900 flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">verified_user</span>
+          </span>
+          <div>
+            <h3 class="font-headline text-sm font-bold text-on-surface">Schedule Field Verification</h3>
+            <span class="text-[11px] text-on-surface-variant font-mono" id="policeVerifCaseNumber">#POL-VERIF-NEW</span>
+          </div>
+        </div>
+        <button type="button" onclick="closePoliceScheduleVerifModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-400/30 text-xs flex items-center justify-between">
+        <div class="min-w-0 pr-2">
+          <span class="text-[10px] uppercase font-bold text-amber-800 tracking-wider">Target Stall / Location</span>
+          <p class="font-bold text-on-surface text-xs sm:text-sm mt-0.5 truncate" id="policeVerifTargetName">Sai Auto Stand (Bay 4, Ramkund West)</p>
+        </div>
+        <span class="px-2 py-0.5 rounded bg-amber-200 text-amber-900 text-[10px] font-bold shrink-0">Police Authority</span>
+      </div>
+
+      <div class="flex flex-col gap-2.5">
+        <div>
+          <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Assign Certified Kumbhveer Volunteer</label>
+          <select id="policeSelectKumbhveer" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg px-2.5 py-2 text-xs text-on-surface font-semibold focus:outline-none focus:ring-1 focus:ring-primary">
+            <!-- Dynamically populated from API & registered profile in real time -->
+          </select>
+          <span class="text-[10px] text-outline mt-0.5 block">Newly added Kumbhveers sync dynamically in real time.</span>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Inspection Priority &amp; Timeframe</label>
+          <select id="policeVerifPriority" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg px-2.5 py-2 text-xs text-on-surface font-semibold focus:outline-none focus:ring-1 focus:ring-primary">
+            <option value="Urgent (Immediate within 2 Hours)">🚨 Immediate (Within 2 Hours) - Active Violation</option>
+            <option value="Today Evening Shift">⚡ Today Evening Shift (Peak Aarti)</option>
+            <option value="Tomorrow Morning 08:00 AM">Tomorrow Morning 08:00 AM</option>
+            <option value="Routine 24h Spot Check">Routine 24h Spot Check</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Police Directives for Kumbhveer</label>
+          <textarea id="policeVerifNotes" rows="2" placeholder="e.g. Conduct spot rate audit, verify QR tariff display board, log evidence photos into civic ledger." class="w-full bg-surface-container-high border border-outline-variant/40 rounded-lg p-2 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-on-surface-variant/50 resize-none">Conduct spot rate audit, verify tariff display card, log evidence into civic ledger.</textarea>
+        </div>
+
+        <div class="p-2 bg-surface-container-low rounded-lg border border-outline-variant/20 flex items-center justify-between text-[11px]">
+          <span class="text-on-surface-variant">Authorizing Officer:</span>
+          <span class="font-bold text-on-surface">Insp. Vikram Patil (MH-15-POL-0482)</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-1 border-t border-outline-variant/20">
+        <button type="button" onclick="closePoliceScheduleVerifModal()" class="flex-1 py-2 rounded-xl bg-surface-container-high text-on-surface font-semibold text-xs hover:bg-surface-container transition-colors">
+          Cancel
+        </button>
+        <button type="button" id="confirmPoliceVerifBtn" onclick="submitPoliceScheduledVerification()" class="flex-1 py-2 rounded-xl bg-secondary hover:brightness-110 text-on-secondary font-bold text-xs flex items-center justify-center gap-1 shadow-md transition-all active:scale-98">
+          <span class="material-symbols-outlined text-[15px]">send</span>
+          <span>Assign &amp; Schedule Real Time</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Police Bottom Navigation Bar -->
   <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)] border-t border-outline-variant/20">
@@ -951,35 +1381,543 @@
   </nav>
 
   <script>
+    // State management for modals
+    let activeTarget = {
+      card: null,
+      sosId: '',
+      title: '',
+      location: ''
+    };
+    let currentSquadPriority = 'critical';
+
+    function setSquadPriority(prio) {
+      currentSquadPriority = prio;
+      const bCrit = document.getElementById('prio-critical');
+      const bHigh = document.getElementById('prio-high');
+      const bStd = document.getElementById('prio-standard');
+      [bCrit, bHigh, bStd].forEach(b => {
+        if (!b) return;
+        b.className = 'py-1.5 px-2 rounded-lg text-xs font-bold border border-outline-variant/40 bg-surface-container-high text-on-surface';
+      });
+      if (prio === 'critical' && bCrit) {
+        bCrit.className = 'py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-red-600 bg-red-50 text-red-700';
+      } else if (prio === 'high' && bHigh) {
+        bHigh.className = 'py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-amber-500 bg-amber-50 text-amber-800';
+      } else if (prio === 'standard' && bStd) {
+        bStd.className = 'py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-emerald-600 bg-emerald-50 text-emerald-800';
+      }
+    }
+
+    function openAckModal(card, sosId, title) {
+      activeTarget.card = card;
+      activeTarget.sosId = sosId;
+      activeTarget.title = title;
+
+      document.getElementById('ackModalCaseNumber').textContent = '#' + sosId;
+      document.getElementById('ackModalIncidentTitle').textContent = title || 'Escalated Grievance';
+      document.getElementById('ackModal').classList.remove('hidden');
+      document.getElementById('ackModal').classList.add('flex');
+    }
+
+    function closeAckModal() {
+      const modal = document.getElementById('ackModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function openDispatchSquadModal(card, sosId, title, loc) {
+      activeTarget.card = card;
+      activeTarget.sosId = sosId;
+      activeTarget.title = title;
+      activeTarget.location = loc;
+
+      document.getElementById('dispatchModalCaseNumber').textContent = '#' + sosId;
+      document.getElementById('dispatchModalLocation').textContent = loc || 'Sector Centroid';
+      setSquadPriority('critical');
+      document.getElementById('dispatchSquadModal').classList.remove('hidden');
+      document.getElementById('dispatchSquadModal').classList.add('flex');
+    }
+
+    function closeDispatchSquadModal() {
+      const modal = document.getElementById('dispatchSquadModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    async function submitAcknowledgment() {
+      const card = activeTarget.card;
+      const sosId = activeTarget.sosId;
+      const officer = document.getElementById('ackOfficerName').value.trim() || 'Insp. Vikram Patil';
+      const badge = document.getElementById('ackOfficerBadge').value.trim() || 'MH-15-POLICE-0482';
+      const decision = document.getElementById('ackTriageDecision').value;
+      const note = document.getElementById('ackOfficerNote').value.trim() || decision;
+
+      const btnConfirm = document.getElementById('confirmAckBtn');
+      btnConfirm.disabled = true;
+      btnConfirm.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">sync</span><span>Locking...</span>';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/police/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            incident_id: sosId,
+            action: 'acknowledge',
+            officer_name: officer,
+            officer_badge: badge,
+            notes: note
+          })
+        });
+        await res.json();
+      } catch (e) {
+        console.warn('Backend action note:', e);
+      }
+
+      closeAckModal();
+      btnConfirm.disabled = false;
+      btnConfirm.innerHTML = '<span class="material-symbols-outlined text-[15px]">verified</span><span>Confirm &amp; Lock</span>';
+
+      // Mark Card UI as Acknowledged
+      if (card) {
+        const btn = card.querySelector('.ack-btn');
+        if (btn) {
+          btn.classList.remove('bg-primary', 'bg-surface-container-high', 'text-on-primary', 'text-on-surface');
+          btn.classList.add('bg-emerald-700', 'text-white');
+          btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span><span>Acknowledged</span>';
+          btn.disabled = true;
+        }
+        const badgeSlot = card.querySelector('.ack-badge-slot');
+        if (badgeSlot) {
+          badgeSlot.innerHTML = `<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Acked (${officer.split(' ').pop()})</span>`;
+        }
+      }
+
+      // Update Acknowledged Counter
+      const ackDisplay = document.getElementById('ackCountDisplay');
+      if (ackDisplay) {
+        let currentAcks = parseInt(ackDisplay.getAttribute('data-acks') || '0', 10) + 1;
+        ackDisplay.setAttribute('data-acks', currentAcks);
+        const total = document.querySelectorAll('.incident-card').length;
+        ackDisplay.textContent = `${currentAcks} / ${total}`;
+        ackDisplay.className = 'px-2 py-0.5 rounded-full bg-emerald-600 text-white font-bold text-[11px] font-mono shadow-xs';
+      }
+
+      const toast = document.getElementById('dispatchToast');
+      const toastMessage = document.getElementById('toastMessage');
+      if (toast && toastMessage) {
+        toastMessage.textContent = `🚨 Escalation #${sosId} acknowledged & locked to ${officer}`;
+        toast.classList.remove('translate-y-32', 'pointer-events-none');
+        setTimeout(() => toast.classList.add('translate-y-32', 'pointer-events-none'), 3500);
+      }
+    }
+
+    async function submitSquadDispatch() {
+      const card = activeTarget.card;
+      const sosId = activeTarget.sosId;
+      const unit = document.getElementById('dispatchSelectUnit').value;
+      const directive = document.getElementById('dispatchTacticalDirective').value.trim() || 'Rapid patrol interception';
+
+      const btnConfirm = document.getElementById('confirmDispatchBtn');
+      btnConfirm.disabled = true;
+      btnConfirm.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">sync</span><span>Deploying...</span>';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/police/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            incident_id: sosId,
+            action: 'dispatch',
+            unit_name: unit,
+            severity: currentSquadPriority,
+            directive: directive,
+            officer_name: 'Insp. Vikram Patil',
+            notes: directive
+          })
+        });
+        await res.json();
+      } catch (e) {
+        console.warn('Backend dispatch action note:', e);
+      }
+
+      closeDispatchSquadModal();
+      btnConfirm.disabled = false;
+      btnConfirm.innerHTML = '<span class="material-symbols-outlined text-[15px]">send</span><span>Deploy Patrol</span>';
+
+      // Update Card UI
+      if (card) {
+        const btn = card.querySelector('.assign-btn');
+        if (btn) {
+          btn.classList.remove('bg-surface-container', 'text-on-surface');
+          btn.classList.add('bg-primary', 'text-on-primary');
+          btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">local_police</span><span>Dispatched (${unit.split(' ')[0]})</span>`;
+          btn.disabled = true;
+        }
+      }
+
+      const toast = document.getElementById('dispatchToast');
+      const toastMessage = document.getElementById('toastMessage');
+      if (toast && toastMessage) {
+        toastMessage.textContent = `🚓 ${unit} dispatched to #${sosId} location.`;
+        toast.classList.remove('translate-y-32', 'pointer-events-none');
+        setTimeout(() => toast.classList.add('translate-y-32', 'pointer-events-none'), 3500);
+      }
+    }
+
+    // --- Police Verification Scheduling & Dynamic Kumbhveer Assignment ---
+    function openPoliceScheduleVerifModal(card, sosId, title, loc) {
+      activeTarget.card = card;
+      activeTarget.sosId = sosId || 'POL-VERIF-' + Math.floor(1000 + Math.random()*9000);
+      activeTarget.title = title || 'General Commercial Stand';
+      activeTarget.location = loc || 'Ramkund West Sector';
+
+      const caseNumEl = document.getElementById('policeVerifCaseNumber');
+      if (caseNumEl) caseNumEl.textContent = '#' + activeTarget.sosId;
+      const targetNameEl = document.getElementById('policeVerifTargetName');
+      if (targetNameEl) targetNameEl.textContent = activeTarget.title;
+
+      populatePoliceKumbhveers();
+      const modal = document.getElementById('policeScheduleVerifModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closePoliceScheduleVerifModal() {
+      const modal = document.getElementById('policeScheduleVerifModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    async function populatePoliceKumbhveers() {
+      const select = document.getElementById('policeSelectKumbhveer');
+      if (!select) return;
+
+      const kumbhveers = [];
+
+      // 1. Dual-source: Check localStorage for newly registered/edited Kumbhveer profile
+      try {
+        const userProfile = JSON.parse(localStorage.getItem('kumbhsetu_user_profile') || '{}');
+        const pName = userProfile.name || userProfile.full_name;
+        if (pName) {
+          const org = userProfile.college || userProfile.organization || 'Sandip University';
+          kumbhveers.push({
+            name: pName,
+            details: `${pName} (${org}) - Newly Active Volunteer`,
+            isNew: true
+          });
+        }
+      } catch(e) {}
+
+      // Any Kumbhveers saved in custom key
+      try {
+        const customKVs = JSON.parse(localStorage.getItem('kumbhsetu_kumbhveers') || '[]');
+        customKVs.forEach(kv => {
+          const n = typeof kv === 'string' ? kv : kv.name;
+          if (n && !kumbhveers.some(k => k.name.toLowerCase() === n.toLowerCase())) {
+            kumbhveers.push({
+              name: n,
+              details: typeof kv === 'string' ? kv : `${kv.name} (${kv.college || 'Volunteer Desk'})`,
+              isNew: true
+            });
+          }
+        });
+      } catch(e) {}
+
+      // 2. Dual-source: Fetch live leaderboard from FastAPI
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/reports/volunteers/leaderboard`);
+        if (res.ok) {
+          const data = await res.json();
+          const list = Array.isArray(data) ? data : (data.leaderboard || data.volunteers || []);
+          list.forEach(v => {
+            const name = v.volunteer_name || v.name;
+            if (name && !kumbhveers.some(k => k.name.toLowerCase() === name.toLowerCase())) {
+              kumbhveers.push({
+                name: name,
+                details: `${name} (${v.college || 'Certified Kumbhveer'} • ${v.points || 120} pts)`,
+                isNew: false
+              });
+            }
+          });
+        }
+      } catch(err) {
+        console.warn('Leaderboard API fetch:', err);
+      }
+
+      // 3. Fallback standard certified roster
+      const fallbacks = [
+        { name: 'Omkar Patil', details: 'Omkar Patil (Sandip University • 140 pts)' },
+        { name: 'Divya Shinde', details: 'Divya Shinde (K.T.H.M. College • 110 pts)' },
+        { name: 'Tanmay Deshmukh', details: 'Tanmay Deshmukh (MET Bhujbal Knowledge City)' },
+        { name: 'Pooja Borse', details: 'Pooja Borse (Nashik Govt Polytechnic)' },
+        { name: 'Siddhesh Shinde', details: 'Siddhesh Shinde (Gokhale Education Society)' }
+      ];
+
+      fallbacks.forEach(f => {
+        if (!kumbhveers.some(k => k.name.toLowerCase() === f.name.toLowerCase())) {
+          kumbhveers.push(f);
+        }
+      });
+
+      select.innerHTML = kumbhveers.map((kv, idx) => `
+        <option value="${kv.name}" ${idx === 0 ? 'selected' : ''}>
+          ${kv.isNew ? '⭐ [NEW / ACTIVE] ' : ''}${kv.details || kv.name}
+        </option>
+      `).join('');
+    }
+
+    async function submitPoliceScheduledVerification() {
+      const btn = document.getElementById('confirmPoliceVerifBtn');
+      const vendorName = (document.getElementById('policeVerifTargetName') || {}).textContent || 'Commercial Vendor';
+      const caseNumber = (document.getElementById('policeVerifCaseNumber') || {}).textContent || '#POL-VERIF';
+      const kumbhveer = (document.getElementById('policeSelectKumbhveer') || {}).value || 'Omkar Patil';
+      const priority = (document.getElementById('policeVerifPriority') || {}).value || 'Urgent';
+      const notes = (document.getElementById('policeVerifNotes') || {}).value || 'Conduct spot rate verification';
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">sync</span><span>Scheduling...</span>';
+      }
+
+      const payload = {
+        vendor_id: 'v-' + vendorName.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 30),
+        vendor_name: vendorName,
+        case_number: caseNumber,
+        assigned_kumbhveer: kumbhveer,
+        police_officer: 'Insp. Vikram Patil (MH-15-POL-0482)',
+        priority: priority,
+        notes: notes
+      };
+
+      // 1. Call Backend API
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/police/schedule-verification`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        await res.json();
+      } catch(e) {
+        console.warn('Backend schedule verification error:', e);
+      }
+
+      // 2. Dual-Write to localStorage for real-time instant reflection
+      try {
+        const existing = JSON.parse(localStorage.getItem('kumbhsetu_police_scheduled_verifications') || '[]');
+        existing.unshift({
+          ...payload,
+          id: 'verif-' + Date.now(),
+          created_at: new Date().toISOString()
+        });
+        localStorage.setItem('kumbhsetu_police_scheduled_verifications', JSON.stringify(existing));
+      } catch(e) {}
+
+      // 3. Supabase Real-time broadcast if available
+      if (window.KumbhRealtime) {
+        try {
+          await KumbhRealtime.ready();
+          await KumbhRealtime.insert('reports', {
+            id: 'verif-' + Date.now(),
+            category: 'Police Verification Scheduled',
+            listing_name: vendorName,
+            issue_type: 'Field Audit Order',
+            description: `Police assigned Kumbhveer ${kumbhveer} for on-site inspection. Priority: ${priority}.`,
+            status: 'Verification Scheduled',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+        } catch(sbErr) { console.warn('Supabase broadcast:', sbErr); }
+      }
+
+      // 4. Update Card UI in real time
+      if (activeTarget.card) {
+        const verifBtn = activeTarget.card.querySelector('.police-schedule-verif-btn');
+        if (verifBtn) {
+          verifBtn.className = 'police-schedule-verif-btn flex-1 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1 shadow-xs cursor-default';
+          verifBtn.innerHTML = `<span class="material-symbols-outlined text-[15px]">check_circle</span><span>KV: ${kumbhveer.split(' ')[0]}</span>`;
+        }
+      }
+
+      closePoliceScheduleVerifModal();
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[15px]">send</span><span>Assign &amp; Schedule Real Time</span>';
+      }
+
+      const toast = document.getElementById('dispatchToast');
+      const toastMessage = document.getElementById('toastMessage');
+      if (toast && toastMessage) {
+        toastMessage.textContent = `📋 Verification scheduled in real time! Assigned to ${kumbhveer}.`;
+        toast.classList.remove('translate-y-32', 'pointer-events-none');
+        setTimeout(() => toast.classList.add('translate-y-32', 'pointer-events-none'), 4000);
+      }
+    }
+
+    // Main Interactive Controller
+    let activeActionCase = { card: null, sosId: null };
+
+    window.closePoliceCaseActionModal = function() {
+      const modal = document.getElementById('policeCaseActionModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    };
+
+    window.openPoliceCaseActionModal = function(card, sosId) {
+      activeActionCase = { card, sosId };
+      const titleEl = card.querySelector('h2, h3');
+      const title = titleEl ? titleEl.textContent.trim() : 'Incident #' + sosId;
+      const locEl = card.querySelector('.truncate');
+      const loc = locEl ? locEl.textContent.trim() : 'Panchavati Precinct';
+
+      let priorityText = 'High Priority';
+      let priorityClass = 'bg-red-100 text-red-800';
+      if (card.classList.contains('medium')) {
+        priorityText = 'Medium Priority';
+        priorityClass = 'bg-amber-100 text-amber-900';
+      } else if (card.classList.contains('low')) {
+        priorityText = 'Low Priority';
+        priorityClass = 'bg-blue-100 text-blue-900';
+      } else if (card.classList.contains('fact-check')) {
+        priorityText = 'Fact-Check Alert';
+        priorityClass = 'bg-purple-100 text-purple-900';
+      }
+
+      const timeText = card.textContent.includes('ago') ? (card.textContent.match(/(\d+[mh]\s*ago)/) || ['','4m ago'])[1] : 'Just now';
+      const evidenceP = card.querySelector('.pl-2 p, .pl-2 .text-xs, .truncate');
+      const evidenceText = evidenceP ? evidenceP.textContent.trim() : 'Digital grievances and citizen receipts logged in sector telemetry.';
+
+      const docIdEl = document.getElementById('camDocketId');
+      if (docIdEl) docIdEl.textContent = '#' + sosId;
+      const titleTarget = document.getElementById('camTitle');
+      if (titleTarget) titleTarget.textContent = title;
+      const locTarget = document.getElementById('camLocation');
+      if (locTarget) locTarget.textContent = loc;
+      const timeTarget = document.getElementById('camTimeAgo');
+      if (timeTarget) timeTarget.textContent = timeText;
+
+      const prioBadge = document.getElementById('camPriorityBadge');
+      if (prioBadge) {
+        prioBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ' + priorityClass;
+        prioBadge.textContent = priorityText;
+      }
+
+      const evEl = document.getElementById('camEvidence');
+      if (evEl) evEl.textContent = evidenceText;
+
+      const isAcked = !!card.querySelector('.ack-badge-slot span');
+      const statusEl = document.getElementById('camStatus');
+      if (statusEl) statusEl.textContent = isAcked ? 'Acknowledged (Under Review)' : 'Active Case';
+
+      // Setup actions
+      const btnAck = document.getElementById('camBtnAck');
+      if (btnAck) {
+        btnAck.onclick = () => {
+          closePoliceCaseActionModal();
+          openAckModal(card, sosId, title);
+        };
+      }
+
+      const btnDeploy = document.getElementById('camBtnDeploy');
+      if (btnDeploy) {
+        btnDeploy.onclick = () => {
+          closePoliceCaseActionModal();
+          openDispatchSquadModal(card, sosId, title, loc);
+        };
+      }
+
+      const btnSchedule = document.getElementById('camBtnSchedule');
+      if (btnSchedule) {
+        btnSchedule.onclick = () => {
+          closePoliceCaseActionModal();
+          openPoliceScheduleVerifModal(card, sosId, title, loc);
+        };
+      }
+
+      const btnResolve = document.getElementById('camBtnResolve');
+      if (btnResolve) {
+        btnResolve.onclick = async () => {
+          closePoliceCaseActionModal();
+          try {
+            await fetch(`${API_BASE}/api/v1/police/action`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                incident_id: sosId,
+                action: 'resolve',
+                notes: `Resolved directly via Escalations Quick Action Menu. Official receipt logged.`
+              })
+            });
+            const ackSlot = card.querySelector('.ack-badge-slot');
+            if (ackSlot) {
+              ackSlot.innerHTML = `<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Resolved</span>`;
+            }
+            const ackBtn = card.querySelector('.ack-btn');
+            if (ackBtn) {
+              ackBtn.className = 'ack-btn flex-1 py-1.5 sm:py-2 rounded-lg bg-emerald-700 text-white text-xs font-bold shadow-xs flex items-center justify-center gap-1 cursor-default';
+              ackBtn.innerHTML = '<span class="material-symbols-outlined text-[15px]">verified</span><span>Resolved</span>';
+              ackBtn.disabled = true;
+            }
+            const toast = document.getElementById('dispatchToast');
+            const toastMsg = document.getElementById('toastMessage');
+            if (toast && toastMsg) {
+              toastMsg.textContent = `⚖️ Case #${sosId} resolved and logged to official dossier!`;
+              toast.classList.remove('translate-y-32', 'pointer-events-none');
+              setTimeout(() => toast.classList.add('translate-y-32', 'pointer-events-none'), 3500);
+            }
+          } catch(e) {
+            console.warn('Resolve action error:', e);
+          }
+        };
+      }
+
+      const btnDossier = document.getElementById('camBtnDossier');
+      if (btnDossier) {
+        btnDossier.onclick = () => {
+          window.location.href = `police_case_detail.html?id=${encodeURIComponent(sosId)}`;
+        };
+      }
+
+      const modal = document.getElementById('policeCaseActionModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    };
+
     (function() {
       const filterBtns = document.querySelectorAll('.filter-btn');
       const cards = document.querySelectorAll('.incident-card');
-      const toast = document.getElementById('dispatchToast');
-      const toastMessage = document.getElementById('toastMessage');
       const ackDisplay = document.getElementById('ackCountDisplay');
-
-      let acknowledgedCount = 0;
-      const totalCount = cards.length;
 
       function updateCounts() {
         let highCount = 0;
         let medCount = 0;
+        let lowCount = 0;
         let fwdCount = 0;
 
-        cards.forEach(card => {
+        document.querySelectorAll('.incident-card').forEach(card => {
           if (card.classList.contains('high')) highCount++;
           else if (card.classList.contains('medium')) medCount++;
-          else if (card.classList.contains('fact-check')) fwdCount++;
+          else if (card.classList.contains('low')) lowCount++;
+          else if (card.classList.contains('fact-check') || card.classList.contains('forwarded')) fwdCount++;
         });
 
         const pillAll = document.getElementById('pill-all-count');
         const pillHigh = document.getElementById('pill-high-count');
         const pillMed = document.getElementById('pill-medium-count');
+        const pillLow = document.getElementById('pill-low-count');
         const pillFwd = document.getElementById('pill-fwd-count');
 
-        if (pillAll) pillAll.textContent = cards.length;
+        if (pillAll) pillAll.textContent = document.querySelectorAll('.incident-card').length;
         if (pillHigh) pillHigh.textContent = highCount;
         if (pillMed) pillMed.textContent = medCount;
+        if (pillLow) pillLow.textContent = lowCount;
         if (pillFwd) pillFwd.textContent = fwdCount;
       }
 
@@ -996,73 +1934,81 @@
           btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
 
           const filter = btn.dataset.filter;
-          cards.forEach(card => {
-            if (filter === 'all') {
+          document.querySelectorAll('.incident-card').forEach(card => {
+            let match = false;
+            if (filter === 'all') match = true;
+            else if (filter === 'high') match = card.classList.contains('high');
+            else if (filter === 'medium') match = card.classList.contains('medium');
+            else if (filter === 'low') match = card.classList.contains('low');
+            else if (filter === 'forwarded') match = card.classList.contains('fact-check') || card.classList.contains('forwarded');
+
+            if (match) {
               card.style.display = 'flex';
-            } else if (filter === 'high') {
-              card.style.display = card.classList.contains('high') ? 'flex' : 'none';
-            } else if (filter === 'medium') {
-              card.style.display = card.classList.contains('medium') ? 'flex' : 'none';
-            } else if (filter === 'forwarded') {
-              card.style.display = card.classList.contains('fact-check') ? 'flex' : 'none';
+              card.classList.remove('hidden');
+            } else {
+              card.style.display = 'none';
+              card.classList.add('hidden');
             }
           });
         });
       });
 
-      // Toast feedback
-      function triggerToast(msg) {
-        if (!toast) return;
-        toastMessage.textContent = msg;
-        toast.classList.remove('translate-y-32', 'pointer-events-none');
-        setTimeout(() => {
-          toast.classList.add('translate-y-32', 'pointer-events-none');
-        }, 3500);
+      // Bind Modal Triggers to all incident cards
+      function bindCardActions() {
+        document.querySelectorAll('.incident-card').forEach((card) => {
+          const sosId = card.getAttribute('data-sos') || card.getAttribute('data-id') || 'SOS-ALERT';
+          const titleEl = card.querySelector('h2, h3');
+          const title = titleEl ? titleEl.textContent.trim() : 'Escalation ' + sosId;
+          const locEl = card.querySelector('.truncate');
+          const loc = locEl ? locEl.textContent.trim() : 'Ramkund Precinct';
+
+          // Card Click Trigger for Action & Details Modal
+          if (!card.hasAttribute('data-card-bound')) {
+            card.setAttribute('data-card-bound', 'true');
+            card.classList.add('cursor-pointer');
+            card.addEventListener('click', function(e) {
+              if (e.target.closest('button') || e.target.closest('a') || e.target.closest('input')) {
+                return;
+              }
+              openPoliceCaseActionModal(card, sosId);
+            });
+          }
+
+          const ackBtn = card.querySelector('.ack-btn');
+          if (ackBtn && !ackBtn.hasAttribute('data-bound')) {
+            ackBtn.setAttribute('data-bound', 'true');
+            ackBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              openAckModal(card, sosId, title);
+            });
+          }
+
+          const assignBtn = card.querySelector('.assign-btn');
+          if (assignBtn && !assignBtn.hasAttribute('data-bound')) {
+            assignBtn.setAttribute('data-bound', 'true');
+            assignBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              openDispatchSquadModal(card, sosId, title, loc);
+            });
+          }
+
+          // Dynamic Schedule Verification Button for Police Authority
+          const btnRow = card.querySelector('.pt-1.flex');
+          if (btnRow && !card.querySelector('.police-schedule-verif-btn')) {
+            const schBtn = document.createElement('button');
+            schBtn.type = 'button';
+            schBtn.className = 'police-schedule-verif-btn flex-1 py-1.5 sm:py-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 border border-amber-400/40 text-xs font-bold flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer';
+            schBtn.innerHTML = '<span class="material-symbols-outlined text-[15px] text-amber-700">assignment_turned_in</span><span>Schedule Verif</span>';
+            schBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              openPoliceScheduleVerifModal(card, sosId, title, loc);
+            });
+            btnRow.appendChild(schBtn);
+          }
+        });
       }
 
-      // Dynamic Acknowledge Handler on all cards
-      document.querySelectorAll('.ack-btn').forEach((btn) => {
-        btn.addEventListener('click', function() {
-          const parentCard = btn.closest('.incident-card');
-          const sosId = parentCard ? (parentCard.getAttribute('data-sos') || 'SOS-ALERT') : 'SOS-ALERT';
-          
-          btn.classList.remove('bg-primary', 'bg-surface-container-high', 'text-on-primary', 'text-on-surface');
-          btn.classList.add('bg-emerald-700', 'text-white');
-          btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span><span>Acknowledged</span>';
-          btn.disabled = true;
-
-          // Add verified badge to header slot
-          if (parentCard) {
-            const badgeSlot = parentCard.querySelector('.ack-badge-slot');
-            if (badgeSlot) {
-              badgeSlot.innerHTML = '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Acked</span>';
-            }
-          }
-
-          acknowledgedCount++;
-          if (ackDisplay) {
-            ackDisplay.textContent = `${acknowledgedCount} / ${totalCount}`;
-            ackDisplay.className = 'px-2 py-0.5 rounded-full bg-emerald-600 text-white font-bold text-[11px] font-mono shadow-xs';
-          }
-
-          triggerToast(`🚨 Escalation #${sosId} acknowledged & locked to Insp. Vikram Patil`);
-        });
-      });
-
-      // Dynamic Assign Unit Handler
-      document.querySelectorAll('.assign-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const parentCard = btn.closest('.incident-card');
-          const sosId = parentCard ? (parentCard.getAttribute('data-sos') || 'SOS-ALERT') : 'SOS-ALERT';
-          
-          btn.classList.remove('bg-surface-container', 'text-on-surface');
-          btn.classList.add('bg-primary', 'text-on-primary');
-          btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">local_police</span><span>Dispatched</span>';
-          btn.disabled = true;
-
-          triggerToast(`🚓 Flying Squad Patrol dispatched to #${sosId} centroid.`);
-        });
-      });
+      bindCardActions();
 
       // Fact-check Archive
       document.querySelectorAll('.dismiss-btn').forEach(btn => {
@@ -1073,11 +2019,98 @@
             parentCard.style.transform = 'scale(0.98)';
             setTimeout(() => {
               parentCard.style.display = 'none';
-              triggerToast('Fact-check alert archived to sector intelligence log');
             }, 250);
           }
         });
       });
+
+      // ── Persistent Action Synchronization with Backend on Load/Refresh ──
+      async function syncPoliceActionsFromBackend() {
+        try {
+          const res = await fetch(`${API_BASE}/api/v1/police/actions`);
+          const data = await res.json();
+          if (!data || !data.actions) return;
+
+          const actionMap = data.actions;
+          let ackCount = 0;
+
+          // Also read locally/remotely scheduled verifications
+          const localVerifs = JSON.parse(localStorage.getItem('kumbhsetu_police_scheduled_verifications') || '[]');
+
+          document.querySelectorAll('.incident-card').forEach(card => {
+            const sosId = card.getAttribute('data-sos') || card.getAttribute('data-id');
+            if (!sosId) return;
+
+            // Check if verification already scheduled for this case
+            const matchedVerif = localVerifs.find(v => (v.case_number && v.case_number.includes(sosId)) || (v.vendor_name && card.textContent.includes(v.vendor_name)));
+            if (matchedVerif) {
+              const verifBtn = card.querySelector('.police-schedule-verif-btn');
+              if (verifBtn) {
+                verifBtn.className = 'police-schedule-verif-btn flex-1 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1 shadow-xs cursor-default';
+                verifBtn.innerHTML = `<span class="material-symbols-outlined text-[15px]">check_circle</span><span>KV: ${(matchedVerif.assigned_kumbhveer || '').split(' ')[0]}</span>`;
+              }
+            }
+
+            // Search for direct match or substring
+            let act = actionMap[sosId];
+            if (!act) {
+              const matchedKey = Object.keys(actionMap).find(k => k.includes(sosId) || sosId.includes(k));
+              if (matchedKey) act = actionMap[matchedKey];
+            }
+
+            if (act) {
+              // Apply Acknowledge state
+              if (act.acknowledged || act.status === 'Under Review' || act.status === 'Unit Dispatched' || act.status === 'Resolved') {
+                const ackBtn = card.querySelector('.ack-btn');
+                if (ackBtn) {
+                  ackBtn.classList.remove('bg-primary', 'bg-surface-container-high', 'text-on-primary', 'text-on-surface');
+                  ackBtn.classList.add('bg-emerald-700', 'text-white');
+                  ackBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span><span>Acknowledged</span>';
+                  ackBtn.disabled = true;
+                }
+                const badgeSlot = card.querySelector('.ack-badge-slot');
+                if (badgeSlot) {
+                  const officerLabel = act.officer_name ? act.officer_name.split(' ').pop() : 'Patil';
+                  badgeSlot.innerHTML = `<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Acked (${officerLabel})</span>`;
+                }
+                ackCount++;
+              }
+
+              // Apply Dispatch state
+              if (act.dispatched || act.status === 'Unit Dispatched') {
+                const assignBtn = card.querySelector('.assign-btn');
+                if (assignBtn) {
+                  assignBtn.classList.remove('bg-surface-container', 'text-on-surface');
+                  assignBtn.classList.add('bg-primary', 'text-on-primary');
+                  const unitLabel = act.unit_name ? act.unit_name.split(' ')[0] : 'Squad';
+                  assignBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">local_police</span><span>Dispatched (${unitLabel})</span>`;
+                  assignBtn.disabled = true;
+                }
+              }
+
+              // Apply Resolved state
+              if (act.resolved || act.status === 'Resolved') {
+                const badgeSlot = card.querySelector('.ack-badge-slot');
+                if (badgeSlot) {
+                  badgeSlot.innerHTML = `<span class="px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold border border-slate-700 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">task_alt</span>Resolved</span>`;
+                }
+              }
+            }
+          });
+
+          // Update Ack Counter Display
+          if (ackDisplay) {
+            const total = document.querySelectorAll('.incident-card').length;
+            ackDisplay.setAttribute('data-acks', ackCount);
+            ackDisplay.textContent = `${ackCount} / ${total}`;
+            if (ackCount > 0) {
+              ackDisplay.className = 'px-2 py-0.5 rounded-full bg-emerald-600 text-white font-bold text-[11px] font-mono shadow-xs';
+            }
+          }
+        } catch (e) {
+          console.warn('[syncPoliceActionsFromBackend] Warning:', e);
+        }
+      }
 
       // ── Real-Time Live Citizen Escalations Synchronization ──
       function parseReportDetails(desc, r) {
@@ -1123,14 +2156,14 @@
 
         let liveItems = [];
 
-        // 1. Fetch from Supabase reports table
+        // 1. Fetch from Supabase / Backend reports
         if (window.KumbhRealtime) {
           try {
             await KumbhRealtime.ready();
             const allReports = await KumbhRealtime.getReports();
             if (Array.isArray(allReports)) {
               allReports.forEach(r => {
-                if (r.status === 'Escalated to Police' || r.status === 'escalated') {
+                if (r.status === 'Escalated to Police' || r.status === 'escalated' || r.status === 'Under Review' || r.status === 'Unit Dispatched') {
                   const parsed = parseReportDetails(r.description, r);
                   liveItems.push({
                     id: r.id,
@@ -1219,65 +2252,46 @@
             </div>
           `;
 
-          // Bind Action Handlers
-          const ackBtn = card.querySelector('.ack-btn');
-          ackBtn.addEventListener('click', async function() {
-            ackBtn.classList.remove('bg-primary', 'text-on-primary');
-            ackBtn.classList.add('bg-emerald-700', 'text-white');
-            ackBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span><span>Acknowledged</span>';
-            ackBtn.disabled = true;
-
-            const badgeSlot = card.querySelector('.ack-badge-slot');
-            if (badgeSlot) {
-              badgeSlot.innerHTML = '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Acked</span>';
-            }
-
-            if (item.id && window.KumbhRealtime) {
-              try {
-                await KumbhRealtime.update('reports', item.id, { status: 'Under Review', notes: 'Acknowledged by Nashik Police Desk Insp. Vikram Patil' });
-              } catch(e) { /* ok */ }
-            }
-
-            triggerToast(`🚨 Escalation #${item.case_number} acknowledged & locked to Insp. Vikram Patil`);
-          });
-
-          const assignBtn = card.querySelector('.assign-btn');
-          assignBtn.addEventListener('click', async function() {
-            assignBtn.classList.remove('bg-secondary', 'text-on-secondary');
-            assignBtn.classList.add('bg-emerald-800', 'text-white');
-            assignBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">local_police</span><span>Dispatched</span>';
-            assignBtn.disabled = true;
-
-            if (item.id && window.KumbhRealtime) {
-              try {
-                await KumbhRealtime.update('reports', item.id, { status: 'Flying Squad Dispatched', notes: 'Flying Squad Patrol Unit 04 dispatched to location.' });
-              } catch(e) { /* ok */ }
-            }
-
-            triggerToast(`🚓 Flying Squad Patrol dispatched to ${item.listing_name} centroid.`);
-          });
-
           stream.prepend(card);
         });
 
+        bindCardActions();
+        await syncPoliceActionsFromBackend();
         updateCounts();
       }
 
       // Initialize on load and subscribe
-      window.addEventListener('load', () => {
-        loadRealtimePoliceEscalations();
+      window.addEventListener('load', async () => {
+        await syncPoliceActionsFromBackend();
+        await loadRealtimePoliceEscalations();
 
         if (window.KumbhRealtime) {
           KumbhRealtime.subscribe('reports', '*', (payload) => {
-            console.log('[Police Escalations] Real-time report event:', payload);
             loadRealtimePoliceEscalations();
           });
           KumbhRealtime.subscribe('escalations', '*', (payload) => {
-            console.log('[Police Escalations] Real-time escalation event:', payload);
             loadRealtimePoliceEscalations();
           });
         }
       });
+
+      // Real-time synchronization when Kumbhveer profile updates or verifications are scheduled
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'kumbhsetu_user_profile' || e.key === 'kumbhsetu_kumbhveers') {
+          populatePoliceKumbhveers();
+        }
+        if (e.key === 'kumbhsetu_police_scheduled_verifications') {
+          syncPoliceActionsFromBackend();
+        }
+      });
+
+      // Ensure browser back button from Police Terminal always returns to Main Landing Page
+      if (window.history && window.history.pushState) {
+        window.history.pushState({ page: 'police_escalations' }, '', window.location.href);
+        window.addEventListener('popstate', function(e) {
+          window.location.href = 'index.html';
+        });
+      }
     })();
   </script>
 

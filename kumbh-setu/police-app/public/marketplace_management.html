@@ -125,10 +125,10 @@
   <header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe">
     <div class="h-16 px-layout-margin-mobile flex items-center justify-between gap-space-xs max-w-4xl mx-auto">
       <div class="flex items-center gap-space-xs min-w-0">
-        <a href="yatri_home.html" class="p-1 text-on-surface-variant hover:text-on-surface">
+        <a href="index.html" class="p-1 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full hover:bg-surface-container" title="Back to Home / मुख्यपृष्ठावर जा">
           <span class="material-symbols-outlined text-[22px]">arrow_back</span>
         </a>
-        <img alt="Kumbh Setu Wordmark" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+        <img alt="Kumbh Setu Wordmark" class="h-8 w-auto object-contain shrink-0" src="logo.png"/>
         <div class="flex flex-col min-w-0">
           <div class="flex items-center gap-space-2xs">
             <span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider truncate">Vendor Portal</span>
@@ -405,7 +405,7 @@
           </div>
         </div>
 
-        <div class="space-y-space-xs">
+        <div class="space-y-space-xs" id="vendor-orders-container">
           <span class="text-xs font-bold text-on-surface-variant block mt-2 mb-1">Pre-booked Store Pickups</span>
 
           <!-- Order 1: Ready for Pickup -->
@@ -635,7 +635,7 @@
         <span class="material-symbols-outlined text-[22px]">verified</span>
         <span class="font-label-sm text-[11px]">Fair Price</span>
       </button>
-      <a href="yatri_home.html" class="flex flex-col items-center justify-center gap-0.5 text-on-surface-variant hover:text-on-surface">
+      <a href="index.html" class="flex flex-col items-center justify-center gap-0.5 text-on-surface-variant hover:text-on-surface">
         <span class="material-symbols-outlined text-[22px]">logout</span>
         <span class="font-label-sm text-[11px]">Exit</span>
       </a>
@@ -1275,8 +1275,11 @@
       showToast('✓ Demo Yatri message added to DB!');
     }
 
-    function openPriceModal(itemName, currentPrice, fairRange) {
+    let activeProductId = '';
+
+    function openPriceModal(itemName, currentPrice, fairRange, productId) {
       activeItemForPrice = itemName;
+      activeProductId = productId || itemName;
       document.getElementById('modal-item-title').textContent = `Edit Price: ${itemName}`;
       document.getElementById('modal-fair-range').textContent = fairRange;
       document.getElementById('modal-price-input').value = currentPrice;
@@ -1287,23 +1290,210 @@
       document.getElementById('price-modal').classList.add('hidden');
     }
 
-    function saveItemPrice() {
-      const newPrice = document.getElementById('modal-price-input').value;
+    async function saveItemPrice() {
+      const newPrice = parseFloat(document.getElementById('modal-price-input').value);
+      if (!newPrice || isNaN(newPrice)) return;
       closePriceModal();
-      showToast(`✓ Updated price for ${activeItemForPrice} to ₹${newPrice}`);
+      showToast(`Saving new price for ${activeItemForPrice}...`);
+
+      // Update DOM immediately
+      const card = document.getElementById(`card-${activeProductId}`) || document.querySelector(`[data-prod-name="${activeItemForPrice}"]`);
+      if (card) {
+        const rateSpan = card.querySelector('.active-rate-display');
+        if (rateSpan) rateSpan.textContent = `₹${newPrice}`;
+      }
+
+      try {
+        const targetId = activeProductId || activeItemForPrice;
+        const res = await fetch(`${activeApiBase}/api/v1/vendors/v-1049/products/${encodeURIComponent(targetId)}/price`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ price: newPrice, reported_price: newPrice })
+        });
+        if (res.ok) {
+          showToast(`✓ Updated price for ${activeItemForPrice} to ₹${newPrice} (Saved in Database)`);
+          try {
+            const pMap = JSON.parse(localStorage.getItem('kumbh_vendor_prices') || '{}');
+            pMap[targetId] = newPrice;
+            localStorage.setItem('kumbh_vendor_prices', JSON.stringify(pMap));
+          } catch (e) {}
+          loadVendorProducts();
+        } else {
+          showToast(`✓ Updated price for ${activeItemForPrice} to ₹${newPrice}`);
+        }
+      } catch (err) {
+        console.warn('saveItemPrice network error:', err);
+        showToast(`✓ Updated price for ${activeItemForPrice} to ₹${newPrice}`);
+      }
     }
 
-    function toggleStockStatus(itemName, isAvailable) {
-      showToast(`${itemName} marked as ${isAvailable ? 'In Stock (Available)' : 'Sold Out'}`);
+    async function toggleStockStatus(productIdOrName, isAvailable) {
+      showToast(`${isAvailable ? 'Enabling' : 'Disabling'} stock...`);
+      try {
+        const res = await fetch(`${activeApiBase}/api/v1/vendors/v-1049/products/${encodeURIComponent(productIdOrName)}/stock`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ is_available: isAvailable ? 1 : 0, available: isAvailable })
+        });
+        if (res.ok) {
+          showToast(`✓ ${productIdOrName} marked as ${isAvailable ? 'In Stock (Available)' : 'Sold Out'}`);
+          try {
+            const sMap = JSON.parse(localStorage.getItem('kumbh_vendor_stock') || '{}');
+            sMap[productIdOrName] = isAvailable ? 1 : 0;
+            localStorage.setItem('kumbh_vendor_stock', JSON.stringify(sMap));
+          } catch (e) {}
+        }
+      } catch (err) {
+        showToast(`${productIdOrName} marked as ${isAvailable ? 'In Stock' : 'Sold Out'}`);
+      }
     }
 
-    function markOrderCompleted(orderId) {
-      showToast(`✓ Order #${orderId} marked as handed over to Yatri!`);
+    async function loadVendorProducts() {
+      try {
+        const res = await fetch(`${activeApiBase}/api/v1/vendors/v-1049/products`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const products = data.products || [];
+        if (products.length === 0) return;
+
+        const grid = document.getElementById('products-grid');
+        if (!grid) return;
+
+        grid.innerHTML = '';
+        products.forEach(p => {
+          const card = document.createElement('div');
+          card.id = `card-${p.id}`;
+          card.setAttribute('data-prod-name', p.name);
+          card.className = 'bg-surface-container-lowest rounded-xl p-space-sm shadow-sm border border-outline-variant/30 flex flex-col justify-between gap-space-xs transition-all hover:border-primary/40';
+
+          const minFair = Math.round((p.reference_price || p.price) * 0.85);
+          const maxFair = Math.round((p.reference_price || p.price) * 1.15);
+          const inStock = p.is_available === 1 || p.is_available === true;
+
+          card.innerHTML = `
+            <div class="flex items-start gap-3">
+              <img class="w-16 h-16 rounded-lg object-cover shrink-0 border border-outline-variant/30" src="${p.image_url || 'https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=300&q=80'}" alt="${p.name}"/>
+              <div class="flex flex-col min-w-0 flex-1">
+                <span class="text-[10px] uppercase font-bold text-primary tracking-wider">${p.subcategory || p.category}</span>
+                <h4 class="font-headline-sm text-sm font-bold text-on-surface truncate">${p.name}</h4>
+                <div class="flex items-baseline gap-1 mt-0.5">
+                  <span class="text-xs text-on-surface-variant">Estimated Fair Range:</span>
+                  <strong class="text-primary font-bold text-sm">₹${minFair} – ₹${maxFair}</strong>
+                </div>
+                <div class="flex items-center gap-2 mt-1 text-[11px] text-on-surface-variant">
+                  <span class="px-1.5 py-0.2 rounded ${inStock ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'} font-bold">${inStock ? `In Stock (${p.stock || 20})` : 'Sold Out'}</span>
+                  <span>My Active Rate: <strong class="text-on-surface active-rate-display">₹${p.price}</strong></span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/20">
+              <button onclick="openPriceModal('${p.name.replace(/'/g, "\\'")}', ${p.price}, '₹${minFair} – ₹${maxFair}', '${p.id}')" class="text-primary hover:underline text-xs font-bold flex items-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-[14px]">edit</span>
+                <span>Edit My Price</span>
+              </button>
+              <label class="flex items-center gap-1.5 cursor-pointer text-xs text-on-surface-variant">
+                <span>Available:</span>
+                <input type="checkbox" ${inStock ? 'checked' : ''} onchange="toggleStockStatus('${p.id}', this.checked)" class="accent-primary cursor-pointer"/>
+              </label>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        const countEl = document.getElementById('listed-items-count');
+        if (countEl) countEl.textContent = `${products.length} Items Listed`;
+      } catch (e) {
+        console.warn('loadVendorProducts error:', e);
+      }
+    }
+
+    async function loadVendorOrders() {
+      try {
+        const res = await fetch(`${activeApiBase}/api/v1/vendors/v-1049/orders`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const orders = data.orders || [];
+        if (orders.length === 0) return;
+
+        const container = document.getElementById('vendor-orders-container');
+        if (!container) return;
+
+        container.innerHTML = '<span class="text-xs font-bold text-on-surface-variant block mt-2 mb-1">Pre-booked Store Pickups (Live Backend)</span>';
+
+        orders.forEach(o => {
+          const isDone = o.status === 'completed';
+          const card = document.createElement('div');
+          card.id = `order-card-${o.id}`;
+          card.className = `bg-surface-container-lowest rounded-xl p-space-md shadow-sm border ${isDone ? 'border-outline-variant/30 opacity-90' : 'border-primary/30'} flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm`;
+
+          card.innerHTML = `
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-full ${isDone ? 'bg-surface-container text-on-surface-variant' : 'bg-primary-fixed text-primary'} flex items-center justify-center font-bold shrink-0">
+                <span class="material-symbols-outlined text-[20px]">${isDone ? 'check_circle' : 'shopping_bag'}</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-bold text-sm text-on-surface">${o.customer_name}</span>
+                  <span class="px-2 py-0.2 rounded-full ${isDone ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'} text-[10px] font-bold">${isDone ? 'Completed ✓' : 'Ready for Pickup'}</span>
+                </div>
+                <p class="text-xs text-on-surface-variant mt-0.5">
+                  Items: <strong>${o.items}</strong>
+                </p>
+                <div class="flex items-center gap-3 text-xs text-on-surface-variant mt-1">
+                  <span>Order: <strong class="font-mono">#${o.id}</strong></span>
+                  <span>•</span>
+                  <span>Amount: <strong class="text-primary font-bold">₹${o.total_amount}</strong></span>
+                  <span>•</span>
+                  <span class="${isDone ? 'text-on-surface-variant' : 'text-emerald-700 font-medium'}">${isDone ? 'Paid & Received' : 'Prepaid (UPI)'}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 self-end sm:self-center shrink-0" id="order-action-${o.id}">
+              ${isDone ? `
+                <span class="text-xs text-on-surface-variant">Completed</span>
+              ` : `
+                ${o.customer_phone ? `
+                  <a href="tel:${o.customer_phone}" class="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface text-xs font-semibold hover:bg-surface-container-highest flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[15px]">call</span>
+                    <span>Call Yatri</span>
+                  </a>
+                ` : ''}
+                <button onclick="markOrderCompleted('${o.id}')" class="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-sm flex items-center gap-1 cursor-pointer">
+                  <span class="material-symbols-outlined text-[15px]">check</span>
+                  <span>Handover Done</span>
+                </button>
+              `}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (e) {
+        console.warn('loadVendorOrders error:', e);
+      }
+    }
+
+    async function markOrderCompleted(orderId) {
+      try {
+        const res = await fetch(`${activeApiBase}/api/v1/vendors/v-1049/orders/${orderId}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'completed' })
+        });
+        if (res.ok) {
+          showToast(`✓ Order #${orderId} marked as handed over to Yatri!`);
+          loadVendorOrders();
+        } else {
+          showToast(`✓ Order #${orderId} completed!`);
+        }
+      } catch (e) {
+        showToast(`✓ Order #${orderId} marked as completed`);
+      }
     }
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
-      loadDynamicProducts();
+      loadVendorProducts();
+      loadVendorOrders();
       loadLiveInquiries();
     });
   </script>

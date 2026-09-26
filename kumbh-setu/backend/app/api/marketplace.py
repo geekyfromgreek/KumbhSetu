@@ -188,6 +188,17 @@ async def create_listing(listing: ListingCreate, user: Optional[CurrentUser] = D
         verif_status, 1 if flagged else 0, delta,
         now, now
     ))
+
+    # Synchronize into vendor_products table
+    try:
+        conn.execute("""
+            INSERT OR REPLACE INTO vendor_products (
+                id, vendor_id, name, category, subcategory, price, reference_price, stock, is_available, image_url, created_at, updated_at
+            ) VALUES (?, 'v-1049', ?, ?, ?, ?, ?, 30, 1, ?, ?, ?)
+        """, (listing_id, listing.name, cat_val, listing.subcategory or "General Puja & Kumbh Goods", rep_p, ref_p, listing.image_url, now, now))
+    except Exception:
+        pass
+
     conn.commit()
     return {
         "id": listing_id,
@@ -308,14 +319,57 @@ async def get_categories():
 
 
 @router.get("/search-autocomplete")
-async def search_autocomplete(q: str = Query(..., min_length=2)):
-    """Autocomplete search for listing names."""
+async def search_autocomplete(q: str = Query(..., min_length=1)):
+    """Autocomplete search for establishment/location names from database."""
     conn = get_connection()
-    rows = rows_to_list(conn.execute(
-        "SELECT id, name, category, subcategory FROM listings WHERE name LIKE ? LIMIT 10",
-        (f"%{q}%",)
+    q_wildcard = f"%{q}%"
+    
+    # 1. Search listings
+    listings = rows_to_list(conn.execute(
+        """
+        SELECT id, name, category, subcategory, address, reference_price
+        FROM listings
+        WHERE name LIKE ? OR address LIKE ?
+        LIMIT 10
+        """,
+        (q_wildcard, q_wildcard)
     ))
-    return {"results": rows}
+
+    # 2. Search vendors
+    vendors = []
+    try:
+        raw_vendors = rows_to_list(conn.execute(
+            """
+            SELECT id, name, business_name, category, address
+            FROM vendors
+            WHERE name LIKE ? OR business_name LIKE ? OR address LIKE ?
+            LIMIT 6
+            """,
+            (q_wildcard, q_wildcard, q_wildcard)
+        ))
+        for v in raw_vendors:
+            v_name = v.get("business_name") or v.get("name")
+            vendors.append({
+                "id": v.get("id"),
+                "name": v_name,
+                "category": v.get("category") or "vendor",
+                "subcategory": "Verified Vendor",
+                "address": v.get("address") or "Nashik Central",
+                "reference_price": 150.0
+            })
+    except Exception as e:
+        pass
+
+    # Combine unique by name
+    seen = set()
+    combined = []
+    for item in listings + vendors:
+        name_lower = (item.get("name") or "").lower().strip()
+        if name_lower and name_lower not in seen:
+            seen.add(name_lower)
+            combined.append(item)
+
+    return {"results": combined[:12]}
 
 
 @router.get("/fare-estimate")

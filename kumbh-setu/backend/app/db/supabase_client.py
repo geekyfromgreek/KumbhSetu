@@ -18,10 +18,10 @@ _connection: Optional[sqlite3.Connection] = None
 def get_connection() -> sqlite3.Connection:
     global _connection
     if _connection is None:
-        _connection = sqlite3.connect(DB_PATH, check_same_thread=False)
+        _connection = sqlite3.connect(DB_PATH, check_same_thread=False, timeout=30.0)
         _connection.row_factory = sqlite3.Row
         _connection.execute("PRAGMA journal_mode=WAL")
-        _connection.execute("PRAGMA foreign_keys=ON")
+        _connection.execute("PRAGMA busy_timeout=30000")
     return _connection
 
 
@@ -181,11 +181,89 @@ def init_db():
             created_at TEXT NOT NULL
         );
 
+        CREATE TABLE IF NOT EXISTS patrol_dispatches (
+            id TEXT PRIMARY KEY,
+            cluster_id INTEGER,
+            hotspot_name TEXT NOT NULL,
+            officer_badge TEXT,
+            unit_name TEXT NOT NULL,
+            severity TEXT DEFAULT 'critical',
+            directive TEXT,
+            dispatched_at TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS police_actions (
+            id TEXT PRIMARY KEY,
+            incident_id TEXT NOT NULL,
+            action_type TEXT NOT NULL,
+            status TEXT NOT NULL,
+            officer_name TEXT,
+            officer_badge TEXT,
+            unit_name TEXT,
+            notes TEXT,
+            meta TEXT,
+            created_at TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS vendor_products (
+            id TEXT PRIMARY KEY,
+            vendor_id TEXT DEFAULT 'v-1049',
+            name TEXT NOT NULL,
+            category TEXT NOT NULL,
+            subcategory TEXT,
+            price REAL NOT NULL,
+            reference_price REAL,
+            stock INTEGER DEFAULT 30,
+            is_available INTEGER DEFAULT 1,
+            image_url TEXT,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS vendor_orders (
+            id TEXT PRIMARY KEY,
+            vendor_id TEXT DEFAULT 'v-1049',
+            customer_name TEXT NOT NULL,
+            customer_phone TEXT,
+            items TEXT NOT NULL,
+            total_amount REAL NOT NULL,
+            pickup_slot TEXT,
+            status TEXT DEFAULT 'pending',
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS kumbhveer_profiles (
+            id TEXT PRIMARY KEY,
+            volunteer_name TEXT NOT NULL,
+            college_name TEXT NOT NULL,
+            phone_number TEXT,
+            roll_number TEXT,
+            points INTEGER DEFAULT 480,
+            tier TEXT DEFAULT 'Gold Kumbhveer Leader',
+            updated_at TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS guide_face_records (
+            id TEXT PRIMARY KEY,
+            guide_id TEXT NOT NULL,
+            name TEXT NOT NULL,
+            face_vector TEXT NOT NULL,
+            sample_image_path TEXT,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        );
+
         CREATE INDEX IF NOT EXISTS idx_listings_category ON listings(category);
         CREATE INDEX IF NOT EXISTS idx_reports_status ON reports(status);
         CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status);
         CREATE INDEX IF NOT EXISTS idx_escalations_status ON escalations(status);
         CREATE INDEX IF NOT EXISTS idx_inquiries_target ON inquiries(target_id);
+        CREATE INDEX IF NOT EXISTS idx_patrol_cluster ON patrol_dispatches(cluster_id);
+        CREATE INDEX IF NOT EXISTS idx_police_actions_inc ON police_actions(incident_id);
+        CREATE INDEX IF NOT EXISTS idx_vendor_prod ON vendor_products(vendor_id);
+        CREATE INDEX IF NOT EXISTS idx_vendor_orders ON vendor_orders(vendor_id);
+        CREATE INDEX IF NOT EXISTS idx_guide_face ON guide_face_records(guide_id);
     """)
     conn.commit()
 

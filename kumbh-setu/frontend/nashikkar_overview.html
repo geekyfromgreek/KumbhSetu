@@ -72,8 +72,11 @@
       
       <!-- Brand & Sector Indicator -->
       <div class="flex items-center gap-2 min-w-0 flex-1">
-        <a href="index.html" class="shrink-0 flex items-center">
-          <img alt="Kumbh Setu Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VYwkjEg1qrTk5GdpXGoGaW1xUyhzRob0ztYzXldvy6DnfrimEQ-03u646TMecGuVgL28lZ5VweMueqzPr9zaBUflIIWkhZL9YXsOuKL0EKyP0LOwrOyuf35j9oiN-3uDtTVO9KOB-JAQPqHDtp6kyj0es0anTnSIgT8qV3uy3PNR7vfkNq6o5mBHrEI-fvRS3ciuRC1hLtrgKXt7CcFKCf8-NIRQxjEIvF51x-n2vq_P6Rd0Ies3VQn0w"/>
+        <a href="index.html" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors cursor-pointer rounded-full active:bg-surface-container shrink-0" title="Back to Home / मुख्यपृष्ठावर जा">
+          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        </a>
+        <a href="index.html" class="shrink-0 flex items-center" title="Kumbh Setu">
+          <img alt="Kumbh Setu Emblem" class="h-8 w-auto object-contain" src="logo.png"/>
         </a>
         <div class="flex flex-col min-w-0">
           <div class="flex items-center gap-1.5 flex-nowrap">
@@ -199,8 +202,8 @@
             </div>
           </a>
 
-          <!-- Action 4: Volunteer Desk -->
-          <a href="kumbhveer_portal.html" class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-emerald-600 shadow-xs flex items-center gap-2.5 transition-all group active:scale-98">
+          <!-- Action 4: Volunteer Desk (Opens Volunteer Leaderboard directly) -->
+          <button type="button" onclick="scrollToVolunteerLeaderboard()" class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-emerald-600 shadow-xs flex items-center gap-2.5 transition-all group active:scale-98 text-left cursor-pointer">
             <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-700 group-hover:text-white transition-colors">
               <span class="material-symbols-outlined text-[20px]">volunteer_activism</span>
             </div>
@@ -208,7 +211,7 @@
               <span class="font-bold text-xs text-on-surface block truncate">Kumbhveers</span>
               <span class="text-[10px] text-emerald-800 font-bold truncate block" id="action-volunteers-label">21 Active Verifiers</span>
             </div>
-          </a>
+          </button>
 
         </div>
       </section>
@@ -332,10 +335,10 @@
             </div>
 
             <div class="flex items-center gap-2 pt-1">
-              <a href="price_flags.html" class="flex-1 h-9 rounded-lg bg-secondary text-on-secondary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs">
+              <button onclick="openInlineFlagReview('Sai Auto Stand (Bay 4)', 'Demanding ₹180 against estimated price of ₹110 (Route: Panchavati Ghat to CBS Central).', 'Auto Fare Gouging')" type="button" class="flex-1 h-9 rounded-lg bg-secondary hover:brightness-110 text-on-secondary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs cursor-pointer">
                 <span class="material-symbols-outlined text-[16px]">verified_user</span>
                 Review Flag
-              </a>
+              </button>
               <button onclick="handleAction(this, 'Audit Note Logged for Sai Auto Stand')" type="button" class="h-9 px-3 rounded-lg bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high transition-colors flex items-center gap-1 cursor-pointer">
                 <span class="material-symbols-outlined text-[15px]">edit_note</span>
                 Log Note
@@ -375,17 +378,17 @@
       </section>
 
       <!-- Kumbhveer College Volunteer Desk & Rewards Leaderboard -->
-      <section class="flex flex-col gap-2">
+      <section class="flex flex-col gap-2" id="volunteer-leaderboard-section">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-1.5">
             <span class="material-symbols-outlined text-primary text-[18px]">school</span>
             <h2 class="font-headline font-bold text-sm text-on-surface">Kumbhveer Leaderboard</h2>
           </div>
           <div class="flex items-center gap-1.5">
-            <a href="kumbhveer_portal.html" class="px-2 py-0.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-950 text-[10px] font-bold flex items-center gap-1 border border-amber-300 transition-colors">
-              <span class="material-symbols-outlined text-[13px] text-primary">volunteer_activism</span>
-              <span>Volunteer Desk</span>
-            </a>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 text-[10px] font-bold flex items-center gap-1 border border-emerald-300">
+              <span class="material-symbols-outlined text-[13px] text-emerald-700">verified</span>
+              <span>Civic Verifiers</span>
+            </span>
             <span class="text-[11px] font-bold text-primary" id="kv-total-count-badge">21 Active</span>
           </div>
         </div>
@@ -509,13 +512,13 @@
             </div>
           </a>
 
-          <a href="kumbhveer_portal.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
+          <button type="button" onclick="scrollToVolunteerLeaderboard()" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20 text-left w-full cursor-pointer">
             <span class="material-symbols-outlined text-primary text-[20px]">volunteer_activism</span>
             <div class="min-w-0">
-              <span class="text-xs font-bold text-on-surface block truncate">Volunteer Desk</span>
+              <span class="text-xs font-bold text-on-surface block truncate">Volunteer Leaderboard</span>
               <span class="text-[10px] text-on-surface-variant truncate block">21 Kumbhveers</span>
             </div>
-          </a>
+          </button>
 
           <a href="police_hotspots.html" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors flex items-center gap-2 border border-outline-variant/20">
             <span class="material-symbols-outlined text-blue-700 text-[20px]">radar</span>
@@ -582,6 +585,62 @@
     </div>
   </div>
 
+  <!-- Inline Review Flag Modal (Prevents page jump & flashing) -->
+  <div id="inlineFlagReviewModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-surface rounded-2xl p-4 sm:p-5 max-w-md w-full shadow-2xl border border-outline-variant/30 flex flex-col gap-3.5 animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-red-100 text-red-800 flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">verified_user</span>
+          </span>
+          <div>
+            <h3 class="font-headline text-sm font-bold text-on-surface" id="reviewModalTitle">Review Price Flag</h3>
+            <span class="text-[11px] text-on-surface-variant font-mono" id="reviewModalSubtitle">Flag #PF-8841</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeInlineFlagReview()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="p-3 rounded-xl bg-red-50/90 border border-red-200 text-xs flex flex-col gap-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-red-800">Violation Details</span>
+          <span class="px-2 py-0.5 rounded-full bg-red-200 text-red-900 text-[10px] font-bold" id="reviewModalBadge">Auto Fare Gouging</span>
+        </div>
+        <p class="font-bold text-on-surface text-xs leading-relaxed" id="reviewModalDesc">Demanding ₹180 against estimated price of ₹110 (Route: Panchavati Ghat to CBS Central).</p>
+        <div class="flex items-center gap-1.5 text-[11px] text-red-700">
+          <span class="material-symbols-outlined text-[14px]">trending_up</span>
+          <span>3 verified yatri complaints received in past 30 minutes</span>
+        </div>
+      </div>
+
+      <!-- Citizen Actions for Nashikkar -->
+      <div class="flex flex-col gap-2">
+        <button type="button" id="reviewEscalateBtn" onclick="submitInlineCitizenEscalation()" class="w-full py-2.5 rounded-xl bg-secondary hover:brightness-110 text-on-secondary font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">local_police</span>
+          <span>Verify as Citizen (Forward to Police Desk)</span>
+        </button>
+
+        <button type="button" onclick="toggleInlineNoteInput()" class="w-full py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 border border-outline-variant/30 active:scale-98 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-[16px] text-primary">edit_note</span>
+          <span>Add Citizen Note / Advice to Yatris</span>
+        </button>
+
+        <!-- Inline Note Box (collapsible) -->
+        <div id="inlineNoteContainer" class="hidden flex flex-col gap-2 mt-1">
+          <textarea id="inlineNoteText" rows="2" placeholder="Write citizen advisory note (e.g. Advise pilgrims to pay only official ₹110 rate; stand headman notified)." class="w-full bg-surface-container border border-outline-variant/40 rounded-lg p-2 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary placeholder:text-on-surface-variant/50 resize-none"></textarea>
+          <button type="button" onclick="saveInlineCitizenNote()" class="py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all cursor-pointer">Save Community Note</button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-outline-variant/20 text-xs">
+        <button type="button" onclick="closeInlineFlagReview()" class="text-on-surface-variant font-semibold hover:text-on-surface cursor-pointer">Dismiss</button>
+        <span class="text-[11px] text-outline">Nashikkar Citizen Oversight</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Bottom Navigation (100% Mobile Responsive, NO "Bookings" Tab) -->
   <nav class="fixed bottom-0 w-full z-40 pb-safe bg-surface/95 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-2px_10px_rgba(0,0,0,0.04)]">
     <div class="flex justify-around items-center h-16 px-1 max-w-5xl mx-auto">
@@ -604,11 +663,11 @@
         <span class="text-[10px] leading-tight">Market</span>
       </a>
 
-      <!-- Tab 4: Kumbhveers (Replaces Bookings) -->
-      <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="kumbhveer" href="kumbhveer_portal.html">
+      <!-- Tab 4: Kumbhveers (Opens Volunteer Leaderboard) -->
+      <button type="button" onclick="scrollToVolunteerLeaderboard()" class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" data-path="kumbhveer">
         <span class="material-symbols-outlined text-[22px]">volunteer_activism</span>
-        <span class="text-[10px] leading-tight">Volunteers</span>
-      </a>
+        <span class="text-[10px] leading-tight font-medium">Volunteers</span>
+      </button>
 
       <!-- Tab 5: Vendors -->
       <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="vendors" href="vendor_registration.html">
@@ -645,6 +704,156 @@
           }, 3000);
         }
       }, 500);
+    }
+
+    function showOverviewToast(msg) {
+      const toast = document.getElementById('toast-slot');
+      const toastMsg = document.getElementById('toast-message');
+      if (toast && toastMsg) {
+        toastMsg.textContent = msg;
+        toast.classList.remove('opacity-0', 'translate-y-4');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+          toast.classList.remove('opacity-100', 'translate-y-0');
+          toast.classList.add('opacity-0', 'translate-y-4');
+        }, 3000);
+      }
+    }
+
+    let currentInlineReview = {
+      title: 'Sai Auto Stand (Bay 4)',
+      desc: '',
+      category: ''
+    };
+
+    function openInlineFlagReview(title, desc, category) {
+      currentInlineReview = {
+        title: title || 'Flagged Location',
+        desc: desc || 'Demanding excess tariff against authorized cap.',
+        category: category || 'Price Flag'
+      };
+
+      const modal = document.getElementById('inlineFlagReviewModal');
+      const modalTitle = document.getElementById('reviewModalTitle');
+      const modalBadge = document.getElementById('reviewModalBadge');
+      const modalDesc = document.getElementById('reviewModalDesc');
+      const modalSubtitle = document.getElementById('reviewModalSubtitle');
+
+      if (modalTitle) modalTitle.textContent = currentInlineReview.title;
+      if (modalBadge) modalBadge.textContent = currentInlineReview.category;
+      if (modalDesc) modalDesc.textContent = currentInlineReview.desc;
+      if (modalSubtitle) modalSubtitle.textContent = 'Flag #' + Math.floor(1000 + Math.random()*9000);
+
+      const noteBox = document.getElementById('inlineNoteContainer');
+      if (noteBox) noteBox.classList.add('hidden');
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeInlineFlagReview() {
+      const modal = document.getElementById('inlineFlagReviewModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function toggleInlineNoteInput() {
+      const noteBox = document.getElementById('inlineNoteContainer');
+      if (noteBox) {
+        noteBox.classList.toggle('hidden');
+        if (!noteBox.classList.contains('hidden')) {
+          const input = document.getElementById('inlineNoteText');
+          if (input) input.focus();
+        }
+      }
+    }
+
+    async function submitInlineCitizenEscalation() {
+      const btn = document.getElementById('reviewEscalateBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Forwarding to Police Desk...</span>';
+      }
+
+      // 1. Supabase broadcast
+      if (window.KumbhRealtime) {
+        try {
+          await KumbhRealtime.ready();
+          await KumbhRealtime.insert('reports', {
+            id: 'esc-' + Date.now(),
+            category: 'Price Escalation',
+            listing_name: currentInlineReview.title,
+            issue_type: currentInlineReview.category,
+            description: `Citizen Verified Flag: ${currentInlineReview.desc}`,
+            status: 'Escalated to Police',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+        } catch(e) { console.warn('Supabase escalation:', e); }
+      }
+
+      // 2. Police Backend API action
+      try {
+        await fetch(`${activeApiBase}/api/v1/police/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            incident_id: 'SOS-' + Math.floor(1000 + Math.random()*9000),
+            action: 'citizen_escalation',
+            officer_name: 'Nashikkar Citizen Watchdog',
+            officer_badge: 'CITIZEN-WATCHDOG',
+            notes: `Citizen escalated: ${currentInlineReview.title} - ${currentInlineReview.desc}`
+          })
+        });
+      } catch(e) {}
+
+      if (btn) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span><span>Forwarded to Police Desk ✓</span>';
+        btn.classList.remove('bg-secondary');
+        btn.classList.add('bg-emerald-700', 'text-white');
+      }
+
+      showOverviewToast(`✓ Flag forwarded to Police Flying Squad for ${currentInlineReview.title}`);
+      setTimeout(() => {
+        closeInlineFlagReview();
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">local_police</span><span>Verify as Citizen (Forward to Police Desk)</span>';
+          btn.classList.remove('bg-emerald-700', 'text-white');
+          btn.classList.add('bg-secondary', 'text-on-secondary');
+        }
+      }, 1200);
+    }
+
+    function saveInlineCitizenNote() {
+      const input = document.getElementById('inlineNoteText');
+      const note = input ? input.value.trim() : '';
+      if (!note) {
+        alert('Please write an advisory note.');
+        return;
+      }
+
+      try {
+        let notesMap = JSON.parse(localStorage.getItem('kumbhsetu_vendor_notes') || '{}');
+        const noteObj = {
+          vendorName: currentInlineReview.title,
+          note: note,
+          author: 'Nashikkar Citizen Desk',
+          time: 'Verified today',
+          timestamp: new Date().toISOString()
+        };
+        notesMap[currentInlineReview.title] = noteObj;
+        localStorage.setItem('kumbhsetu_vendor_notes', JSON.stringify(notesMap));
+      } catch(e) {}
+
+      showOverviewToast(`✓ Citizen note published for ${currentInlineReview.title}`);
+      if (input) input.value = '';
+      toggleInlineNoteInput();
+      setTimeout(() => closeInlineFlagReview(), 800);
     }
 
     const activeApiBase = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || 'http://localhost:8000'));
@@ -755,6 +964,27 @@
     function toggleVolunteerList() {
       showAllVolunteers = !showAllVolunteers;
       renderVolunteers();
+    }
+
+    function scrollToVolunteerLeaderboard() {
+      showAllVolunteers = true;
+      renderVolunteers();
+      const section = document.getElementById('volunteer-leaderboard-section');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const box = section.querySelector('.bg-surface-container-lowest');
+        if (box) {
+          box.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+          setTimeout(() => box.classList.remove('ring-2', 'ring-primary', 'ring-offset-2'), 2500);
+        }
+      }
+    }
+
+    if (window.history && window.history.pushState) {
+      window.history.pushState({ page: 'nashikkar_overview' }, '', window.location.href);
+      window.addEventListener('popstate', function(e) {
+        window.location.href = 'index.html';
+      });
     }
 
     function toggleAdminMenu() {
@@ -973,10 +1203,10 @@
                 </div>
 
                 <div class="flex items-center gap-2 pt-1">
-                  <a href="price_flags.html" class="flex-1 h-9 rounded-lg bg-secondary text-on-secondary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs">
+                  <button onclick="openInlineFlagReview('${(r.listing_name || 'Flagged Location').replace(/'/g, "\\'")}', '${(r.description || '').replace(/'/g, "\\'")}', '${(r.category || 'Price Flag').replace(/'/g, "\\'")}')" type="button" class="flex-1 h-9 rounded-lg bg-secondary hover:brightness-110 text-on-secondary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs cursor-pointer">
                     <span class="material-symbols-outlined text-[16px]">verified_user</span>
                     Review Flag
-                  </a>
+                  </button>
                   <a href="kumbhveer_portal.html" class="h-9 px-3 rounded-lg bg-primary text-on-primary text-xs font-bold hover:bg-primary-container transition-colors flex items-center gap-1 active:scale-98">
                     <span class="material-symbols-outlined text-[15px]">school</span>
                     Verify
