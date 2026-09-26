@@ -8,7 +8,7 @@ Works reliably across phone cameras (mobile browser capture) and desktop streams
 Privacy Guarantee: Raw face photos are discarded immediately after feature extraction.
 """
 import os
-import cv2
+import io
 import json
 import math
 import base64
@@ -17,6 +17,22 @@ import numpy as np
 from typing import Union, Optional, List, Dict, Tuple, Any
 from pathlib import Path
 
+# Optional OpenCV import with graceful fallback
+try:
+    import cv2
+    HAS_CV2 = True
+except ImportError:
+    cv2 = None
+    HAS_CV2 = False
+
+# Optional Pillow import for image decoding fallback
+try:
+    from PIL import Image
+    HAS_PIL = True
+except ImportError:
+    Image = None
+    HAS_PIL = False
+
 logger = logging.getLogger("kumbhsetu.face_id")
 
 # Vector dimension
@@ -24,27 +40,52 @@ FEATURE_DIM: int = 128
 SIMILARITY_THRESHOLD: float = 0.65  # Threshold for positive identity match
 
 
-def decode_image_to_cv2(image_input: Union[str, bytes]) -> Optional[np.ndarray]:
+def decode_image_bytes(image_input: Union[str, bytes]) -> Optional[bytes]:
     """
-    Safely decode raw image bytes or base64 string to an OpenCV BGR image array.
+    Safely extract raw image bytes from base64 data URI or raw bytes.
     """
     try:
         if isinstance(image_input, str):
-            # Check for data URI prefix
             if "," in image_input:
                 image_input = image_input.split(",")[1]
-            img_bytes = base64.b64decode(image_input)
+            return base64.b64decode(image_input)
         elif isinstance(image_input, bytes):
-            img_bytes = image_input
-        else:
-            return None
-
-        nparr = np.frombuffer(img_bytes, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        return img
-    except Exception as e:
-        logger.error(f"Error decoding image to cv2: {e}")
+            return image_input
         return None
+    except Exception as e:
+        logger.error(f"Error decoding image bytes: {e}")
+        return None
+
+
+def decode_image_to_cv2(image_input: Union[str, bytes]) -> Optional[np.ndarray]:
+    """
+    Safely decode raw image bytes or base64 string to a BGR image array.
+    Supports both cv2 and PIL fallbacks.
+    """
+    img_bytes = decode_image_bytes(image_input)
+    if not img_bytes:
+        return None
+
+    if HAS_CV2 and cv2 is not None:
+        try:
+            nparr = np.frombuffer(img_bytes, np.uint8)
+            img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            if img is not None:
+                return img
+        except Exception as e:
+            logger.warning(f"cv2.imdecode failed: {e}")
+
+    if HAS_PIL and Image is not None:
+        try:
+            pil_img = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+            # Convert RGB to BGR for uniform color array
+            rgb_arr = np.array(pil_img)
+            bgr_arr = rgb_arr[:, :, ::-1].copy()
+            return bgr_arr
+        except Exception as e:
+            logger.error(f"PIL image decode failed: {e}")
+
+    return None
 
 
 def detect_and_align_face(bgr_img: np.ndarray, target_size: int = 96) -> Tuple[Optional[np.ndarray], Dict[str, Any]]:
@@ -56,26 +97,29 @@ def detect_and_align_face(bgr_img: np.ndarray, target_size: int = 96) -> Tuple[O
         return None, {"error": "no_image_data"}
 
     h, w = bgr_img.shape[:2]
-    gray = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
-
-    # Attempt Haar Cascade if available
     faces = []
-    cascade_paths = [
-        cv2.data.haarcascades + 'haarcascade_frontalface_default.xml' if hasattr(cv2, 'data') and hasattr(cv2.data, 'haarcascades') else None,
-        '/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml',
-        '/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml'
-    ]
 
-    for p in cascade_paths:
-        if p and os.path.exists(p):
-            try:
-                face_cascade = cv2.CascadeClassifier(p)
-                detected = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4, minSize=(30, 30))
-                if len(detected) > 0:
-                    faces = detected
-                    break
-            except Exception:
-                pass
+    if HAS_CV2 and cv2 is not None:
+        try:
+            gray = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
+            cascade_paths = [
+                cv2.data.haarcascades + 'haarcascade_frontalface_default.xml' if hasattr(cv2, 'data') and hasattr(cv2.data, 'haarcascades') else None,
+                '/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml',
+                '/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml'
+            ]
+
+            for p in cascade_paths:
+                if p and os.path.exists(p):
+                    try:
+                        face_cascade = cv2.CascadeClassifier(p)
+                        detected = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4, minSize=(30, 30))
+                        if len(detected) > 0:
+                            faces = detected
+                            break
+                    except Exception:
+                        pass
+        except Exception as e:
+            logger.debug(f"Cascade detection note: {e}")
 
     if len(faces) == 0:
         # Fallback: Central bounding reticle (pilgrim/guide selfie framing circle)
@@ -84,13 +128,12 @@ def detect_and_align_face(bgr_img: np.ndarray, target_size: int = 96) -> Tuple[O
         margin_x = int(w * 0.15)
         side = min(h - 2 * margin_y, w - 2 * margin_x)
         top = margin_y
-        left = (w - side) // 2
+        left = max(0, (w - side) // 2)
         face_crop = bgr_img[top:top+side, left:left+side]
     else:
         # Sort by area descending (largest face)
         faces = sorted(faces, key=lambda f: f[2] * f[3], reverse=True)
         x, y, fw, fh = faces[0]
-        # Expand box slightly to include chin and forehead
         pad_x = int(fw * 0.1)
         pad_y = int(fh * 0.15)
         x1 = max(0, x - pad_x)
@@ -103,7 +146,19 @@ def detect_and_align_face(bgr_img: np.ndarray, target_size: int = 96) -> Tuple[O
         return None, {"error": "no_face_detected"}
 
     # Resize to standard representation dimensions (96x96 matching OpenFace)
-    aligned_face = cv2.resize(face_crop, (target_size, target_size), interpolation=cv2.INTER_AREA)
+    if HAS_CV2 and cv2 is not None:
+        aligned_face = cv2.resize(face_crop, (target_size, target_size), interpolation=cv2.INTER_AREA)
+    elif HAS_PIL and Image is not None:
+        rgb_crop = face_crop[:, :, ::-1]
+        pil_crop = Image.fromarray(rgb_crop)
+        pil_resized = pil_crop.resize((target_size, target_size), Image.Resampling.BILINEAR)
+        aligned_face = np.array(pil_resized)[:, :, ::-1].copy()
+    else:
+        # Simple step sampling resize
+        idx_y = np.linspace(0, face_crop.shape[0]-1, target_size).astype(int)
+        idx_x = np.linspace(0, face_crop.shape[1]-1, target_size).astype(int)
+        aligned_face = face_crop[np.ix_(idx_y, idx_x)]
+
     return aligned_face, {"status": "ok"}
 
 
@@ -116,21 +171,31 @@ def get_face_representation(aligned_face: np.ndarray) -> List[float]:
     if aligned_face is None:
         return [0.0] * FEATURE_DIM
 
-    # 1. Convert to Lab and YCrCb color spaces for skin-luminance invariance
-    gray = cv2.cvtColor(aligned_face, cv2.COLOR_BGR2GRAY)
-    ycrcb = cv2.cvtColor(aligned_face, cv2.COLOR_BGR2YCrCb)
+    # Gray and chrominance approximations
+    if HAS_CV2 and cv2 is not None:
+        gray = cv2.cvtColor(aligned_face, cv2.COLOR_BGR2GRAY)
+        try:
+            ycrcb = cv2.cvtColor(aligned_face, cv2.COLOR_BGR2YCrCb)
+        except Exception:
+            ycrcb = aligned_face
+        sobelx = cv2.Sobel(gray, cv2.CV_32F, 1, 0, ksize=3)
+        sobely = cv2.Sobel(gray, cv2.CV_32F, 0, 1, ksize=3)
+        magnitude = cv2.magnitude(sobelx, sobely)
+    else:
+        # Pure numpy grayscale conversion (ITU-R 601-2 luma)
+        # BGR: B=0, G=1, R=2
+        gray = (aligned_face[:, :, 2] * 0.299 + aligned_face[:, :, 1] * 0.587 + aligned_face[:, :, 0] * 0.114).astype(np.float32)
+        ycrcb = aligned_face
+        # Numpy gradient approximation
+        gy, gx = np.gradient(gray)
+        magnitude = np.sqrt(gx**2 + gy**2)
 
-    # 2. Local spatial cell grid (4x4 cells = 16 sub-regions)
+    # Local spatial cell grid (4x4 cells = 16 sub-regions)
     cells_y, cells_x = 4, 4
-    h, w = gray.shape
+    h, w = gray.shape[:2]
     step_y, step_x = h // cells_y, w // cells_x
 
     features = []
-
-    # Sobel gradient spatial features
-    sobelx = cv2.Sobel(gray, cv2.CV_32F, 1, 0, ksize=3)
-    sobely = cv2.Sobel(gray, cv2.CV_32F, 0, 1, ksize=3)
-    magnitude = cv2.magnitude(sobelx, sobely)
 
     for i in range(cells_y):
         for j in range(cells_x):
@@ -142,12 +207,14 @@ def get_face_representation(aligned_face: np.ndarray) -> List[float]:
             features.append(float(np.mean(sub_gray) / 255.0))
             features.append(float(np.std(sub_gray) / 255.0))
             features.append(float(np.mean(sub_mag) / 255.0))
-            features.append(float(np.mean(sub_ycrcb[:, :, 1]) / 255.0)) # Cr component
-            features.append(float(np.mean(sub_ycrcb[:, :, 2]) / 255.0)) # Cb component
+            cr_val = float(np.mean(sub_ycrcb[:, :, 1]) / 255.0) if sub_ycrcb.ndim >= 3 else 0.5
+            cb_val = float(np.mean(sub_ycrcb[:, :, 2]) / 255.0) if sub_ycrcb.ndim >= 3 and sub_ycrcb.shape[2] > 2 else 0.5
+            features.append(cr_val)
+            features.append(cb_val)
 
-    # 3. Overall face symmetry and frequency coefficients
+    # Face symmetry coefficient
     left_half = gray[:, :w//2]
-    right_half_flipped = cv2.flip(gray[:, w//2:], 1)
+    right_half_flipped = np.fliplr(gray[:, w//2:])
     min_w = min(left_half.shape[1], right_half_flipped.shape[1])
     symmetry_diff = float(np.mean(np.abs(left_half[:, :min_w] - right_half_flipped[:, :min_w])) / 255.0)
     features.append(symmetry_diff)
@@ -158,7 +225,7 @@ def get_face_representation(aligned_face: np.ndarray) -> List[float]:
     else:
         features = features[:FEATURE_DIM]
 
-    # 4. L2 unit normalization (standard for face recognition embeddings)
+    # L2 unit normalization (standard for face recognition embeddings)
     norm = math.sqrt(sum(v * v for v in features)) or 1.0
     normalized_vec = [float(v / norm) for v in features]
     return normalized_vec
