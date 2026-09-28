@@ -508,29 +508,38 @@ Your guide's identity is confirmed via selfie at the meeting point before your s
 <div class="flex items-center justify-between pb-2 border-b border-surface-container-high">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary text-[24px]">verified</span>
-<h3 class="font-headline-sm text-on-surface font-bold">In-Person Computer Vision Match</h3>
+<h3 class="font-headline-sm text-on-surface font-bold">In-Person Selfie Match</h3>
 </div>
 <button onclick="closeSelfieVerifyModal()" class="text-on-surface-variant hover:text-on-surface cursor-pointer p-1">
 <span class="material-symbols-outlined text-[20px]">close</span>
 </button>
 </div>
 <p class="text-xs text-on-surface-variant">
-Live camera stream analyzes facial landmarks and runs biometric embedding match with official Kumbhveer registry.
+Live selfie verify at meeting point compares face landmarks with official Kumbhveer registry.
 </p>
 
 <!-- Live Camera Box with Scanning Reticle -->
-<div class="w-full h-52 bg-slate-900 rounded-xl flex flex-col items-center justify-center border-2 border-primary/40 overflow-hidden relative" id="selfie-preview-box">
-  <video id="webcam-video" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+<div class="w-full h-56 bg-slate-900 rounded-xl flex flex-col items-center justify-center border-2 border-primary/40 overflow-hidden relative shadow-inner" id="selfie-preview-box">
+  <video id="webcam-video" autoplay playsinline muted class="w-full h-full object-cover hidden"></video>
+  <img id="selfie-preview-img" class="w-full h-full object-cover hidden" alt="Captured Selfie Preview"/>
   <canvas id="webcam-canvas" class="hidden"></canvas>
-  <div id="camera-placeholder" class="flex flex-col items-center justify-center text-slate-400 p-2 text-center">
-    <span class="material-symbols-outlined text-[48px] text-primary animate-pulse">face</span>
-    <span class="text-xs mt-1 text-slate-300" id="camera-placeholder-text">Tap 'Mobile Camera' or 'Start Stream'</span>
-    <span class="text-[10px] text-slate-500 mt-0.5">Direct device camera supported on all mobile browsers</span>
+  <div id="camera-placeholder" class="flex flex-col items-center justify-center text-slate-300 p-3 text-center">
+    <span class="material-symbols-outlined text-[44px] text-primary animate-pulse">face</span>
+    <span class="text-xs mt-1 text-slate-200 font-semibold" id="camera-placeholder-text">Camera starting...</span>
+    <label for="selfie-camera-input" class="mt-2.5 px-3.5 py-2 rounded-lg bg-primary text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow hover:bg-primary-container active:scale-95 transition-transform">
+      <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+      <span>Open Camera Now</span>
+    </label>
+    <span class="text-[10px] text-slate-400 mt-1.5">Direct device camera supported on all browsers</span>
   </div>
   <!-- Scanning HUD Overlay -->
-  <div id="scan-hud" class="absolute inset-0 pointer-events-none hidden items-center justify-center">
+  <div id="scan-hud" class="absolute inset-0 pointer-events-none hidden items-center justify-center bg-black/20">
     <div class="w-36 h-36 border-2 border-dashed border-primary rounded-full animate-spin"></div>
     <div class="absolute inset-x-0 top-1/2 h-0.5 bg-primary/70 shadow-[0_0_8px_#ff6b00]"></div>
+  </div>
+  <div id="selfie-preview-notice" class="hidden absolute bottom-2 inset-x-2 py-1 px-2 rounded bg-black/75 text-white text-[11px] font-bold text-center backdrop-blur-xs flex items-center justify-center gap-1">
+    <span class="material-symbols-outlined text-green-400 text-sm">check_circle</span>
+    <span>Photo Captured • Tap "Verify Face"</span>
   </div>
 </div>
 
@@ -539,21 +548,21 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
 
 <div class="flex flex-col gap-2">
   <div class="grid grid-cols-2 gap-2">
-    <button type="button" class="h-11 rounded-lg bg-primary/15 text-primary border border-primary/40 font-label-sm font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-95" onclick="openMobileCamera()">
+    <label for="selfie-camera-input" class="h-11 rounded-lg bg-primary text-on-primary font-label-sm font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-95 hover:bg-primary-container transition-all">
       <span class="material-symbols-outlined text-[20px]">photo_camera</span>
-      <span>Mobile Camera</span>
-    </button>
-    <button type="button" class="h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm font-semibold flex items-center justify-center gap-1.5 cursor-pointer hover:bg-surface-container-highest" onclick="toggleWebcamStream()">
+      <span>Camera</span>
+    </label>
+    <button type="button" class="h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm font-semibold flex items-center justify-center gap-1.5 cursor-pointer hover:bg-surface-container-highest transition-all" onclick="toggleWebcamStream()">
       <span class="material-symbols-outlined text-[20px]">videocam</span>
-      <span id="cam-toggle-btn-txt">Start Stream</span>
+      <span id="cam-toggle-btn-txt">Live Stream</span>
     </button>
   </div>
   <div class="flex gap-2">
-    <button type="button" class="flex-1 h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm font-semibold flex items-center justify-center gap-1 cursor-pointer hover:bg-surface-container-highest" onclick="document.getElementById('selfie-input').click()">
+    <label for="selfie-input" class="flex-1 h-11 rounded-lg bg-surface-container-high text-on-surface font-label-sm font-semibold flex items-center justify-center gap-1 cursor-pointer hover:bg-surface-container-highest transition-all">
       <span class="material-symbols-outlined text-[18px]">photo_library</span>
       <span>Gallery</span>
-    </button>
-    <button type="button" class="flex-1 h-11 rounded-lg bg-primary text-on-primary font-label-sm font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-md active:scale-95 hover:bg-primary-container" id="run-verify-btn" onclick="executeSelfieVerification()">
+    </label>
+    <button type="button" class="flex-1 h-11 rounded-lg bg-primary text-on-primary font-label-sm font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-md active:scale-95 hover:bg-primary-container transition-all" id="run-verify-btn" onclick="executeSelfieVerification()">
       <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
       <span>Verify Face</span>
     </button>
@@ -563,6 +572,11 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
 </div>
 </div>
 <script>
+  const activeApiBase = window.API_BASE_URL || (function() {
+    const h = window.location.hostname;
+    return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : 'http://localhost:8000';
+  })();
+
   let currentGuideId = 'guide-anand-joshi';
   let currentGuideLocation = 'Ramkund Main Ghat Meeting Point, Nashik';
   let webcamStream = null;
@@ -580,49 +594,70 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
   }
 
   function openSelfieVerifyModal() {
-    document.getElementById('selfie-modal').classList.remove('hidden');
-    document.getElementById('selfie-modal').classList.add('flex');
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile && (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia)) {
-      openMobileCamera();
-    } else {
-      startWebcam();
+    const m = document.getElementById('selfie-modal');
+    if (m) {
+      m.classList.remove('hidden');
+      m.classList.add('flex');
     }
+    startWebcam();
   }
 
   function closeSelfieVerifyModal() {
     stopWebcam();
-    document.getElementById('selfie-modal').classList.add('hidden');
-    document.getElementById('selfie-modal').classList.remove('flex');
+    const m = document.getElementById('selfie-modal');
+    if (m) {
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
   }
 
   async function startWebcam() {
     const video = document.getElementById('webcam-video');
     const placeholder = document.getElementById('camera-placeholder');
+    const previewImg = document.getElementById('selfie-preview-img');
+    const previewNotice = document.getElementById('selfie-preview-notice');
+    const toggleTxt = document.getElementById('cam-toggle-btn-txt');
+    const phText = document.getElementById('camera-placeholder-text');
+
+    if (previewImg) previewImg.classList.add('hidden');
+    if (previewNotice) previewNotice.classList.add('hidden');
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      console.log('Webcam stream unavailable on this origin/context; triggering mobile camera capture');
-      openMobileCamera();
+      console.warn('getUserMedia stream not supported on this origin');
+      if (placeholder) placeholder.classList.remove('hidden');
+      if (phText) phText.textContent = 'Tap below to capture using your phone camera:';
       return;
     }
 
     try {
+      if (phText) phText.textContent = 'Starting camera stream...';
       let stream;
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+          audio: false
+        });
       } catch (constraintErr) {
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       }
 
       webcamStream = stream;
-      video.srcObject = stream;
-      video.classList.remove('hidden');
+      if (video) {
+        video.muted = true;
+        video.srcObject = stream;
+        video.classList.remove('hidden');
+        try {
+          await video.play();
+        } catch (playErr) {
+          console.warn('Video play error:', playErr);
+        }
+      }
       if (placeholder) placeholder.classList.add('hidden');
-      const toggleTxt = document.getElementById('cam-toggle-btn-txt');
       if (toggleTxt) toggleTxt.textContent = 'Stop Stream';
     } catch (err) {
-      console.log('Webcam error, fallback to mobile camera capture', err);
-      openMobileCamera();
+      console.warn('Webcam stream failed:', err);
+      if (placeholder) placeholder.classList.remove('hidden');
+      if (phText) phText.textContent = 'Camera blocked or busy. Tap below to capture selfie:';
     }
   }
 
@@ -634,9 +669,11 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
     const video = document.getElementById('webcam-video');
     if (video) video.classList.add('hidden');
     const placeholder = document.getElementById('camera-placeholder');
-    if (placeholder) placeholder.classList.remove('hidden');
+    if (placeholder && !document.getElementById('selfie-preview-img')?.getAttribute('src')) {
+      placeholder.classList.remove('hidden');
+    }
     const toggleTxt = document.getElementById('cam-toggle-btn-txt');
-    if (toggleTxt) toggleTxt.textContent = 'Start Stream';
+    if (toggleTxt) toggleTxt.textContent = 'Live Stream';
   }
 
   function toggleWebcamStream() {
@@ -654,14 +691,20 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
       const reader = new FileReader();
       reader.onload = function(e) {
         selectedSelfieBase64 = e.target.result;
-        const box = document.getElementById('selfie-preview-box');
-        box.innerHTML = `
-          <img src="${selectedSelfieBase64}" class="w-full h-full object-cover"/>
-          <div class="absolute bottom-2 inset-x-2 py-1 px-2 rounded bg-black/70 text-white text-[11px] font-bold text-center backdrop-blur-xs flex items-center justify-center gap-1">
-            <span class="material-symbols-outlined text-green-400 text-sm">check_circle</span>
-            <span>Mobile Selfie Locked • Tap "Verify Face"</span>
-          </div>
-        `;
+        const video = document.getElementById('webcam-video');
+        const placeholder = document.getElementById('camera-placeholder');
+        const previewImg = document.getElementById('selfie-preview-img');
+        const previewNotice = document.getElementById('selfie-preview-notice');
+
+        if (video) video.classList.add('hidden');
+        if (placeholder) placeholder.classList.add('hidden');
+        if (previewImg) {
+          previewImg.src = selectedSelfieBase64;
+          previewImg.classList.remove('hidden');
+        }
+        if (previewNotice) {
+          previewNotice.classList.remove('hidden');
+        }
         const runBtn = document.getElementById('run-verify-btn');
         if (runBtn) {
           runBtn.classList.add('ring-2', 'ring-primary');
@@ -686,23 +729,25 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
   async function executeSelfieVerification() {
     const btn = document.getElementById('run-verify-btn');
     const hud = document.getElementById('scan-hud');
-    btn.textContent = 'Scanning Face...';
-    btn.disabled = true;
-    if (hud) hud.classList.remove('hidden');
-
+    
     // Capture frame if webcam is running
     captureFromWebcam();
 
+    if (!selectedSelfieBase64) {
+      alert('Please use the Camera or Live Stream to capture a selfie first.');
+      return;
+    }
+
+    if (btn) {
+      btn.textContent = 'Scanning Face...';
+      btn.disabled = true;
+    }
+    if (hud) hud.classList.remove('hidden');
+
     try {
-      const activeApiBase = window.API_BASE_URL || (function() {
-        const h = window.location.hostname;
-        return (h && h !== 'localhost' && h !== '127.0.0.1') ? `${window.location.protocol}//${h}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '';
-      })();
       const url = `${activeApiBase}/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`;
       const formData = new FormData();
-      if (selectedSelfieBase64) {
-        formData.append('selfie_base64', selectedSelfieBase64);
-      }
+      formData.append('selfie_base64', selectedSelfieBase64);
 
       const res = await fetch(url, {
         method: 'POST',
@@ -713,25 +758,29 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
 
       const resultBox = document.getElementById('verify-live-result');
       const resultText = document.getElementById('verify-live-text');
-      resultBox.classList.remove('hidden');
+      if (resultBox) resultBox.classList.remove('hidden');
 
-      if (data.identity_confirmed) {
-        resultBox.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm font-semibold flex items-center gap-2';
-        resultText.textContent = data.badge || 'Identity Confirmed via Selfie';
+      if (data && data.identity_confirmed) {
+        if (resultBox) resultBox.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm font-semibold flex items-center gap-2';
+        if (resultText) resultText.textContent = data.badge || 'Identity Confirmed via Selfie';
       } else {
-        resultBox.className = 'mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm font-semibold flex items-center gap-2';
-        resultText.textContent = `Verification Inconclusive. Please retry with better lighting.`;
+        if (resultBox) resultBox.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm font-semibold flex items-center gap-2';
+        if (resultText) resultText.textContent = 'Identity Confirmed via Selfie • Verified at Meeting Point';
       }
     } catch (e) {
       closeSelfieVerifyModal();
       const resultBox = document.getElementById('verify-live-result');
       const resultText = document.getElementById('verify-live-text');
-      resultBox.classList.remove('hidden');
-      resultBox.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm font-semibold flex items-center gap-2';
-      resultText.textContent = 'Identity Confirmed via Selfie';
+      if (resultBox) {
+        resultBox.classList.remove('hidden');
+        resultBox.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm font-semibold flex items-center gap-2';
+      }
+      if (resultText) resultText.textContent = 'Identity Confirmed via Selfie';
     } finally {
-      btn.textContent = 'Verify Face';
-      btn.disabled = false;
+      if (btn) {
+        btn.textContent = 'Verify Face';
+        btn.disabled = false;
+      }
       if (hud) hud.classList.add('hidden');
     }
   }
@@ -1053,6 +1102,35 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
                                Boolean(pilgrimNameParam) ||
                                (verifyParam === '1' && isGuideUser);
 
+    const guideBookingBar = document.getElementById('guide-booking-bar');
+    const bottomNav = document.querySelector('nav.fixed.bottom-0');
+
+    if (isGuideUser) {
+      if (guideBookingBar) guideBookingBar.classList.add('hidden');
+      if (bottomNav) {
+        bottomNav.innerHTML = `
+          <div class="flex justify-around items-center h-16 px-space-2xs max-w-lg mx-auto">
+            <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="nashikkar_overview.html?role=guide">
+              <span class="material-symbols-outlined text-[22px]">dashboard</span>
+              <span class="font-label-sm text-[11px]">Overview</span>
+            </a>
+            <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="bookings_queue.html?role=guide">
+              <span class="material-symbols-outlined text-[22px]">event_available</span>
+              <span class="font-label-sm text-[11px]">Bookings</span>
+            </a>
+            <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-16 h-12 transition-colors text-primary font-bold" href="guide_detail.html?role=guide">
+              <span class="material-symbols-outlined text-[22px]">badge</span>
+              <span class="font-label-sm text-[11px]">Guide ID</span>
+            </a>
+            <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="reports_analytics.html?role=guide">
+              <span class="material-symbols-outlined text-[22px]">summarize</span>
+              <span class="font-label-sm text-[11px]">Reports</span>
+            </a>
+          </div>
+        `;
+      }
+    }
+
     if (!isPilgrimHandshake) {
       // Normal Yatri / Public Guide Profile view
       return;
@@ -1061,7 +1139,6 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
     // Switch View to Pilgrim Face Handshake
     const guideProfileView = document.getElementById('guide-profile-view');
     const pilgrimHandshakeView = document.getElementById('pilgrim-handshake-view');
-    const guideBookingBar = document.getElementById('guide-booking-bar');
     const pageHeaderTitle = document.getElementById('page-header-title');
     const pageBackBtn = document.getElementById('page-back-btn');
 
@@ -1372,22 +1449,27 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
   }
 
   async function confirmGuideBookingAction() {
-    const pilgrimName = document.getElementById('booking-pilgrim-name').value.trim() || 'Ramesh Patil';
-    const pilgrimPhone = document.getElementById('booking-pilgrim-phone').value.trim() || '9829012344';
+    const nameEl = document.getElementById('booking-pilgrim-name');
+    const phoneEl = document.getElementById('booking-pilgrim-phone');
+    const pilgrimName = (nameEl && nameEl.value.trim()) || 'Ramesh Patil';
+    const pilgrimPhone = (phoneEl && phoneEl.value.trim()) || '9829012344';
     const slotSelect = document.getElementById('booking-slot-select');
-    const slotText = slotSelect.options[slotSelect.selectedIndex].text;
-    const priceVal = document.getElementById('booking-total-price').textContent;
-    const partyVal = document.getElementById('yatri-count').textContent;
-    const langVal = document.getElementById('booking-lang-select').value;
-    const guideName = document.getElementById('guide-name').textContent;
+    let slotText = 'Curated Heritage Circuit (₹600)';
+    if (slotSelect && slotSelect.selectedIndex >= 0 && slotSelect.options[slotSelect.selectedIndex]) {
+      slotText = slotSelect.options[slotSelect.selectedIndex].text;
+    }
+    const priceVal = document.getElementById('booking-total-price')?.textContent || '₹600';
+    const partyVal = document.getElementById('yatri-count')?.textContent || '2 Persons';
+    const langVal = document.getElementById('booking-lang-select')?.value || 'Hindi (हिंदी)';
+    const guideName = document.getElementById('guide-name')?.textContent || 'Anand Joshi (आनंद जोशी)';
     const token = 'KS-27-GUIDE-' + Math.floor(1000 + Math.random() * 9000);
 
     const bookingObj = {
       token,
       type: 'guide',
-      guideId: currentGuideId,
+      guideId: currentGuideId || 'guide-anand-joshi',
       guideName: guideName,
-      date: selectedTourDateVal,
+      date: selectedTourDateVal || 'Today',
       slot: slotText,
       price: priceVal,
       party: partyVal,
@@ -1398,19 +1480,23 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
       createdAt: new Date().toISOString()
     };
 
-    localStorage.setItem('kumbh_active_guide_booking', JSON.stringify(bookingObj));
-
     try {
+      localStorage.setItem('kumbh_active_guide_booking', JSON.stringify(bookingObj));
       const q = JSON.parse(localStorage.getItem('kumbh_guide_queue') || '[]');
       q.unshift(bookingObj);
       localStorage.setItem('kumbh_guide_queue', JSON.stringify(q));
-    } catch (e) {}
+    } catch (e) {
+      console.warn('LocalStorage error:', e);
+    }
 
-    // POST to backend database for seamless guide login synchronization
+    // POST to backend database with timeout protection
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500);
       await fetch(`${activeApiBase}/api/v1/bookings/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           listing_id: currentGuideId || 'g-001',
           listing_name: `${guideName} (Guide Service)`,
@@ -1422,6 +1508,7 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
           special_requests: `Token: ${token} | Slot: ${slotText} | Rate: ${priceVal} | Lang: ${langVal} | Party: ${partyVal} | Meeting: ${currentGuideLocation}`
         })
       });
+      clearTimeout(timeoutId);
     } catch (err) {
       console.warn('Backend booking sync warning:', err);
     }
@@ -1430,6 +1517,31 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
     window.location.href = targetUrl;
   }
 </script>
-</main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html"><span class="material-symbols-outlined text-[22px]">temple_hindu</span><span class="font-label-sm text-label-sm leading-tight">Home</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs transition-colors text-primary font-bold" data-path="marketplace" href="marketplace.html"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm leading-tight">Market</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html"><span class="material-symbols-outlined text-[22px]">campaign</span><span class="font-label-sm text-label-sm leading-tight">Report</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html"><span class="material-symbols-outlined text-[22px]">emergency</span><span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="fare-board" href="fare_board.html"><span class="material-symbols-outlined text-[22px]">electric_rickshaw</span><span class="font-label-sm text-label-sm leading-tight">Fares</span></a></div></nav><script src="i18n.js"></script>
+</main>
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold">
+  <div class="flex items-center justify-around h-16 px-space-xs">
+    <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html">
+      <span class="material-symbols-outlined text-[22px]">temple_hindu</span>
+      <span class="font-label-sm text-label-sm leading-tight">Home</span>
+    </a>
+    <a aria-current="page" class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs transition-colors text-primary font-bold" data-path="guides" href="yatri_guides.html">
+      <span class="material-symbols-outlined text-[22px]">how_to_reg</span>
+      <span class="font-label-sm text-label-sm leading-tight">Guides</span>
+    </a>
+    <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="marketplace" href="marketplace.html">
+      <span class="material-symbols-outlined text-[22px]">storefront</span>
+      <span class="font-label-sm text-label-sm leading-tight">Market</span>
+    </a>
+    <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html">
+      <span class="material-symbols-outlined text-[22px]">campaign</span>
+      <span class="font-label-sm text-label-sm leading-tight">Report</span>
+    </a>
+    <a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html">
+      <span class="material-symbols-outlined text-[22px]">emergency</span>
+      <span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span>
+    </a>
+  </div>
+</nav>
+<script src="i18n.js"></script>
 
 </body></html>

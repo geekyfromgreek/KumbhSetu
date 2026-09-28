@@ -1269,6 +1269,16 @@
       const urlRole = new URLSearchParams(window.location.search).get('role');
       const storedRole = localStorage.getItem('kumbhsetu_nashikkar_role');
       if (urlRole === 'guide' || storedRole === 'guide') {
+        const marketTile = document.querySelector('a[href="marketplace.html"]');
+        if (marketTile) {
+          marketTile.href = 'bookings_queue.html?role=guide';
+          const t1 = marketTile.querySelector('.text-xs');
+          if (t1) t1.textContent = 'Guide Bookings';
+          const t2 = marketTile.querySelector('.text-\\[10px\\]');
+          if (t2) t2.textContent = 'Queue & Yatris';
+          const ic = marketTile.querySelector('.material-symbols-outlined');
+          if (ic) ic.textContent = 'event_available';
+        }
         const nav = document.querySelector('nav');
         if (nav) {
           nav.innerHTML = `
