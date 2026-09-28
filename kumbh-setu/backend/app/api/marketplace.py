@@ -103,9 +103,9 @@ async def get_listings(
     count_query = f"SELECT COUNT(*) as total FROM listings {where}"
     total = conn.execute(count_query, params).fetchone()["total"]
 
-    # Fetch page
+    # Fetch page — prioritize listings with images and high ratings
     offset = (page - 1) * page_size
-    query = f"SELECT * FROM listings {where} ORDER BY name LIMIT ? OFFSET ?"
+    query = f"SELECT * FROM listings {where} ORDER BY (CASE WHEN image_url IS NOT NULL THEN 0 ELSE 1 END), rating DESC, name ASC LIMIT ? OFFSET ?"
     params.extend([page_size, offset])
 
     rows = rows_to_list(conn.execute(query, params))
