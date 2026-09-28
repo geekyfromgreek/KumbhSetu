@@ -127,6 +127,21 @@ def init_db():
             last_active_at TEXT NOT NULL
         );
 
+        CREATE TABLE IF NOT EXISTS guide_operational_stats (
+            guide_id TEXT PRIMARY KEY,
+            duty_status TEXT DEFAULT 'On Duty',
+            completed_tours INTEGER DEFAULT 148,
+            in_queue_tours INTEGER DEFAULT 3,
+            total_earnings REAL DEFAULT 24800.0,
+            monthly_target REAL DEFAULT 35000.0,
+            rating REAL DEFAULT 4.9,
+            review_count INTEGER DEFAULT 148,
+            verified_selfie_rate REAL DEFAULT 100.0,
+            assigned_circuit TEXT DEFAULT 'Panchavati & Godavari Aarti',
+            circuit_alert TEXT DEFAULT 'Ramkund Sector 2: Normal flow, Aarti scheduled 18:45',
+            updated_at TEXT NOT NULL
+        );
+
         CREATE TABLE IF NOT EXISTS fact_checks (
             id TEXT PRIMARY KEY,
             claim_text TEXT NOT NULL,

@@ -680,6 +680,12 @@
 
   <!-- Core Scripts -->
   <script>
+    // Guide Role Guard: redirect to dedicated Guide Overview screen
+    const _urlParams = new URLSearchParams(window.location.search);
+    if (_urlParams.get('role') === 'guide') {
+      window.location.replace('guide_overview.html?role=guide');
+    }
+
     function handleAction(buttonEl, actionLabel) {
       buttonEl.disabled = true;
       buttonEl.classList.add('opacity-70');

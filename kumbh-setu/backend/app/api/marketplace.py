@@ -4,6 +4,7 @@ Listings CRUD, filtering, search, distance-based sorting.
 """
 from fastapi import APIRouter, Query, Depends, HTTPException
 from typing import Optional
+from pydantic import BaseModel
 from datetime import datetime, timezone
 from ..schemas.schemas import (
     ListingResponse, ListingListResponse, ListingCreate, ListingUpdate,
@@ -709,3 +710,137 @@ async def get_guide_detail(guide_id: str):
         "created_at": r.get("created_at"),
         "last_active_at": r.get("last_active_at")
     }
+
+
+@router.get("/guides/{guide_id}/overview")
+async def get_guide_overview(guide_id: str):
+    """
+    Get persistent operational stats, active queue, and tour reports for a local guide.
+    """
+    conn = get_connection()
+    # 1. Fetch guide profile
+    guide_row = conn.execute("SELECT * FROM local_guides WHERE id = ?", (guide_id,)).fetchone()
+    if not guide_row:
+        guide_row = conn.execute("SELECT * FROM local_guides WHERE id = 'guide-anand-joshi'").fetchone()
+
+    guide_dict = row_to_dict(guide_row) if guide_row else {
+        "id": guide_id,
+        "name": "Anand Joshi (आनंद जोशी)",
+        "govt_id_number": "MH-15-GUIDE-0082",
+        "phone_number": "0253-2513511",
+        "hourly_rate": 150.0,
+        "image_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i"
+    }
+
+    # 2. Fetch or initialize operational stats
+    stats_row = conn.execute("SELECT * FROM guide_operational_stats WHERE guide_id = ?", (guide_id,)).fetchone()
+    if not stats_row:
+        stats_row = conn.execute("SELECT * FROM guide_operational_stats WHERE guide_id = 'guide-anand-joshi'").fetchone()
+
+    stats = row_to_dict(stats_row) if stats_row else {
+        "guide_id": guide_id,
+        "duty_status": "On Duty",
+        "completed_tours": 148,
+        "in_queue_tours": 3,
+        "total_earnings": 24800.0,
+        "monthly_target": 35000.0,
+        "rating": 4.9,
+        "review_count": 148,
+        "verified_selfie_rate": 100.0,
+        "assigned_circuit": "Ramkund Ghat & Panchavati Heritage",
+        "circuit_alert": "Ramkund Sector 2: River levels normal. Evening Godavari Aarti scheduled at 18:45."
+    }
+
+    # 3. Fetch recent bookings for this guide
+    recent_bookings = rows_to_list(conn.execute(
+        "SELECT * FROM bookings WHERE category = 'guide' OR listing_id LIKE ? ORDER BY created_at DESC LIMIT 10",
+        (f"%{guide_id}%",)
+    ))
+
+    return {
+        "guide": {
+            "id": guide_dict.get("id"),
+            "name": guide_dict.get("name"),
+            "govt_id_number": guide_dict.get("govt_id_number") or "MH-15-GUIDE-0082",
+            "phone_number": guide_dict.get("phone_number"),
+            "hourly_rate": guide_dict.get("hourly_rate") or 150.0,
+            "verification_status": "Kumbhveer Verified",
+            "identity_confirmed_via_selfie": True,
+            "image_url": guide_dict.get("image_url")
+        },
+        "stats": stats,
+        "recent_bookings": recent_bookings,
+        "next_upcoming_tour": {
+            "token": "KS-27-GUIDE-4819",
+            "yatri_name": "Ramesh Patil",
+            "yatri_phone": "+91 98290 12344",
+            "party_size": 2,
+            "time_slot": "17:30 - 19:00 (Today)",
+            "circuit": "Ramkund Ghat & Evening Godavari Aarti",
+            "meeting_point": "Ramkund Steps #2, Sector 2",
+            "fare": "₹300 (Capped Fair Rate)",
+            "status": "Accepted • Ready for Selfie Handshake"
+        }
+    }
+
+
+class GuideOverviewUpdate(BaseModel):
+    duty_status: Optional[str] = None
+    assigned_circuit: Optional[str] = None
+    circuit_alert: Optional[str] = None
+    completed_tours: Optional[int] = None
+    total_earnings: Optional[float] = None
+
+
+@router.post("/guides/{guide_id}/overview")
+async def update_guide_overview(guide_id: str, payload: GuideOverviewUpdate):
+    """
+    Update persistent operational status (e.g. duty status, earnings, circuit) for a guide.
+    """
+    conn = get_connection()
+    now = now_iso()
+
+    row = conn.execute("SELECT * FROM guide_operational_stats WHERE guide_id = ?", (guide_id,)).fetchone()
+    if not row:
+        conn.execute("""
+            INSERT INTO guide_operational_stats (
+                guide_id, duty_status, completed_tours, in_queue_tours, total_earnings,
+                monthly_target, rating, review_count, verified_selfie_rate,
+                assigned_circuit, circuit_alert, updated_at
+            ) VALUES (?, ?, 148, 3, 24800.0, 35000.0, 4.9, 148, 100.0, ?, ?, ?)
+        """, (
+            guide_id,
+            payload.duty_status or "On Duty",
+            payload.assigned_circuit or "Ramkund Ghat & Panchavati Heritage",
+            payload.circuit_alert or "Normal flow",
+            now
+        ))
+    else:
+        updates = []
+        params = []
+        if payload.duty_status is not None:
+            updates.append("duty_status = ?")
+            params.append(payload.duty_status)
+        if payload.assigned_circuit is not None:
+            updates.append("assigned_circuit = ?")
+            params.append(payload.assigned_circuit)
+        if payload.circuit_alert is not None:
+            updates.append("circuit_alert = ?")
+            params.append(payload.circuit_alert)
+        if payload.completed_tours is not None:
+            updates.append("completed_tours = ?")
+            params.append(payload.completed_tours)
+        if payload.total_earnings is not None:
+            updates.append("total_earnings = ?")
+            params.append(payload.total_earnings)
+        
+        if updates:
+            updates.append("updated_at = ?")
+            params.append(now)
+            params.append(guide_id)
+            conn.execute(f"UPDATE guide_operational_stats SET {', '.join(updates)} WHERE guide_id = ?", params)
+    
+    conn.commit()
+    updated_row = conn.execute("SELECT * FROM guide_operational_stats WHERE guide_id = ?", (guide_id,)).fetchone()
+    return {"status": "success", "stats": row_to_dict(updated_row) if updated_row else {}}
+

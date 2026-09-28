@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Guide Operational Overview — KumbhSetu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#7c2d12',
+            'primary-container': '#9a3412',
+            'on-primary': '#ffffff',
+            secondary: '#c2410c',
+            surface: '#fffaf5',
+            'surface-container-lowest': '#ffffff',
+            'surface-container-low': '#fef3eb',
+            'surface-container': '#fce8db',
+            'surface-container-high': '#f9dcc8',
+            'on-surface': '#2c1810',
+            'on-surface-variant': '#785548',
+            outline: '#bcaaa4',
+            'outline-variant': '#e7d8d0',
+            tertiary: '#047857'
+          },
+          fontFamily: {
+            headline: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['"Noto Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #fffaf5; font-family: 'Noto Sans', sans-serif; }
+    h1, h2, h3, h4, .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen text-on-surface flex flex-col pb-24">
+
+  <!-- Top App Bar -->
+  <header class="sticky top-0 z-40 bg-surface/90 backdrop-blur-md border-b border-outline-variant/40 px-4 py-3 flex items-center justify-between shadow-xs">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-xl bg-primary text-on-primary flex items-center justify-center font-bold text-base shadow-sm">
+        <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+      </div>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <h1 class="text-sm font-bold text-on-surface font-headline leading-tight">Local Guide Portal</h1>
+          <span class="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">Simhastha 2027</span>
+        </div>
+        <p class="text-[11px] text-on-surface-variant leading-none mt-0.5">Operational Overview &amp; Tour Schedule</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="duty-toggle-btn" onclick="toggleDutyStatus()" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200">
+        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+        <span id="duty-status-text">On Duty</span>
+      </button>
+      <a href="guide_detail.html?role=guide" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-primary" title="View Guide ID">
+        <span class="material-symbols-outlined text-[18px]">badge</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-xl mx-auto w-full px-4 pt-4 flex flex-col gap-4">
+
+    <!-- Guide Profile Hero Header Card -->
+    <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/40 flex flex-col gap-3">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="relative w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20 shrink-0">
+            <img id="guide-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT1YnFnhc5fLvmdQQ7APNF8zxiJAKfxnYgVvstowtpRWOyyE6GmJpJt-YXOU5xxx9LNjrQuKQOd2TA6BYpD8rZCvn4ScxGSA2k_291uIXTQie-JRRFNeV3zf0WCiRLpSfPi7PHnZFCJettBdhX2y4CAT2qO9AICBMHPbFe7kXMmDtfJAMUNAM6QqkhpoM8p2zvicu6UvvUE-1bQxtPXsK6EcQuubMcbdaO8-b0HA5GZ_2itGkUxn_i" alt="Guide Photo" class="w-full h-full object-cover"/>
+            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <h2 id="guide-name" class="font-bold text-base text-on-surface font-headline">Anand Joshi (आनंद जोशी)</h2>
+              <span class="px-1.5 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-bold">Certified</span>
+            </div>
+            <p id="guide-govtid" class="text-xs font-semibold text-primary mt-0.5">Govt Reg #MH-15-GUIDE-0082</p>
+            <div class="flex items-center gap-2 text-[11px] text-on-surface-variant mt-1 flex-wrap">
+              <span class="flex items-center gap-0.5 text-emerald-700 font-semibold">
+                <span class="material-symbols-outlined text-[13px]">verified_user</span>
+                <span>Identity Confirmed via Selfie</span>
+              </span>
+              <span>•</span>
+              <span id="guide-circuit">Ramkund Ghat &amp; Panchavati</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between text-xs text-on-surface-variant">
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[15px] text-primary">gavel</span>
+          <span>Regulated Capped Rate: <strong>₹150 / hr</strong></span>
+        </span>
+        <span class="flex items-center gap-1 text-emerald-800 font-semibold">
+          <span class="material-symbols-outlined text-[14px]">price_check</span>
+          <span>100% Civic Compliant</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Real-Time Metrics & KPI Grid (4 Cards) -->
+    <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
+      <!-- 1. Today's Scheduled Tours -->
+      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/40 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-on-surface-variant mb-1">
+          <span class="text-xs font-semibold">Today's Schedule</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+        </div>
+        <div>
+          <div class="flex items-baseline gap-1">
+            <span id="kpi-today-tours" class="text-2xl font-extrabold text-on-surface font-headline">4</span>
+            <span class="text-xs text-on-surface-variant font-medium">Tours</span>
+          </div>
+          <p class="text-[11px] text-emerald-700 font-semibold mt-0.5">2 Completed • 1 Live • 1 Next</p>
+        </div>
+      </div>
+
+      <!-- 2. Lifetime Completed Tours -->
+      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/40 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-on-surface-variant mb-1">
+          <span class="text-xs font-semibold">Total Tours Led</span>
+          <span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
+        </div>
+        <div>
+          <div class="flex items-baseline gap-1">
+            <span id="kpi-total-tours" class="text-2xl font-extrabold text-on-surface font-headline">148</span>
+            <span class="text-xs text-on-surface-variant font-medium">Pilgrim Groups</span>
+          </div>
+          <p class="text-[11px] text-on-surface-variant mt-0.5">100% Selfie-Verified at Ghat</p>
+        </div>
+      </div>
+
+      <!-- 3. Earnings & Payout Summary -->
+      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/40 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-on-surface-variant mb-1">
+          <span class="text-xs font-semibold">Total Earnings</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">payments</span>
+        </div>
+        <div>
+          <div class="flex items-baseline gap-1">
+            <span id="kpi-earnings" class="text-2xl font-extrabold text-primary font-headline">₹24,800</span>
+          </div>
+          <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mt-1.5">
+            <div class="bg-primary h-full rounded-full" style="width: 71%;"></div>
+          </div>
+          <p class="text-[10px] text-on-surface-variant mt-1">71% of ₹35k Monthly Target</p>
+        </div>
+      </div>
+
+      <!-- 4. Yatri Trust & Rating -->
+      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/40 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-on-surface-variant mb-1">
+          <span class="text-xs font-semibold">Trust &amp; Rating</span>
+          <span class="material-symbols-outlined text-amber-500 text-[18px]">star</span>
+        </div>
+        <div>
+          <div class="flex items-baseline gap-1">
+            <span id="kpi-rating" class="text-2xl font-extrabold text-on-surface font-headline">4.9</span>
+            <span class="text-xs text-amber-600 font-bold">★ ★ ★ ★ ★</span>
+          </div>
+          <p class="text-[11px] text-on-surface-variant mt-0.5">148 Audits • Zero Complaints</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Next Tour Actionable Hero Card -->
+    <div class="bg-gradient-to-br from-primary/10 via-surface-container-lowest to-surface-container-low rounded-2xl p-4 border border-primary/20 shadow-xs flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping"></span>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider">Next Actionable Tour Today</h3>
+        </div>
+        <span id="tour-token" class="px-2 py-0.5 rounded-full bg-primary text-on-primary text-[10px] font-bold shadow-xs">#KS-27-GUIDE-4819</span>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <div class="flex items-baseline justify-between">
+          <h4 id="tour-yatri" class="text-base font-bold text-on-surface font-headline">Ramesh Patil (Party of 2)</h4>
+          <span id="tour-fee" class="text-sm font-extrabold text-primary">₹300</span>
+        </div>
+        <p id="tour-slot" class="text-xs text-on-surface-variant flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px] text-primary">schedule</span>
+          <span>17:30 – 19:00 • Ramkund Ghat &amp; Evening Godavari Aarti</span>
+        </p>
+        <p id="tour-meeting" class="text-xs text-on-surface-variant flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px] text-tertiary">location_on</span>
+          <span>Meeting Point: <strong>Ramkund Steps #2, Sector 2</strong></span>
+        </p>
+      </div>
+
+      <div class="pt-2 border-t border-outline-variant/30 grid grid-cols-2 gap-2">
+        <a href="guide_detail.html?role=guide&verify=1" class="py-2.5 px-3 rounded-xl bg-primary text-on-primary font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm hover:bg-primary-container transition-all text-center">
+          <span class="material-symbols-outlined text-[16px]">photo_camera</span>
+          <span>Verify Yatri Selfie</span>
+        </a>
+        <a href="tel:+919829012344" class="py-2.5 px-3 rounded-xl bg-surface-container-high text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 border border-outline-variant/40 hover:bg-surface-container transition-all text-center">
+          <span class="material-symbols-outlined text-[16px] text-primary">call</span>
+          <span>Call Pilgrim</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Operational Actions (4 Tiles) -->
+    <div class="flex flex-col gap-2">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant px-0.5">Quick Actions &amp; Portals</h3>
+      <div class="grid grid-cols-2 gap-2.5">
+        <a href="bookings_queue.html?role=guide" class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/40 shadow-xs flex items-center gap-2.5 hover:shadow-md transition-shadow">
+          <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">format_list_bulleted</span>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1">
+              <span class="text-xs font-bold text-on-surface truncate">Bookings Queue</span>
+              <span class="px-1.5 py-0.2 rounded-full bg-primary text-on-primary text-[9px] font-bold shrink-0">3</span>
+            </div>
+            <p class="text-[10px] text-on-surface-variant truncate">Accept &amp; manage requests</p>
+          </div>
+        </a>
+
+        <a href="guide_detail.html?role=guide&verify=1" class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/40 shadow-xs flex items-center gap-2.5 hover:shadow-md transition-shadow">
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+          </div>
+          <div class="min-w-0">
+            <span class="text-xs font-bold text-on-surface truncate">Ghat Selfie Verify</span>
+            <p class="text-[10px] text-on-surface-variant truncate">Meeting handshake camera</p>
+          </div>
+        </a>
+
+        <a href="guide_detail.html?role=guide" class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/40 shadow-xs flex items-center gap-2.5 hover:shadow-md transition-shadow">
+          <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">badge</span>
+          </div>
+          <div class="min-w-0">
+            <span class="text-xs font-bold text-on-surface truncate">My Guide ID Card</span>
+            <p class="text-[10px] text-on-surface-variant truncate">Civic digital credential</p>
+          </div>
+        </a>
+
+        <a href="reports_analytics.html?role=guide" class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/40 shadow-xs flex items-center gap-2.5 hover:shadow-md transition-shadow">
+          <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-800 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">campaign</span>
+          </div>
+          <div class="min-w-0">
+            <span class="text-xs font-bold text-on-surface truncate">Reports &amp; Safety</span>
+            <p class="text-[10px] text-on-surface-variant truncate">Alert civic control room</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Assigned Circuit Live Civic & Safety Feed -->
+    <div class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/40 shadow-xs flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px]">emergency_home</span>
+          <h3 class="text-xs font-bold text-on-surface uppercase tracking-wider">Ramkund Circuit Police &amp; Ghat Advisory</h3>
+        </div>
+        <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Live Advisory</span>
+      </div>
+      <p id="circuit-alert-text" class="text-xs text-on-surface leading-relaxed">
+        Ramkund Sector 2: Godavari river bathing water levels are normal. Evening Maha Aarti scheduled at 18:45 PM. Pedestrian-only ring road active between Malegaon Stand and Ramkund.
+      </p>
+      <div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between text-[11px] text-on-surface-variant">
+        <span>Verified by Nashik Police Control Room</span>
+        <span class="text-primary font-semibold">Ref: NMC-SIM-2027</span>
+      </div>
+    </div>
+
+    <!-- Recent Tours Log (History) -->
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between px-0.5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Recent Completed Tours</h3>
+        <span class="text-[11px] text-primary font-bold">Rate Capped ₹150/hr</span>
+      </div>
+
+      <div id="recent-tours-list" class="flex flex-col gap-2">
+        <!-- Tour Item 1 -->
+        <div class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/30 flex items-center justify-between shadow-xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+              ✓
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-on-surface">Sunil Verma &amp; Family (3 Pax)</h4>
+              <p class="text-[10px] text-on-surface-variant">Today 09:30 AM • Panchavati Heritage Walk</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-bold text-primary">₹300</span>
+            <span class="block text-[9px] text-emerald-700 font-bold">Paid &amp; Verified</span>
+          </div>
+        </div>
+
+        <!-- Tour Item 2 -->
+        <div class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/30 flex items-center justify-between shadow-xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+              ✓
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-on-surface">Smt. Rohini Deshpande (2 Pax)</h4>
+              <p class="text-[10px] text-on-surface-variant">Yesterday 04:00 PM • Kalaram &amp; Sita Gumpha</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-bold text-primary">₹300</span>
+            <span class="block text-[9px] text-emerald-700 font-bold">Paid &amp; Verified</span>
+          </div>
+        </div>
+
+        <!-- Tour Item 3 -->
+        <div class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/30 flex items-center justify-between shadow-xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+              ✓
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-on-surface">Balkrishna Joshi (4 Pax)</h4>
+              <p class="text-[10px] text-on-surface-variant">Sep 26 • Trimbak Jyotirlinga Darshan</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-bold text-primary">₹400</span>
+            <span class="block text-[9px] text-emerald-700 font-bold">Paid &amp; Verified</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Fixed 4-Tab Bottom Navigation for Local Guide -->
+  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)] border-t border-outline-variant/20" data-active-classes="text-primary font-bold">
+    <div class="flex justify-around items-center h-16 px-space-2xs max-w-lg mx-auto">
+      <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-16 h-12 transition-colors text-primary font-bold" data-path="overview" href="guide_overview.html?role=guide">
+        <span class="material-symbols-outlined text-[22px]">dashboard</span>
+        <span class="font-label-sm text-label-sm">Overview</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="bookings" href="bookings_queue.html?role=guide">
+        <span class="material-symbols-outlined text-[22px]">event_available</span>
+        <span class="font-label-sm text-label-sm">Bookings</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="guide-id" href="guide_detail.html?role=guide">
+        <span class="material-symbols-outlined text-[22px]">badge</span>
+        <span class="font-label-sm text-label-sm">Guide ID</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="reports" href="reports_analytics.html?role=guide">
+        <span class="material-symbols-outlined text-[22px]">summarize</span>
+        <span class="font-label-sm text-label-sm">Reports</span>
+      </a>
+    </div>
+  </nav>
+
+  <script>
+    const activeApiBase = window.API_BASE_URL || (location.origin.includes(':3000') ? 'http://localhost:8000' : location.origin);
+    const activeGuideId = 'guide-anand-joshi';
+    let isDutyOn = true;
+
+    async function loadGuideOverview() {
+      // 1. Check local storage cache for instant render
+      try {
+        const cached = localStorage.getItem('kumbh_guide_overview_cache');
+        if (cached) {
+          applyOverviewData(JSON.parse(cached));
+        }
+      } catch (e) {}
+
+      // 2. Fetch fresh persistent stats from backend
+      try {
+        const res = await fetch(`${activeApiBase}/api/v1/marketplace/guides/${activeGuideId}/overview`);
+        if (res.ok) {
+          const data = await res.json();
+          applyOverviewData(data);
+          localStorage.setItem('kumbh_guide_overview_cache', JSON.stringify(data));
+        }
+      } catch (err) {
+        console.warn('Backend fetch warning, using local state:', err);
+      }
+    }
+
+    function applyOverviewData(data) {
+      if (!data) return;
+
+      const guide = data.guide || {};
+      const stats = data.stats || {};
+      const tour = data.next_upcoming_tour || {};
+
+      if (guide.name) document.getElementById('guide-name').textContent = guide.name;
+      if (guide.govt_id_number) document.getElementById('guide-govtid').textContent = `Govt Reg #${guide.govt_id_number}`;
+      if (guide.image_url) document.getElementById('guide-avatar').src = guide.image_url;
+
+      if (stats.completed_tours !== undefined) {
+        document.getElementById('kpi-total-tours').textContent = stats.completed_tours;
+      }
+      if (stats.total_earnings !== undefined) {
+        document.getElementById('kpi-earnings').textContent = `₹${Math.round(stats.total_earnings).toLocaleString('en-IN')}`;
+      }
+      if (stats.rating !== undefined) {
+        document.getElementById('kpi-rating').textContent = stats.rating.toFixed(1);
+      }
+      if (stats.circuit_alert) {
+        document.getElementById('circuit-alert-text').textContent = stats.circuit_alert;
+      }
+      if (stats.assigned_circuit) {
+        document.getElementById('guide-circuit').textContent = stats.assigned_circuit;
+      }
+
+      if (tour.token) {
+        document.getElementById('tour-token').textContent = tour.token;
+        document.getElementById('tour-yatri').textContent = `${tour.yatri_name} (${tour.party_size} Pax)`;
+        document.getElementById('tour-fee').textContent = tour.fare;
+        document.getElementById('tour-slot').innerHTML = `<span class="material-symbols-outlined text-[14px] text-primary">schedule</span><span>${tour.time_slot} • ${tour.circuit}</span>`;
+        document.getElementById('tour-meeting').innerHTML = `<span class="material-symbols-outlined text-[14px] text-tertiary">location_on</span><span>Meeting Point: <strong>${tour.meeting_point}</strong></span>`;
+      }
+
+      // Duty status
+      isDutyOn = (stats.duty_status || 'On Duty').toLowerCase().includes('on');
+      updateDutyUI(isDutyOn);
+    }
+
+    function updateDutyUI(on) {
+      const btn = document.getElementById('duty-toggle-btn');
+      const txt = document.getElementById('duty-status-text');
+      if (on) {
+        btn.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200';
+        txt.textContent = 'On Duty';
+        btn.querySelector('span:first-child').className = 'w-2 h-2 rounded-full bg-emerald-600 animate-pulse';
+      } else {
+        btn.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 bg-gray-200 text-gray-700 border border-gray-300 hover:bg-gray-300';
+        txt.textContent = 'Off Duty';
+        btn.querySelector('span:first-child').className = 'w-2 h-2 rounded-full bg-gray-500';
+      }
+    }
+
+    async function toggleDutyStatus() {
+      isDutyOn = !isDutyOn;
+      const newStatus = isDutyOn ? 'On Duty' : 'Off Duty';
+      updateDutyUI(isDutyOn);
+
+      // Persist to backend
+      try {
+        await fetch(`${activeApiBase}/api/v1/marketplace/guides/${activeGuideId}/overview`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ duty_status: newStatus })
+        });
+      } catch (err) {
+        console.warn('Backend update failed, persisting locally:', err);
+      }
+
+      // Persist to localStorage
+      try {
+        const cached = JSON.parse(localStorage.getItem('kumbh_guide_overview_cache') || '{}');
+        if (!cached.stats) cached.stats = {};
+        cached.stats.duty_status = newStatus;
+        localStorage.setItem('kumbh_guide_overview_cache', JSON.stringify(cached));
+      } catch (e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', loadGuideOverview);
+  </script>
+  <script src="i18n.js"></script>
+</body>
+</html>
