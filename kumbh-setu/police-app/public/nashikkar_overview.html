@@ -363,7 +363,7 @@
             </p>
 
             <div class="flex items-center gap-2 pt-1">
-              <a href="kumbhveer_portal.html" class="flex-1 h-9 rounded-lg bg-primary text-on-primary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs">
+              <a href="nashikkar_volunteers.html" class="flex-1 h-9 rounded-lg bg-primary text-on-primary text-xs font-bold flex items-center justify-center gap-1 active:scale-98 transition-transform shadow-xs">
                 <span class="material-symbols-outlined text-[16px]">check_circle</span>
                 Verify On-Site
               </a>
@@ -663,11 +663,11 @@
         <span class="text-[10px] leading-tight">Market</span>
       </a>
 
-      <!-- Tab 4: Kumbhveers (Opens Volunteer Leaderboard) -->
-      <button type="button" onclick="scrollToVolunteerLeaderboard()" class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" data-path="kumbhveer">
+      <!-- Tab 4: Volunteers -->
+      <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="volunteers" href="nashikkar_volunteers.html">
         <span class="material-symbols-outlined text-[22px]">volunteer_activism</span>
         <span class="text-[10px] leading-tight font-medium">Volunteers</span>
-      </button>
+      </a>
 
       <!-- Tab 5: Vendors -->
       <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="vendors" href="vendor_registration.html">
@@ -1207,8 +1207,8 @@
                     <span class="material-symbols-outlined text-[16px]">verified_user</span>
                     Review Flag
                   </button>
-                  <a href="kumbhveer_portal.html" class="h-9 px-3 rounded-lg bg-primary text-on-primary text-xs font-bold hover:bg-primary-container transition-colors flex items-center gap-1 active:scale-98">
-                    <span class="material-symbols-outlined text-[15px]">school</span>
+                  <a href="nashikkar_volunteers.html" class="h-9 px-3 rounded-lg bg-primary text-on-primary text-xs font-bold hover:bg-primary-container transition-colors flex items-center gap-1 active:scale-98">
+                    <span class="material-symbols-outlined text-[15px]">fact_check</span>
                     Verify
                   </a>
                 </div>
@@ -1263,6 +1263,37 @@
         }, 4000);
       }
     }
+
+    // Adapt navigation when accessed as Local Guide (No Market section)
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlRole = new URLSearchParams(window.location.search).get('role');
+      const storedRole = localStorage.getItem('kumbhsetu_nashikkar_role');
+      if (urlRole === 'guide' || storedRole === 'guide') {
+        const nav = document.querySelector('nav');
+        if (nav) {
+          nav.innerHTML = `
+            <div class="flex justify-around items-center h-16 px-space-2xs max-w-lg mx-auto">
+              <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-16 h-12 transition-colors text-primary font-bold" data-path="overview" href="nashikkar_overview.html?role=guide">
+                <span class="material-symbols-outlined text-[22px]">dashboard</span>
+                <span class="font-label-sm text-label-sm">Overview</span>
+              </a>
+              <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="bookings" href="bookings_queue.html?role=guide">
+                <span class="material-symbols-outlined text-[22px]">event_available</span>
+                <span class="font-label-sm text-label-sm">Bookings</span>
+              </a>
+              <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="guide-id" href="guide_detail.html?role=guide">
+                <span class="material-symbols-outlined text-[22px]">badge</span>
+                <span class="font-label-sm text-label-sm">Guide ID</span>
+              </a>
+              <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="reports" href="reports_analytics.html?role=guide">
+                <span class="material-symbols-outlined text-[22px]">summarize</span>
+                <span class="font-label-sm text-label-sm">Reports</span>
+              </a>
+            </div>
+          `;
+        }
+      }
+    });
   </script>
 
   <script src="i18n.js"></script>

@@ -1159,24 +1159,20 @@ Live camera stream analyzes facial landmarks and runs biometric embedding match 
     const bottomNav = document.querySelector('nav.fixed.bottom-0');
     if (bottomNav) {
       bottomNav.innerHTML = `
-        <div class="flex justify-around items-center h-16 px-space-2xs">
-          <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="nashikkar_overview.html">
+        <div class="flex justify-around items-center h-16 px-space-2xs max-w-lg mx-auto">
+          <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="nashikkar_overview.html?role=guide">
             <span class="material-symbols-outlined text-[22px]">dashboard</span>
             <span class="font-label-sm text-[11px]">Overview</span>
           </a>
-          <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="vendor_registration.html">
-            <span class="material-symbols-outlined text-[22px]">badge</span>
-            <span class="font-label-sm text-[11px]">Vendors</span>
-          </a>
-          <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="marketplace.html">
-            <span class="material-symbols-outlined text-[22px]">storefront</span>
-            <span class="font-label-sm text-[11px]">Market</span>
-          </a>
-          <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-14 h-12 transition-colors text-secondary font-semibold" href="bookings_queue.html?role=guide">
+          <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="bookings_queue.html?role=guide">
             <span class="material-symbols-outlined text-[22px]">event_available</span>
             <span class="font-label-sm text-[11px]">Bookings</span>
           </a>
-          <a class="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="reports_analytics.html?role=guide">
+          <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-16 h-12 transition-colors text-primary font-bold" href="guide_detail.html?role=guide">
+            <span class="material-symbols-outlined text-[22px]">badge</span>
+            <span class="font-label-sm text-[11px]">Guide ID</span>
+          </a>
+          <a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-on-surface-variant hover:text-on-surface transition-colors" href="reports_analytics.html?role=guide">
             <span class="material-symbols-outlined text-[22px]">summarize</span>
             <span class="font-label-sm text-[11px]">Reports</span>
           </a>

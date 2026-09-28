@@ -356,6 +356,14 @@
 </div>
 <script>
   (function() {
+    // Role Guard: Market section should not exist for Local Guide
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlRole = urlParams.get('role');
+    if (urlRole === 'guide') {
+      window.location.replace('bookings_queue.html?role=guide');
+      return;
+    }
+
     const tabs = document.querySelectorAll('.cat-pill');
     const container = document.getElementById('listing-container');
     const searchInput = document.getElementById('marketplace-search');

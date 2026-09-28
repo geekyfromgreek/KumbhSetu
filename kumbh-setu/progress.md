@@ -43,6 +43,7 @@ Civic Trust & Fair Pricing Platform for Kumbh Mela 2027, Nashik
 - [x] **Phase 1: Route Audit & Navigation Isolation**
   - [x] Create `/kumbhveer/` layout, login, and portal in `yatri-nashikkar-app/app/kumbhveer/`
   - [x] Add `/nashikkar/volunteers.tsx` in `yatri-nashikkar-app/app/nashikkar/`
+  - [x] Local Guide Navigation Isolation: Removed Market section from Local Guide portal (`bookings_queue.html`, `guide_detail.html`, `reports_analytics.html`, `nashikkar_overview.html`) establishing 4 dedicated tabs (Overview, Bookings, Guide ID, Reports), and added `role=guide` route guard on `marketplace.html` to prevent accidental redirection to Yatri screens.
   - [x] Update Web HTML navigation links (Yatri reports to `report_issue.html`; Nashikkar volunteers to `nashikkar_volunteers.html`)
   - [x] Verify complete route isolation between Yatri, Nashikkar, Kumbhveer, and Police
 - [x] **Phase 2: Supabase Schema Migration (9 Tables + pgvector)**
