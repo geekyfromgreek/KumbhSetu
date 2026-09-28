@@ -61,6 +61,7 @@
             const emailMap = {
               guide: 'guide.suresh@kumbhsetu.in',
               vendor: 'vendor.godavari@kumbhsetu.in',
+              volunteers: 'kumbhveer.kthm@kumbhsetu.in',
               kumbhveer: 'kumbhveer.kthm@kumbhsetu.in',
               resident: 'resident.panchavati@kumbhsetu.in',
               nashikkar: 'resident.panchavati@kumbhsetu.in'

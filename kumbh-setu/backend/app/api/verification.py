@@ -170,6 +170,7 @@ async def register_guide_selfie(
     }
 
 
+@router.post("/guide/{guide_id}/verify")
 @router.post("/guide/{guide_id}/verify-booking-selfie")
 async def verify_guide_booking_selfie(
     guide_id: str,
@@ -226,18 +227,21 @@ async def verify_guide_booking_selfie(
                 return {
                     "identity_confirmed": False,
                     "checked_at": now_iso(),
+                    "badge": "Verification Incomplete",
                     "message": "No clear face detected in selfie. Please re-capture in good lighting."
                 }
             elif err == "multiple_faces_detected":
                 return {
                     "identity_confirmed": False,
                     "checked_at": now_iso(),
+                    "badge": "Verification Incomplete",
                     "message": "Multiple faces detected. Please frame only the guide in camera view."
                 }
             else:
                 return {
                     "identity_confirmed": False,
                     "checked_at": now_iso(),
+                    "badge": "Verification Incomplete",
                     "message": "Selfie verification could not complete. Please retry."
                 }
         new_embedding = new_embedding_result
@@ -254,13 +258,13 @@ async def verify_guide_booking_selfie(
         score = match_info.get("similarity_score", 0.98)
 
     checked_timestamp = now_iso()
-    logger.info(f"Booking selfie identity check: guide_id={guide_id}, confirmed={confirmed}, score={score}")
+    logger.info(f"Booking selfie identity check: guide_id={guide_id}, confirmed={confirmed}")
 
     return {
         "identity_confirmed": confirmed,
-        "similarity_score": score,
         "checked_at": checked_timestamp,
-        "message": f"Biometric Identity Confirmed via Face ID ({int(score * 100)}% match)" if confirmed else "Identity match below threshold. Please ensure clear lighting."
+        "badge": "Identity Confirmed via Selfie" if confirmed else "Verification Incomplete",
+        "message": "Identity Confirmed via Selfie" if confirmed else "Identity match below threshold. Please ensure clear lighting."
     }
 
 
