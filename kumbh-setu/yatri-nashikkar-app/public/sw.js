@@ -65,9 +65,7 @@ self.addEventListener('fetch', (event) => {
   // Pass-through for external API calls, Supabase, Render backend, and non-GET requests
   if (
     url.includes('supabase.co') ||
-    url.includes('onrender.com') ||
     url.includes('/api/') ||
-    url.includes('onrender.com') ||
     url.includes('/api/') ||
     url.includes(':8000') ||
     event.request.method !== 'GET'

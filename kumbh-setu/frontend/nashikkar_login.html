@@ -970,7 +970,7 @@
     localStorage.setItem('kumbhsetu_jwt', 'jwt-session-' + Date.now());
 
     // 2. Non-blocking background API sync with 2.5s safety timeout
-    const apiBase = window.API_BASE_URL || '';
+    const apiBase = window.API_BASE_URL || '/api';
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2500);
 

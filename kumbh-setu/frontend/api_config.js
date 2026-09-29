@@ -14,7 +14,7 @@
 
     // When deployed on Vercel or cloud production domain
     if (host.includes('vercel.app') || host.includes('render.com') || (protocol === 'https:' && !host.match(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.)/))) {
-      return '';
+      return '/api';
     }
 
     // When accessed from a phone via LAN IP, connect to laptop's port 8000
