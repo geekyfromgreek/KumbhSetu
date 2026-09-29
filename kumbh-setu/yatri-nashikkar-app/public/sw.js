@@ -1,8 +1,9 @@
-const CACHE_NAME = 'kumbhsetu-v5';
+const CACHE_NAME = 'kumbhsetu-v8';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/yatri_home.html',
+  '/yatri_guides.html',
   '/marketplace.html',
   '/listing_detail.html',
   '/fare_board.html',
@@ -75,7 +76,7 @@ self.addEventListener('fetch', (event) => {
 
   // Network-first strategy with cache fallback (prevents stale redirect errors)
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, { cache: 'no-cache' })
       .then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
           const responseClone = networkResponse.clone();
@@ -88,7 +89,7 @@ self.addEventListener('fetch', (event) => {
           if (cached) return cached;
           // Fallback for navigation requests
           if (event.request.mode === 'navigate') {
-            return caches.match(event.request.url) || caches.match('/index.html');
+            return caches.match(event.request.url) || caches.match('/yatri_home.html') || caches.match('/index.html');
           }
         });
       })
