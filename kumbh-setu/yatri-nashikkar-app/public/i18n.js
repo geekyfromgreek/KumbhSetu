@@ -9,23 +9,23 @@
 
   const TRANSLATIONS = {
   "\"Action Required: Upload approved rate card signed by auto rickshaw union secretary before permit dispatch.\"": {
-    "mr": "\"कृती Required: अपलोड करा approved दर card signed by रिक्षा रिक्षा union secretary before permit dispatch.\"",
+    "mr": "\"आवश्यक कृती: परवाना वितरणापूर्वी रिक्षा चालक संघटनेच्या सचिवाने स्वाक्षरी केलेले मंजूर दरपत्रक अपलोड करा.\"",
     "hi": "\"कार्रवाई Required: अपलोड करें approved दर card signed by ऑटो रिक्शा union secretary before permit dispatch.\"",
     "en": "\"Action Required: Upload approved rate card signed by auto rickshaw union secretary before permit dispatch.\""
   },
   "\"Authentic pure copper kalash. Tested it with Ganga-jal and water at the ghat, pure hammered copper. Highly recommended.\"": {
-    "mr": "\"Authentic pure तांबे कळश. Tested it with Ganga-jal and पाणी at the घाट, pure hammered तांबे. Highly recommended.\"",
-    "hi": "\"Authentic pure तांबा कलश. Tested it with Ganga-jal and जल / पानी at the घाट, pure hammered तांबा. Highly recommended.\"",
+    "mr": "\"अस्सल शुद्ध तांब्याचा कलश. घाटावर गंगाजलाने पडताळणी केली, शुद्ध घडवलेले तांबे आहे. अत्यंत शिफारसीय.\"",
+    "hi": "\"Authentic pure तांबा कलश. Tested it के साथ Ganga-jal और जल / पानी at घाट, pure hammered तांबा. Highly recommended.\"",
     "en": "\"Authentic pure copper kalash. Tested it with Ganga-jal and water at the ghat, pure hammered copper. Highly recommended.\""
   },
   "\"Fixed fair price with zero bargaining hassle. Very polite uncle and gave genuine guidance on the Godavari Aarti timings.\"": {
-    "mr": "\"Fixed वाजवी दर with शून्य bargaining hassle. Very polite uncle and gave genuine guidance on the गोदावरी आरती timings.\"",
-    "hi": "\"Fixed उचित मूल्य with शून्य bargaining hassle. Very polite uncle and gave genuine guidance on the गोदावरी आरती timings.\"",
+    "mr": "\"कसल्याही घासाघिसीशिवाय निश्चित वाजवी दर. अत्यंत नम्र काका आणि गोदावरी आरतीच्या वेळांबद्दल उत्तम मार्गदर्शन केले.\"",
+    "hi": "\"तयशुदा उचित मूल्य के साथ शून्य bargaining hassle. Very polite uncle और gave genuine guidance on गोदावरी आरती timings.\"",
     "en": "\"Fixed fair price with zero bargaining hassle. Very polite uncle and gave genuine guidance on the Godavari Aarti timings.\""
   },
   "\"Namaskar Kulkarni ji, do you have large 7-wick aarti diyas available for tomorrow morning's Godavari snan?\"": {
-    "mr": "\"Namaskar Kulkarni ji, do you have large 7-wick आरती दिवे available for tomorrow सकाळ's गोदावरी स्नान?\"",
-    "hi": "\"Namaskar Kulkarni ji, do you have large 7-wick आरती दीये available for tomorrow सुबह's गोदावरी स्नान?\"",
+    "mr": "\"नमस्कार कुलकर्णीजी, उद्या सकाळच्या गोदावरी स्नानासाठी ७ वातींचे मोठे आरती दिवे उपलब्ध आहेत का?\"",
+    "hi": "\"Namaskar Kulkarni ji, do you have large 7-wick आरती दीये available के लिए tomorrow सुबह's गोदावरी स्नान?\"",
     "en": "\"Namaskar Kulkarni ji, do you have large 7-wick aarti diyas available for tomorrow morning's Godavari snan?\""
   },
   "\"Trimbak road bus service suspended due to rain.\"": {
@@ -34,8 +34,8 @@
     "en": "\"Trimbak road bus service suspended due to rain.\""
   },
   "\"Very honest vendor at Ramkund main ghat. Charged ₹210 for brass diya, completely within the estimated fair range. High quality finish and packed nicely for our train journey.\"": {
-    "mr": "\"Very honest विक्रेता at रामकुंड main घाट. Charged ₹210 for पितळ दिवा, completely within the अंदाजित वाजवी range. उच्च / तीव्र quality finish and packed nicely for our train journey.\"",
-    "hi": "\"Very honest विक्रेता at रामकुंड main घाट. Charged ₹210 for पीतल दीया, completely within the अनुमानित उचित range. उच्च / तीव्र quality finish and packed nicely for our train journey.\"",
+    "mr": "\"रामकुंड मुख्य घाटावरील अतिशय प्रामाणिक विक्रेता. पितळी दिव्यासाठी ₹२१० आकारले, पूर्णपणे अंदाजित वाजवी मर्यादेत. उच्च दर्जाचे काम आणि रेल्वे प्रवासासाठी उत्तम पॅक करून दिले.\"",
+    "hi": "\"Very honest विक्रेता at रामकुंड main घाट. Charged ₹210 के लिए पीतल दीया, completely के भीतर अनुमानित उचित range. उच्च / तीव्र quality finish और packed nicely के लिए our train journey.\"",
     "en": "\"Very honest vendor at Ramkund main ghat. Charged ₹210 for brass diya, completely within the estimated fair range. High quality finish and packed nicely for our train journey.\""
   },
   "\"VIP Ramkund Bathing Passes being sold for ₹2,000 near CBS stand.\"": {
@@ -144,8 +144,8 @@
     "en": "(318 reviews)"
   },
   "(7 min walk)": {
-    "mr": "(7 मिनिटे चालत)",
-    "hi": "(7 मिनट पैदल)",
+    "mr": "(७ मिनिटे पायी)",
+    "hi": "(७ मिनट पैदल)",
     "en": "(7 min walk)"
   },
   "(Ahmedabad, Gujarat)": {
@@ -169,8 +169,8 @@
     "en": "(Jaipur, Rajasthan)"
   },
   "(K.T.H.M. College)": {
-    "mr": "(K.T.H.M. College)",
-    "hi": "(K.T.H.M. College)",
+    "mr": "(K.T.H.M. महाविद्यालय)",
+    "hi": "(K.T.H.M. कॉलेज)",
     "en": "(K.T.H.M. College)"
   },
   "(Lucknow, UP)": {
@@ -189,13 +189,13 @@
     "en": "(New Delhi)"
   },
   "(Optional)": {
-    "mr": "(Optional)",
-    "hi": "(Optional)",
+    "mr": "(ऐच्छिक)",
+    "hi": "(वैकल्पिक)",
     "en": "(Optional)"
   },
   "(Panchavati Resident)": {
-    "mr": "(पंचवटी Resident)",
-    "hi": "(पंचवटी Resident)",
+    "mr": "(पंचवटी रहिवासी)",
+    "hi": "(पंचवटी निवासी)",
     "en": "(Panchavati Resident)"
   },
   "(Pune)": {
@@ -244,13 +244,13 @@
     "en": "+63.6% Overcharge"
   },
   "+91 98210 44192 • Yatri Transit Pass #7721": {
-    "mr": "+91 98210 44192 • भाविक वाहतूक Pass #7721",
-    "hi": "+91 98210 44192 • तीर्थयात्री परिवहन Pass #7721",
+    "mr": "+91 98210 44192 • भाविक वाहतूक पास #7721",
+    "hi": "+91 98210 44192 • तीर्थयात्री परिवहन पास #7721",
     "en": "+91 98210 44192 • Yatri Transit Pass #7721"
   },
   "+₹600 (+67% over benchmark)": {
-    "mr": "+₹600 (+67% over प्रमाणक)",
-    "hi": "+₹600 (+67% over मानक)",
+    "mr": "+₹600 (+67% पेक्षा अधिक प्रमाणक)",
+    "hi": "+₹600 (+67% से अधिक मानक)",
     "en": "+₹600 (+67% over benchmark)"
   },
   "+₹70 Overcharge": {
@@ -269,8 +269,8 @@
     "en": "-- Choose from Sector 4 Registry --"
   },
   ". Missing driver union rate card endorsement for corridor pass.": {
-    "mr": ". Missing driver union दर card endorsement for corridor pass.",
-    "hi": ". Missing driver union दर card endorsement for corridor pass.",
+    "mr": ". Missing driver union दर card endorsement साठी corridor pass.",
+    "hi": ". Missing driver union दर card endorsement के लिए corridor pass.",
     "en": ". Missing driver union rate card endorsement for corridor pass."
   },
   ". Stays, food stalls, and auto rides are direct-contact only.": {
@@ -279,8 +279,8 @@
     "en": ". Stays, food stalls, and auto rides are direct-contact only."
   },
   "/ 2 hours tour": {
-    "mr": "/ 2 तास tour",
-    "hi": "/ 2 घंटे tour",
+    "mr": "/ 2 तास दौरा",
+    "hi": "/ 2 घंटे दौरा",
     "en": "/ 2 hours tour"
   },
   "/ 26 Raised": {
@@ -294,8 +294,8 @@
     "en": "/ day statutory cap"
   },
   "/ full half-day tour": {
-    "mr": "/ full half-दिवस tour",
-    "hi": "/ full half-दिन tour",
+    "mr": "/ full half-दिवस दौरा",
+    "hi": "/ full half-दिन दौरा",
     "en": "/ full half-day tour"
   },
   "/ group total (fair indicative locked)": {
@@ -304,8 +304,8 @@
     "en": "/ group total (fair indicative locked)"
   },
   "/ hour (Pre-Paid Fixed Tariff)": {
-    "mr": "/ hour (Pre-Paid Fixed दरपत्रक)",
-    "hi": "/ hour (Pre-Paid Fixed दर सूची)",
+    "mr": "/ hour (Pre-Paid निश्चित दरपत्रक)",
+    "hi": "/ hour (Pre-Paid तयशुदा दर सूची)",
     "en": "/ hour (Pre-Paid Fixed Tariff)"
   },
   "/ night": {
@@ -394,8 +394,8 @@
     "en": "1.2 km away • Ramkund Northern Ghat"
   },
   "1.2 km from Kushavarta Ghat": {
-    "mr": "1.2 km from कुशावर्त घाट",
-    "hi": "1.2 km from कुशावर्त घाट",
+    "mr": "1.2 km कडून कुशावर्त घाट",
+    "hi": "1.2 km से कुशावर्त घाट",
     "en": "1.2 km from Kushavarta Ghat"
   },
   "100% Compliant": {
@@ -424,8 +424,8 @@
     "en": "100% FALSE. Simhastha holy dips across all 24 Nashik & Trimbak ghats are strictly free and open to all citizens. Anyone selling passes is arrested under BNS."
   },
   "100% Fixed Dakshina display": {
-    "mr": "100% Fixed Dakshina display",
-    "hi": "100% Fixed Dakshina display",
+    "mr": "100% निश्चित Dakshina display",
+    "hi": "100% तयशुदा Dakshina display",
     "en": "100% Fixed Dakshina display"
   },
   "100% Pure": {
@@ -469,13 +469,13 @@
     "en": "14 Feb 2027"
   },
   "14:15 IST • Escalation": {
-    "mr": "14:15 IST • Escalation",
-    "hi": "14:15 IST • Escalation",
+    "mr": "14:15 IST • तक्रार निवारण",
+    "hi": "14:15 IST • शिकायत निवारण",
     "en": "14:15 IST • Escalation"
   },
   "14:22 IST • Patrol Dispatch": {
-    "mr": "14:22 IST • गस्त पथक Dispatch",
-    "hi": "14:22 IST • गश्ती दल Dispatch",
+    "mr": "14:22 IST • गस्त पथक रवानगी",
+    "hi": "14:22 IST • गश्ती दल प्रेषण",
     "en": "14:22 IST • Patrol Dispatch"
   },
   "14m ago": {
@@ -489,8 +489,8 @@
     "en": "14–16 Feb '27"
   },
   "150m from Ghat": {
-    "mr": "150m from घाट",
-    "hi": "150m from घाट",
+    "mr": "150m कडून घाट",
+    "hi": "150m से घाट",
     "en": "150m from Ghat"
   },
   "15–17 Feb 2027 (2 nights)": {
@@ -514,8 +514,8 @@
     "en": "18 Feb 2027 • 8:00 AM to 2:00 PM"
   },
   "18 Standard, 4 Dorm": {
-    "mr": "18 Standard, 4 डॉर्मिटरी",
-    "hi": "18 Standard, 4 डॉर्मिटरी",
+    "mr": "18 स्थानकard, 4 डॉर्मिटरी",
+    "hi": "18 स्टैंडard, 4 डॉर्मिटरी",
     "en": "18 Standard, 4 Dorm"
   },
   "18% capacity": {
@@ -549,8 +549,8 @@
     "en": "1h 10m ago"
   },
   "1x Certified 5-Mukhi Rudraksha Mala": {
-    "mr": "1x Certified 5-Mukhi रुद्राक्ष माळ",
-    "hi": "1x Certified 5-Mukhi रुद्राक्ष माला",
+    "mr": "1x प्रमाणित 5-Mukhi रुद्राक्ष माळ",
+    "hi": "1x सत्यापित 5-Mukhi रुद्राक्ष माला",
     "en": "1x Certified 5-Mukhi Rudraksha Mala"
   },
   "2 Guests": {
@@ -739,8 +739,8 @@
     "en": "3.5 km east"
   },
   "300m from Ramkund": {
-    "mr": "300m from रामकुंड",
-    "hi": "300m from रामकुंड",
+    "mr": "300m कडून रामकुंड",
+    "hi": "300m से रामकुंड",
     "en": "300m from Ramkund"
   },
   "310 pts": {
@@ -764,8 +764,8 @@
     "en": "3m ago"
   },
   "4 Inspected": {
-    "mr": "४ तपासणी पूर्ण",
-    "hi": "४ निरीक्षण पूर्ण",
+    "mr": "४ तपासलेल्या सुविधा",
+    "hi": "४ निरीक्षित सुविधाएं",
     "en": "4 Inspected"
   },
   "4 Open Inquiries": {
@@ -819,8 +819,8 @@
     "en": "450 pts"
   },
   "450m away • Panchavati Bazar Lane": {
-    "mr": "450 मी अंतरावर • पंचवटी Bazar Lane",
-    "hi": "450 मी दूर • पंचवटी Bazar Lane",
+    "mr": "450 मी अंतरावर • पंचवटी Bazar गल्ली",
+    "hi": "450 मी दूर • पंचवटी Bazar लेन",
     "en": "450m away • Panchavati Bazar Lane"
   },
   "48m ago": {
@@ -914,13 +914,13 @@
     "en": "6. Nashik Address / Sector"
   },
   "6. Personal Face CV Verification (Guide Only)": {
-    "mr": "6. Personal Face CV Verification (मार्गदर्शक Only)",
-    "hi": "6. Personal Face CV Verification (गाइड Only)",
+    "mr": "6. Personal Face CV पडताळणी (मार्गदर्शक Only)",
+    "hi": "6. Personal Face CV सत्यापन (गाइड Only)",
     "en": "6. Personal Face CV Verification (Guide Only)"
   },
   "6. Profile & Verification Photo Upload": {
-    "mr": "6. Profile & Verification Photo अपलोड करा",
-    "hi": "6. Profile & Verification Photo अपलोड करें",
+    "mr": "6. Profile & पडताळणी छायाचित्र अपलोड करा",
+    "hi": "6. Profile & सत्यापन फोटो अपलोड करें",
     "en": "6. Profile & Verification Photo Upload"
   },
   "64 Audits": {
@@ -944,8 +944,8 @@
     "en": "7. Mobile for Tracking (Optional)"
   },
   "7.4 km estimated route • Stand #04": {
-    "mr": "7.4 km अंदाजित मार्ग • Stand #04",
-    "hi": "7.4 km अनुमानित मार्ग • Stand #04",
+    "mr": "7.4 km अंदाजित मार्ग • स्थानक #04",
+    "hi": "7.4 km अनुमानित मार्ग • स्टैंड #04",
     "en": "7.4 km estimated route • Stand #04"
   },
   "8 Years Experience": {
@@ -959,8 +959,8 @@
     "en": "84.6% Resolution Rate"
   },
   "850 meters from Ramkund Ghat": {
-    "mr": "850 meters from रामकुंड घाट",
-    "hi": "850 meters from रामकुंड घाट",
+    "mr": "रामकुंड घाटापासून ८५० मीटर",
+    "hi": "रामकुंड घाट से ८५० मीटर",
     "en": "850 meters from Ramkund Ghat"
   },
   "96.8% positive field feedback": {
@@ -974,8 +974,8 @@
     "en": "98% Verified Compliance"
   },
   "99.8% of pilgrims who scanned your stall QR code verified that they were charged within the agreed fair range.": {
-    "mr": "99.8% of भाविक who scanned your स्टॉल QR कोड प्रमाणित that they were charged within the agreed वाजवी range.",
-    "hi": "99.8% of तीर्थयात्री who scanned your स्टॉल QR कोड सत्यापित that they were charged within the agreed उचित range.",
+    "mr": "99.8% of भाविक who scanned आपले स्टॉल QR कोड प्रमाणित that they were charged च्या आत agreed वाजवी range.",
+    "hi": "99.8% of तीर्थयात्री who scanned आपका स्टॉल QR कोड सत्यापित that they were charged के भीतर agreed उचित range.",
     "en": "99.8% of pilgrims who scanned your stall QR code verified that they were charged within the agreed fair range."
   },
   "A certified student": {
@@ -1034,13 +1034,13 @@
     "en": "Action completed successfully."
   },
   "Action Dispatched Successfully": {
-    "mr": "कृती Dispatched Successfully",
-    "hi": "कार्रवाई Dispatched Successfully",
+    "mr": "कृती रवानगीed Successfully",
+    "hi": "कार्रवाई प्रेषणed Successfully",
     "en": "Action Dispatched Successfully"
   },
   "Action logged:": {
-    "mr": "कृती logged:",
-    "hi": "कार्रवाई logged:",
+    "mr": "कृती नोंदणीकृत:",
+    "hi": "कार्रवाई दर्ज:",
     "en": "Action logged:"
   },
   "Action Order:": {
@@ -1064,8 +1064,8 @@
     "en": "Active Bookings"
   },
   "Active civic watchdog queue for immediate rate enforcement across pilgrim touchpoints.": {
-    "mr": "सक्रिय नागरी watchdog queue for immediate दर enforcement across भाविक touchpoints.",
-    "hi": "सक्रिय नागरिक watchdog queue for immediate दर enforcement across तीर्थयात्री touchpoints.",
+    "mr": "सक्रिय नागरी watchdog queue साठी immediate दर enforcement across भाविक touchpoints.",
+    "hi": "सक्रिय नागरिक watchdog queue के लिए immediate दर enforcement across तीर्थयात्री touchpoints.",
     "en": "Active civic watchdog queue for immediate rate enforcement across pilgrim touchpoints."
   },
   "Active Escalations": {
@@ -1099,8 +1099,8 @@
     "en": "Active Now"
   },
   "Active Price Flags": {
-    "mr": "सक्रिय दर उल्लंघने",
-    "hi": "सक्रिय मूल्य अलर्ट",
+    "mr": "सक्रिय दर तक्रारी",
+    "hi": "सक्रिय मूल्य शिकायतें",
     "en": "Active Price Flags"
   },
   "Active Stall Listings": {
@@ -1144,8 +1144,8 @@
     "en": "Add New Item to Sell"
   },
   "Add Officer Field Observation": {
-    "mr": "Add अधिकारी Field Observation",
-    "hi": "Add अधिकारी Field Observation",
+    "mr": "Add अधिकारी प्रत्यक्ष Observation",
+    "hi": "Add अधिकारी फील्ड Observation",
     "en": "Add Officer Field Observation"
   },
   "Add to My Trip / Offline Saved": {
@@ -1179,13 +1179,13 @@
     "en": "against municipal cap of"
   },
   "AI Enforcement Hotspot Radar": {
-    "mr": "AI Enforcement गर्दी केंद्र रडार",
-    "hi": "AI Enforcement भीड़ केंद्र रडार",
+    "mr": "AI अंमलबजावणी गर्दी केंद्र रडार",
+    "hi": "AI प्रवर्तन भीड़ केंद्र रडार",
     "en": "AI Enforcement Hotspot Radar"
   },
   "AI Enforcement Hotspots & Live Incident Stream": {
-    "mr": "AI Enforcement गर्दी केंद्रे & थेट Incident Stream",
-    "hi": "AI Enforcement भीड़ केंद्र & लाइव Incident Stream",
+    "mr": "AI अंमलबजावणी गर्दी केंद्रे & थेट Incident Stream",
+    "hi": "AI प्रवर्तन भीड़ केंद्र & लाइव Incident Stream",
     "en": "AI Enforcement Hotspots & Live Incident Stream"
   },
   "AI Hotspot Radar": {
@@ -1214,8 +1214,8 @@
     "en": "All"
   },
   "All (": {
-    "mr": "All (",
-    "hi": "All (",
+    "mr": "सर्व (",
+    "hi": "सभी (",
     "en": "All ("
   },
   "All Cases": {
@@ -1224,13 +1224,13 @@
     "en": "All Cases"
   },
   "All Entries": {
-    "mr": "All Entries",
-    "hi": "All Entries",
+    "mr": "सर्व Entries",
+    "hi": "सभी Entries",
     "en": "All Entries"
   },
   "All Flags": {
-    "mr": "All इशारे",
-    "hi": "All चेतावनी",
+    "mr": "सर्व इशारे",
+    "hi": "सभी चेतावनी",
     "en": "All Flags"
   },
   "All Foods": {
@@ -1239,8 +1239,8 @@
     "en": "All Foods"
   },
   "All In Stock": {
-    "mr": "All In Stock",
-    "hi": "All In Stock",
+    "mr": "सर्व In साठा",
+    "hi": "सभी In स्टॉक",
     "en": "All In Stock"
   },
   "All Items": {
@@ -1254,8 +1254,8 @@
     "en": "All prices are capped by Nashik Municipal Corporation. Overcharging is strictly prohibited."
   },
   "All Priority": {
-    "mr": "All Priority",
-    "hi": "All Priority",
+    "mr": "सर्व प्राधान्यता",
+    "hi": "सभी प्राथमिकता",
     "en": "All Priority"
   },
   "All Services": {
@@ -1419,8 +1419,8 @@
     "en": "Assign Kumbhveer"
   },
   "Assign Unit": {
-    "mr": "Assign Unit",
-    "hi": "Assign Unit",
+    "mr": "पथक नियुक्त करा",
+    "hi": "दस्ता नियुक्त करें",
     "en": "Assign Unit"
   },
   "Assigned Officer": {
@@ -1484,8 +1484,8 @@
     "en": "Audited Feedback"
   },
   "Audited on-site by Kumbhveer Divya S. (KTHM College)": {
-    "mr": "तपासणी केली on-site by कुंभवीर Divya S. (KTHM College)",
-    "hi": "जांच की गई on-site by कुंभवीर Divya S. (KTHM College)",
+    "mr": "तपासणी केली on-site by कुंभवीर Divya S. (KTHM महाविद्यालय)",
+    "hi": "जांच की गई on-site by कुंभवीर Divya S. (KTHM कॉलेज)",
     "en": "Audited on-site by Kumbhveer Divya S. (KTHM College)"
   },
   "Audits": {
@@ -1504,8 +1504,8 @@
     "en": "Authentic Thali:"
   },
   "Authenticate & Open Field Terminal": {
-    "mr": "Authenticate & Open Field टर्मिनल",
-    "hi": "Authenticate & Open Field टर्मिनल",
+    "mr": "Authenticate & Open प्रत्यक्ष टर्मिनल",
+    "hi": "Authenticate & Open फील्ड टर्मिनल",
     "en": "Authenticate & Open Field Terminal"
   },
   "Authorized Reg #MH-15-GUIDE-0082": {
@@ -1559,8 +1559,8 @@
     "en": "Auto Rides Booked"
   },
   "Auto Stand #12": {
-    "mr": "रिक्षा Stand #12",
-    "hi": "ऑटो Stand #12",
+    "mr": "रिक्षा स्थानक #12",
+    "hi": "ऑटो स्टैंड #12",
     "en": "Auto Stand #12"
   },
   "Auto, Bus & Transit Fares": {
@@ -1604,8 +1604,8 @@
     "en": "Average dispatch pickup: under 10 seconds"
   },
   "Average response time: 4.8 minutes. Fast tour confirmations boost your verified trust score and ensure pilgrims find their guide safely at the ghats.": {
-    "mr": "Average response time: 4.8 मिनिटे. Fast tour confirmations boost your प्रमाणित विश्वास score and ensure भाविक find their मार्गदर्शक safely at the घाट.",
-    "hi": "Average response time: 4.8 मिनट. Fast tour confirmations boost your सत्यापित विश्वास score and ensure तीर्थयात्री find their गाइड safely at the घाट.",
+    "mr": "Average response time: 4.8 मिनिटे. Fast दौरा confirmations boost आपले प्रमाणित विश्वास score आणि ensure भाविक find their मार्गदर्शक safely at घाट.",
+    "hi": "Average response time: 4.8 मिनट. Fast दौरा confirmations boost आपका सत्यापित विश्वास score और ensure तीर्थयात्री find their गाइड safely at घाट.",
     "en": "Average response time: 4.8 minutes. Fast tour confirmations boost your verified trust score and ensure pilgrims find their guide safely at the ghats."
   },
   "Avg Redressal": {
@@ -1639,12 +1639,12 @@
     "en": "Back to Marketplace"
   },
   "Badge Certified": {
-    "mr": "बिल्ला Certified",
-    "hi": "बैज Certified",
+    "mr": "बिल्ला प्रमाणित",
+    "hi": "बैज सत्यापित",
     "en": "Badge Certified"
   },
   "Balaji Auto Rickshaw Union • Permit #BK-918": {
-    "mr": "Balaji रिक्षा रिक्षा Union • Permit #BK-918",
+    "mr": "Balaji रिक्षा Union • Permit #BK-918",
     "hi": "Balaji ऑटो रिक्शा Union • Permit #BK-918",
     "en": "Balaji Auto Rickshaw Union • Permit #BK-918"
   },
@@ -1694,8 +1694,8 @@
     "en": "Based on 128 verified Yatri visits"
   },
   "Based on 3,420 QR Verifications": {
-    "mr": "Based on 3,420 QR Verifications",
-    "hi": "Based on 3,420 QR Verifications",
+    "mr": "Based on 3,420 QR पडताळणीs",
+    "hi": "Based on 3,420 QR सत्यापनs",
     "en": "Based on 3,420 QR Verifications"
   },
   "Bay 4, Ramkund West Gate": {
@@ -1744,8 +1744,8 @@
     "en": "Bilingual QR Card"
   },
   "Biometric Police ID Pass": {
-    "mr": "Biometric पोलीस ओळख क्रमांक Pass",
-    "hi": "Biometric पुलिस पहचान संख्या Pass",
+    "mr": "Biometric पोलीस ओळख क्रमांक पास",
+    "hi": "Biometric पुलिस पहचान संख्या पास",
     "en": "Biometric Police ID Pass"
   },
   "block": {
@@ -1849,8 +1849,8 @@
     "en": "Brass Shiva Kalash & Diya Set"
   },
   "Bridge is operating normally with 4 pedestrian channels": {
-    "mr": "पूल is operating normally with 4 pedestrian channels",
-    "hi": "पुल is operating normally with 4 pedestrian channels",
+    "mr": "पूल is operating normally सह 4 pedestrian channels",
+    "hi": "पुल is operating normally के साथ 4 pedestrian channels",
     "en": "Bridge is operating normally with 4 pedestrian channels"
   },
   "Broadcasting GPS coordinates to Ramkund Central Control": {
@@ -1929,8 +1929,8 @@
     "en": "Call Guide"
   },
   "Call Owner": {
-    "mr": "Call Owner",
-    "hi": "Call Owner",
+    "mr": "मालकाशी संपर्क साधा",
+    "hi": "मालिक को कॉल करें",
     "en": "Call Owner"
   },
   "Call Rides & Fare Guide": {
@@ -1959,8 +1959,8 @@
     "en": "Call Yatri"
   },
   "Camera Verified": {
-    "mr": "Camera प्रमाणित",
-    "hi": "Camera सत्यापित",
+    "mr": "कॅमेरा प्रमाणित",
+    "hi": "कैमरा सत्यापित",
     "en": "Camera Verified"
   },
   "Camp Orientation & Distance": {
@@ -1974,8 +1974,8 @@
     "en": "Cancel"
   },
   "Cancel & Stay On Duty": {
-    "mr": "रद्द करा & मुक्काम On Duty",
-    "hi": "रद्द करें & आवास On Duty",
+    "mr": "रद्द करा & मुक्काम On कर्तव्य",
+    "hi": "रद्द करें & आवास On ड्यूटी",
     "en": "Cancel & Stay On Duty"
   },
   "cap": {
@@ -1999,18 +1999,18 @@
     "en": "Capture & Verify Identity"
   },
   "Capture guide profile and selfie. Selfie is converted into a privacy-preserving numeric vector and raw image is wiped immediately.": {
-    "mr": "Capture मार्गदर्शक profile and selfie. Selfie is converted into a privacy-preserving numeric vector and raw image is wiped immediately.",
-    "hi": "Capture गाइड profile and selfie. Selfie is converted into a privacy-preserving numeric vector and raw image is wiped immediately.",
+    "mr": "Capture मार्गदर्शक profile आणि selfie. Selfie is converted into a privacy-preserving numeric vector आणि raw image is wiped immediately.",
+    "hi": "Capture गाइड profile और selfie. Selfie is converted into a privacy-preserving numeric vector और raw image is wiped immediately.",
     "en": "Capture guide profile and selfie. Selfie is converted into a privacy-preserving numeric vector and raw image is wiped immediately."
   },
   "Captured by Pilgrim Ramesh Patil via QR Scanner": {
-    "mr": "Captured by भाविक Ramesh Patil via QR Scanner",
-    "hi": "Captured by तीर्थयात्री Ramesh Patil via QR Scanner",
+    "mr": "Captured by भाविक Ramesh Patil द्वारे QR Scanner",
+    "hi": "Captured by तीर्थयात्री Ramesh Patil के माध्यम से QR Scanner",
     "en": "Captured by Pilgrim Ramesh Patil via QR Scanner"
   },
   "Carry a physical government photo ID (Aadhaar / Voter Card) during check-in for mandatory police verification.": {
-    "mr": "Carry a physical government photo ओळख क्रमांक (Aadhaar / Voter Card) during check-in for mandatory पोलीस verification.",
-    "hi": "Carry a physical government photo पहचान संख्या (Aadhaar / Voter Card) during check-in for mandatory पुलिस verification.",
+    "mr": "Carry a physical government photo ओळख क्रमांक (Aadhaar / Voter Card) during check-in साठी mandatory पोलीस verification.",
+    "hi": "Carry a physical government photo पहचान संख्या (Aadhaar / Voter Card) during check-in के लिए mandatory पुलिस verification.",
     "en": "Carry a physical government photo ID (Aadhaar / Voter Card) during check-in for mandatory police verification."
   },
   "CartoDB Voyager (Free • No Key Needed)": {
@@ -2094,8 +2094,8 @@
     "en": "Central Courtyard"
   },
   "Certified 5-Mukhi Rudraksha (108 Beads)": {
-    "mr": "Certified 5-Mukhi रुद्राक्ष (108 Beads)",
-    "hi": "Certified 5-Mukhi रुद्राक्ष (108 Beads)",
+    "mr": "प्रमाणित 5-Mukhi रुद्राक्ष (108 Beads)",
+    "hi": "सत्यापित 5-Mukhi रुद्राक्ष (108 Beads)",
     "en": "Certified 5-Mukhi Rudraksha (108 Beads)"
   },
   "Certified Caps": {
@@ -2104,8 +2104,8 @@
     "en": "Certified Caps"
   },
   "Certified for Nashik Collectorate & Municipal Apex Committee review": {
-    "mr": "Certified for Nashik Collectorate & महानगरपालिका Apex Committee पुनरावलोकन",
-    "hi": "Certified for Nashik Collectorate & नगर निगम Apex Committee समीक्षा",
+    "mr": "प्रमाणित साठी Nashik Collectorate & महानगरपालिका Apex Committee पुनरावलोकन",
+    "hi": "सत्यापित के लिए Nashik Collectorate & नगर निगम Apex Committee समीक्षा",
     "en": "Certified for Nashik Collectorate & Municipal Apex Committee review"
   },
   "Certified per hour": {
@@ -2239,8 +2239,8 @@
     "en": "Civic Pledge"
   },
   "Civic Registered Dharamshala / Guest House": {
-    "mr": "नागरी Registered धर्मशाळा / Guest House",
-    "hi": "नागरिक Registered धर्मशाला / Guest House",
+    "mr": "महापालिका नोंदणीकृत धर्मशाळा / अतिथीगृह",
+    "hi": "नगर निगम पंजीकृत धर्मशाला / अतिथि गृह",
     "en": "Civic Registered Dharamshala / Guest House"
   },
   "Civic Trust & Fair Pricing": {
@@ -2274,8 +2274,8 @@
     "en": "Civic Verification Protocol"
   },
   "Civic Verified Amenities": {
-    "mr": "नागरी प्रमाणित Amenities",
-    "hi": "नागरिक सत्यापित Amenities",
+    "mr": "महापालिका प्रमाणित सुविधा",
+    "hi": "नगर निगम सत्यापित सुविधाएं",
     "en": "Civic Verified Amenities"
   },
   "Civic Verified Service": {
@@ -2304,13 +2304,13 @@
     "en": "Clear"
   },
   "Click \"Open Camera\" to track personal face and align inside the guide reticle": {
-    "mr": "Click \"Open Camera\" to track personal face and align inside the मार्गदर्शक reticle",
-    "hi": "Click \"Open Camera\" to track personal face and align inside the गाइड reticle",
+    "mr": "Click \"Open कॅमेरा\" to track personal face आणि align inside मार्गदर्शक reticle",
+    "hi": "Click \"Open कैमरा\" to track personal face और align inside गाइड reticle",
     "en": "Click \"Open Camera\" to track personal face and align inside the guide reticle"
   },
   "Click 'Start Camera' or 'Upload Selfie'": {
-    "mr": "Click 'Start Camera' or 'अपलोड करा Selfie'",
-    "hi": "Click 'Start Camera' or 'अपलोड करें Selfie'",
+    "mr": "Click 'Start कॅमेरा' or 'अपलोड करा Selfie'",
+    "hi": "Click 'Start कैमरा' or 'अपलोड करें Selfie'",
     "en": "Click 'Start Camera' or 'Upload Selfie'"
   },
   "Click cluster to view details & dispatch": {
@@ -2369,13 +2369,13 @@
     "en": "College Rank"
   },
   "Community Audits": {
-    "mr": "सामुदायिक तपासण्या",
+    "mr": "नागरी तपासण्या",
     "hi": "सामुदायिक ऑडिट",
     "en": "Community Audits"
   },
   "Community Benchmark": {
-    "mr": "Community प्रमाणक",
-    "hi": "Community मानक",
+    "mr": "नागरी निकष",
+    "hi": "सामुदायिक बेंचमार्क",
     "en": "Community Benchmark"
   },
   "Community Range Comparison": {
@@ -2384,8 +2384,8 @@
     "en": "Community Range Comparison"
   },
   "Community reference price ranges. Indicative rates submitted by daily pilgrim check-ins and verified stands.": {
-    "mr": "Community reference दर ranges. Indicative दर submitted by daily भाविक check-ins and प्रमाणित stands.",
-    "hi": "Community reference मूल्य ranges. Indicative दरें submitted by daily तीर्थयात्री check-ins and सत्यापित stands.",
+    "mr": "नागरी संदर्भ दर मर्यादा. भाविकांच्या दैनंदिन नोंदी व प्रमाणित केंद्रांद्वारे सूचित दर.",
+    "hi": "सामुदायिक संदर्भ दर सीमा। श्रद्धालुओं के दैनिक चेक-इन और सत्यापित केंद्रों द्वारा सूचित दरें।",
     "en": "Community reference price ranges. Indicative rates submitted by daily pilgrim check-ins and verified stands."
   },
   "Community Reference Range": {
@@ -2434,8 +2434,8 @@
     "en": "Confirm"
   },
   "Confirm Dispatch": {
-    "mr": "Confirm Dispatch",
-    "hi": "Confirm Dispatch",
+    "mr": "Confirm रवानगी",
+    "hi": "Confirm प्रेषण",
     "en": "Confirm Dispatch"
   },
   "Confirm Guide Booking": {
@@ -2634,13 +2634,13 @@
     "en": "Dates of Stay"
   },
   "DBSCAN haversine clustering & XGBoost severity triage streaming live from Nashik admin records.": {
-    "mr": "DBSCAN haversine clustering & XGBoost severity triage streaming थेट from Nashik प्रशासक records.",
-    "hi": "DBSCAN haversine clustering & XGBoost severity triage streaming लाइव from Nashik प्रशासक records.",
+    "mr": "DBSCAN haversine clustering & XGBoost severity triage streaming थेट कडून Nashik प्रशासक records.",
+    "hi": "DBSCAN haversine clustering & XGBoost severity triage streaming लाइव से Nashik प्रशासक records.",
     "en": "DBSCAN haversine clustering & XGBoost severity triage streaming live from Nashik admin records."
   },
   "DBSCAN Spatial Clustering + XGBoost Severity Triage from 100,000 Nashik civic reports.": {
-    "mr": "DBSCAN Spatial Clustering + XGBoost Severity Triage from 100,000 Nashik नागरी तक्रारी व अहवाल.",
-    "hi": "DBSCAN Spatial Clustering + XGBoost Severity Triage from 100,000 Nashik नागरिक शिकायतें एवं रिपोर्ट.",
+    "mr": "DBSCAN Spatial Clustering + XGBoost Severity Triage कडून 100,000 Nashik नागरी तक्रारी व अहवाल.",
+    "hi": "DBSCAN Spatial Clustering + XGBoost Severity Triage से 100,000 Nashik नागरिक शिकायतें एवं रिपोर्ट.",
     "en": "DBSCAN Spatial Clustering + XGBoost Severity Triage from 100,000 Nashik civic reports."
   },
   "DBSCAN Spatial Hotspot Clusters": {
@@ -2744,8 +2744,8 @@
     "en": "Details"
   },
   "Device & Dispatch Controls": {
-    "mr": "Device & Dispatch Controls",
-    "hi": "Device & Dispatch Controls",
+    "mr": "Device & रवानगी Controls",
+    "hi": "Device & प्रेषण Controls",
     "en": "Device & Dispatch Controls"
   },
   "Devotional Books": {
@@ -2894,13 +2894,13 @@
     "en": "Dismiss"
   },
   "Dispatch Audio Alert": {
-    "mr": "Dispatch Audio दक्षता इशारा",
-    "hi": "Dispatch Audio अलर्ट",
+    "mr": "रवानगी Audio दक्षता इशारा",
+    "hi": "प्रेषण Audio अलर्ट",
     "en": "Dispatch Audio Alert"
   },
   "Dispatch Check": {
-    "mr": "Dispatch Check",
-    "hi": "Dispatch Check",
+    "mr": "रवानगी तपासणी",
+    "hi": "प्रेषण जांच",
     "en": "Dispatch Check"
   },
   "Dispatch Officer": {
@@ -2914,13 +2914,13 @@
     "en": "Dispatch Patrol"
   },
   "Dispatch Squad": {
-    "mr": "Dispatch पथक",
-    "hi": "Dispatch दस्ता",
+    "mr": "रवानगी पथक",
+    "hi": "प्रेषण दस्ता",
     "en": "Dispatch Squad"
   },
   "Dispatch Volunteer": {
-    "mr": "Dispatch Volunteer",
-    "hi": "Dispatch Volunteer",
+    "mr": "रवानगी स्वयंसेवक",
+    "hi": "प्रेषण Volunteer",
     "en": "Dispatch Volunteer"
   },
   "Dispatched to Squad": {
@@ -2964,8 +2964,8 @@
     "en": "Dormitory Bed"
   },
   "Dormitory Bed (Air-Cooled)": {
-    "mr": "Dormitory Bed (Air-Cooled)",
-    "hi": "Dormitory Bed (Air-Cooled)",
+    "mr": "डॉर्मिटरी खाट (कूलरयुक्त)",
+    "hi": "डॉर्मिटरी बिस्तर (कूलरयुक्त)",
     "en": "Dormitory Bed (Air-Cooled)"
   },
   "Double Room": {
@@ -2979,8 +2979,8 @@
     "en": "Download"
   },
   "Download Official Gazette Compliance PDF": {
-    "mr": "डाउनलोड करा Official Gazette अनुपालन PDF",
-    "hi": "डाउनलोड करें Official Gazette अनुपालन PDF",
+    "mr": "डाउनलोड करा अधिकृत राजपत्र अनुपालन PDF",
+    "hi": "डाउनलोड करें आधिकारिक राजपत्र अनुपालन PDF",
     "en": "Download Official Gazette Compliance PDF"
   },
   "Download Pass / PDF": {
@@ -2999,8 +2999,8 @@
     "en": "Drop-off 🚩"
   },
   "Duty Station / Ghat Sector": {
-    "mr": "Duty Station / घाट विभाग",
-    "hi": "Duty Station / घाट सेक्टर",
+    "mr": "कर्तव्य Station / घाट विभाग",
+    "hi": "ड्यूटी Station / घाट सेक्टर",
     "en": "Duty Station / Ghat Sector"
   },
   "Duty Terminal Login": {
@@ -3009,8 +3009,8 @@
     "en": "Duty Terminal Login"
   },
   "Duty Verified": {
-    "mr": "Duty प्रमाणित",
-    "hi": "Duty सत्यापित",
+    "mr": "कर्तव्य प्रमाणित",
+    "hi": "ड्यूटी सत्यापित",
     "en": "Duty Verified"
   },
   "E-Rickshaw": {
@@ -3039,8 +3039,8 @@
     "en": "e.g. Anand Joshi"
   },
   "e.g. Counter attendant denied standard dorm pricing and insisted on cash only.": {
-    "mr": "e.g. Counter attendant denied standard डॉर्मिटरी दर रचना and insisted on cash only.",
-    "hi": "e.g. Counter attendant denied standard डॉर्मिटरी मूल्य निर्धारण and insisted on cash only.",
+    "mr": "e.g. Counter attendant denied standard डॉर्मिटरी दर रचना आणि insisted on cash only.",
+    "hi": "e.g. Counter attendant denied standard डॉर्मिटरी मूल्य निर्धारण और insisted on cash only.",
     "en": "e.g. Counter attendant denied standard dorm pricing and insisted on cash only."
   },
   "e.g. guide@kumbhsetu.in": {
@@ -3124,8 +3124,8 @@
     "en": "Email ID & Password"
   },
   "Email ID & Password authentication for verified Local Guides, Civic Vendors, Kumbhveer Student Volunteers & Citizens.": {
-    "mr": "ईमेल ओळख क्रमांक & पासवर्ड authentication for प्रमाणित Local मार्गदर्शक, नागरी विक्रेते, कुंभवीर विद्यार्थी स्वयंसेवक & नागरिक.",
-    "hi": "ईमेल पहचान संख्या & पासवर्ड authentication for सत्यापित Local गाइड, नागरिक विक्रेता, कुंभवीर छात्र स्वयंसेवक & नागरिक.",
+    "mr": "ईमेल ओळख क्रमांक & पासवर्ड authentication साठी प्रमाणित Local मार्गदर्शक, नागरी विक्रेते, कुंभवीर विद्यार्थी स्वयंसेवक & नागरिक.",
+    "hi": "ईमेल पहचान संख्या & पासवर्ड authentication के लिए सत्यापित Local गाइड, नागरिक विक्रेता, कुंभवीर छात्र स्वयंसेवक & नागरिक.",
     "en": "Email ID & Password authentication for verified Local Guides, Civic Vendors, Kumbhveer Student Volunteers & Citizens."
   },
   "Email ID (ईमेल पत्ता)": {
@@ -3154,13 +3154,13 @@
     "en": "Emergency Dispatch & Safety Hub"
   },
   "Emergency Escalation Protocols": {
-    "mr": "आपत्कालीन Escalation Protocols",
-    "hi": "आपातकालीन Escalation Protocols",
+    "mr": "आपत्कालीन तक्रार निवारण Protocols",
+    "hi": "आपातकालीन शिकायत निवारण Protocols",
     "en": "Emergency Escalation Protocols"
   },
   "Emergency Field Hotline:": {
-    "mr": "आपत्कालीन Field Hotline:",
-    "hi": "आपातकालीन Field Hotline:",
+    "mr": "आपत्कालीन प्रत्यक्ष Hotline:",
+    "hi": "आपातकालीन फील्ड Hotline:",
     "en": "Emergency Field Hotline:"
   },
   "Emergency responders synced along Godavari Ghats": {
@@ -3189,18 +3189,18 @@
     "en": "Encrypted Link 142.8 MHz"
   },
   "Enforce statutory rate ceiling, issue digital compound fine (₹5,000) for repeat price gouging, and disperse rogue touts.": {
-    "mr": "Enforce statutory दर कमाल मर्यादा, समस्या digital compound fine (₹5,000) for repeat दर gouging, and disperse rogue touts.",
-    "hi": "Enforce statutory दर अधिकतम सीमा, समस्या digital compound fine (₹5,000) for repeat मूल्य gouging, and disperse rogue touts.",
+    "mr": "Enforce statutory दर कमाल मर्यादा, समस्या digital compound fine (₹5,000) साठी repeat दर gouging, आणि disperse rogue touts.",
+    "hi": "Enforce statutory दर अधिकतम सीमा, समस्या digital compound fine (₹5,000) के लिए repeat मूल्य gouging, और disperse rogue touts.",
     "en": "Enforce statutory rate ceiling, issue digital compound fine (₹5,000) for repeat price gouging, and disperse rogue touts."
   },
   "Enforcement & Escalation Desk": {
-    "mr": "Enforcement & Escalation कक्ष",
-    "hi": "Enforcement & Escalation कक्ष",
+    "mr": "अंमलबजावणी & तक्रार निवारण कक्ष",
+    "hi": "प्रवर्तन & शिकायत निवारण कक्ष",
     "en": "Enforcement & Escalation Desk"
   },
   "Enforcement Resolution": {
-    "mr": "Enforcement Resolution",
-    "hi": "Enforcement Resolution",
+    "mr": "अंमलबजावणी Resolution",
+    "hi": "प्रवर्तन Resolution",
     "en": "Enforcement Resolution"
   },
   "English": {
@@ -3244,8 +3244,8 @@
     "en": "Enter Your API Key / Token:"
   },
   "Enter your password": {
-    "mr": "Enter your पासवर्ड",
-    "hi": "Enter your पासवर्ड",
+    "mr": "Enter आपले पासवर्ड",
+    "hi": "Enter आपका पासवर्ड",
     "en": "Enter your password"
   },
   "Error": {
@@ -3274,18 +3274,18 @@
     "en": "Escalated to Municipal Magistrate"
   },
   "Escalating transfers this docket immediately into the dedicated Nashik Police Kumbh Mela Unit queue. Field officers receive automated GPS coordinates and vendor permit references for instantaneous on-site summons.": {
-    "mr": "Escalating transfers this docket immediately into the dedicated Nashik पोलीस कुंभ मेळा Unit queue. Field officers receive automated GPS coordinates and विक्रेता permit references for instantaneous on-site summons.",
-    "hi": "Escalating transfers this docket immediately into the dedicated Nashik पुलिस कुंभ मेला Unit queue. Field officers receive automated GPS coordinates and विक्रेता permit references for instantaneous on-site summons.",
+    "mr": "Escalating transfers this docket immediately into dedicated Nashik पोलीस कुंभ मेळा Unit queue. प्रत्यक्ष officers receive automated GPS coordinates आणि विक्रेता permit references साठी instantaneous on-site summons.",
+    "hi": "Escalating transfers this docket immediately into dedicated Nashik पुलिस कुंभ मेला Unit queue. फील्ड officers receive automated GPS coordinates और विक्रेता permit references के लिए instantaneous on-site summons.",
     "en": "Escalating transfers this docket immediately into the dedicated Nashik Police Kumbh Mela Unit queue. Field officers receive automated GPS coordinates and vendor permit references for instantaneous on-site summons."
   },
   "Escalation acknowledged. Sector Unit notified.": {
-    "mr": "Escalation acknowledged. विभाग Unit notified.",
-    "hi": "Escalation acknowledged. सेक्टर Unit notified.",
+    "mr": "तक्रार निवारण acknowledged. विभाग Unit notified.",
+    "hi": "शिकायत निवारण acknowledged. सेक्टर Unit notified.",
     "en": "Escalation acknowledged. Sector Unit notified."
   },
   "Escalations": {
-    "mr": "तातडीच्या तक्रारी (Escalations)",
-    "hi": "त्वरित मामले (Escalations)",
+    "mr": "तातडीच्या तक्रारी (तक्रार निवारणs)",
+    "hi": "त्वरित मामले (शिकायत निवारणs)",
     "en": "Escalations"
   },
   "Essential Pilgrim Services": {
@@ -3309,23 +3309,23 @@
     "en": "Estimated Fair Range"
   },
   "Estimated Fair Range (No fixed cap enforced)": {
-    "mr": "अंदाजित वाजवी Range (No fixed मर्यादा enforced)",
-    "hi": "अनुमानित उचित Range (No fixed सीमा enforced)",
+    "mr": "अंदाजित वाजवी मर्यादा (No fixed मर्यादा enforced)",
+    "hi": "अनुमानित उचित सीमा (No fixed सीमा enforced)",
     "en": "Estimated Fair Range (No fixed cap enforced)"
   },
   "Estimated Fair Range (अंदाजे दर):": {
-    "mr": "अंदाजित वाजवी Range (अंदाजे दर):",
-    "hi": "अनुमानित उचित Range (अंदाजे दर):",
+    "mr": "अंदाजित वाजवी मर्यादा (अंदाजे दर):",
+    "hi": "अनुमानित उचित सीमा (अंदाजे दर):",
     "en": "Estimated Fair Range (अंदाजे दर):"
   },
   "Estimated Fair Range (स्थानिक बाजार भाव):": {
-    "mr": "अंदाजित वाजवी Range (स्थानिक बाजार भाव):",
-    "hi": "अनुमानित उचित Range (स्थानिक बाजार भाव):",
+    "mr": "अंदाजित वाजवी मर्यादा (स्थानिक बाजार भाव):",
+    "hi": "अनुमानित उचित सीमा (स्थानिक बाजार भाव):",
     "en": "Estimated Fair Range (स्थानिक बाजार भाव):"
   },
   "Estimated Fair Range:": {
-    "mr": "अंदाजित वाजवी Range:",
-    "hi": "अनुमानित उचित Range:",
+    "mr": "अंदाजित वाजवी मर्यादा:",
+    "hi": "अनुमानित उचित सीमा:",
     "en": "Estimated Fair Range:"
   },
   "Estimated Fare": {
@@ -3339,8 +3339,8 @@
     "en": "Estimated Range Pricing"
   },
   "Estimated Range Stalls": {
-    "mr": "अंदाजित Range स्टॉल्स",
-    "hi": "अनुमानित Range स्टॉल",
+    "mr": "अंदाजित मर्यादा स्टॉल्स",
+    "hi": "अनुमानित सीमा स्टॉल",
     "en": "Estimated Range Stalls"
   },
   "Estimated Resolution": {
@@ -3434,8 +3434,8 @@
     "en": "Fact Check Details"
   },
   "Fact-Check Alert": {
-    "mr": "Fact-Check दक्षता इशारा",
-    "hi": "Fact-Check अलर्ट",
+    "mr": "Fact-तपासणी दक्षता इशारा",
+    "hi": "Fact-जांच अलर्ट",
     "en": "Fact-Check Alert"
   },
   "Fair Cap (₹)": {
@@ -3444,8 +3444,8 @@
     "en": "Fair Cap (₹)"
   },
   "Fair Category": {
-    "mr": "वाजवी Category",
-    "hi": "उचित Category",
+    "mr": "वाजवी श्रेणी",
+    "hi": "उचित श्रेणी",
     "en": "Fair Category"
   },
   "Fair Category • Verified by Kumbhveer & Pilgrims": {
@@ -3469,8 +3469,8 @@
     "en": "Fair Price Compliance Score"
   },
   "Fair Price Reference": {
-    "mr": "वाजवी दर Reference",
-    "hi": "उचित मूल्य Reference",
+    "mr": "वाजवी दर संदर्भ",
+    "hi": "उचित दर संदर्भ",
     "en": "Fair Price Reference"
   },
   "Fair Price Verified": {
@@ -3484,8 +3484,8 @@
     "en": "Fair Range Guidance"
   },
   "Fair Range ✓": {
-    "mr": "वाजवी Range ✓",
-    "hi": "उचित Range ✓",
+    "mr": "वाजवी मर्यादा ✓",
+    "hi": "उचित सीमा ✓",
     "en": "Fair Range ✓"
   },
   "Fair Rate": {
@@ -3514,8 +3514,8 @@
     "en": "False / Rumors"
   },
   "False claims are cross-checked by Kumbhveer volunteers before civic escalation. Thank you for protecting fellow yatris.": {
-    "mr": "False claims are cross-checked by कुंभवीर स्वयंसेवक before नागरी escalation. Thank you for protecting fellow yatris.",
-    "hi": "False claims are cross-checked by कुंभवीर स्वयंसेवक before नागरिक escalation. Thank you for protecting fellow yatris.",
+    "mr": "False claims are cross-checked by कुंभवीर स्वयंसेवक before नागरी escalation. Thank you साठी protecting fellow yatris.",
+    "hi": "False claims are cross-checked by कुंभवीर स्वयंसेवक before नागरिक escalation. Thank you के लिए protecting fellow yatris.",
     "en": "False claims are cross-checked by Kumbhveer volunteers before civic escalation. Thank you for protecting fellow yatris."
   },
   "False Information": {
@@ -3579,8 +3579,8 @@
     "en": "Field Audits to Verify"
   },
   "Field-audited by": {
-    "mr": "Field-तपासणी केली by",
-    "hi": "Field-जांच की गई by",
+    "mr": "प्रत्यक्ष तपासणी:",
+    "hi": "फील्ड निरीक्षण:",
     "en": "Field-audited by"
   },
   "File a Report": {
@@ -3654,18 +3654,18 @@
     "en": "First Aid Post"
   },
   "Fixed in 14m": {
-    "mr": "Fixed in 14m",
-    "hi": "Fixed in 14m",
+    "mr": "निश्चित in 14m",
+    "hi": "तयशुदा in 14m",
     "en": "Fixed in 14m"
   },
   "Fixed in 22m": {
-    "mr": "Fixed in 22m",
-    "hi": "Fixed in 22m",
+    "mr": "निश्चित in 22m",
+    "hi": "तयशुदा in 22m",
     "en": "Fixed in 22m"
   },
   "Fixed Pre-Paid Corridor": {
-    "mr": "Fixed Pre-Paid Corridor",
-    "hi": "Fixed Pre-Paid Corridor",
+    "mr": "निश्चित Pre-Paid Corridor",
+    "hi": "तयशुदा Pre-Paid Corridor",
     "en": "Fixed Pre-Paid Corridor"
   },
   "Flag overcharging, sanitation issues, or fake info.": {
@@ -3744,8 +3744,8 @@
     "en": "forest"
   },
   "Forward to Fact-Check": {
-    "mr": "Forward to Fact-Check",
-    "hi": "Forward to Fact-Check",
+    "mr": "Forward to Fact-तपासणी",
+    "hi": "Forward to Fact-जांच",
     "en": "Forward to Fact-Check"
   },
   "Forwarded": {
@@ -3859,13 +3859,13 @@
     "en": "Gazette Rates"
   },
   "Gazette Ref: #402-N": {
-    "mr": "Gazette Ref: #402-N",
-    "hi": "Gazette Ref: #402-N",
+    "mr": "राजपत्र Ref: #402-N",
+    "hi": "राजपत्र Ref: #402-N",
     "en": "Gazette Ref: #402-N"
   },
   "Gazette Sec-02": {
-    "mr": "Gazette Sec-02",
-    "hi": "Gazette Sec-02",
+    "mr": "राजपत्र Sec-02",
+    "hi": "राजपत्र Sec-02",
     "en": "Gazette Sec-02"
   },
   "Generate Digital Pass": {
@@ -3949,8 +3949,8 @@
     "en": "Godavari Satvik Thali"
   },
   "Godavari Yatri Niwas": {
-    "mr": "गोदावरी भाविक Niwas",
-    "hi": "गोदावरी तीर्थयात्री Niwas",
+    "mr": "गोदावरी भाविक निवास",
+    "hi": "गोदावरी भाविक निवास",
     "en": "Godavari Yatri Niwas"
   },
   "Godavari Yatri Niwas (#NSK-GH-409, Trimbak Road)": {
@@ -4114,8 +4114,8 @@
     "en": "Handmade Rudraksha Japa Mala (108 beads)"
   },
   "Handover Done": {
-    "mr": "Handover Done",
-    "hi": "Handover Done",
+    "mr": "Handपेक्षा अधिक Done",
+    "hi": "Handसे अधिक Done",
     "en": "Handover Done"
   },
   "handshake": {
@@ -4174,8 +4174,8 @@
     "en": "High Flow"
   },
   "High Priority": {
-    "mr": "उच्च / तीव्र Priority",
-    "hi": "उच्च / तीव्र Priority",
+    "mr": "उच्च प्राधान्यता",
+    "hi": "उच्च प्राथमिकता",
     "en": "High Priority"
   },
   "High Volume Beep + Dual Pulse Vibration": {
@@ -4239,8 +4239,8 @@
     "en": "Honesty Points & Rewards"
   },
   "Hot Water": {
-    "mr": "Hot पाणी",
-    "hi": "Hot जल / पानी",
+    "mr": "गरम पाणी",
+    "hi": "गर्म पानी",
     "en": "Hot Water"
   },
   "Hotel & Ashram Stays": {
@@ -4259,8 +4259,8 @@
     "en": "Hotel / Lodging"
   },
   "Hotel / Niwas": {
-    "mr": "हॉटेल / Niwas",
-    "hi": "होटल / Niwas",
+    "mr": "हॉटेल / निवास",
+    "hi": "होटल / निवास",
     "en": "Hotel / Niwas"
   },
   "Hotels & Dharamshalas": {
@@ -4319,13 +4319,13 @@
     "en": "Identity Confirmed"
   },
   "Identity Confirmed via Selfie": {
-    "mr": "Identity Confirmed via Selfie",
-    "hi": "Identity Confirmed via Selfie",
+    "mr": "Identity Confirmed द्वारे Selfie",
+    "hi": "Identity Confirmed के माध्यम से Selfie",
     "en": "Identity Confirmed via Selfie"
   },
   "Identity Confirmed via Selfie (Match Score: 99.8%)": {
-    "mr": "Identity Confirmed via Selfie (Match Score: 99.8%)",
-    "hi": "Identity Confirmed via Selfie (Match Score: 99.8%)",
+    "mr": "Identity Confirmed द्वारे Selfie (Match Score: 99.8%)",
+    "hi": "Identity Confirmed के माध्यम से Selfie (Match Score: 99.8%)",
     "en": "Identity Confirmed via Selfie (Match Score: 99.8%)"
   },
   "If a yatri ever queries a price, you get a 15-minute amicable clarification window before any municipal escalation is triggered.": {
@@ -4379,13 +4379,13 @@
     "en": "in Nashik"
   },
   "In Stock (15)": {
-    "mr": "In Stock (15)",
-    "hi": "In Stock (15)",
+    "mr": "In साठा (15)",
+    "hi": "In स्टॉक (15)",
     "en": "In Stock (15)"
   },
   "In Stock (28)": {
-    "mr": "In Stock (28)",
-    "hi": "In Stock (28)",
+    "mr": "In साठा (28)",
+    "hi": "In स्टॉक (28)",
     "en": "In Stock (28)"
   },
   "In Stock (40)": {
@@ -4394,13 +4394,13 @@
     "en": "In Stock (40)"
   },
   "In Stock (45)": {
-    "mr": "In Stock (45)",
-    "hi": "In Stock (45)",
+    "mr": "In साठा (45)",
+    "hi": "In स्टॉक (45)",
     "en": "In Stock (45)"
   },
   "In Stock (80)": {
-    "mr": "In Stock (80)",
-    "hi": "In Stock (80)",
+    "mr": "In साठा (80)",
+    "hi": "In स्टॉक (80)",
     "en": "In Stock (80)"
   },
   "In-Person Computer Vision Match": {
@@ -4409,8 +4409,8 @@
     "en": "In-Person Computer Vision Match"
   },
   "In-person municipal inspection complete": {
-    "mr": "In-person महानगरपालिका inspection complete",
-    "hi": "In-person नगर निगम inspection complete",
+    "mr": "प्रत्यक्ष महापालिका तपासणी पूर्ण",
+    "hi": "प्रत्यक्ष नगर निगम निरीक्षण पूर्ण",
     "en": "In-person municipal inspection complete"
   },
   "In-Progress": {
@@ -4444,8 +4444,8 @@
     "en": "Indicative Fair Range"
   },
   "Indicative Fair Ranges:": {
-    "mr": "Indicative वाजवी Ranges:",
-    "hi": "Indicative उचित Ranges:",
+    "mr": "Indicative वाजवी मर्यादाs:",
+    "hi": "Indicative उचित सीमाs:",
     "en": "Indicative Fair Ranges:"
   },
   "Indicative Price Range": {
@@ -4454,8 +4454,8 @@
     "en": "Indicative Price Range"
   },
   "Indicative Range": {
-    "mr": "Indicative Range",
-    "hi": "Indicative Range",
+    "mr": "अंदाजित मर्यादा",
+    "hi": "संकेतक सीमा",
     "en": "Indicative Range"
   },
   "Inflow: 1 event / 2.5s": {
@@ -4494,8 +4494,8 @@
     "en": "Inspect stall rate board visibility, digital payment QR, and hygiene conditions. Tap"
   },
   "Inspector Patil, confirming sign-out marks Badge MH-NSK-POL-8841 off-duty for Ramkund Central Ghats.": {
-    "mr": "निरीक्षक Patil, confirming sign-out marks बिल्ला MH-NSK-POL-8841 off-duty for रामकुंड Central घाट.",
-    "hi": "निरीक्षक Patil, confirming sign-out marks बैज MH-NSK-POL-8841 off-duty for रामकुंड Central घाट.",
+    "mr": "निरीक्षक Patil, confirming sign-out marks बिल्ला MH-NSK-POL-8841 off-duty साठी रामकुंड Central घाट.",
+    "hi": "निरीक्षक Patil, confirming sign-out marks बैज MH-NSK-POL-8841 off-duty के लिए रामकुंड Central घाट.",
     "en": "Inspector Patil, confirming sign-out marks Badge MH-NSK-POL-8841 off-duty for Ramkund Central Ghats."
   },
   "Inspector Portal": {
@@ -4604,8 +4604,8 @@
     "en": "K.T.H.M. College (NSS Wing) • 390m away"
   },
   "K.T.H.M. College • 18 field audits": {
-    "mr": "K.T.H.M. College • 18 field audits",
-    "hi": "K.T.H.M. College • 18 field audits",
+    "mr": "K.T.H.M. महाविद्यालय • 18 field audits",
+    "hi": "K.T.H.M. कॉलेज • 18 field audits",
     "en": "K.T.H.M. College • 18 field audits"
   },
   "K.V.N. Naik Institute of Engg. • 410m away": {
@@ -4624,8 +4624,8 @@
     "en": "Kalaram Temple East Gate"
   },
   "Kalaram Temple North Lane": {
-    "mr": "काळाराम मंदिर North Lane",
-    "hi": "कालाराम मंदिर North Lane",
+    "mr": "काळाराम मंदिर North गल्ली",
+    "hi": "कालाराम मंदिर North लेन",
     "en": "Kalaram Temple North Lane"
   },
   "Kapaleshwar Mahadev Mandir": {
@@ -4639,8 +4639,8 @@
     "en": "Kapaleshwar Mandir"
   },
   "Kapaleshwar Stand": {
-    "mr": "कपालेश्वर Stand",
-    "hi": "कपालेश्वर Stand",
+    "mr": "कपालेश्वर स्थानक",
+    "hi": "कपालेश्वर स्टैंड",
     "en": "Kapaleshwar Stand"
   },
   "Kapila (18%)": {
@@ -4649,8 +4649,8 @@
     "en": "Kapila (18%)"
   },
   "Keep this Kumbh Setu digital token handy if any tariff dispute or unauthorized surcharges arise at the desk.": {
-    "mr": "Keep this कुंभ Setu digital टोकन handy if any दरपत्रक dispute or unauthorized surcharges arise at the कक्ष.",
-    "hi": "Keep this कुंभ Setu digital टोकन handy if any दर सूची dispute or unauthorized surcharges arise at the कक्ष.",
+    "mr": "Keep this कुंभ Setu digital टोकन handy if any दरपत्रक dispute or unauthorized surcharges arise at कक्ष.",
+    "hi": "Keep this कुंभ Setu digital टोकन handy if any दर सूची dispute or unauthorized surcharges arise at कक्ष.",
     "en": "Keep this Kumbh Setu digital token handy if any tariff dispute or unauthorized surcharges arise at the desk."
   },
   "KK Wagh Engg": {
@@ -4679,8 +4679,8 @@
     "en": "KTHM College Nashik • Sector 4 Field Audit Hub"
   },
   "KTHM College • 450m away": {
-    "mr": "KTHM College • 450m away",
-    "hi": "KTHM College • 450m away",
+    "mr": "KTHM महाविद्यालय • 450m away",
+    "hi": "KTHM कॉलेज • 450m away",
     "en": "KTHM College • 450m away"
   },
   "KTHM College, Nashik • 350m away": {
@@ -4734,8 +4734,8 @@
     "en": "Kumbh Setu Locked"
   },
   "KumbhSetu Fair-Price Helpline assists within minutes.": {
-    "mr": "KumbhSetu वाजवी-दर मदत कक्ष assists within मिनिटे.",
-    "hi": "KumbhSetu उचित-मूल्य हेल्पलाइन assists within मिनट.",
+    "mr": "KumbhSetu वाजवी-दर मदत कक्ष assists च्या आत मिनिटे.",
+    "hi": "KumbhSetu उचित-मूल्य हेल्पलाइन assists के भीतर मिनट.",
     "en": "KumbhSetu Fair-Price Helpline assists within minutes."
   },
   "KumbhSetu — Kumbhveer Volunteer Verification Desk": {
@@ -4764,8 +4764,8 @@
     "en": "Kumbhveer #KV-204"
   },
   "Kumbhveer Certified Stay": {
-    "mr": "कुंभवीर Certified मुक्काम",
-    "hi": "कुंभवीर Certified आवास",
+    "mr": "कुंभवीर प्रमाणित मुक्काम",
+    "hi": "कुंभवीर सत्यापित आवास",
     "en": "Kumbhveer Certified Stay"
   },
   "Kumbhveer Civic Assistance": {
@@ -4774,8 +4774,8 @@
     "en": "Kumbhveer Civic Assistance"
   },
   "Kumbhveer College Leaderboard": {
-    "mr": "कुंभवीर College Leaderboard",
-    "hi": "कुंभवीर College Leaderboard",
+    "mr": "कुंभवीर महाविद्यालय Leaderboard",
+    "hi": "कुंभवीर कॉलेज Leaderboard",
     "en": "Kumbhveer College Leaderboard"
   },
   "Kumbhveer Desk": {
@@ -4789,8 +4789,8 @@
     "en": "Kumbhveer Divya Shinde"
   },
   "Kumbhveer Field Inspection": {
-    "mr": "कुंभवीर Field Inspection",
-    "hi": "कुंभवीर Field Inspection",
+    "mr": "कुंभवीर प्रत्यक्ष Inspection",
+    "hi": "कुंभवीर फील्ड Inspection",
     "en": "Kumbhveer Field Inspection"
   },
   "Kumbhveer Field Notes (Optional)": {
@@ -4804,8 +4804,8 @@
     "en": "Kumbhveer queued"
   },
   "Kumbhveer Stall Photo Upload": {
-    "mr": "कुंभवीर स्टॉल Photo अपलोड करा",
-    "hi": "कुंभवीर स्टॉल Photo अपलोड करें",
+    "mr": "कुंभवीर स्टॉल छायाचित्र अपलोड करा",
+    "hi": "कुंभवीर स्टॉल फोटो अपलोड करें",
     "en": "Kumbhveer Stall Photo Upload"
   },
   "Kumbhveer Verification Protocol:": {
@@ -4819,18 +4819,18 @@
     "en": "Kumbhveer Verified"
   },
   "Kumbhveer Verified Stand": {
-    "mr": "कुंभवीर प्रमाणित Stand",
-    "hi": "कुंभवीर सत्यापित Stand",
+    "mr": "कुंभवीर प्रमाणित स्थानक",
+    "hi": "कुंभवीर सत्यापित स्टैंड",
     "en": "Kumbhveer Verified Stand"
   },
   "Kumbhveer volunteer": {
-    "mr": "कुंभवीर volunteer",
+    "mr": "कुंभवीर स्वयंसेवक",
     "hi": "कुंभवीर volunteer",
     "en": "Kumbhveer volunteer"
   },
   "Kumbhveer volunteers can upload on-site audit photos directly from gallery or storage. No live camera facial verification is required.": {
-    "mr": "कुंभवीर स्वयंसेवक can अपलोड करा on-site तपासणी photos directly from gallery or storage. No थेट camera facial verification is required.",
-    "hi": "कुंभवीर स्वयंसेवक can अपलोड करें on-site जांच / ऑडिट photos directly from gallery or storage. No लाइव camera facial verification is required.",
+    "mr": "कुंभवीर स्वयंसेवक अपलोड करू शकतात प्रत्यक्ष क्षेत्रीय तपासणी फोटो थेट गॅलरी किंवा स्टोरेजमधून. थेट कॅमेरा चेहरा पडताळणीची आवश्यकता नाही.",
+    "hi": "कुंभवीर स्वयंसेवक can अपलोड करें on-site जांच / ऑडिट photos directly से gallery or storage. No लाइव camera facial verification is required.",
     "en": "Kumbhveer volunteers can upload on-site audit photos directly from gallery or storage. No live camera facial verification is required."
   },
   "Kumbhveers": {
@@ -4974,18 +4974,18 @@
     "en": "Live Alerts"
   },
   "Live camera capture or upload for vector extraction": {
-    "mr": "थेट camera capture or अपलोड करा for vector extraction",
-    "hi": "लाइव camera capture or अपलोड करें for vector extraction",
+    "mr": "थेट camera capture or अपलोड करा साठी vector extraction",
+    "hi": "लाइव camera capture or अपलोड करें के लिए vector extraction",
     "en": "Live camera capture or upload for vector extraction"
   },
   "Live Camera Selfie Identity Confirmed": {
-    "mr": "थेट Camera Selfie Identity Confirmed",
-    "hi": "लाइव Camera Selfie Identity Confirmed",
+    "mr": "थेट कॅमेरा Selfie Identity Confirmed",
+    "hi": "लाइव कैमरा Selfie Identity Confirmed",
     "en": "Live Camera Selfie Identity Confirmed"
   },
   "Live camera stream analyzes facial landmarks and runs biometric embedding match with official Kumbhveer registry.": {
-    "mr": "थेट camera stream analyzes facial landmarks and runs biometric embedding match with official कुंभवीर registry.",
-    "hi": "लाइव camera stream analyzes facial landmarks and runs biometric embedding match with official कुंभवीर registry.",
+    "mr": "थेट camera stream analyzes facial landmarks आणि runs biometric embedding match सह official कुंभवीर registry.",
+    "hi": "लाइव camera stream analyzes facial landmarks और runs biometric embedding match के साथ official कुंभवीर registry.",
     "en": "Live camera stream analyzes facial landmarks and runs biometric embedding match with official Kumbhveer registry."
   },
   "Live Case": {
@@ -5009,8 +5009,8 @@
     "en": "Live DBSCAN Incident Clustering"
   },
   "Live Dispatch": {
-    "mr": "थेट Dispatch",
-    "hi": "लाइव Dispatch",
+    "mr": "थेट रवानगी",
+    "hi": "लाइव प्रेषण",
     "en": "Live Dispatch"
   },
   "Live Escalation Feed": {
@@ -5189,8 +5189,8 @@
     "en": "Log Note"
   },
   "Log Out of Duty Terminal": {
-    "mr": "Log Out of Duty टर्मिनल",
-    "hi": "Log Out of Duty टर्मिनल",
+    "mr": "Log Out of कर्तव्य टर्मिनल",
+    "hi": "Log Out of ड्यूटी टर्मिनल",
     "en": "Log Out of Duty Terminal"
   },
   "Login": {
@@ -5204,8 +5204,8 @@
     "en": "Login to Operator Portal"
   },
   "Login with Supabase": {
-    "mr": "प्रवेश करा with Supabase",
-    "hi": "लॉगिन करें with Supabase",
+    "mr": "प्रवेश करा सह Supabase",
+    "hi": "लॉगिन करें के साथ Supabase",
     "en": "Login with Supabase"
   },
   "Logout": {
@@ -5259,8 +5259,8 @@
     "en": "Manage Stall, Rate Benchmarks & Orders"
   },
   "Manage your prices and stock status visible to Yatris on the Kumbh Bazaar.": {
-    "mr": "Manage your prices and stock स्थिती visible to Yatris on the कुंभ बाजार.",
-    "hi": "Manage your prices and stock स्थिति visible to Yatris on the कुंभ बाज़ार.",
+    "mr": "Manage आपले prices आणि stock स्थिती visible to यात्रीs on कुंभ बाजार.",
+    "hi": "Manage आपका prices और stock स्थिति visible to यात्रीs on कुंभ बाज़ार.",
     "en": "Manage your prices and stock status visible to Yatris on the Kumbh Bazaar."
   },
   "Manasi Dhole": {
@@ -5309,8 +5309,8 @@
     "en": "Mark Resolved"
   },
   "Market": {
-    "mr": "बाजार",
-    "hi": "बाज़ार",
+    "mr": "बाजारपेठ",
+    "hi": "बाजार",
     "en": "Market"
   },
   "Marketplace": {
@@ -5359,8 +5359,8 @@
     "en": "Medium Density"
   },
   "Medium Priority": {
-    "mr": "Medium Priority",
-    "hi": "Medium Priority",
+    "mr": "मध्यम प्राधान्यता",
+    "hi": "मध्यम प्राथमिकता",
     "en": "Medium Priority"
   },
   "Meenakshi Sundaram": {
@@ -5494,8 +5494,8 @@
     "en": "Muktidham Temple (9 km)"
   },
   "Municipal Gazette Ceiling Cap:": {
-    "mr": "महानगरपालिका Gazette कमाल मर्यादा मर्यादा:",
-    "hi": "नगर निगम Gazette अधिकतम सीमा सीमा:",
+    "mr": "महानगरपालिका राजपत्र कमाल मर्यादा मर्यादा:",
+    "hi": "नगर निगम राजपत्र अधिकतम सीमा सीमा:",
     "en": "Municipal Gazette Ceiling Cap:"
   },
   "Municipal gazette limits": {
@@ -5514,7 +5514,7 @@
     "en": "Municipal Public Grievance Protocol • Nashik 2027"
   },
   "Municipal review queue": {
-    "mr": "मनपा पुनरावलोकन रांग",
+    "mr": "मनपा तपासणी प्रतीक्षा",
     "hi": "नगर निगम समीक्षा कतार",
     "en": "Municipal review queue"
   },
@@ -5674,8 +5674,8 @@
     "en": "Nashikkar"
   },
   "Nashikkar Admin Escalation": {
-    "mr": "नाशिककर प्रशासक Escalation",
-    "hi": "नाशिककर प्रशासक Escalation",
+    "mr": "नाशिककर प्रशासक तक्रार निवारण",
+    "hi": "नाशिककर प्रशासक शिकायत निवारण",
     "en": "Nashikkar Admin Escalation"
   },
   "Nashikkar citizen": {
@@ -5724,8 +5724,8 @@
     "en": "Navigate Base"
   },
   "Navigate Stand": {
-    "mr": "Navigate Stand",
-    "hi": "Navigate Stand",
+    "mr": "Navigate स्थानक",
+    "hi": "Navigate स्टैंड",
     "en": "Navigate Stand"
   },
   "Navigate to Location (Google Maps)": {
@@ -5824,8 +5824,8 @@
     "en": "NMC Fact-Check Cell"
   },
   "NMC Gazette Cap": {
-    "mr": "NMC Gazette मर्यादा",
-    "hi": "NMC Gazette सीमा",
+    "mr": "NMC राजपत्र मर्यादा",
+    "hi": "NMC राजपत्र सीमा",
     "en": "NMC Gazette Cap"
   },
   "NMC/2026/G-881": {
@@ -5889,8 +5889,8 @@
     "en": "Officer Badge ID / Metal No."
   },
   "Officer Enforcement Controls": {
-    "mr": "अधिकारी Enforcement Controls",
-    "hi": "अधिकारी Enforcement Controls",
+    "mr": "अधिकारी अंमलबजावणी Controls",
+    "hi": "अधिकारी प्रवर्तन Controls",
     "en": "Officer Enforcement Controls"
   },
   "Officer Settings": {
@@ -5914,8 +5914,8 @@
     "en": "Official Cap Rates"
   },
   "Official Cap Voucher": {
-    "mr": "Official मर्यादा Voucher",
-    "hi": "Official सीमा Voucher",
+    "mr": "अधिकृत मर्यादा Voucher",
+    "hi": "आधिकारिक सीमा Voucher",
     "en": "Official Cap Voucher"
   },
   "Official Civic Voucher": {
@@ -5939,8 +5939,8 @@
     "en": "Official Gazette"
   },
   "Official Gazetted Cap": {
-    "mr": "Official Gazetted मर्यादा",
-    "hi": "Official Gazetted सीमा",
+    "mr": "अधिकृत राजपत्रd मर्यादा",
+    "hi": "आधिकारिक राजपत्रd सीमा",
     "en": "Official Gazetted Cap"
   },
   "Official gazetted rate card is clearly visible to pilgrims": {
@@ -5954,23 +5954,23 @@
     "en": "Official In-App Bookable Service"
   },
   "Official Kumbh Municipal Fair-Trade Certificate:": {
-    "mr": "Official कुंभ महानगरपालिका वाजवी-Trade Certificate:",
-    "hi": "Official कुंभ नगर निगम उचित-Trade Certificate:",
+    "mr": "अधिकृत कुंभ महानगरपालिका वाजवी-Trade Certificate:",
+    "hi": "आधिकारिक कुंभ नगर निगम उचित-Trade Certificate:",
     "en": "Official Kumbh Municipal Fair-Trade Certificate:"
   },
   "Official license warning issued to vendor. Excess ₹40 directly refunded to pilgrim on site.": {
-    "mr": "Official license इशारा issued to विक्रेता. Excess ₹40 directly refunded to भाविक on site.",
-    "hi": "Official license चेतावनी issued to विक्रेता. Excess ₹40 directly refunded to तीर्थयात्री on site.",
+    "mr": "अधिकृत license इशारा issued to विक्रेता. Excess ₹40 directly refunded to भाविक on site.",
+    "hi": "आधिकारिक license चेतावनी issued to विक्रेता. Excess ₹40 directly refunded to तीर्थयात्री on site.",
     "en": "Official license warning issued to vendor. Excess ₹40 directly refunded to pilgrim on site."
   },
   "Official municipal rate cap: ₹450 / day": {
-    "mr": "Official महानगरपालिका दर मर्यादा: ₹450 / दिवस",
-    "hi": "Official नगर निगम दर सीमा: ₹450 / दिन",
+    "mr": "अधिकृत महानगरपालिका दर मर्यादा: ₹450 / दिवस",
+    "hi": "आधिकारिक नगर निगम दर सीमा: ₹450 / दिन",
     "en": "Official municipal rate cap: ₹450 / day"
   },
   "Official Police Log": {
-    "mr": "Official पोलीस Log",
-    "hi": "Official पुलिस Log",
+    "mr": "अधिकृत पोलीस Log",
+    "hi": "आधिकारिक पुलिस Log",
     "en": "Official Police Log"
   },
   "Official Portal": {
@@ -5994,8 +5994,8 @@
     "en": "Official Secure PIN"
   },
   "Official Simhastha Kumbh 2027 dispatch queue. Accept or reject incoming pilgrim tour bookings in real-time.": {
-    "mr": "Official सिंहस्थ कुंभ 2027 dispatch queue. Accept or reject incoming भाविक tour नोंदणी in real-time.",
-    "hi": "Official सिंहस्थ कुंभ 2027 dispatch queue. Accept or reject incoming तीर्थयात्री tour बुकिंग in real-time.",
+    "mr": "अधिकृत सिंहस्थ कुंभ 2027 dispatch queue. Accept or reject incoming भाविक दौरा नोंदणी in real-time.",
+    "hi": "आधिकारिक सिंहस्थ कुंभ 2027 dispatch queue. Accept or reject incoming तीर्थयात्री दौरा बुकिंग in real-time.",
     "en": "Official Simhastha Kumbh 2027 dispatch queue. Accept or reject incoming pilgrim tour bookings in real-time."
   },
   "Official Simhastha News": {
@@ -6014,8 +6014,8 @@
     "en": "Omkar Gite"
   },
   "On Duty / Active Dispatch": {
-    "mr": "On Duty / सक्रिय Dispatch",
-    "hi": "On Duty / सक्रिय Dispatch",
+    "mr": "On कर्तव्य / सक्रिय रवानगी",
+    "hi": "On ड्यूटी / सक्रिय प्रेषण",
     "en": "On Duty / Active Dispatch"
   },
   "On-Ground Direct Clearance": {
@@ -6054,8 +6054,8 @@
     "en": "Open Civic Feedback & Grievance"
   },
   "Open for Yatris": {
-    "mr": "Open for Yatris",
-    "hi": "Open for Yatris",
+    "mr": "Open साठी यात्रीs",
+    "hi": "Open के लिए यात्रीs",
     "en": "Open for Yatris"
   },
   "Open Now": {
@@ -6064,8 +6064,8 @@
     "en": "Open Now"
   },
   "Open spatial cluster map and real-time overcharging triage stream.": {
-    "mr": "Open spatial गट map and real-time जादा दर आकारणी triage stream.",
-    "hi": "Open spatial क्लस्टर map and real-time अत्यधिक वसूली triage stream.",
+    "mr": "Open spatial गट map आणि real-time जादा दर आकारणी triage stream.",
+    "hi": "Open spatial क्लस्टर map और real-time अत्यधिक वसूली triage stream.",
     "en": "Open spatial cluster map and real-time overcharging triage stream."
   },
   "Opening Gazette...": {
@@ -6079,8 +6079,8 @@
     "en": "Operational Ledger"
   },
   "Operational Snapshot": {
-    "mr": "कार्यान्वयन सारांश",
-    "hi": "परिचालन सारांश",
+    "mr": "कार्यरत आढावा",
+    "hi": "परिचालन स्नैपशॉट",
     "en": "Operational Snapshot"
   },
   "Operator & Citizen Gateway": {
@@ -6154,8 +6154,8 @@
     "en": "Orders"
   },
   "Organized Auto Fare Extortion (+63% over gazette cap)": {
-    "mr": "Organized रिक्षा Fare Extortion (+63% over gazette मर्यादा)",
-    "hi": "Organized ऑटो Fare Extortion (+63% over gazette सीमा)",
+    "mr": "Organized रिक्षा Fare Extortion (+63% पेक्षा अधिक gazette मर्यादा)",
+    "hi": "Organized ऑटो Fare Extortion (+63% से अधिक gazette सीमा)",
     "en": "Organized Auto Fare Extortion (+63% over gazette cap)"
   },
   "Origin of Godavari at Ganga Dwar. Ancient hill pilgrimage where Sage Gautama worshipped.": {
@@ -6194,7 +6194,7 @@
     "en": "Overcharging Flags & Inquiries"
   },
   "Overview": {
-    "mr": "अवलोकन",
+    "mr": "आढावा",
     "hi": "अवलोकन",
     "en": "Overview"
   },
@@ -6219,8 +6219,8 @@
     "en": "Paid & Received"
   },
   "Paired with MH-Govt Token Hub": {
-    "mr": "Paired with MH-Govt टोकन Hub",
-    "hi": "Paired with MH-Govt टोकन Hub",
+    "mr": "Paired सह MH-Govt टोकन Hub",
+    "hi": "Paired के साथ MH-Govt टोकन Hub",
     "en": "Paired with MH-Govt Token Hub"
   },
   "Panchavati": {
@@ -6259,8 +6259,8 @@
     "en": "Panchavati Heritage & Ramkund Snan Walk"
   },
   "Panchavati Rapid Enforcement Unit (Patrol Van 112)": {
-    "mr": "पंचवटी Rapid Enforcement Unit (गस्त पथक Van 112)",
-    "hi": "पंचवटी Rapid Enforcement Unit (गश्ती दल Van 112)",
+    "mr": "पंचवटी Rapid अंमलबजावणी Unit (गस्त पथक Van 112)",
+    "hi": "पंचवटी Rapid प्रवर्तन Unit (गश्ती दल Van 112)",
     "en": "Panchavati Rapid Enforcement Unit (Patrol Van 112)"
   },
   "Panchavati Sector 4 ·": {
@@ -6269,8 +6269,8 @@
     "en": "Panchavati Sector 4 ·"
   },
   "Panchavati Sector Squad 4 has been notified. A Kumbhveer squad will cross-verify rates at Godavari Yatri Niwas within 2 hours.": {
-    "mr": "पंचवटी विभाग पथक 4 has been notified. A कुंभवीर पथक will cross-verify दर at गोदावरी भाविक Niwas within 2 तास.",
-    "hi": "पंचवटी सेक्टर दस्ता 4 has been notified. A कुंभवीर दस्ता will cross-verify दरें at गोदावरी तीर्थयात्री Niwas within 2 घंटे.",
+    "mr": "पंचवटी विभाग पथक 4 has been notified. A कुंभवीर पथक will cross-verify दर at गोदावरी भाविक निवास च्या आत 2 तास.",
+    "hi": "पंचवटी सेक्टर दस्ता 4 has been notified. A कुंभवीर दस्ता will cross-verify दरें at गोदावरी तीर्थयात्री निवास के भीतर 2 घंटे.",
     "en": "Panchavati Sector Squad 4 has been notified. A Kumbhveer squad will cross-verify rates at Godavari Yatri Niwas within 2 hours."
   },
   "Panchavati Sweets": {
@@ -6304,8 +6304,8 @@
     "en": "Patrol Dispatched"
   },
   "Patrol Priority Leaderboard": {
-    "mr": "गस्त पथक Priority Leaderboard",
-    "hi": "गश्ती दल Priority Leaderboard",
+    "mr": "गस्त पथक प्राधान्य Leaderboard",
+    "hi": "गश्ती दल प्राथमिकता Leaderboard",
     "en": "Patrol Priority Leaderboard"
   },
   "Pay at Meeting Point": {
@@ -6409,13 +6409,13 @@
     "en": "Photo / Receipt Evidence"
   },
   "Photo logged by Officer KV-12": {
-    "mr": "Photo logged by अधिकारी KV-12",
-    "hi": "Photo logged by अधिकारी KV-12",
+    "mr": "छायाचित्र नोंदणीकृत by अधिकारी KV-12",
+    "hi": "फोटो दर्ज by अधिकारी KV-12",
     "en": "Photo logged by Officer KV-12"
   },
   "Photo On File": {
-    "mr": "Photo On File",
-    "hi": "Photo On File",
+    "mr": "छायाचित्र On File",
+    "hi": "फोटो On File",
     "en": "Photo On File"
   },
   "PIB & District Police Ground Truth Desk": {
@@ -6449,8 +6449,8 @@
     "en": "PIB FACT CHECK • Satyameva Jayate"
   },
   "PIB Fact-Check & Public Broadcast": {
-    "mr": "PIB Fact-Check & Public Broadcast",
-    "hi": "PIB Fact-Check & Public Broadcast",
+    "mr": "PIB Fact-तपासणी & Public Broadcast",
+    "hi": "PIB Fact-जांच & Public Broadcast",
     "en": "PIB Fact-Check & Public Broadcast"
   },
   "PIB Fact-Check & Truth Feed": {
@@ -6459,8 +6459,8 @@
     "en": "PIB Fact-Check & Truth Feed"
   },
   "PIB Fact-Check Maharashtra": {
-    "mr": "PIB Fact-Check Maharashtra",
-    "hi": "PIB Fact-Check Maharashtra",
+    "mr": "PIB Fact-तपासणी Maharashtra",
+    "hi": "PIB Fact-जांच Maharashtra",
     "en": "PIB Fact-Check Maharashtra"
   },
   "PIB Truth Desk": {
@@ -6474,8 +6474,8 @@
     "en": "Picked up 42m ago"
   },
   "Pickup Stand: 120m away": {
-    "mr": "Pickup Stand: 120m away",
-    "hi": "Pickup Stand: 120m away",
+    "mr": "Pickup स्थानक: 120m away",
+    "hi": "Pickup स्टैंड: 120m away",
     "en": "Pickup Stand: 120m away"
   },
   "Pilgrim": {
@@ -6484,8 +6484,8 @@
     "en": "Pilgrim"
   },
   "Pilgrim & Kumbhveer Logged": {
-    "mr": "भाविक & कुंभवीर Logged",
-    "hi": "तीर्थयात्री & कुंभवीर Logged",
+    "mr": "भाविक व कुंभवीर नोंदणीकृत",
+    "hi": "श्रद्धालु व कुंभवीर द्वारा दर्ज",
     "en": "Pilgrim & Kumbhveer Logged"
   },
   "Pilgrim Satvik Dining Stall": {
@@ -6494,8 +6494,8 @@
     "en": "Pilgrim Satvik Dining Stall"
   },
   "Pilgrim Yatri Niwas": {
-    "mr": "भाविक भाविक Niwas",
-    "hi": "तीर्थयात्री तीर्थयात्री Niwas",
+    "mr": "भाविक भाविक निवास",
+    "hi": "तीर्थयात्री तीर्थयात्री निवास",
     "en": "Pilgrim Yatri Niwas"
   },
   "Pilgrim:": {
@@ -6664,13 +6664,13 @@
     "en": "Price Gouging / Overcharging"
   },
   "Price Guidance & Reference Range": {
-    "mr": "दर Guidance & Reference Range",
-    "hi": "मूल्य Guidance & Reference Range",
+    "mr": "दर मार्गदर्शन व संदर्भ मर्यादा",
+    "hi": "मूल्य मार्गदर्शन एवं संदर्भ सीमा",
     "en": "Price Guidance & Reference Range"
   },
   "Prices are indicative community ranges. Administration does not fix or guarantee individual vendor prices.": {
-    "mr": "Prices are indicative community ranges. प्रशासन does not fix or guarantee individual विक्रेता prices.",
-    "hi": "Prices are indicative community ranges. प्रशासन does not fix or guarantee individual विक्रेता prices.",
+    "mr": "दर हे केवळ नागरी संदर्भ मर्यादा आहेत. प्रशासन वैयक्तिक विक्रेत्यांच्या दरांची हमी देत नाही.",
+    "hi": "मूल्य केवल सांकेतिक सामुदायिक सीमाएं हैं। प्रशासन व्यक्तिगत विक्रेता दरों की गारंटी नहीं देता है।",
     "en": "Prices are indicative community ranges. Administration does not fix or guarantee individual vendor prices."
   },
   "Prices are indicative community ranges. Govt does not guarantee or fix prices.": {
@@ -6694,23 +6694,23 @@
     "en": "Pricing Structure:"
   },
   "Priority 2 • Field Surge": {
-    "mr": "Priority 2 • Field Surge",
-    "hi": "Priority 2 • Field Surge",
+    "mr": "प्राधान्य 2 • प्रत्यक्ष Surge",
+    "hi": "प्राथमिकता 2 • फील्ड Surge",
     "en": "Priority 2 • Field Surge"
   },
   "Priority 30–50 (High)": {
-    "mr": "Priority 30–50 (उच्च / तीव्र)",
-    "hi": "Priority 30–50 (उच्च / तीव्र)",
+    "mr": "प्राधान्य 30–50 (उच्च / तीव्र)",
+    "hi": "प्राथमिकता 30–50 (उच्च / तीव्र)",
     "en": "Priority 30–50 (High)"
   },
   "Priority < 30 (Moderate)": {
-    "mr": "Priority < 30 (मध्यम)",
-    "hi": "Priority < 30 (मध्यम)",
+    "mr": "प्राधान्य < 30 (मध्यम)",
+    "hi": "प्राथमिकता < 30 (मध्यम)",
     "en": "Priority < 30 (Moderate)"
   },
   "Priority > 50 (Critical)": {
-    "mr": "Priority > 50 (Critical)",
-    "hi": "Priority > 50 (Critical)",
+    "mr": "प्राधान्य > 50 (Critical)",
+    "hi": "प्राथमिकता > 50 (Critical)",
     "en": "Priority > 50 (Critical)"
   },
   "Private Auto": {
@@ -6749,8 +6749,8 @@
     "en": "Protected"
   },
   "Protected Law Enforcement Network": {
-    "mr": "Protected Law Enforcement Network",
-    "hi": "Protected Law Enforcement Network",
+    "mr": "Protected Law अंमलबजावणी Network",
+    "hi": "Protected Law प्रवर्तन Network",
     "en": "Protected Law Enforcement Network"
   },
   "PSI S. More": {
@@ -6839,8 +6839,8 @@
     "en": "Queue"
   },
   "Queue barrier Gate 4B unsealed; steady pedestrian cycle restored with no incident.": {
-    "mr": "Queue barrier प्रवेशद्वार 4B unsealed; steady pedestrian cycle restored with no incident.",
-    "hi": "Queue barrier प्रवेश द्वार 4B unsealed; steady pedestrian cycle restored with no incident.",
+    "mr": "Queue barrier प्रवेशद्वार 4B unsealed; steady pedestrian cycle restored सह no incident.",
+    "hi": "Queue barrier प्रवेश द्वार 4B unsealed; steady pedestrian cycle restored के साथ no incident.",
     "en": "Queue barrier Gate 4B unsealed; steady pedestrian cycle restored with no incident."
   },
   "Quick Emergency Access": {
@@ -6914,13 +6914,13 @@
     "en": "Ramkund (28%)"
   },
   "Ramkund - Panchavati Field Verification Hub": {
-    "mr": "रामकुंड - पंचवटी Field Verification Hub",
-    "hi": "रामकुंड - पंचवटी Field Verification Hub",
+    "mr": "रामकुंड - पंचवटी प्रत्यक्ष पडताळणी Hub",
+    "hi": "रामकुंड - पंचवटी फील्ड सत्यापन Hub",
     "en": "Ramkund - Panchavati Field Verification Hub"
   },
   "Ramkund Approach Lane": {
-    "mr": "रामकुंड Approach Lane",
-    "hi": "रामकुंड Approach Lane",
+    "mr": "रामकुंड Approach गल्ली",
+    "hi": "रामकुंड Approach लेन",
     "en": "Ramkund Approach Lane"
   },
   "Ramkund Evening Aarti Circuit": {
@@ -6959,8 +6959,8 @@
     "en": "Ramkund Ghat, Panchavati"
   },
   "Ramkund Lane": {
-    "mr": "रामकुंड Lane",
-    "hi": "रामकुंड Lane",
+    "mr": "रामकुंड गल्ली",
+    "hi": "रामकुंड लेन",
     "en": "Ramkund Lane"
   },
   "Ramkund Main Ghat (Panchavati)": {
@@ -7009,7 +7009,7 @@
     "en": "Ramkund North"
   },
   "Ramkund River View": {
-    "mr": "रामकुंड नदी दृश्य",
+    "mr": "रामकुंड नदी दर्शन",
     "hi": "रामकुंड नदी दृश्य",
     "en": "Ramkund River View"
   },
@@ -7054,8 +7054,8 @@
     "en": "Rapid Field Resolution"
   },
   "Rapid Patrol Dispatch": {
-    "mr": "Rapid गस्त पथक Dispatch",
-    "hi": "Rapid गश्ती दल Dispatch",
+    "mr": "Rapid गस्त पथक रवानगी",
+    "hi": "Rapid गश्ती दल प्रेषण",
     "en": "Rapid Patrol Dispatch"
   },
   "Rate": {
@@ -7074,8 +7074,8 @@
     "en": "Rate Card Public Display Inspection"
   },
   "Rate confirmed by": {
-    "mr": "दर confirmed by",
-    "hi": "दर confirmed by",
+    "mr": "दर निश्चिती:",
+    "hi": "दर पुष्टि:",
     "en": "Rate confirmed by"
   },
   "Rate Gazette": {
@@ -7094,13 +7094,13 @@
     "en": "Rate Registry"
   },
   "Rates shown are community reference ranges and vendor-declared rates. Administration does not fix or guarantee prices.": {
-    "mr": "दर shown are community reference ranges and विक्रेता-declared दर. प्रशासन does not fix or guarantee prices.",
-    "hi": "दरें shown are community reference ranges and विक्रेता-declared दरें. प्रशासन does not fix or guarantee prices.",
+    "mr": "दर shown are community reference ranges आणि विक्रेता-declared दर. प्रशासन does not fix or guarantee prices.",
+    "hi": "दरें shown are community reference ranges और विक्रेता-declared दरें. प्रशासन does not fix or guarantee prices.",
     "en": "Rates shown are community reference ranges and vendor-declared rates. Administration does not fix or guarantee prices."
   },
   "Read Gazette Standard Operating Procedure": {
-    "mr": "Read Gazette Standard Operating Procedure",
-    "hi": "Read Gazette Standard Operating Procedure",
+    "mr": "Read राजपत्र स्थानकard Operating Procedure",
+    "hi": "Read राजपत्र स्टैंडard Operating Procedure",
     "en": "Read Gazette Standard Operating Procedure"
   },
   "Read More": {
@@ -7114,13 +7114,13 @@
     "en": "Ready"
   },
   "Ready for audit": {
-    "mr": "Ready for तपासणी",
-    "hi": "Ready for जांच / ऑडिट",
+    "mr": "Ready साठी तपासणी",
+    "hi": "Ready के लिए जांच / ऑडिट",
     "en": "Ready for audit"
   },
   "Ready for Pickup": {
-    "mr": "Ready for Pickup",
-    "hi": "Ready for Pickup",
+    "mr": "Ready साठी Pickup",
+    "hi": "Ready के लिए Pickup",
     "en": "Ready for Pickup"
   },
   "Ready to Scan": {
@@ -7129,8 +7129,8 @@
     "en": "Ready to Scan"
   },
   "Real-time fair-pricing enforcement data under the Nashik Municipal Act & Kumbh Area High-Power Committee directives.": {
-    "mr": "Real-time वाजवी-दर रचना enforcement data under the Nashik महानगरपालिका Act & कुंभ Area उच्च / तीव्र-Power Committee directives.",
-    "hi": "Real-time उचित-मूल्य निर्धारण enforcement data under the Nashik नगर निगम Act & कुंभ Area उच्च / तीव्र-Power Committee directives.",
+    "mr": "Real-time वाजवी-दर रचना enforcement data under Nashik महानगरपालिका Act & कुंभ Area उच्च / तीव्र-Power Committee directives.",
+    "hi": "Real-time उचित-मूल्य निर्धारण enforcement data under Nashik नगर निगम Act & कुंभ Area उच्च / तीव्र-Power Committee directives.",
     "en": "Real-time fair-pricing enforcement data under the Nashik Municipal Act & Kumbh Area High-Power Committee directives."
   },
   "Real-Time Fare Board & Transit Rates": {
@@ -7149,13 +7149,13 @@
     "en": "Real-time Flow"
   },
   "Real-time Telemetry": {
-    "mr": "थेट माहिती प्रवाह",
-    "hi": "वास्तविक समय डेटा",
+    "mr": "थेट टेलीमेट्री",
+    "hi": "रीयल-टाइम टेलीमेट्री",
     "en": "Real-time Telemetry"
   },
   "Receive ticket number and police dispatch notification status.": {
-    "mr": "Receive ticket number and पोलीस dispatch notification स्थिती.",
-    "hi": "Receive ticket number and पुलिस dispatch notification स्थिति.",
+    "mr": "Receive ticket number आणि पोलीस dispatch notification स्थिती.",
+    "hi": "Receive ticket number और पुलिस dispatch notification स्थिति.",
     "en": "Receive ticket number and police dispatch notification status."
   },
   "Recent Bookings": {
@@ -7214,8 +7214,8 @@
     "en": "Register Guide"
   },
   "Register Guide (Camera AR)": {
-    "mr": "नोंदणी करा मार्गदर्शक (Camera AR)",
-    "hi": "पंजीकरण करें गाइड (Camera AR)",
+    "mr": "नोंदणी करा मार्गदर्शक (कॅमेरा AR)",
+    "hi": "पंजीकरण करें गाइड (कैमरा AR)",
     "en": "Register Guide (Camera AR)"
   },
   "Register Local Guide": {
@@ -7359,8 +7359,8 @@
     "en": "Reported 24m ago"
   },
   "Reported by Yatris": {
-    "mr": "भाविकांनी नोंदवले",
-    "hi": "तीर्थयात्रियों द्वारा दर्ज",
+    "mr": "यात्रेकरूंनी नोंदवलेले",
+    "hi": "यात्रियों द्वारा रिपोर्ट किए गए",
     "en": "Reported by Yatris"
   },
   "Reported Price Inconsistencies": {
@@ -7369,8 +7369,8 @@
     "en": "Reported Price Inconsistencies"
   },
   "Reported Rate": {
-    "mr": "Reported दर",
-    "hi": "Reported दर",
+    "mr": "नोंदवलेला दर",
+    "hi": "दर्ज किया गया दर",
     "en": "Reported Rate"
   },
   "Reported Transporter": {
@@ -7429,8 +7429,8 @@
     "en": "Resend Token"
   },
   "Reservation saved for offline access!": {
-    "mr": "Reservation saved for offline access!",
-    "hi": "Reservation saved for offline access!",
+    "mr": "Reservation saved साठी offline access!",
+    "hi": "Reservation saved के लिए offline access!",
     "en": "Reservation saved for offline access!"
   },
   "Reserve Table": {
@@ -7439,8 +7439,8 @@
     "en": "Reserve Table"
   },
   "Reset All Filters": {
-    "mr": "Reset All Filters",
-    "hi": "Reset All Filters",
+    "mr": "Reset सर्व Filters",
+    "hi": "Reset सभी Filters",
     "en": "Reset All Filters"
   },
   "Reset Filters": {
@@ -7479,8 +7479,8 @@
     "en": "Resolved ✓"
   },
   "Restricted access for field officers, beat inspectors & designated civic magistrates.": {
-    "mr": "Restricted access for field officers, beat inspectors & designated नागरी magistrates.",
-    "hi": "Restricted access for field officers, beat inspectors & designated नागरिक magistrates.",
+    "mr": "Restricted access साठी field officers, beat inspectors & designated नागरी magistrates.",
+    "hi": "Restricted access के लिए field officers, beat inspectors & designated नागरिक magistrates.",
     "en": "Restricted access for field officers, beat inspectors & designated civic magistrates."
   },
   "Restricted Civic Access": {
@@ -7499,13 +7499,13 @@
     "en": "Return to Home"
   },
   "Review": {
-    "mr": "पुनरावलोकन",
-    "hi": "समीक्षा",
+    "mr": "तपासा",
+    "hi": "समीक्षा करें",
     "en": "Review"
   },
   "Review Flag": {
-    "mr": "पुनरावलोकन इशारा",
-    "hi": "समीक्षा चेतावनी",
+    "mr": "तक्रार तपासा",
+    "hi": "फ्लैग की समीक्षा करें",
     "en": "Review Flag"
   },
   "Reviews": {
@@ -7564,8 +7564,8 @@
     "en": "Role"
   },
   "Room & Yatris": {
-    "mr": "खोली & Yatris",
-    "hi": "कमरा & Yatris",
+    "mr": "खोली & यात्रीs",
+    "hi": "कमरा & यात्रीs",
     "en": "Room & Yatris"
   },
   "Room / Stay": {
@@ -7659,8 +7659,8 @@
     "en": "Saffron Handloom Snan Dhoti Set"
   },
   "Sai Auto Stand": {
-    "mr": "Sai रिक्षा Stand",
-    "hi": "Sai ऑटो Stand",
+    "mr": "Sai रिक्षा स्थानक",
+    "hi": "Sai ऑटो स्टैंड",
     "en": "Sai Auto Stand"
   },
   "Sai Auto Stand (#NSK-TR-04, Panchavati Ghat)": {
@@ -7674,8 +7674,8 @@
     "en": "Sai Auto Stand (Bay 4)"
   },
   "Sai Auto Stand (Bay 4, Ramkund West)": {
-    "mr": "Sai रिक्षा Stand (Bay 4, रामकुंड West)",
-    "hi": "Sai ऑटो Stand (Bay 4, रामकुंड West)",
+    "mr": "Sai रिक्षा स्थानक (Bay 4, रामकुंड West)",
+    "hi": "Sai ऑटो स्टैंड (Bay 4, रामकुंड West)",
     "en": "Sai Auto Stand (Bay 4, Ramkund West)"
   },
   "sailing": {
@@ -7849,13 +7849,13 @@
     "en": "SEC-04"
   },
   "Section 14-B requires every active stall to exhibit the official stamped bilingual QR card. Unverified or overcharging entities face immediate temporary permit suspension.": {
-    "mr": "Section 14-B requires every सक्रिय स्टॉल to exhibit the official stamped bilingual QR card. Unverified or जादा दर आकारणी entities face immediate temporary permit suspension.",
-    "hi": "Section 14-B requires every सक्रिय स्टॉल to exhibit the official stamped bilingual QR card. Unverified or अत्यधिक वसूली entities face immediate temporary permit suspension.",
+    "mr": "Section 14-B requires every सक्रिय स्टॉल to exhibit official stamped bilingual QR card. Unverified or जादा दर आकारणी entities face immediate temporary permit suspension.",
+    "hi": "Section 14-B requires every सक्रिय स्टॉल to exhibit official stamped bilingual QR card. Unverified or अत्यधिक वसूली entities face immediate temporary permit suspension.",
     "en": "Section 14-B requires every active stall to exhibit the official stamped bilingual QR card. Unverified or overcharging entities face immediate temporary permit suspension."
   },
   "Section 144 Municipal Price Protection Gazette Live Monitoring": {
-    "mr": "Section 144 महानगरपालिका दर Protection Gazette थेट Monitoring",
-    "hi": "Section 144 नगर निगम मूल्य Protection Gazette लाइव Monitoring",
+    "mr": "Section 144 महानगरपालिका दर Protection राजपत्र थेट Monitoring",
+    "hi": "Section 144 नगर निगम मूल्य Protection राजपत्र लाइव Monitoring",
     "en": "Section 144 Municipal Price Protection Gazette Live Monitoring"
   },
   "Sector & Location Lane": {
@@ -7894,8 +7894,8 @@
     "en": "Sector 2 Command Post (Ramkund Central Ghats)"
   },
   "Sector 2 Desk • Duty Active (Shift B)": {
-    "mr": "विभाग 2 कक्ष • Duty सक्रिय (Shift B)",
-    "hi": "सेक्टर 2 कक्ष • Duty सक्रिय (Shift B)",
+    "mr": "विभाग 2 कक्ष • कर्तव्य सक्रिय (Shift B)",
+    "hi": "सेक्टर 2 कक्ष • ड्यूटी सक्रिय (Shift B)",
     "en": "Sector 2 Desk • Duty Active (Shift B)"
   },
   "Sector 2 Desk • Shift B Active": {
@@ -7959,8 +7959,8 @@
     "en": "Sector Feed"
   },
   "Secured with Supabase Auth & TLS Encryption": {
-    "mr": "Secured with Supabase Auth & TLS Encryption",
-    "hi": "Secured with Supabase Auth & TLS Encryption",
+    "mr": "Secured सह Supabase Auth & TLS Encryption",
+    "hi": "Secured के साथ Supabase Auth & TLS Encryption",
     "en": "Secured with Supabase Auth & TLS Encryption"
   },
   "Security & Lost / Found": {
@@ -7974,13 +7974,13 @@
     "en": "Security PIN"
   },
   "Select an available on-ground volunteer for in-person kitchen inspection at": {
-    "mr": "Select an available on-ground volunteer for in-person kitchen inspection at",
-    "hi": "Select an available on-ground volunteer for in-person kitchen inspection at",
+    "mr": "Select an available on-ground स्वयंसेवक साठी in-person kitchen inspection at",
+    "hi": "Select an available on-ground volunteer के लिए in-person kitchen inspection at",
     "en": "Select an available on-ground volunteer for in-person kitchen inspection at"
   },
   "Select image from gallery or documents (No live camera needed)": {
-    "mr": "Select image from gallery or documents (No थेट camera needed)",
-    "hi": "Select image from gallery or documents (No लाइव camera needed)",
+    "mr": "Select image कडून gallery or documents (No थेट camera needed)",
+    "hi": "Select image से gallery or documents (No लाइव camera needed)",
     "en": "Select image from gallery or documents (No live camera needed)"
   },
   "Select Language": {
@@ -7999,8 +7999,8 @@
     "en": "Select Location..."
   },
   "Select Stall / Product Photo": {
-    "mr": "Select स्टॉल / Product Photo",
-    "hi": "Select स्टॉल / Product Photo",
+    "mr": "Select स्टॉल / Product छायाचित्र",
+    "hi": "Select स्टॉल / Product फोटो",
     "en": "Select Stall / Product Photo"
   },
   "Select Stall or Lodging to Audit*": {
@@ -8099,8 +8099,8 @@
     "en": "Set Pickup"
   },
   "Set your rate within or close to the estimated fair range.": {
-    "mr": "Set your दर within or close to the अंदाजित वाजवी range.",
-    "hi": "Set your दर within or close to the अनुमानित उचित range.",
+    "mr": "Set आपले दर च्या आत or close to अंदाजित वाजवी range.",
+    "hi": "Set आपका दर के भीतर or close to अनुमानित उचित range.",
     "en": "Set your rate within or close to the estimated fair range."
   },
   "Settings": {
@@ -8149,8 +8149,8 @@
     "en": "Share Clarification"
   },
   "Share via SMS": {
-    "mr": "Share via SMS",
-    "hi": "Share via SMS",
+    "mr": "Share द्वारे SMS",
+    "hi": "Share के माध्यम से SMS",
     "en": "Share via SMS"
   },
   "Share via WhatsApp": {
@@ -8214,8 +8214,8 @@
     "en": "Shreya Mahajan"
   },
   "Shri Balaji Shared Auto Stand #12": {
-    "mr": "Shri Balaji Shared रिक्षा Stand #12",
-    "hi": "Shri Balaji Shared ऑटो Stand #12",
+    "mr": "Shri Balaji Shared रिक्षा स्थानक #12",
+    "hi": "Shri Balaji Shared ऑटो स्टैंड #12",
     "en": "Shri Balaji Shared Auto Stand #12"
   },
   "Shri Krishna Pooja Bhandar (#NSK-BZ-102, Panchavati Steps)": {
@@ -8244,8 +8244,8 @@
     "en": "Simhastha Day 4"
   },
   "Simhastha Estimated Fair Range:": {
-    "mr": "सिंहस्थ अंदाजित वाजवी Range:",
-    "hi": "सिंहस्थ अनुमानित उचित Range:",
+    "mr": "सिंहस्थ अंदाजित वाजवी मर्यादा:",
+    "hi": "सिंहस्थ अनुमानित उचित सीमा:",
     "en": "Simhastha Estimated Fair Range:"
   },
   "Simhastha Kumbh 2027": {
@@ -8414,8 +8414,8 @@
     "en": "SOS"
   },
   "SOS Dispatch": {
-    "mr": "तातडीची मदत (SOS) Dispatch",
-    "hi": "तत्काल सहायता (SOS) Dispatch",
+    "mr": "तातडीची मदत (SOS) रवानगी",
+    "hi": "तत्काल सहायता (SOS) प्रेषण",
     "en": "SOS Dispatch"
   },
   "SOS-8987": {
@@ -8434,8 +8434,8 @@
     "en": "Source / Platform"
   },
   "Source: System Rate Scrape & Kumbhveer Spot Check": {
-    "mr": "Source: System दर Scrape & कुंभवीर Spot Check",
-    "hi": "Source: System दर Scrape & कुंभवीर Spot Check",
+    "mr": "Source: System दर Scrape & कुंभवीर Spot तपासणी",
+    "hi": "Source: System दर Scrape & कुंभवीर Spot जांच",
     "en": "Source: System Rate Scrape & Kumbhveer Spot Check"
   },
   "spa": {
@@ -8529,8 +8529,8 @@
     "en": "Stall ID"
   },
   "Stall Inventory & Estimated Fair Ranges": {
-    "mr": "स्टॉल Inventory & अंदाजित वाजवी Ranges",
-    "hi": "स्टॉल Inventory & अनुमानित उचित Ranges",
+    "mr": "स्टॉल Inventory & अंदाजित वाजवी मर्यादाs",
+    "hi": "स्टॉल Inventory & अनुमानित उचित सीमाs",
     "en": "Stall Inventory & Estimated Fair Ranges"
   },
   "Stall Location": {
@@ -8549,23 +8549,23 @@
     "en": "standard"
   },
   "Standard Dorm Bed mismatch. Asking ₹650/night offline; registered Simhastha Portal cap ₹350/night.": {
-    "mr": "Standard डॉर्मिटरी Bed mismatch. Asking ₹650/रात्र offline; registered सिंहस्थ Portal मर्यादा ₹350/रात्र.",
-    "hi": "Standard डॉर्मिटरी Bed mismatch. Asking ₹650/रात offline; registered सिंहस्थ Portal सीमा ₹350/रात.",
+    "mr": "स्थानकard डॉर्मिटरी Bed mismatch. Asking ₹650/रात्र offline; registered सिंहस्थ Portal मर्यादा ₹350/रात्र.",
+    "hi": "स्टैंडard डॉर्मिटरी Bed mismatch. Asking ₹650/रात offline; registered सिंहस्थ Portal सीमा ₹350/रात.",
     "en": "Standard Dorm Bed mismatch. Asking ₹650/night offline; registered Simhastha Portal cap ₹350/night."
   },
   "Standard Dorm bed priced at": {
-    "mr": "Standard डॉर्मिटरी bed priced at",
-    "hi": "Standard डॉर्मिटरी bed priced at",
+    "mr": "स्थानकard डॉर्मिटरी bed priced at",
+    "hi": "स्टैंडard डॉर्मिटरी bed priced at",
     "en": "Standard Dorm bed priced at"
   },
   "Standard Double Room": {
-    "mr": "Standard Double खोली",
-    "hi": "Standard Double कमरा",
+    "mr": "प्रमाणित दुहेरी कक्ष",
+    "hi": "मानक डबल रूम",
     "en": "Standard Double Room"
   },
   "Standard Non-AC · 2 Guests": {
-    "mr": "Standard Non-AC · 2 Guests",
-    "hi": "Standard Non-AC · 2 Guests",
+    "mr": "स्थानकard Non-AC · 2 Guests",
+    "hi": "स्टैंडard Non-AC · 2 Guests",
     "en": "Standard Non-AC · 2 Guests"
   },
   "Standard Twin Room": {
@@ -8579,13 +8579,13 @@
     "en": "Standard Veg Thali"
   },
   "Standardized meter & prepaid coupon": {
-    "mr": "Standardized meter & prepaid coupon",
-    "hi": "Standardized meter & prepaid coupon",
+    "mr": "स्थानकardized meter & prepaid coupon",
+    "hi": "स्टैंडardized meter & prepaid coupon",
     "en": "Standardized meter & prepaid coupon"
   },
   "Start Camera": {
-    "mr": "Start Camera",
-    "hi": "Start Camera",
+    "mr": "Start कॅमेरा",
+    "hi": "Start कैमरा",
     "en": "Start Camera"
   },
   "Station to Ghat": {
@@ -8604,13 +8604,13 @@
     "en": "Statutory Fair Price Guidelines 2027"
   },
   "Statutory Gazette Feed • NMC Apex Oversight": {
-    "mr": "Statutory Gazette Feed • NMC Apex Oversight",
-    "hi": "Statutory Gazette Feed • NMC Apex Oversight",
+    "mr": "Statutory राजपत्र Feed • NMC Apex Oversight",
+    "hi": "Statutory राजपत्र Feed • NMC Apex Oversight",
     "en": "Statutory Gazette Feed • NMC Apex Oversight"
   },
   "Stay calm. If crowd surges occur, proceed away from the river barricade toward Panchavati Main Square or contact any Kumbhveer squad.": {
-    "mr": "मुक्काम calm. If crowd surges occur, proceed away from the नदी barricade toward पंचवटी Main Square or contact any कुंभवीर पथक.",
-    "hi": "आवास calm. If crowd surges occur, proceed away from the नदी barricade toward पंचवटी Main Square or contact any कुंभवीर दस्ता.",
+    "mr": "मुक्काम calm. If crowd surges occur, proceed away कडून नदी barricade toward पंचवटी Main Square or contact any कुंभवीर पथक.",
+    "hi": "आवास calm. If crowd surges occur, proceed away से नदी barricade toward पंचवटी Main Square or contact any कुंभवीर दस्ता.",
     "en": "Stay calm. If crowd surges occur, proceed away from the river barricade toward Panchavati Main Square or contact any Kumbhveer squad."
   },
   "Stay Tariff Gap": {
@@ -8644,13 +8644,13 @@
     "en": "straighten"
   },
   "Strictly authorized personnel only. System activity logged, geo-tagged, and monitored under the Maharashtra Police Act, 1951 & IT Act 2000.": {
-    "mr": "Strictly authorized personnel only. System activity logged, geo-tagged, and monitored under the Maharashtra पोलीस Act, 1951 & IT Act 2000.",
-    "hi": "Strictly authorized personnel only. System activity logged, geo-tagged, and monitored under the Maharashtra पुलिस Act, 1951 & IT Act 2000.",
+    "mr": "Strictly authorized personnel only. System activity नोंदणीकृत, geo-tagged, आणि monitored under Maharashtra पोलीस Act, 1951 & IT Act 2000.",
+    "hi": "Strictly authorized personnel only. System activity दर्ज, geo-tagged, और monitored under Maharashtra पुलिस Act, 1951 & IT Act 2000.",
     "en": "Strictly authorized personnel only. System activity logged, geo-tagged, and monitored under the Maharashtra Police Act, 1951 & IT Act 2000."
   },
   "Students on field": {
     "mr": "विद्यार्थी प्रत्यक्ष क्षेत्रात",
-    "hi": "विद्यार्थी फील्ड में",
+    "hi": "छात्र मैदान पर",
     "en": "Students on field"
   },
   "Subcategory / Type": {
@@ -8659,8 +8659,8 @@
     "en": "Subcategory / Type"
   },
   "Subject escorted out, ₹500 penalty receipt logged, barred from sanctum ghat sector.": {
-    "mr": "Subject escorted out, ₹500 penalty receipt logged, barred from sanctum घाट विभाग.",
-    "hi": "Subject escorted out, ₹500 penalty receipt logged, barred from sanctum घाट सेक्टर.",
+    "mr": "Subject escorted out, ₹500 penalty receipt नोंदणीकृत, barred कडून sanctum घाट विभाग.",
+    "hi": "Subject escorted out, ₹500 penalty receipt दर्ज, barred से sanctum घाट सेक्टर.",
     "en": "Subject escorted out, ₹500 penalty receipt logged, barred from sanctum ghat sector."
   },
   "Submit": {
@@ -8879,8 +8879,8 @@
     "en": "Tapovan Bus Terminus to Ghat Gate 3"
   },
   "Tapovan Lane 3": {
-    "mr": "तपोवन Lane 3",
-    "hi": "तपोवन Lane 3",
+    "mr": "तपोवन गल्ली 3",
+    "hi": "तपोवन लेन 3",
     "en": "Tapovan Lane 3"
   },
   "Tapovan Parking Zone 2": {
@@ -8939,8 +8939,8 @@
     "en": "Target: 98%"
   },
   "Tariff Violation Check": {
-    "mr": "दरपत्रक Violation Check",
-    "hi": "दर सूची Violation Check",
+    "mr": "दरपत्रक Violation तपासणी",
+    "hi": "दर सूची Violation जांच",
     "en": "Tariff Violation Check"
   },
   "Taxi / Cab": {
@@ -9049,8 +9049,8 @@
     "en": "Toll Free 24x7"
   },
   "Toll-Free • 24x7 Priority Line": {
-    "mr": "Toll-Free • 24x7 Priority Line",
-    "hi": "Toll-Free • 24x7 Priority Line",
+    "mr": "Toll-Free • 24x7 प्राधान्य Line",
+    "hi": "Toll-Free • 24x7 प्राथमिकता Line",
     "en": "Toll-Free • 24x7 Priority Line"
   },
   "Tomorrow": {
@@ -9064,8 +9064,8 @@
     "en": "Tomorrow 6:30 AM (3 Hours Heritage Circuit)"
   },
   "Top Priority Zone": {
-    "mr": "Top Priority विभाग",
-    "hi": "Top Priority ज़ोन",
+    "mr": "Top प्राधान्य विभाग",
+    "hi": "Top प्राथमिकता ज़ोन",
     "en": "Top Priority Zone"
   },
   "Top Student Verifiers (KTHM, Sandip, KK Wagh)": {
@@ -9114,8 +9114,8 @@
     "en": "Total Verified Transactions: 1,289"
   },
   "tour": {
-    "mr": "tour",
-    "hi": "tour",
+    "mr": "दौरा",
+    "hi": "दौरा",
     "en": "tour"
   },
   "Tour Package & Time Slot": {
@@ -9209,8 +9209,8 @@
     "en": "Trimbak"
   },
   "Trimbak Bus Stand East": {
-    "mr": "Trimbak बस Stand East",
-    "hi": "Trimbak बस Stand East",
+    "mr": "Trimbak बस स्थानक East",
+    "hi": "Trimbak बस स्टैंड East",
     "en": "Trimbak Bus Stand East"
   },
   "Trimbak Floral Vender Stalls (#NSK-BZ-144, Kushavarta)": {
@@ -9274,8 +9274,8 @@
     "en": "Try relaxing search keywords or clear current status filter to view entries."
   },
   "Try verifying the incident number, vendor name, or officer credential tag.": {
-    "mr": "Try verifying the incident number, विक्रेता नाव, or अधिकारी credential tag.",
-    "hi": "Try verifying the incident number, विक्रेता नाम, or अधिकारी credential tag.",
+    "mr": "Try verifying incident number, विक्रेता नाव, or अधिकारी credential tag.",
+    "hi": "Try verifying incident number, विक्रेता नाम, or अधिकारी credential tag.",
     "en": "Try verifying the incident number, vendor name, or officer credential tag."
   },
   "Typical": {
@@ -9289,13 +9289,13 @@
     "en": "Typical Fair Range"
   },
   "Typical Range": {
-    "mr": "Typical Range",
-    "hi": "Typical Range",
+    "mr": "Typical मर्यादा",
+    "hi": "Typical सीमा",
     "en": "Typical Range"
   },
   "Typical Variance": {
-    "mr": "Typical Variance",
-    "hi": "Typical Variance",
+    "mr": "सामान्य फरक",
+    "hi": "सामान्य अंतर",
     "en": "Typical Variance"
   },
   "Unauthorized Private Dharamshala charging ₹2,500 without tariff seal": {
@@ -9334,8 +9334,8 @@
     "en": "Update Price"
   },
   "Update Stall Photo": {
-    "mr": "Update स्टॉल Photo",
-    "hi": "Update स्टॉल Photo",
+    "mr": "Update स्टॉल छायाचित्र",
+    "hi": "Update स्टॉल फोटो",
     "en": "Update Stall Photo"
   },
   "Updated 12m ago": {
@@ -9379,8 +9379,8 @@
     "en": "Upload Photo Evidence"
   },
   "Upload Photo or ID Document": {
-    "mr": "अपलोड करा Photo or ओळख क्रमांक Document",
-    "hi": "अपलोड करें Photo or पहचान संख्या Document",
+    "mr": "अपलोड करा छायाचित्र or ओळख क्रमांक Document",
+    "hi": "अपलोड करें फोटो or पहचान संख्या Document",
     "en": "Upload Photo or ID Document"
   },
   "Upload Photo Proof": {
@@ -9399,7 +9399,7 @@
     "en": "Upload Stall Photo"
   },
   "Urgent Price Alerts": {
-    "mr": "तातडीचे दर सूचना अलर्ट",
+    "mr": "तातडीचे दर अलर्ट",
     "hi": "तत्काल मूल्य अलर्ट",
     "en": "Urgent Price Alerts"
   },
@@ -9464,8 +9464,8 @@
     "en": "Vendor ID / Registration No."
   },
   "Vendor Listed Price": {
-    "mr": "विक्रेता नोंदवलेला दर",
-    "hi": "विक्रेता द्वारा सूचीबद्ध मूल्य",
+    "mr": "विक्रेता नोंदणीकृत दर",
+    "hi": "विक्रेता सूचीबद्ध मूल्य",
     "en": "Vendor Listed Price"
   },
   "Vendor Listed Range": {
@@ -9504,8 +9504,8 @@
     "en": "Verification Action Recorded Successfully"
   },
   "Verification Completion Rate": {
-    "mr": "Verification Completion दर",
-    "hi": "Verification Completion दर",
+    "mr": "पडताळणी Completion दर",
+    "hi": "सत्यापन Completion दर",
     "en": "Verification Completion Rate"
   },
   "Verified": {
@@ -9584,8 +9584,8 @@
     "en": "Verified Facts"
   },
   "Verified false archival video. Official rebuttal broadcasted immediately via Yatri portal & ghat public address audio.": {
-    "mr": "प्रमाणित false archival video. Official rebuttal broadcasted immediately via भाविक portal & घाट public पत्ता audio.",
-    "hi": "सत्यापित false archival video. Official rebuttal broadcasted immediately via तीर्थयात्री portal & घाट public पता audio.",
+    "mr": "प्रमाणित false archival video. अधिकृत rebuttal broadcasted immediately द्वारे भाविक portal & घाट public पत्ता audio.",
+    "hi": "सत्यापित false archival video. आधिकारिक rebuttal broadcasted immediately के माध्यम से तीर्थयात्री portal & घाट public पता audio.",
     "en": "Verified false archival video. Official rebuttal broadcasted immediately via Yatri portal & ghat public address audio."
   },
   "Verified Guide": {
@@ -9664,8 +9664,8 @@
     "en": "Verify Guide Selfie at Meeting Point"
   },
   "Verify On-Site": {
-    "mr": "स्थळावर पडताळा",
-    "hi": "स्थल पर सत्यापित करें",
+    "mr": "जागेवर पडताळणी करा",
+    "hi": "मौके पर सत्यापित करें",
     "en": "Verify On-Site"
   },
   "Verify Personal Face": {
@@ -9674,8 +9674,8 @@
     "en": "Verify Personal Face"
   },
   "Verify Rate": {
-    "mr": "Verify दर",
-    "hi": "Verify दर",
+    "mr": "दर पडताळणी",
+    "hi": "दर सत्यापन",
     "en": "Verify Rate"
   },
   "Vibe": {
@@ -9734,8 +9734,8 @@
     "en": "View ID"
   },
   "View in Police Escalations Dashboard": {
-    "mr": "पहा in पोलीस Escalations Dashboard",
-    "hi": "देखें in पुलिस Escalations Dashboard",
+    "mr": "पहा in पोलीस तक्रार निवारणs Dashboard",
+    "hi": "देखें in पुलिस शिकायत निवारणs Dashboard",
     "en": "View in Police Escalations Dashboard"
   },
   "View Municipal QR Card": {
@@ -9749,8 +9749,8 @@
     "en": "View Official Tariff"
   },
   "View PIB Verification": {
-    "mr": "पहा PIB Verification",
-    "hi": "देखें PIB Verification",
+    "mr": "पहा PIB पडताळणी",
+    "hi": "देखें PIB सत्यापन",
     "en": "View PIB Verification"
   },
   "View Radar": {
@@ -9789,8 +9789,8 @@
     "en": "Visited 3 days ago"
   },
   "visited this premises in person, validated municipal registration certificates, inspected fair rates, and logged authorized tariff caps directly to the Kumbh Setu fair pricing ledger.": {
-    "mr": "visited this premises in person, validated महानगरपालिका नोंदणी certificates, inspected वाजवी दर, and logged authorized दरपत्रक caps directly to the कुंभ Setu वाजवी दर रचना ledger.",
-    "hi": "visited this premises in person, validated नगर निगम पंजीकरण certificates, inspected उचित दरें, and logged authorized दर सूची caps directly to the कुंभ Setu उचित मूल्य निर्धारण ledger.",
+    "mr": "visited this premises in person, validated महानगरपालिका नोंदणी certificates, inspected वाजवी दर, आणि नोंदणीकृत authorized दरपत्रक caps directly to कुंभ Setu वाजवी दर रचना ledger.",
+    "hi": "visited this premises in person, validated नगर निगम पंजीकरण certificates, inspected उचित दरें, और दर्ज authorized दर सूची caps directly to कुंभ Setu उचित मूल्य निर्धारण ledger.",
     "en": "visited this premises in person, validated municipal registration certificates, inspected fair rates, and logged authorized tariff caps directly to the Kumbh Setu fair pricing ledger."
   },
   "Visited yesterday • Verified Yatri": {
@@ -9864,8 +9864,8 @@
     "en": "waves"
   },
   "What does Verified mean?": {
-    "mr": "What does प्रमाणित mean?",
-    "hi": "What does सत्यापित mean?",
+    "mr": "प्रमाणित म्हणजे काय?",
+    "hi": "सत्यापित का क्या अर्थ है?",
     "en": "What does Verified mean?"
   },
   "WhatsApp": {
@@ -9884,8 +9884,8 @@
     "en": "Within 1 km"
   },
   "Within Range": {
-    "mr": "Within Range",
-    "hi": "Within Range",
+    "mr": "मर्यादेत",
+    "hi": "सीमा में",
     "en": "Within Range"
   },
   "Women Safety (1091)": {
@@ -9949,18 +9949,18 @@
     "en": "Yatri:"
   },
   "Yatris": {
-    "mr": "Yatris",
-    "hi": "Yatris",
+    "mr": "यात्रीs",
+    "hi": "यात्रीs",
     "en": "Yatris"
   },
   "Yatris recommend this stall": {
-    "mr": "Yatris recommend this स्टॉल",
-    "hi": "Yatris recommend this स्टॉल",
+    "mr": "यात्रीs recommend this स्टॉल",
+    "hi": "यात्रीs recommend this स्टॉल",
     "en": "Yatris recommend this stall"
   },
   "Yatris who reserved or bought items from your stall via KumbhSetu.": {
-    "mr": "Yatris who reserved or bought items from your स्टॉल via KumbhSetu.",
-    "hi": "Yatris who reserved or bought items from your स्टॉल via KumbhSetu.",
+    "mr": "यात्रीs who reserved or bought items कडून आपले स्टॉल द्वारे KumbhSetu.",
+    "hi": "यात्रीs who reserved or bought items से आपका स्टॉल के माध्यम से KumbhSetu.",
     "en": "Yatris who reserved or bought items from your stall via KumbhSetu."
   },
   "Yesterday 14:10": {
@@ -9979,8 +9979,8 @@
     "en": "You are here: Pillar 12"
   },
   "Your guide's identity is confirmed via selfie at the meeting point before your session begins. Click below to verify in person.": {
-    "mr": "Your मार्गदर्शक's identity is confirmed via selfie at the meeting point before your session begins. Click below to verify in person.",
-    "hi": "Your गाइड's identity is confirmed via selfie at the meeting point before your session begins. Click below to verify in person.",
+    "mr": "Your मार्गदर्शक's identity is confirmed द्वारे selfie at meeting point before आपले session begins. Click below to verify in person.",
+    "hi": "Your गाइड's identity is confirmed के माध्यम से selfie at meeting point before आपका session begins. Click below to verify in person.",
     "en": "Your guide's identity is confirmed via selfie at the meeting point before your session begins. Click below to verify in person."
   },
   "Your Live GPS Coordinates": {
@@ -10019,13 +10019,13 @@
     "en": "Your report will be reviewed as quickly as possible"
   },
   "Your report will be reviewed by on-ground civic teams as quickly as possible (typically within 2–4 hours). No login required.": {
-    "mr": "Your तक्रार / अहवाल will be reviewed by on-ground नागरी teams as quickly as possible (typically within 2–4 तास). No प्रवेश करा required.",
-    "hi": "Your शिकायत / रिपोर्ट will be reviewed by on-ground नागरिक teams as quickly as possible (typically within 2–4 घंटे). No लॉगिन करें required.",
+    "mr": "Your तक्रार / अहवाल will be reviewed by on-ground नागरी teams as quickly as possible (typically च्या आत 2–4 तास). No प्रवेश करा required.",
+    "hi": "Your शिकायत / रिपोर्ट will be reviewed by on-ground नागरिक teams as quickly as possible (typically के भीतर 2–4 घंटे). No लॉगिन करें required.",
     "en": "Your report will be reviewed by on-ground civic teams as quickly as possible (typically within 2–4 hours). No login required."
   },
   "Your stall (#NSK-STALL-14) is in full compliance with the Simhastha Fair Price standards. All your items are priced within the estimated fair range (₹180 – ₹260). No police alerts or municipal flags exist on your business.": {
-    "mr": "Your स्टॉल (#NSK-स्टॉल-14) is in full अनुपालन with the सिंहस्थ वाजवी दर standards. All your items are priced within the अंदाजित वाजवी range (₹180 – ₹260). No पोलीस alerts or महानगरपालिका इशारे exist on your business.",
-    "hi": "Your स्टॉल (#NSK-स्टॉल-14) is in full अनुपालन with the सिंहस्थ उचित मूल्य standards. All your items are priced within the अनुमानित उचित range (₹180 – ₹260). No पुलिस alerts or नगर निगम चेतावनी exist on your business.",
+    "mr": "Your स्टॉल (#NSK-स्टॉल-14) is in full अनुपालन सह सिंहस्थ वाजवी दर standards. सर्व आपले items are priced च्या आत अंदाजित वाजवी range (₹180 – ₹260). No पोलीस alerts or महानगरपालिका इशारे exist on आपले business.",
+    "hi": "Your स्टॉल (#NSK-स्टॉल-14) is in full अनुपालन के साथ सिंहस्थ उचित मूल्य standards. सभी आपका items are priced के भीतर अनुमानित उचित range (₹180 – ₹260). No पुलिस alerts or नगर निगम चेतावनी exist on आपका business.",
     "en": "Your stall (#NSK-STALL-14) is in full compliance with the Simhastha Fair Price standards. All your items are priced within the estimated fair range (₹180 – ₹260). No police alerts or municipal flags exist on your business."
   },
   "Zero adulteration notices": {
@@ -10064,8 +10064,8 @@
     "en": "Zone 2 (Panchavati / Ramkund Sector)"
   },
   "Zone 2 Compliance Gazette": {
-    "mr": "विभाग 2 अनुपालन Gazette",
-    "hi": "ज़ोन 2 अनुपालन Gazette",
+    "mr": "विभाग 2 अनुपालन राजपत्र",
+    "hi": "ज़ोन 2 अनुपालन राजपत्र",
     "en": "Zone 2 Compliance Gazette"
   },
   "Zone A - Ramkund Ghat Stalls": {
@@ -10104,8 +10104,8 @@
     "en": "Zone Green"
   },
   "Zone: Ramkund / Panchavati Core • Priority: 74.87": {
-    "mr": "विभाग: रामकुंड / पंचवटी Core • Priority: 74.87",
-    "hi": "ज़ोन: रामकुंड / पंचवटी Core • Priority: 74.87",
+    "mr": "विभाग: रामकुंड / पंचवटी Core • प्राधान्य: 74.87",
+    "hi": "ज़ोन: रामकुंड / पंचवटी Core • प्राथमिकता: 74.87",
     "en": "Zone: Ramkund / Panchavati Core • Priority: 74.87"
   },
   "~34 km Circuit": {
@@ -10234,8 +10234,8 @@
     "en": "विभाग निवडा"
   },
   "सर्व (All Emergency)": {
-    "mr": "सर्व (All आपत्कालीन)",
-    "hi": "सर्व (All आपातकालीन)",
+    "mr": "सर्व (सर्व आपत्कालीन)",
+    "hi": "सर्व (सभी आपातकालीन)",
     "en": "सर्व (All Emergency)"
   },
   "सुगम संचार • Moderate Flow": {
@@ -10354,8 +10354,8 @@
     "en": "₹350 – ₹490"
   },
   "₹40 Thali Gazette": {
-    "mr": "₹40 थाळी Gazette",
-    "hi": "₹40 थाली Gazette",
+    "mr": "₹40 थाळी राजपत्र",
+    "hi": "₹40 थाली राजपत्र",
     "en": "₹40 Thali Gazette"
   },
   "₹500 locked": {
@@ -10513,35 +10513,10 @@
     "hi": "लाइव ग्राउंड नोड",
     "en": "Live Ground Node"
   },
-  "Operational Snapshot": {
-    "mr": "कार्यरत आढावा",
-    "hi": "परिचालन स्नैपशॉट",
-    "en": "Operational Snapshot"
-  },
-  "Real-time Telemetry": {
-    "mr": "थेट टेलीमेट्री",
-    "hi": "रीयल-टाइम टेलीमेट्री",
-    "en": "Real-time Telemetry"
-  },
-  "Civic Grievances": {
-    "mr": "नागरी तक्रारी",
-    "hi": "नागरिक शिकायतें",
-    "en": "Civic Grievances"
-  },
-  "Active Price Flags": {
-    "mr": "सक्रिय दर तक्रारी",
-    "hi": "सक्रिय मूल्य शिकायतें",
-    "en": "Active Price Flags"
-  },
   "Active Kumbhveers": {
     "mr": "सक्रिय कुंभवीर",
     "hi": "सक्रिय कुंभवीर",
     "en": "Active Kumbhveers"
-  },
-  "Community Audits": {
-    "mr": "नागरी तपासण्या",
-    "hi": "सामुदायिक ऑडिट",
-    "en": "Community Audits"
   },
   "Audits Completed": {
     "mr": "पूर्ण तपासण्या",
@@ -10557,11 +10532,6 @@
     "mr": "वाजवी दर",
     "hi": "उचित दर",
     "en": "Fair Rates"
-  },
-  "Urgent Price Alerts": {
-    "mr": "तातडीचे दर अलर्ट",
-    "hi": "तत्काल मूल्य अलर्ट",
-    "en": "Urgent Price Alerts"
   },
   "Live Local Alerts": {
     "mr": "थेट स्थानिक सूचना",
@@ -10582,11 +10552,6 @@
     "mr": "सक्रिय तपासण्या",
     "hi": "सक्रिय ऑडिट",
     "en": "Active Audits"
-  },
-  "Seva Points": {
-    "mr": "सेवा गुण",
-    "hi": "सेवा अंक",
-    "en": "Seva Points"
   },
   "Voucher Cash": {
     "mr": "व्हाउचर रक्कम",
@@ -10633,21 +10598,6 @@
     "hi": "२१ सक्रिय सत्यापनकर्ता",
     "en": "21 Active Verifiers"
   },
-  "Municipal review queue": {
-    "mr": "मनपा तपासणी प्रतीक्षा",
-    "hi": "नगर निगम समीक्षा कतार",
-    "en": "Municipal review queue"
-  },
-  "Reported by Yatris": {
-    "mr": "यात्रेकरूंनी नोंदवलेले",
-    "hi": "यात्रियों द्वारा रिपोर्ट किए गए",
-    "en": "Reported by Yatris"
-  },
-  "Students on field": {
-    "mr": "विद्यार्थी प्रत्यक्ष क्षेत्रात",
-    "hi": "छात्र मैदान पर",
-    "en": "Students on field"
-  },
   "Rates & hygiene verified": {
     "mr": "दर व स्वच्छता प्रमाणित",
     "hi": "दर एवं स्वच्छता सत्यापित",
@@ -10663,100 +10613,30 @@
     "hi": "शमन दंड हेतु नगर निगम मजिस्ट्रेट",
     "en": "Municipal Magistrate for compound penalty"
   },
-  "Verify On-Site": {
-    "mr": "जागेवर पडताळणी करा",
-    "hi": "मौके पर सत्यापित करें",
-    "en": "Verify On-Site"
-  },
-  "Call Owner": {
-    "mr": "मालकाशी संपर्क साधा",
-    "hi": "मालिक को कॉल करें",
-    "en": "Call Owner"
-  },
   "Call Helpline": {
     "mr": "हेल्पलाईनला कॉल करा",
     "hi": "हेल्पलाइन पर कॉल करें",
     "en": "Call Helpline"
-  },
-  "Review Flag": {
-    "mr": "तक्रार तपासा",
-    "hi": "फ्लैग की समीक्षा करें",
-    "en": "Review Flag"
-  },
-  "Log Note": {
-    "mr": "नोंद ठेवा",
-    "hi": "नोट दर्ज करें",
-    "en": "Log Note"
-  },
-  "Review": {
-    "mr": "तपासा",
-    "hi": "समीक्षा करें",
-    "en": "Review"
-  },
-  "All Priority": {
-    "mr": "सर्व प्राधान्यता",
-    "hi": "सभी प्राथमिकता",
-    "en": "All Priority"
-  },
-  "High Priority": {
-    "mr": "उच्च प्राधान्यता",
-    "hi": "उच्च प्राथमिकता",
-    "en": "High Priority"
-  },
-  "Medium Priority": {
-    "mr": "मध्यम प्राधान्यता",
-    "hi": "मध्यम प्राथमिकता",
-    "en": "Medium Priority"
   },
   "Forwarded / Alerts": {
     "mr": "वर्ग केलेल्या / सूचना",
     "hi": "अग्रेषित / अलर्ट",
     "en": "Forwarded / Alerts"
   },
-  "Acknowledge": {
-    "mr": "पोहोच द्या",
-    "hi": "स्वीकार करें",
-    "en": "Acknowledge"
-  },
   "Acknowledged": {
     "mr": "पोहोच दिली",
     "hi": "स्वीकृत",
     "en": "Acknowledged"
-  },
-  "Assign Unit": {
-    "mr": "पथक नियुक्त करा",
-    "hi": "दस्ता नियुक्त करें",
-    "en": "Assign Unit"
   },
   "Dispatched": {
     "mr": "रवाना झाले",
     "hi": "रवाना किया गया",
     "en": "Dispatched"
   },
-  "Overview": {
-    "mr": "आढावा",
-    "hi": "अवलोकन",
-    "en": "Overview"
-  },
   "Flags": {
     "mr": "तक्रारी",
     "hi": "शिकायतें",
     "en": "Flags"
-  },
-  "Market": {
-    "mr": "बाजारपेठ",
-    "hi": "बाजार",
-    "en": "Market"
-  },
-  "Volunteers": {
-    "mr": "स्वयंसेवक",
-    "hi": "स्वयंसेवक",
-    "en": "Volunteers"
-  },
-  "Vendors": {
-    "mr": "विक्रेते",
-    "hi": "विक्रेता",
-    "en": "Vendors"
   },
   "Police": {
     "mr": "पोलीस",
@@ -10767,11 +10647,6 @@
     "mr": "मनपा नियंत्रण कक्ष",
     "hi": "नगर निगम नियंत्रण कक्ष",
     "en": "NMC Control"
-  },
-  "Ambulance": {
-    "mr": "रुग्णवाहिका",
-    "hi": "एम्बुलेंस",
-    "en": "Ambulance"
   },
   "Police Escalations Terminal": {
     "mr": "पोलीस तक्रार निवारण टर्मिनल",
@@ -10912,6 +10787,211 @@
     "mr": "दर उल्लंघने सूचना — कुंभसेतु",
     "hi": "मूल्य उल्लंघन अलर्ट — कुंभसेतु",
     "en": "Price Gouging Alerts — KumbhSetu"
+  },
+  "Civic Verified Dharamshala / Guest House": {
+    "mr": "महापालिका प्रमाणित धर्मशाळा / अतिथीगृह",
+    "hi": "नगर निगम सत्यापित धर्मशाला / अतिथि गृह",
+    "en": "Civic Verified Dharamshala / Guest House"
+  },
+  "Community Dharamshala / Guest House": {
+    "mr": "नागरी नोंदणीकृत धर्मशाळा / अतिथीगृह",
+    "hi": "समुदाय पंजीकृत धर्मशाला / अतिथि गृह",
+    "en": "Community Dharamshala / Guest House"
+  },
+  "Registered Dharamshala / Guest House": {
+    "mr": "नोंदणीकृत धर्मशाळा / अतिथीगृह",
+    "hi": "पंजीकृत धर्मशाला / अतिथि गृह",
+    "en": "Registered Dharamshala / Guest House"
+  },
+  "Dharamshala / Guest House": {
+    "mr": "धर्मशाळा / अतिथीगृह",
+    "hi": "धर्मशाला / अतिथि गृह",
+    "en": "Dharamshala / Guest House"
+  },
+  "Godavari Bhawik Niwas": {
+    "mr": "गोदावरी भाविक निवास",
+    "hi": "गोदावरी भाविक निवास",
+    "en": "Godavari Bhawik Niwas"
+  },
+  "गोदावरी भाविक Niwas": {
+    "mr": "गोदावरी भाविक निवास",
+    "hi": "गोदावरी भाविक निवास",
+    "en": "Godavari Bhawik Niwas"
+  },
+  "Panchavati Sector 4": {
+    "mr": "पंचवटी विभाग ४",
+    "hi": "पंचवटी सेक्टर ४",
+    "en": "Panchavati Sector 4"
+  },
+  "⚠️ Unverified Rate (Community Reported)": {
+    "mr": "⚠️ अप्रमाणित दर (नागरिक नोंदणी)",
+    "hi": "⚠️ असत्यापित दर (समुदाय रिपोर्ट)",
+    "en": "⚠️ Unverified Rate (Community Reported)"
+  },
+  "Unverified Rate (Community Reported)": {
+    "mr": "अप्रमाणित दर (नागरिक नोंदणी)",
+    "hi": "असत्यापित दर (समुदाय रिपोर्ट)",
+    "en": "Unverified Rate (Community Reported)"
+  },
+  "Field verification pending • Rate submitted by pilgrim community": {
+    "mr": "प्रत्यक्ष पडताळणी बाकी • भाविकांद्वारे नोंदवलेला दर",
+    "hi": "प्रत्यक्ष सत्यापन बाकी • श्रद्धालुओं द्वारा प्रस्तुत दर",
+    "en": "Field verification pending • Rate submitted by pilgrim community"
+  },
+  "Verify दर": {
+    "mr": "दर पडताळणी",
+    "hi": "दर सत्यापन",
+    "en": "Verify Rate"
+  },
+  "What does प्रमाणित mean?": {
+    "mr": "प्रमाणित म्हणजे काय?",
+    "hi": "सत्यापित का क्या अर्थ है?",
+    "en": "What does Verified mean?"
+  },
+  "What does सत्यापित mean?": {
+    "mr": "प्रमाणित म्हणजे काय?",
+    "hi": "सत्यापित का क्या अर्थ है?",
+    "en": "What does Verified mean?"
+  },
+  "A certified student Kumbhveer volunteer or local Nashikkar citizen visited this premises in person, validated municipal registration certificates, inspected fair rates, and logged authorized tariff caps directly to the Kumbh Setu fair pricing ledger.": {
+    "mr": "प्रमाणित कुंभवीर स्वयंसेवक किंवा स्थानिक नाशिककर नागरिकांनी प्रत्यक्ष भेट देऊन महापालिका नोंदणी प्रमाणपत्र, वाजवी दर तपासले असून कुंभसेतू अधिकृत दरपत्रकात नोंद केली आहे.",
+    "hi": "प्रमाणित कुंभवीर स्वयंसेवक अथवा स्थानीय नाशिककर नागरिक ने प्रत्यक्ष दौरा कर नगर निगम पंजीकरण प्रमाण पत्र और उचित दरों की जांच कर कुंभसेतु अधिकृत दर सूची में दर्ज किया है।",
+    "en": "A certified student Kumbhveer volunteer or local Nashikkar citizen visited this premises in person, validated municipal registration certificates, inspected fair rates, and logged authorized tariff caps directly to the Kumbh Setu fair pricing ledger."
+  },
+  "Nashikkar Citizen Community Advisory": {
+    "mr": "नाशिककर नागरिक सल्लागार सूचना",
+    "hi": "नाशिककर नागरिक सामुदायिक परामर्श",
+    "en": "Nashikkar Citizen Community Advisory"
+  },
+  "Local Verified Note": {
+    "mr": "स्थानिक पडताळणी नोंद",
+    "hi": "स्थानीय सत्यापित टिप्पणी",
+    "en": "Local Verified Note"
+  },
+  "Verified fair tariff caps and hygienic amenities during ward visit. Stall owner is cooperative with pilgrims.": {
+    "mr": "प्रभाग भेटीदरम्यान वाजवी दर मर्यादा आणि स्वच्छतेची खात्री केली आहे. दुकानदार भाविकांना सहकार्य करत आहेत.",
+    "hi": "वार्ड निरीक्षण के दौरान उचित दर सीमा और स्वच्छता सुविधाओं का सत्यापन किया गया। दुकानदार श्रद्धालुओं के साथ सहयोगी हैं।",
+    "en": "Verified fair tariff caps and hygienic amenities during ward visit. Stall owner is cooperative with pilgrims."
+  },
+  "Audited by Local Nashikkar (Ward 14)": {
+    "mr": "स्थानिक नाशिककरांद्वारे तपासणी (प्रभाग १४)",
+    "hi": "स्थानीय नाशिककर द्वारा निरीक्षण (वार्ड १४)",
+    "en": "Audited by Local Nashikkar (Ward 14)"
+  },
+  "Audited by Local Nashikkar": {
+    "mr": "स्थानिक नाशिककरांद्वारे तपासणी",
+    "hi": "स्थानीय नाशिककर द्वारा निरीक्षण",
+    "en": "Audited by Local Nashikkar"
+  },
+  "Recently updated": {
+    "mr": "नुकतेच अद्यतनित",
+    "hi": "हाल ही में अपडेट",
+    "en": "Recently updated"
+  },
+  "Pure Vegetarian Food": {
+    "mr": "शुद्ध शाकाहारी भोजन",
+    "hi": "शुद्ध शाकाहारी भोजन",
+    "en": "Pure Vegetarian Food"
+  },
+  "RO Filtered Drinking Water": {
+    "mr": "शुद्ध पिण्याचे पाणी (RO)",
+    "hi": "शुद्ध पेयजल (RO)",
+    "en": "RO Filtered Drinking Water"
+  },
+  "Luggage Cloakroom Facility": {
+    "mr": "सामान कक्ष सुविधा",
+    "hi": "सामान कक्ष सुविधा",
+    "en": "Luggage Cloakroom Facility"
+  },
+  "Product & Packaging": {
+    "mr": "उत्पादन व पॅकेजिंग",
+    "hi": "उत्पाद और पैकेजिंग",
+    "en": "Product & Packaging"
+  },
+  "Verified Stall Display": {
+    "mr": "प्रमाणित स्टॉल प्रदर्शन",
+    "hi": "सत्यापित स्टॉल प्रदर्शन",
+    "en": "Verified Stall Display"
+  },
+  "Authentic Certificate & Seal": {
+    "mr": "अधिकृत प्रमाणपत्र व मुद्रा",
+    "hi": "प्रामाणिक प्रमाण पत्र व सील",
+    "en": "Authentic Certificate & Seal"
+  },
+  "Submitting...": {
+    "mr": "नोंदणी होत आहे...",
+    "hi": "जमा हो रहा है...",
+    "en": "Submitting..."
+  },
+  "Municipal Gazette Cap (अधिकृत दर)": {
+    "mr": "महापालिका राजपत्र मर्यादा (अधिकृत दर)",
+    "hi": "नगर निगम राजपत्र सीमा (अधिकृत दर)",
+    "en": "Municipal Gazette Cap (अधिकृत दर)"
+  },
+  "Estimated Price (अंदाजे दर)": {
+    "mr": "अंदाजे दर (वाजवी मर्यादा)",
+    "hi": "अनुमानित मूल्य (उचित दर)",
+    "en": "Estimated Price (अंदाजे दर)"
+  },
+  "statutory bus stage fare": {
+    "mr": "अधिकृत बस टप्पा भाडे",
+    "hi": "आधिकारिक बस चरण किराया",
+    "en": "statutory bus stage fare"
+  },
+  "estimated fair rate": {
+    "mr": "अंदाजे वाजवी दर",
+    "hi": "अनुमानित उचित दर",
+    "en": "estimated fair rate"
+  },
+  "Puja & Handicrafts Stall": {
+    "mr": "पूजा साहित्य व हस्तकला स्टॉल",
+    "hi": "पूजा सामग्री व हस्तशिल्प स्टॉल",
+    "en": "Puja & Handicrafts Stall"
+  },
+  "Civic Verified": {
+    "mr": "महापालिका प्रमाणित",
+    "hi": "नगर निगम सत्यापित",
+    "en": "Civic Verified"
+  },
+  "Community": {
+    "mr": "नागरी नोंदणी",
+    "hi": "सामुदायिक",
+    "en": "Community"
+  },
+  "Kumbhveer & Nashikkar Verified": {
+    "mr": "कुंभवीर व नाशिककर प्रमाणित",
+    "hi": "कुंभवीर व नाशिककर सत्यापित",
+    "en": "Kumbhveer & Nashikkar Verified"
+  },
+  "In-person municipal inspection & rate audit complete": {
+    "mr": "प्रत्यक्ष महापालिका तपासणी आणि दर पडताळणी पूर्ण",
+    "hi": "प्रत्यक्ष नगर निगम निरीक्षण और दर सत्यापन पूर्ण",
+    "en": "In-person municipal inspection & rate audit complete"
+  },
+  "Panchavati Resident": {
+    "mr": "पंचवटी रहिवासी",
+    "hi": "पंचवटी निवासी",
+    "en": "Panchavati Resident"
+  },
+  "Verified today": {
+    "mr": "आज पडताळणी केली",
+    "hi": "आज सत्यापित किया",
+    "en": "Verified today"
+  },
+  "Recently verified": {
+    "mr": "नुकतीच पडताळणी केली",
+    "hi": "हाल ही में सत्यापित",
+    "en": "Recently verified"
+  },
+  "Rate successfully verified & registered by your Nashikkar/Kumbhveer ID!": {
+    "mr": "आपल्या नाशिककर/कुंभवीर आयडीद्वारे दर यशस्वीरित्या प्रमाणित व नोंदणीकृत करण्यात आला!",
+    "hi": "आपकी नाशिककर/कुंभवीर आईडी द्वारा दर सफलतापूर्वक सत्यापित और दर्ज की गई!",
+    "en": "Rate successfully verified & registered by your Nashikkar/Kumbhveer ID!"
+  },
+  "✓ Message permanently recorded in civic database!": {
+    "mr": "✓ संदेश नागरी डेटाबेसमध्ये कायमस्वरूपी नोंदवला गेला आहे!",
+    "hi": "✓ संदेश नागरिक डेटाबेस में स्थायी रूप से दर्ज कर दिया गया है!",
+    "en": "✓ Message permanently recorded in civic database!"
   }
 };
 
@@ -10926,10 +11006,143 @@
     return saved;
   }
 
+
+  // Injects Google Fonts (Mukta + Noto Sans Devanagari) and UI Font Balancing CSS for Marathi & Hindi
+  function injectOptimizedDevanagariStyles() {
+    if (typeof document === 'undefined' || !document.head) return;
+    if (document.getElementById('kumbh-devanagari-styles')) return;
+
+    // Load fonts if not already loaded
+    if (!document.querySelector('link[href*="Mukta"]')) {
+      try {
+        const preconn1 = document.createElement('link');
+        preconn1.rel = 'preconnect';
+        preconn1.href = 'https://fonts.googleapis.com';
+        document.head.appendChild(preconn1);
+
+        const preconn2 = document.createElement('link');
+        preconn2.rel = 'preconnect';
+        preconn2.href = 'https://fonts.gstatic.com';
+        preconn2.crossOrigin = 'anonymous';
+        document.head.appendChild(preconn2);
+
+        const fontLink = document.createElement('link');
+        fontLink.rel = 'stylesheet';
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap';
+        document.head.appendChild(fontLink);
+      } catch(e) {}
+    }
+
+    const styleEl = document.createElement('style');
+    styleEl.id = 'kumbh-devanagari-styles';
+    styleEl.textContent = `
+      /* KumbhSetu UI Optimization for Marathi (मराठी) & Hindi (हिंदी) */
+      html[lang="mr"], html[lang="hi"],
+      body.lang-mr, body.lang-hi {
+        font-family: 'Mukta', 'Noto Sans Devanagari', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      /* Headline proportional scaling */
+      html[lang="mr"] h1, html[lang="hi"] h1,
+      html[lang="mr"] .font-headline-xl, html[lang="hi"] .font-headline-xl {
+        font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.01em !important;
+      }
+
+      html[lang="mr"] h2, html[lang="hi"] h2,
+      html[lang="mr"] .font-headline-lg, html[lang="hi"] .font-headline-lg {
+        font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif !important;
+        font-weight: 700 !important;
+        line-height: 1.28 !important;
+        letter-spacing: -0.005em !important;
+      }
+
+      html[lang="mr"] h3, html[lang="hi"] h3,
+      html[lang="mr"] .font-headline-md, html[lang="hi"] .font-headline-md {
+        font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif !important;
+        font-weight: 600 !important;
+        line-height: 1.32 !important;
+      }
+
+      html[lang="mr"] .font-headline-sm, html[lang="hi"] .font-headline-sm {
+        font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif !important;
+        font-weight: 600 !important;
+        line-height: 1.35 !important;
+      }
+
+      /* Body Text & Paragraphs */
+      html[lang="mr"] p, html[lang="hi"] p,
+      html[lang="mr"] .font-body-md, html[lang="hi"] .font-body-md {
+        line-height: 1.45 !important;
+      }
+
+      html[lang="mr"] .font-body-sm, html[lang="hi"] .font-body-sm {
+        line-height: 1.4 !important;
+        font-size: 0.875rem !important;
+      }
+
+      /* Labels, badges, chips */
+      html[lang="mr"] .font-label-lg, html[lang="hi"] .font-label-lg {
+        line-height: 1.25 !important;
+        font-weight: 600 !important;
+      }
+
+      html[lang="mr"] .font-label-md, html[lang="hi"] .font-label-md {
+        line-height: 1.22 !important;
+        font-weight: 600 !important;
+      }
+
+      html[lang="mr"] .font-label-sm, html[lang="hi"] .font-label-sm {
+        line-height: 1.2 !important;
+        letter-spacing: 0 !important;
+        font-size: 0.75rem !important;
+      }
+
+      /* Normalize uppercase in Devanagari */
+      html[lang="mr"] .uppercase, html[lang="hi"] .uppercase {
+        text-transform: none !important;
+        letter-spacing: 0.01em !important;
+      }
+
+      /* Bottom Navigation Item Scaling */
+      html[lang="mr"] nav a span:not(.material-symbols-outlined):not(.material-icons),
+      html[lang="hi"] nav a span:not(.material-symbols-outlined):not(.material-icons) {
+        font-size: 11px !important;
+        letter-spacing: 0 !important;
+        white-space: nowrap !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 68px;
+        text-align: center;
+      }
+
+      /* Language Dropdown Pill Button */
+      .lang-dropdown-trigger {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.35rem !important;
+        font-weight: 600 !important;
+      }
+    `;
+    try {
+      document.head.appendChild(styleEl);
+    } catch(e) {}
+  }
+
   function saveLang(lang) {
     if (SUPPORTED_LANGS.includes(lang)) {
       localStorage.setItem(LANG_STORAGE_KEY, lang);
       document.documentElement.lang = lang;
+      if (document.body) {
+        document.body.classList.remove('lang-en', 'lang-mr', 'lang-hi');
+        document.body.classList.add('lang-' + lang);
+      }
+      injectOptimizedDevanagariStyles();
       applyTranslations(lang);
       updateLanguageUIElements(lang);
       window.dispatchEvent(new CustomEvent('kumbh_language_changed', { detail: { lang } }));
@@ -11126,6 +11339,25 @@
       return targetLang === 'mr' ? `सर्व पहा (${m[1]}) →` : (targetLang === 'hi' ? `सभी देखें (${m[1]}) →` : t);
     }
 
+    
+    // 16. Walking distance from landmark: "850 meters from Ramkund Ghat"
+    m = t.match(/^(\d+[\d,.]*)\s*(?:meters?|m|kms?|km)\s+(?:from|away from)\s+(.*)$/i);
+    if (m) {
+      const num = m[1];
+      const isKm = t.toLowerCase().includes('km');
+      const place = translateText(m[2].trim(), targetLang);
+      const unit = isKm ? 'किमी' : 'मीटर';
+      if (targetLang === 'mr') return `${place}पासून ${num} ${unit}`;
+      if (targetLang === 'hi') return `${place} से ${num} ${unit}`;
+      return t;
+    }
+
+    // 17. Walk time in parenthesis: "(7 min walk)"
+    m = t.match(/^\((\d+[\d,.]*)\s*mins?\s*(?:walk|walking)\)$/i);
+    if (m) {
+      return targetLang === 'mr' ? `(${m[1]} मिनिटे पायी)` : (targetLang === 'hi' ? `(${m[1]} मिनट पैदल)` : t);
+    }
+
     return null;
   }
 
@@ -11285,7 +11517,7 @@
               return NodeFilter.FILTER_REJECT;
             }
             // Skip icons, language modal, and segmented language buttons on index page
-            if (parent.closest('.material-symbols-outlined, .material-icons, .material-symbols-rounded, #kumbh-lang-modal, #lang-switch-group, svg')) {
+            if (parent.closest('.material-symbols-outlined, .material-icons, .material-symbols-rounded, #kumbh-lang-modal, #lang-switch-group, .lang-dropdown-trigger, [data-action="language"], [data-lang-trigger], #kumbh-floating-lang-btn, .kumbh-active-lang-label, svg, [data-no-translate]')) {
               return NodeFilter.FILTER_REJECT;
             }
             return NodeFilter.FILTER_ACCEPT;
@@ -11410,7 +11642,7 @@
     if (closeBtn) closeBtn.setAttribute('aria-label', t.closeAria);
   }
 
-  function updateLanguageUIElements(lang) {
+    function updateLanguageUIElements(lang) {
     const langLabels = { en: 'English', mr: 'मराठी', hi: 'हिंदी' };
 
     // 1. Segmented switcher on index.html
@@ -11436,11 +11668,14 @@
       const hasTranslate = html.includes('translate') || aria.includes('language') || aria.includes('translate') || btn.classList.contains('lang-dropdown-trigger');
       if (hasTranslate) {
         btn.classList.add('lang-dropdown-trigger');
-        const textSpan = btn.querySelector('span:not(.material-symbols-outlined):not(.material-icons):not([class*="material"])') ||
-                         btn.querySelector('.kumbh-active-lang-label, .kumbh-float-lang-text');
-        if (textSpan) {
-          textSpan.textContent = langLabels[lang] || 'English';
+        let textSpan = btn.querySelector('.kumbh-active-lang-label, .kumbh-float-lang-text') ||
+                       btn.querySelector('span:not(.material-symbols-outlined):not(.material-icons):not([class*="material"]):not(.material-symbols-rounded)');
+        if (!textSpan) {
+          textSpan = document.createElement('span');
+          btn.appendChild(textSpan);
         }
+        textSpan.className = 'kumbh-active-lang-label font-medium';
+        textSpan.textContent = langLabels[lang] || 'English';
       }
     });
 
@@ -11729,10 +11964,15 @@
   };
 
   function init() {
+    injectOptimizedDevanagariStyles();
     createLanguageModal();
     ensureLanguageButtonOnPage();
     const currentLang = getSavedLang();
     document.documentElement.lang = currentLang;
+    if (document.body) {
+      document.body.classList.remove('lang-en', 'lang-mr', 'lang-hi');
+      document.body.classList.add('lang-' + currentLang);
+    }
     applyTranslations(currentLang);
     updateLanguageUIElements(currentLang);
 
