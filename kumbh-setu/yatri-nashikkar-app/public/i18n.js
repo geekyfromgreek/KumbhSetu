@@ -11335,7 +11335,84 @@
     }
   }
 
+  const modalTranslations = {
+    en: {
+      title: 'Select Language',
+      subTitle: 'Official Multi-Lingual Interface • Simhastha 2027',
+      enLabel: 'English',
+      enDesc: 'Default Global Language',
+      mrLabel: 'मराठी (Marathi)',
+      mrDesc: 'स्थानिक राजभाषा • Local Regional Language',
+      hiLabel: 'हिंदी (Hindi)',
+      hiDesc: 'राष्ट्रीय भाषा • National Language',
+      footer: 'कुंभसेतु • Simhastha Kumbh Mela 2027 (Nashik)',
+      closeAria: 'Close modal',
+      activeBadge: 'Active'
+    },
+    mr: {
+      title: 'भाषा निवडा',
+      subTitle: 'सिंहस्थ २०२७ साठी आपली पसंतीची भाषा निवडा',
+      enLabel: 'इंग्रजी (English)',
+      enDesc: 'जागतिक संपर्क भाषा',
+      mrLabel: 'मराठी (Marathi)',
+      mrDesc: 'स्थानिक राजभाषा (सध्या निवडलेली)',
+      hiLabel: 'हिंदी (Hindi)',
+      hiDesc: 'राष्ट्रीय संपर्क भाषा',
+      footer: 'कुंभसेतू • सिंहस्थ कुंभमेळा २०२७ (नाशिक-त्र्यंबकेश्वर)',
+      closeAria: 'खिडकी बंद करा',
+      activeBadge: 'सक्रिय'
+    },
+    hi: {
+      title: 'भाषा चुनें',
+      subTitle: 'सिंहस्थ २०२७ के लिए अपनी पसंदीदा भाषा चुनें',
+      enLabel: 'अंग्रेज़ी (English)',
+      enDesc: 'वैश्विक संपर्क भाषा',
+      mrLabel: 'मराठी (Marathi)',
+      mrDesc: 'स्थानीय राज्य भाषा',
+      hiLabel: 'हिंदी (Hindi)',
+      hiDesc: 'राष्ट्रीय भाषा (वर्तमान में सक्रिय)',
+      footer: 'कुंभसेतु • सिंहस्थ कुंभ मेला २०२७ (नासिक-त्र्यंबकेश्वर)',
+      closeAria: 'बंद करें',
+      activeBadge: 'सक्रिय'
+    }
+  };
+
+  function updateLanguageModalContent(lang) {
+    const modal = document.getElementById('kumbh-lang-modal');
+    if (!modal) return;
+    const t = modalTranslations[lang] || modalTranslations.en;
+
+    const titleEl = modal.querySelector('#kumbh-lang-modal-title');
+    if (titleEl) titleEl.textContent = t.title;
+
+    const subTitleEl = modal.querySelector('#kumbh-lang-modal-subtitle');
+    if (subTitleEl) subTitleEl.textContent = t.subTitle;
+
+    const enTitle = modal.querySelector('[data-lang="en"] .lang-opt-title');
+    const enDesc = modal.querySelector('[data-lang="en"] .lang-opt-desc');
+    if (enTitle) enTitle.textContent = t.enLabel;
+    if (enDesc) enDesc.textContent = t.enDesc;
+
+    const mrTitle = modal.querySelector('[data-lang="mr"] .lang-opt-title');
+    const mrDesc = modal.querySelector('[data-lang="mr"] .lang-opt-desc');
+    if (mrTitle) mrTitle.textContent = t.mrLabel;
+    if (mrDesc) mrDesc.textContent = t.mrDesc;
+
+    const hiTitle = modal.querySelector('[data-lang="hi"] .lang-opt-title');
+    const hiDesc = modal.querySelector('[data-lang="hi"] .lang-opt-desc');
+    if (hiTitle) hiTitle.textContent = t.hiLabel;
+    if (hiDesc) hiDesc.textContent = t.hiDesc;
+
+    const footerEl = modal.querySelector('#kumbh-lang-modal-footer');
+    if (footerEl) footerEl.textContent = t.footer;
+
+    const closeBtn = modal.querySelector('#kumbh-lang-modal-close');
+    if (closeBtn) closeBtn.setAttribute('aria-label', t.closeAria);
+  }
+
   function updateLanguageUIElements(lang) {
+    const langLabels = { en: 'English', mr: 'मराठी', hi: 'हिंदी' };
+
     // 1. Segmented switcher on index.html
     const segmentButtons = document.querySelectorAll('.lang-btn');
     segmentButtons.forEach(btn => {
@@ -11350,15 +11427,20 @@
       }
     });
 
-    // 2. Header language dropdown / pill button on inner pages
-    const headerButtons = document.querySelectorAll('header button.lang-dropdown-trigger, header button[aria-label*="Language" i], header button[aria-label*="language" i], header button[aria-label*="translate" i], .lang-dropdown-trigger');
-    const langLabels = { en: 'English', mr: 'मराठी', hi: 'हिंदी' };
-
-    headerButtons.forEach(btn => {
+    // 2. Header language dropdown / pill button on ALL pages
+    const allButtons = document.querySelectorAll('header button, .lang-dropdown-trigger, [data-action="language"], [data-lang-trigger], #kumbh-floating-lang-btn');
+    allButtons.forEach(btn => {
       if (btn.classList.contains('lang-btn') || btn.closest('#lang-switch-group') || btn.id === 'btn-admin-profile') return;
-      const textSpan = btn.querySelector('span:not(.material-symbols-outlined):not(.material-icons)');
-      if (textSpan) {
-        textSpan.textContent = langLabels[lang] || 'English';
+      const html = btn.innerHTML || '';
+      const aria = (btn.getAttribute('aria-label') || '').toLowerCase();
+      const hasTranslate = html.includes('translate') || aria.includes('language') || aria.includes('translate') || btn.classList.contains('lang-dropdown-trigger');
+      if (hasTranslate) {
+        btn.classList.add('lang-dropdown-trigger');
+        const textSpan = btn.querySelector('span:not(.material-symbols-outlined):not(.material-icons):not([class*="material"])') ||
+                         btn.querySelector('.kumbh-active-lang-label, .kumbh-float-lang-text');
+        if (textSpan) {
+          textSpan.textContent = langLabels[lang] || 'English';
+        }
       }
     });
 
@@ -11372,65 +11454,83 @@
     if (floatText) {
       floatText.textContent = langLabels[lang] || 'English';
     }
+
+    // 4. Update the language modal itself if rendered
+    updateLanguageModalContent(lang);
   }
 
   // Language Switcher Modal
   function createLanguageModal() {
-    if (document.getElementById('kumbh-lang-modal')) return;
+    let modal = document.getElementById('kumbh-lang-modal');
+    if (modal) {
+      updateLanguageModalContent(getSavedLang());
+      return;
+    }
 
-    const modal = document.createElement('div');
+    const cur = getSavedLang();
+    const t = modalTranslations[cur] || modalTranslations.en;
+
+    modal = document.createElement('div');
     modal.id = 'kumbh-lang-modal';
     modal.className = 'fixed inset-0 bg-black/70 backdrop-blur-md z-[999999] hidden items-center justify-center p-4 transition-opacity duration-200 opacity-0';
     modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999;';
     modal.innerHTML = `
       <div class="bg-surface-container-lowest rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-outline-variant/30 transform scale-95 transition-transform duration-200" id="kumbh-lang-modal-content" style="background-color: #ffffff; color: #1b1b20;">
-        <div class="flex items-center justify-between pb-4 border-b border-surface-container-high mb-4">
+        <div class="flex items-center justify-between pb-3 border-b border-surface-container-high mb-3">
           <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[24px]">translate</span>
-            <h3 class="font-headline-sm text-on-surface font-bold text-lg">Select Language / भाषा निवडा</h3>
+            <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-[20px]">translate</span>
+            </div>
+            <div>
+              <h3 class="font-headline-sm text-on-surface font-bold text-base" id="kumbh-lang-modal-title">${t.title}</h3>
+              <p class="text-[11px] text-on-surface-variant leading-tight" id="kumbh-lang-modal-subtitle">${t.subTitle}</p>
+            </div>
           </div>
-          <button type="button" class="text-on-surface-variant hover:text-on-surface p-1 rounded-full cursor-pointer" onclick="window.KumbhI18n.closeModal()">
+          <button type="button" id="kumbh-lang-modal-close" class="text-on-surface-variant hover:text-on-surface p-1 rounded-full cursor-pointer hover:bg-surface-container" onclick="window.KumbhI18n.closeModal()">
             <span class="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
         
         <div class="flex flex-col gap-2.5">
-          <button type="button" onclick="window.KumbhI18n.setLanguage('en')" class="lang-modal-opt flex items-center justify-between p-3.5 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="en">
+          <!-- English Option -->
+          <button type="button" onclick="window.KumbhI18n.setLanguage('en')" class="lang-modal-opt flex items-center justify-between p-3 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="en">
             <div class="flex items-center gap-3">
               <span class="text-2xl">🇬🇧</span>
               <div class="text-left">
-                <div class="font-bold text-on-surface text-base">English</div>
-                <div class="text-xs text-on-surface-variant">Default Global</div>
+                <div class="font-bold text-on-surface text-sm lang-opt-title">${t.enLabel}</div>
+                <div class="text-[11px] text-on-surface-variant lang-opt-desc">${t.enDesc}</div>
               </div>
             </div>
             <span class="check-icon material-symbols-outlined text-primary opacity-0 text-[20px]">check_circle</span>
           </button>
 
-          <button type="button" onclick="window.KumbhI18n.setLanguage('mr')" class="lang-modal-opt flex items-center justify-between p-3.5 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="mr">
+          <!-- Marathi Option -->
+          <button type="button" onclick="window.KumbhI18n.setLanguage('mr')" class="lang-modal-opt flex items-center justify-between p-3 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="mr">
             <div class="flex items-center gap-3">
               <span class="text-2xl">🇮🇳</span>
               <div class="text-left">
-                <div class="font-bold text-on-surface text-base">मराठी (Marathi)</div>
-                <div class="text-xs text-on-surface-variant">स्थानिक भाषा / Regional</div>
+                <div class="font-bold text-on-surface text-sm lang-opt-title">${t.mrLabel}</div>
+                <div class="text-[11px] text-on-surface-variant lang-opt-desc">${t.mrDesc}</div>
               </div>
             </div>
             <span class="check-icon material-symbols-outlined text-primary opacity-0 text-[20px]">check_circle</span>
           </button>
 
-          <button type="button" onclick="window.KumbhI18n.setLanguage('hi')" class="lang-modal-opt flex items-center justify-between p-3.5 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="hi">
+          <!-- Hindi Option -->
+          <button type="button" onclick="window.KumbhI18n.setLanguage('hi')" class="lang-modal-opt flex items-center justify-between p-3 rounded-xl border border-surface-container-high hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer" data-lang="hi">
             <div class="flex items-center gap-3">
               <span class="text-2xl">🇮🇳</span>
               <div class="text-left">
-                <div class="font-bold text-on-surface text-base">हिंदी (Hindi)</div>
-                <div class="text-xs text-on-surface-variant">राष्ट्रीय भाषा / National</div>
+                <div class="font-bold text-on-surface text-sm lang-opt-title">${t.hiLabel}</div>
+                <div class="text-[11px] text-on-surface-variant lang-opt-desc">${t.hiDesc}</div>
               </div>
             </div>
             <span class="check-icon material-symbols-outlined text-primary opacity-0 text-[20px]">check_circle</span>
           </button>
         </div>
 
-        <div class="mt-5 pt-3 text-center border-t border-surface-container-high">
-          <p class="text-xs text-on-surface-variant">कुंभसेतु • Simhastha Kumbh Mela 2027</p>
+        <div class="mt-4 pt-2.5 text-center border-t border-surface-container-high">
+          <p class="text-[11px] text-on-surface-variant font-medium" id="kumbh-lang-modal-footer">${t.footer}</p>
         </div>
       </div>
     `;
@@ -11450,16 +11550,17 @@
     const content = document.getElementById('kumbh-lang-modal-content');
     if (!modal) return;
     const currentLang = getSavedLang();
+    updateLanguageModalContent(currentLang);
 
     const options = modal.querySelectorAll('.lang-modal-opt');
     options.forEach(opt => {
       const optLang = opt.getAttribute('data-lang');
       const check = opt.querySelector('.check-icon');
       if (optLang === currentLang) {
-        opt.classList.add('border-primary', 'bg-primary/5');
+        opt.classList.add('border-primary', 'bg-primary/5', 'ring-1', 'ring-primary/20');
         if (check) check.classList.remove('opacity-0');
       } else {
-        opt.classList.remove('border-primary', 'bg-primary/5');
+        opt.classList.remove('border-primary', 'bg-primary/5', 'ring-1', 'ring-primary/20');
         if (check) check.classList.add('opacity-0');
       }
     });

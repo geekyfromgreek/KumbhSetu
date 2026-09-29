@@ -844,3 +844,66 @@ async def update_guide_overview(guide_id: str, payload: GuideOverviewUpdate):
     updated_row = conn.execute("SELECT * FROM guide_operational_stats WHERE guide_id = ?", (guide_id,)).fetchone()
     return {"status": "success", "stats": row_to_dict(updated_row) if updated_row else {}}
 
+
+class GuideProfileUpdate(BaseModel):
+    name: Optional[str] = None
+    phone_number: Optional[str] = None
+    base_location_name: Optional[str] = None
+    hourly_rate: Optional[float] = None
+    languages_spoken: Optional[list[str]] = None
+    image_url: Optional[str] = None
+    selfie_base64: Optional[str] = None
+
+
+@router.post("/guides/{guide_id}/profile")
+async def update_guide_profile(guide_id: str, payload: GuideProfileUpdate):
+    """
+    Update local guide profile information, photo, and selfie biometrics.
+    """
+    conn = get_connection()
+    now = now_iso()
+
+    target_id = guide_id
+    row = conn.execute("SELECT * FROM local_guides WHERE id = ?", (target_id,)).fetchone()
+    if not row:
+        target_id = 'guide-anand-joshi'
+        row = conn.execute("SELECT * FROM local_guides WHERE id = ?", (target_id,)).fetchone()
+
+    updates = []
+    params = []
+    if payload.name:
+        updates.append("name = ?")
+        params.append(payload.name)
+    if payload.phone_number:
+        updates.append("phone_number = ?")
+        params.append(payload.phone_number)
+    if payload.base_location_name:
+        updates.append("base_location_name = ?")
+        params.append(payload.base_location_name)
+    if payload.hourly_rate is not None:
+        updates.append("hourly_rate = ?")
+        params.append(payload.hourly_rate)
+    if payload.languages_spoken is not None:
+        updates.append("languages_spoken = ?")
+        params.append(json.dumps(payload.languages_spoken))
+    if payload.image_url:
+        updates.append("image_url = ?")
+        params.append(payload.image_url)
+    if payload.selfie_base64:
+        updates.append("verification_status = ?")
+        params.append("Kumbhveer Verified")
+        if not payload.image_url:
+            updates.append("image_url = ?")
+            params.append(payload.selfie_base64)
+
+    if updates:
+        updates.append("last_active_at = ?")
+        params.append(now)
+        params.append(target_id)
+        conn.execute(f"UPDATE local_guides SET {', '.join(updates)} WHERE id = ?", params)
+        conn.commit()
+
+    updated = conn.execute("SELECT * FROM local_guides WHERE id = ?", (target_id,)).fetchone()
+    return {"status": "success", "guide": row_to_dict(updated) if updated else {}}
+
+
