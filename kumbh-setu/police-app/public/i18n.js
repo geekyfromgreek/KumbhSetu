@@ -4033,6 +4033,11 @@
     "hi": "गाइड",
     "en": "Guide"
   },
+  "Guides": {
+    "mr": "गाईड",
+    "hi": "गाइड",
+    "en": "Guides"
+  },
   "Guide / Priest": {
     "mr": "मार्गदर्शक / Priest",
     "hi": "गाइड / Priest",
@@ -11112,12 +11117,12 @@
       /* Bottom Navigation Item Scaling */
       html[lang="mr"] nav a span:not(.material-symbols-outlined):not(.material-icons),
       html[lang="hi"] nav a span:not(.material-symbols-outlined):not(.material-icons) {
-        font-size: 11px !important;
+        font-size: 10px !important;
         letter-spacing: 0 !important;
         white-space: nowrap !important;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 68px;
+        max-width: 56px;
         text-align: center;
       }
 

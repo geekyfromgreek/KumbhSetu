@@ -772,5 +772,34 @@
     const resolvedName = urlParams.get('name') ? decodeURIComponent(urlParams.get('name')) : (document.getElementById('detail-name') || {}).textContent;
     loadNashikkarNotes(resolvedName, urlParams.get('id'));
   });
-</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="home" href="yatri_home.html"><span class="material-symbols-outlined text-[22px]">temple_hindu</span><span class="font-label-sm text-label-sm leading-tight">Home</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs transition-colors text-primary font-bold" data-path="marketplace" href="marketplace.html"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm leading-tight">Market</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="issue-report" href="report_issue.html"><span class="material-symbols-outlined text-[22px]">campaign</span><span class="font-label-sm text-label-sm leading-tight">Report</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html"><span class="material-symbols-outlined text-[22px]">emergency</span><span class="font-label-sm text-label-sm leading-tight text-secondary font-bold">SOS</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-space-2xs text-on-surface-variant transition-colors" data-path="fare-board" href="fare_board.html"><span class="material-symbols-outlined text-[22px]">electric_rickshaw</span><span class="font-label-sm text-label-sm leading-tight">Fares</span></a></div></nav><script src="i18n.js"></script>
+</script></main>
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-1px_10px_rgba(0,0,0,0.05)]">
+  <div class="flex items-center justify-around h-14 px-1 max-w-md mx-auto">
+    <a class="flex flex-col items-center justify-center flex-1 py-1 px-0.5 text-center min-w-0 text-on-surface-variant/75 hover:text-on-surface transition-colors" data-path="home" href="yatri_home.html">
+      <span class="material-symbols-outlined text-[20px]">temple_hindu</span>
+      <span class="text-[10px] font-semibold tracking-tight leading-none mt-1 truncate">Home</span>
+    </a>
+    <a class="flex flex-col items-center justify-center flex-1 py-1 px-0.5 text-center min-w-0 text-on-surface-variant/75 hover:text-on-surface transition-colors" data-path="guides" href="yatri_guides.html">
+      <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+      <span class="text-[10px] font-semibold tracking-tight leading-none mt-1 truncate">Guides</span>
+    </a>
+    <a aria-current="page" class="flex flex-col items-center justify-center flex-1 py-1 px-0.5 text-center min-w-0 text-primary font-bold transition-colors" data-path="marketplace" href="marketplace.html">
+      <span class="material-symbols-outlined text-[20px]">storefront</span>
+      <span class="text-[10px] font-bold tracking-tight leading-none mt-1 truncate">Market</span>
+    </a>
+    <a class="flex flex-col items-center justify-center flex-1 py-1 px-0.5 text-center min-w-0 text-on-surface-variant/75 hover:text-on-surface transition-colors" data-path="fare-board" href="fare_board.html">
+      <span class="material-symbols-outlined text-[20px]">electric_rickshaw</span>
+      <span class="text-[10px] font-semibold tracking-tight leading-none mt-1 truncate">Fares</span>
+    </a>
+    <a class="flex flex-col items-center justify-center flex-1 py-1 px-0.5 text-center min-w-0 text-on-surface-variant/75 hover:text-on-surface transition-colors" data-path="issue-report" href="report_issue.html">
+      <span class="material-symbols-outlined text-[20px]">campaign</span>
+      <span class="text-[10px] font-semibold tracking-tight leading-none mt-1 truncate">Report</span>
+    </a>
+    <a class="flex flex-col items-center justify-center flex-1 py-1 px-0.5 text-center min-w-0 text-secondary transition-colors" data-path="emergency-sos" href="emergency_sos.html">
+      <span class="material-symbols-outlined text-[20px]">emergency</span>
+      <span class="text-[10px] font-bold tracking-tight leading-none mt-1 truncate">SOS</span>
+    </a>
+  </div>
+</nav>
+<script src="i18n.js"></script>
 </body></html>
