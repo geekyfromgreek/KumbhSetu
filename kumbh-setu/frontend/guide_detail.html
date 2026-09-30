@@ -17,12 +17,12 @@
 <span class="material-symbols-outlined text-[16px]">how_to_reg</span>
 <span>Identity Confirmed via Selfie</span>
 </div>
-<h2 id="guide-name" class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Anand Joshi (आनंद जोशी)</h2>
-<p id="guide-id-badge" class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<h2 id="guide-name" class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight text-center">Anand Joshi (आनंद जोशी)</h2>
+<p id="guide-id-badge" class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-center gap-1 mt-0.5 text-center w-full">
 <span class="material-symbols-outlined text-[15px] text-tertiary">badge</span>
 <span>Govt Authorized Guide Reg #MH-15-GUIDE-0082</span>
 </p>
-<div class="flex items-center gap-3 mt-2 text-on-surface font-label-md text-label-md">
+<div class="flex items-center justify-center gap-3 mt-2 text-on-surface font-label-md text-label-md w-full">
 <div class="flex items-center gap-1 text-primary">
 <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
 <span class="font-bold" id="guide-rating">4.9</span>
@@ -420,8 +420,8 @@ Your guide's identity is confirmed via selfie at the meeting point before your s
         </div>
       </div>
 
-      <input type="file" id="handshake-camera-input" accept="image/*" capture="environment" class="hidden" onchange="handleHandshakeSelfieChosen(this)"/>
-      <input type="file" id="handshake-gallery-input" accept="image/*" class="hidden" onchange="handleHandshakeSelfieChosen(this)"/>
+<input type="file" id="handshake-camera-input" accept="image/*" capture="environment" class="sr-only" onchange="handleHandshakeSelfieChosen(this)"/>
+<input type="file" id="handshake-gallery-input" accept="image/*" class="sr-only" onchange="handleHandshakeSelfieChosen(this)"/>
 
       <!-- Verification Buttons -->
       <div class="flex flex-col gap-2">
@@ -543,8 +543,8 @@ Live selfie verify at meeting point compares face landmarks with official Kumbhv
   </div>
 </div>
 
-<input type="file" id="selfie-input" accept="image/*" class="hidden" onchange="handleSelfieChosen(this)"/>
-<input type="file" id="selfie-camera-input" accept="image/*" capture="user" class="hidden" onchange="handleSelfieChosen(this)"/>
+<input type="file" id="selfie-input" accept="image/*" class="sr-only" onchange="handleSelfieChosen(this)"/>
+<input type="file" id="selfie-camera-input" accept="image/*" capture="user" class="sr-only" onchange="handleSelfieChosen(this)"/>
 
 <div class="flex flex-col gap-2">
   <div class="grid grid-cols-2 gap-2">
@@ -586,9 +586,18 @@ Live selfie verify at meeting point compares face landmarks with official Kumbhv
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${dest}`, '_blank');
   }
 
+  function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   function openMobileCamera() {
     const mobileInput = document.getElementById('selfie-camera-input');
     if (mobileInput) {
+      if (!isMobileDevice()) {
+        mobileInput.removeAttribute('capture');
+      } else {
+        mobileInput.setAttribute('capture', 'user');
+      }
       mobileInput.click();
     }
   }
@@ -926,7 +935,14 @@ Live selfie verify at meeting point compares face landmarks with official Kumbhv
 
   function openHandshakeMobileCamera() {
     const input = document.getElementById('handshake-camera-input');
-    if (input) input.click();
+    if (input) {
+      if (!isMobileDevice()) {
+        input.removeAttribute('capture');
+      } else {
+        input.setAttribute('capture', 'environment');
+      }
+      input.click();
+    }
   }
 
   async function startHandshakeWebcam(facingMode = currentHandshakeFacingMode) {
