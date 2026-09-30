@@ -28,5 +28,16 @@
 
   window.API_BASE_URL = getApiBaseUrl();
   window.API_BASE = window.API_BASE_URL;
+
+  // Safe universal URL resolver that prevents duplicate `/api/api` prefixes
+  window.getApiUrl = function(endpointPath) {
+    const base = (window.API_BASE_URL || '').replace(/\/+$/, '');
+    const cleanPath = endpointPath.startsWith('/') ? endpointPath : '/' + endpointPath;
+    if (base.endsWith('/api') && cleanPath.startsWith('/api/')) {
+      return base + cleanPath.slice(4);
+    }
+    return base + cleanPath;
+  };
+
   console.log('[KumbhSetu] Initialized API Base URL:', window.API_BASE_URL);
 })();

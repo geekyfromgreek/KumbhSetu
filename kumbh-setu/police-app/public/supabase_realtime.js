@@ -13,7 +13,7 @@
   'use strict';
 
   const POLL_INTERVAL_MS = 8000; // Fallback polling interval if Supabase realtime unavailable
-  const MAX_WAIT_MS = 1500;      // Max time to wait for supabaseClient init
+  const MAX_WAIT_MS = 4000;      // Max time to wait for supabaseClient init
   const _bc = (typeof BroadcastChannel !== 'undefined') ? new BroadcastChannel('kumbhsetu_realtime_channel') : null;
 
   // ── Fast Timeout Wrapper ───────────────────────────────────────────────────
@@ -34,10 +34,21 @@
     return window.supabaseClient || null;
   }
 
-  // Wait until window.supabaseClient exists (set by supabase.js CDN loader)
+  // Wait until window.supabaseClient exists — uses _supabaseReady promise if available (set by supabase.js),
+  // otherwise falls back to polling for legacy pages.
   function waitForClient() {
+    // Fast path: client already available
+    if (getClient()) return Promise.resolve(getClient());
+
+    // Use the Promise exposed by the updated supabase.js
+    if (window._supabaseReady && typeof window._supabaseReady.then === 'function') {
+      return window._supabaseReady.then(function(client) {
+        return client || getClient() || null;
+      });
+    }
+
+    // Legacy fallback: poll for window.supabaseClient
     return new Promise((resolve) => {
-      if (getClient()) return resolve(getClient());
       const start = Date.now();
       const iv = setInterval(() => {
         if (getClient()) { clearInterval(iv); resolve(getClient()); }
@@ -58,7 +69,7 @@
 
     /** Wait for Supabase client to be ready with fast non-blocking timeout. */
     async ready() {
-      const client = await withTimeout(waitForClient(), 1000, null);
+      const client = await withTimeout(waitForClient(), 4000, null);
       KumbhRealtime._client = client;
       KumbhRealtime._mode = client ? 'supabase' : 'fallback';
       console.log(`[KumbhRealtime] Mode: ${KumbhRealtime._mode}`);

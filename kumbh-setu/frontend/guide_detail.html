@@ -790,8 +790,9 @@ Live selfie verify at meeting point compares face landmarks with official Kumbhv
     }
     if (hud) hud.classList.remove('hidden');
 
-    try {
-      const url = `${activeApiBase}/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`;
+      const url = window.getApiUrl
+        ? window.getApiUrl(`/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`)
+        : `${activeApiBase}/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`;
       const formData = new FormData();
       formData.append('selfie_base64', selectedSelfieBase64);
 
@@ -1102,7 +1103,10 @@ Live selfie verify at meeting point compares face landmarks with official Kumbhv
       let score = 99.4;
 
       try {
-        const res = await fetch(`${activeApiBase}/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`, {
+        const verifyEndpoint = window.getApiUrl
+          ? window.getApiUrl(`/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`)
+          : `${activeApiBase}/api/v1/verification/guide/${currentGuideId}/verify-booking-selfie`;
+        const res = await fetch(verifyEndpoint, {
           method: 'POST',
           body: formData
         });

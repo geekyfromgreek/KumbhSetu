@@ -384,7 +384,7 @@
       guide: 'Local Guide', 
       vendor: 'Civic Vendor', 
       volunteers: 'Volunteer Coordinator',
-      kumbhveer: 'Volunteer Coordinator',
+      kumbhveer: 'Volunteer Coordinator', 
       nashikkar: 'Nashik Resident'
     };
     if (roleIndicator) roleIndicator.textContent = roleMap[role] || role;
@@ -926,7 +926,9 @@
       formData.append('govt_id_number', govtIdVal);
       formData.append('selfie_base64', selfieData);
 
-      const res = await fetch((window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + '') + '') + '') + '') + '') + '') + '') + '') + '/api/v1/verification/guide/register', {
+      const apiBase = window.API_BASE_URL || '';
+      const endpoint = (window.getApiUrl ? window.getApiUrl('/api/v1/verification/guide/register') : `${apiBase}/api/v1/verification/guide/register`);
+      const res = await fetch(endpoint, {
         method: 'POST',
         body: formData
       });

@@ -3,7 +3,7 @@
  * Dynamically resolves backend API base URL across:
  * - Localhost (laptop / dev)
  * - Smartphone browser accessing via LAN IP (e.g. 192.168.x.x, 10.x.x.x, 172.x.x.x)
- * - Production cloud domains (Vercel proxies /api/* to Render backend, so base URL is '')
+ * - Production cloud domains
  * - WebView / Cordova / Capacitor APKs
  */
 (function() {
@@ -13,7 +13,6 @@
     const protocol = loc.protocol === 'https:' ? 'https:' : 'http:';
 
     // When deployed on Vercel or cloud production domain
-    // Must return empty string '' so `${window.API_BASE_URL}/api/v1/...` resolves to `/api/v1/...`
     if (host.includes('vercel.app') || host.includes('render.com') || (protocol === 'https:' && !host.match(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.)/))) {
       return '';
     }
@@ -28,5 +27,16 @@
 
   window.API_BASE_URL = getApiBaseUrl();
   window.API_BASE = window.API_BASE_URL;
+
+  // Safe universal URL resolver that prevents duplicate `/api/api` prefixes
+  window.getApiUrl = function(endpointPath) {
+    const base = (window.API_BASE_URL || '').replace(/\/+$/, '');
+    const cleanPath = endpointPath.startsWith('/') ? endpointPath : '/' + endpointPath;
+    if (base.endsWith('/api') && cleanPath.startsWith('/api/')) {
+      return base + cleanPath.slice(4);
+    }
+    return base + cleanPath;
+  };
+
   console.log('[KumbhSetu] Initialized API Base URL:', window.API_BASE_URL);
 })();

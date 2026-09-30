@@ -157,6 +157,12 @@
         <span class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]" id="badgePendingAudits">20</span>
       </button>
 
+      <button onclick="switchTab('assigned')" id="tab-btn-assigned" class="tab-chip px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-amber-500/15 text-amber-950 hover:bg-amber-500/25 border border-amber-500/40 flex items-center gap-1.5 cursor-pointer shrink-0">
+        <span class="material-symbols-outlined text-base text-amber-800">assignment_late</span>
+        <span>Tasks Assigned</span>
+        <span class="px-1.5 py-0.2 rounded-full bg-amber-400 text-amber-950 text-[10px] font-bold" id="badgeAssignedTasks">0</span>
+      </button>
+
       <button onclick="switchTab('reports')" id="tab-btn-reports" class="tab-chip px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container flex items-center gap-1.5 cursor-pointer shrink-0">
         <span class="material-symbols-outlined text-base text-red-600">campaign</span>
         <span>Citizen Reports &amp; Flags</span>
@@ -182,6 +188,22 @@
 
     <!-- ==================== TAB 1: FIELD AUDITS TO VERIFY ==================== -->
     <section id="tab-audits" class="tab-content active flex-col gap-3">
+      <!-- Direct Assigned Tasks Banner (shows if any active task is assigned by police) -->
+      <div id="assignedTasksAuditsBanner" class="p-3 bg-gradient-to-r from-amber-100 via-orange-50 to-amber-50 border border-amber-300 rounded-xl flex items-center justify-between gap-2.5 text-amber-950 text-xs shadow-2xs">
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+            <span class="material-symbols-outlined text-[19px]">assignment_late</span>
+          </div>
+          <div class="truncate">
+            <span class="font-bold text-xs block text-amber-950 truncate" id="bannerAssignedTitle">Direct Verification Tasks Assigned to You!</span>
+            <span class="block text-[11px] text-amber-800/90 truncate" id="bannerAssignedSub">Official spot audit directive from Police Vigilance Command.</span>
+          </div>
+        </div>
+        <button onclick="switchTab('assigned')" class="px-3 py-1.5 rounded-lg bg-amber-700 hover:bg-amber-800 text-white font-bold text-[11px] shrink-0 active:scale-95 transition-all shadow-xs cursor-pointer">
+          Open Tasks →
+        </button>
+      </div>
+
       <!-- Search & Filter Controls -->
       <div class="flex flex-col sm:flex-row items-center gap-2">
         <div class="relative flex-1 w-full">
@@ -213,6 +235,39 @@
       <!-- Audit Cards Grid / Stream -->
       <div id="auditsListContainer" class="flex flex-col gap-2.5">
         <!-- Seeded dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- ==================== TAB: DIRECT TASKS ASSIGNED BY POLICE ==================== -->
+    <section id="tab-assigned" class="tab-content flex-col gap-3">
+      <!-- Header Banner for Assigned Field Orders -->
+      <div class="p-3.5 bg-gradient-to-r from-amber-900 via-orange-950 to-amber-950 rounded-2xl text-white flex flex-col gap-2 shadow-xs border border-amber-700/50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-amber-400 text-amber-950 flex items-center justify-center shrink-0 shadow-inner">
+              <span class="material-symbols-outlined text-[20px]">local_police</span>
+            </div>
+            <div>
+              <h2 class="font-bold text-sm text-white">Direct Verification Orders Assigned to You</h2>
+              <p class="text-[11px] text-amber-200/90 font-medium">Spot inspection dockets dispatched by Police Vigilance &amp; Civic Command Hub</p>
+            </div>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[10px] font-bold uppercase font-mono">Real-Time Sync</span>
+        </div>
+      </div>
+
+      <!-- Priority Filter Row -->
+      <div class="flex items-center justify-between text-xs px-1">
+        <span class="text-on-surface-variant font-semibold" id="assignedSummaryText">Loading assigned field orders...</span>
+        <button onclick="refreshAssignedTasks()" class="text-primary hover:underline font-bold flex items-center gap-1 cursor-pointer">
+          <span class="material-symbols-outlined text-[14px]">refresh</span>
+          <span>Refresh</span>
+        </button>
+      </div>
+
+      <!-- Assigned Tasks Container -->
+      <div id="assignedTasksContainer" class="flex flex-col gap-3">
+        <!-- Rendered dynamically via JS -->
       </div>
     </section>
 
@@ -1224,6 +1279,268 @@
     let activeReportCatFilter = 'all';
     let activeReportStatusFilter = 'all';
 
+    // Direct Tasks Assigned by Police & Civic Command Desk
+    let assignedTasksState = [
+      {
+        id: 'verif-police-01',
+        case_number: '#POL-VERIF-4091',
+        vendor_name: 'Ganga Godavari Puja Bhandar (Stall #18)',
+        location: 'Ramkund Main Ghat, Sector 2',
+        kumbhveer_name: 'Nakul Karpe',
+        priority: 'Critical Directive',
+        directive: 'Conduct spot verification of ₹210 Puja Samagri Kit ceiling rate board. Pilgrim reported ₹350 demand. Verify digital UPI QR active.',
+        officer_name: 'Insp. Vikram Patil',
+        officer_badge: 'MH-15-POLICE-0482',
+        status: 'Scheduled',
+        created_at: new Date(Date.now() - 15 * 60000).toISOString()
+      },
+      {
+        id: 'verif-coord-02',
+        case_number: '#COORD-AUDIT-208',
+        vendor_name: 'CityLink Kumbh Shuttle Bus Stand #3',
+        location: 'CBS Central Bus Terminal, Sector 4',
+        kumbhveer_name: 'Nakul Karpe',
+        priority: 'Urgent Field Audit',
+        directive: 'Verify posted ₹15 gazetted shuttle ticket fare board and queue marshal readiness.',
+        officer_name: 'Kumbh Mela Civic Control Room',
+        officer_badge: 'CIVIC-COORD-04',
+        status: 'Scheduled',
+        created_at: new Date(Date.now() - 45 * 60000).toISOString()
+      }
+    ];
+
+    async function loadAssignedTasks() {
+      // 1. Load from localStorage (Police & Coordinator Dispatches)
+      try {
+        const localPoliceTasks = JSON.parse(localStorage.getItem('kumbhsetu_police_scheduled_verifications') || '[]');
+        const localCoordTasks = JSON.parse(localStorage.getItem('kumbhsetu_volunteer_assigned_tasks') || '[]');
+        const combined = [...localPoliceTasks, ...localCoordTasks];
+        
+        combined.forEach(item => {
+          const exists = assignedTasksState.find(t => String(t.id) === String(item.id) || (item.case_number && String(t.case_number) === String(item.case_number)));
+          if (!exists) {
+            assignedTasksState.unshift(item);
+          } else {
+            if (item.status) exists.status = item.status;
+          }
+        });
+      } catch(e) {}
+
+      // 2. Fetch from Backend Police API
+      try {
+        const endpoint = window.getApiUrl ? window.getApiUrl('/api/v1/police/scheduled-verifications') : `${API_BASE}/api/v1/police/scheduled-verifications`;
+        const res = await fetch(endpoint);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.scheduled_verifications) {
+            data.scheduled_verifications.forEach(item => {
+              const exists = assignedTasksState.find(t => String(t.id) === String(item.id) || (item.vendor_name && t.vendor_name === item.vendor_name));
+              if (!exists) {
+                assignedTasksState.unshift(item);
+              } else {
+                if (item.status) exists.status = item.status;
+              }
+            });
+          }
+        }
+      } catch(e) {
+        console.warn('Backend load assigned tasks note:', e);
+      }
+
+      renderAssignedTasksList();
+    }
+
+    function renderAssignedTasksList() {
+      const container = document.getElementById('assignedTasksContainer');
+      const badgeEl = document.getElementById('badgeAssignedTasks');
+      const bannerEl = document.getElementById('assignedTasksAuditsBanner');
+      const bannerTitle = document.getElementById('bannerAssignedTitle');
+      const summaryText = document.getElementById('assignedSummaryText');
+
+      const pendingTasks = assignedTasksState.filter(t => t.status !== 'Verified' && t.status !== 'Completed');
+      const count = pendingTasks.length;
+
+      if (badgeEl) {
+        badgeEl.textContent = count;
+        badgeEl.className = count > 0 
+          ? 'px-1.5 py-0.2 rounded-full bg-amber-400 text-amber-950 text-[10px] font-bold animate-pulse'
+          : 'px-1.5 py-0.2 rounded-full bg-slate-200 text-slate-700 text-[10px] font-bold';
+      }
+
+      if (bannerEl) {
+        if (count > 0) {
+          bannerEl.classList.remove('hidden');
+          if (bannerTitle) bannerTitle.textContent = `${count} Official Verification Order${count > 1 ? 's' : ''} Assigned to You!`;
+        } else {
+          bannerEl.classList.add('hidden');
+        }
+      }
+
+      if (summaryText) {
+        summaryText.textContent = `${count} pending assigned order${count === 1 ? '' : 's'} (${assignedTasksState.length - count} completed)`;
+      }
+
+      if (!container) return;
+
+      if (assignedTasksState.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">assignment_turned_in</span>
+            <p class="font-bold text-sm">No verification tasks assigned yet.</p>
+            <p class="text-xs text-outline mt-0.5">When Police or Civic Coordinators assign on-site inspection dockets, they will appear here in real time.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = assignedTasksState.map(item => {
+        const isVerified = item.status === 'Verified' || item.status === 'Completed';
+        const priorityText = item.priority || 'Immediate';
+        const isCritical = priorityText.toLowerCase().includes('critical') || priorityText.toLowerCase().includes('urgent');
+
+        return `
+          <div class="p-4 rounded-2xl bg-surface-container-lowest shadow-sm border ${isVerified ? 'border-emerald-300 bg-emerald-50/20' : 'border-amber-300/80 bg-amber-50/30'} flex flex-col gap-3 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[13px] text-amber-700">local_police</span>
+                    <span>Police Directive</span>
+                  </span>
+                  <span class="text-xs font-mono font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">${item.case_number || item.id || '#POL-VERIF'}</span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isCritical ? 'bg-red-100 text-red-800 border border-red-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
+                    ${priorityText}
+                  </span>
+                </div>
+                <h3 class="font-bold text-sm sm:text-base text-on-surface mt-1.5 flex items-center gap-1.5">
+                  <span>${item.vendor_name || item.name || 'Commercial Stall'}</span>
+                </h3>
+                <span class="text-xs text-on-surface-variant flex items-center gap-1 mt-0.5">
+                  <span class="material-symbols-outlined text-[14px] text-primary shrink-0">location_on</span>
+                  <span class="truncate">${item.location || 'Nashik Simhastha Zone'}</span>
+                </span>
+              </div>
+              
+              <div class="text-right shrink-0">
+                <span class="px-2 py-1 rounded-lg ${isVerified ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold' : 'bg-amber-100 text-amber-900 border border-amber-300 font-bold'} text-[10px] block">
+                  ${isVerified ? '✓ Audit Verified' : 'Action Required'}
+                </span>
+              </div>
+            </div>
+
+            <!-- Police Tactical Directive Box -->
+            <div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 text-xs flex flex-col gap-1.5">
+              <div class="flex items-center justify-between text-[11px] font-bold text-on-surface-variant">
+                <span class="flex items-center gap-1 text-primary">
+                  <span class="material-symbols-outlined text-[15px]">assignment</span>
+                  <span>Inspection Directive:</span>
+                </span>
+                <span class="text-[10px] text-on-surface-variant font-medium">By ${item.officer_name || 'Insp. Vikram Patil'}</span>
+              </div>
+              <p class="text-on-surface text-xs leading-relaxed font-medium">
+                ${item.directive || item.notes || 'Conduct on-ground price check, tariff board compliance, and digital payment readiness.'}
+              </p>
+              <div class="flex items-center justify-between text-[10px] text-outline pt-1 border-t border-outline-variant/20">
+                <span>Assigned to: <strong class="text-on-surface">${item.kumbhveer_name || item.assigned_kumbhveer || 'You (Nakul Karpe)'}</strong></span>
+                <span>Duty Sector 4 Hub</span>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2 pt-0.5">
+              ${isVerified ? `
+                <div class="w-full h-10 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-emerald-300">
+                  <span class="material-symbols-outlined text-sm">verified</span>
+                  <span>Verified On-Site &amp; Synced to Police Command (+50 Pts)</span>
+                </div>
+              ` : `
+                <button onclick="openVerificationModal('${item.id}')" class="flex-1 h-10 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-sm">photo_camera</span>
+                  <span>Verify On-Site with Proof (+50 Pts)</span>
+                </button>
+                <button onclick="quickCompleteAssignedTask('${item.id}')" class="px-3.5 h-10 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-sm active:scale-98 transition-all cursor-pointer shrink-0">
+                  <span class="material-symbols-outlined text-sm">check_circle</span>
+                  <span>Quick Verify</span>
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function quickCompleteAssignedTask(id) {
+      const task = assignedTasksState.find(t => String(t.id) === String(id));
+      if (!task) return;
+      task.status = 'Verified';
+      task.verified_at = new Date().toISOString();
+
+      // Save to localStorage
+      try {
+        const existing = JSON.parse(localStorage.getItem('kumbhsetu_police_scheduled_verifications') || '[]');
+        const idx = existing.findIndex(t => String(t.id) === String(id) || String(t.case_number) === String(task.case_number));
+        if (idx !== -1) {
+          existing[idx].status = 'Verified';
+          existing[idx].verified_at = task.verified_at;
+        } else {
+          existing.unshift(task);
+        }
+        localStorage.setItem('kumbhsetu_police_scheduled_verifications', JSON.stringify(existing));
+      } catch(e) {}
+
+      // Update Points & Audits
+      userPoints += 50;
+      userAudits += 1;
+      localStorage.setItem('kumbhsetu_user_points', userPoints);
+      localStorage.setItem('kumbhsetu_audited_count', userAudits);
+      const ptsEl = document.getElementById('statVolunteerPoints');
+      const countEl = document.getElementById('statAuditedCount');
+      if (ptsEl) ptsEl.textContent = userPoints.toLocaleString();
+      if (countEl) countEl.textContent = userAudits;
+
+      // Backend Sync
+      try {
+        const endpoint = window.getApiUrl 
+          ? window.getApiUrl(`/api/v1/police/scheduled-verifications/${encodeURIComponent(id)}/complete`)
+          : `${API_BASE}/api/v1/police/scheduled-verifications/${encodeURIComponent(id)}/complete`;
+        await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            kumbhveer_name: localStorage.getItem('kumbhsetu_logged_name') || 'Nakul Karpe',
+            notes: 'Rate board and digital QR verified on-site by Kumbhveer.'
+          })
+        });
+      } catch(err) {
+        console.warn('Backend complete verification error:', err);
+      }
+
+      // Supabase Realtime Broadcast
+      if (window.KumbhRealtime) {
+        try {
+          await KumbhRealtime.ready();
+          await KumbhRealtime.insert('reports', {
+            id: 'verif-comp-' + Date.now(),
+            category: 'Field Audit Verified',
+            listing_name: task.vendor_name || 'Vendor Stall',
+            issue_type: 'Police Order Completed',
+            description: `Kumbhveer verified compliance for ${task.case_number || 'Order'}. Priority closed.`,
+            status: 'Resolved',
+            created_at: new Date().toISOString()
+          });
+        } catch(sbErr) {}
+      }
+
+      renderAssignedTasksList();
+      renderAuditsList();
+      showToast(`✓ Police verification task #${task.case_number || id} verified! +50 Seva points earned.`);
+    }
+
+    function refreshAssignedTasks() {
+      loadAssignedTasks();
+      showToast('✓ Assigned field orders refreshed!');
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Resolve registered volunteer profile
       let profile = null;
@@ -1281,6 +1598,14 @@
       renderAuditsList();
       renderReportsList();
       renderLeaderboard();
+      loadAssignedTasks();
+
+      // Listen for cross-tab dispatches from Police & Coordinators
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'kumbhsetu_police_scheduled_verifications' || e.key === 'kumbhsetu_volunteer_assigned_tasks') {
+          loadAssignedTasks();
+        }
+      });
 
       // Initialize Supabase Realtime & Load incoming citizen reports
       initRealtimeKumbhveer();
@@ -1456,6 +1781,8 @@
         renderReportsList();
       } else if (tabKey === 'audits') {
         renderAuditsList();
+      } else if (tabKey === 'assigned') {
+        renderAssignedTasksList();
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1946,7 +2273,26 @@
     let modalProofPhotoData = null;
 
     function openVerificationModal(id) {
-      const item = auditsState.find(a => String(a.id) === String(id));
+      let item = auditsState.find(a => String(a.id) === String(id));
+      let isAssigned = false;
+      if (!item) {
+        const assigned = assignedTasksState.find(t => String(t.id) === String(id));
+        if (assigned) {
+          isAssigned = true;
+          item = {
+            id: assigned.id,
+            token: assigned.case_number || '#POL-VERIF',
+            catLabel: 'Police Order',
+            category: 'bazaar',
+            name: assigned.vendor_name || 'Vendor Stall',
+            lane: assigned.location || 'Assigned Sector',
+            capRate: assigned.priority || 'Immediate Directive',
+            checklist: ["Inspection directive verified", "Statutory price board visible", "Digital payment verified"],
+            isLiveReport: false,
+            isAssignedTask: true
+          };
+        }
+      }
       if (!item) return;
 
       activeModalAuditId = item.id;
@@ -1958,7 +2304,7 @@
       document.getElementById('modalStallCat').textContent = item.catLabel;
       document.getElementById('modalStallName').textContent = item.name;
       document.getElementById('modalStallLane').innerHTML = `<span class="material-symbols-outlined text-[13px] text-primary shrink-0">location_on</span><span class="truncate">${item.lane}</span>`;
-      document.getElementById('modalPriceLabel').textContent = item.isLiveReport ? 'Reported Issue' : (isCitylink ? 'Official Gazette Cap' : 'Estimated Price');
+      document.getElementById('modalPriceLabel').textContent = item.isLiveReport ? 'Reported Issue' : (isCitylink ? 'Official Gazette Cap' : (item.isAssignedTask ? 'Audit Priority' : 'Estimated Price'));
       document.getElementById('modalPriceVal').textContent = item.capRate;
 
       // Reset modal inputs
@@ -2025,6 +2371,14 @@
 
     function submitModalVerification() {
       if (!activeModalAuditId) return;
+
+      const isAssigned = assignedTasksState.find(t => String(t.id) === String(activeModalAuditId));
+      if (isAssigned) {
+        quickCompleteAssignedTask(activeModalAuditId);
+        closeVerificationModal();
+        return;
+      }
+
       const item = auditsState.find(a => String(a.id) === String(activeModalAuditId));
       if (!item) return;
 

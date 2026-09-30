@@ -1054,110 +1054,185 @@
   </main>
 
   
-  <!-- Police Escalation Card Action & Details Popup Modal -->
-  <div id="policeCaseActionModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-surface-container-lowest text-on-surface rounded-2xl p-4 sm:p-5 max-w-lg w-full shadow-2xl border border-outline-variant/30 flex flex-col gap-3.5 my-auto animate-fadeIn">
-      <!-- Header -->
-      <div class="flex items-start justify-between border-b border-outline-variant/20 pb-2.5">
-        <div class="flex flex-col gap-1 min-w-0">
+  <!-- Unified Police Incident Investigation & Flying Squad Dispatch Terminal -->
+  <div id="policeCaseActionModal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-surface-container-lowest text-on-surface rounded-2xl max-w-xl w-full p-4 sm:p-5 shadow-2xl border border-outline-variant/30 flex flex-col gap-3.5 my-auto max-h-[92vh] overflow-y-auto animate-fadeIn">
+      
+      <!-- Top Header -->
+      <div class="flex items-start justify-between border-b border-outline-variant/20 pb-3 gap-2">
+        <div class="flex items-start gap-2.5 min-w-0 flex-1">
+          <div class="w-10 h-10 rounded-xl bg-red-100 text-red-700 flex items-center justify-center shrink-0 shadow-xs mt-0.5">
+            <span class="material-symbols-outlined text-[24px]">local_police</span>
+          </div>
+          <div class="min-w-0 flex-1 space-y-1">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span id="camDocketId" class="text-xs font-mono font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">#SOS-9041</span>
+              <span id="camPriorityBadge" class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-red-100 text-red-800 border border-red-300">🚨 Critical Priority</span>
+              <span id="camTimeAgo" class="text-[11px] text-on-surface-variant font-mono">Just now</span>
+            </div>
+            <div id="camCategoryChips" class="flex flex-wrap gap-1 items-center pt-0.5">
+              <!-- Dynamically populated category chips -->
+            </div>
+            <h3 id="camTitle" class="font-headline font-bold text-base sm:text-lg text-on-surface leading-snug break-words">Incident Investigation</h3>
+          </div>
+        </div>
+        <button type="button" onclick="closePoliceCaseActionModal()" class="w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface flex items-center justify-center cursor-pointer shrink-0 transition-colors shadow-xs" aria-label="Close modal">
+          <span class="material-symbols-outlined text-[22px]">close</span>
+        </button>
+      </div>
+
+      <!-- Section 1: Citizen Grievance Dossier & Evidence (नागरिक तक्रार व पुरावा) -->
+      <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-2.5">
+        <div class="flex items-center justify-between text-xs flex-wrap gap-1">
+          <span class="font-bold text-on-surface flex items-center gap-1.5 min-w-0">
+            <span class="material-symbols-outlined text-primary text-[17px] shrink-0">location_on</span>
+            <span id="camLocation" class="font-semibold text-on-surface truncate">Location Spot</span>
+          </span>
+          <span id="camDemandedBox" class="font-mono font-bold text-red-700 text-xs bg-red-50 px-2.5 py-1 rounded-md border border-red-200 shrink-0">
+            Demanded: <span id="camDemanded">₹180</span> vs <span id="camOfficialCap" class="text-slate-700">₹110 Cap</span>
+          </span>
+        </div>
+
+        <!-- Description / Citizen Complaint Notes Box -->
+        <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 text-xs text-on-surface leading-relaxed">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-bold text-red-800 uppercase tracking-wider flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px] text-red-600">campaign</span>
+              Citizen Complaint &amp; Incident Notes (तक्रार तपशील):
+            </span>
+            <span id="camSourceBadge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant">Citizen Verified</span>
+          </div>
+          <p id="camNotes" class="text-on-surface font-medium whitespace-pre-wrap text-xs sm:text-sm leading-snug">
+            Citizen grievance details...
+          </p>
+        </div>
+
+        <!-- Attached Photo Evidence -->
+        <div class="space-y-1.5 pt-0.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-on-surface flex items-center gap-1">
+              <span class="material-symbols-outlined text-primary text-[16px]">photo_library</span>
+              <span>Attached Photo Evidence (पुरावा छायाचित्र):</span>
+            </span>
+            <span id="camPhotoTag" class="text-[10px] font-bold text-emerald-800 px-2 py-0.5 rounded bg-emerald-100 border border-emerald-300">Photo Attached</span>
+          </div>
+
+          <div id="camPhotoBox" class="relative rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-lowest flex flex-col items-center justify-center min-h-[140px] max-h-56 p-1">
+            <img id="camPhotoImage" src="" alt="Incident Photo Evidence" class="w-full max-h-52 object-contain rounded-lg cursor-zoom-in transition-transform hover:scale-[1.01]" onclick="openFullImageZoom(this.src)"/>
+            
+            <div id="camNoPhotoBox" class="p-4 text-center text-on-surface-variant flex flex-col items-center gap-1 hidden">
+              <span class="material-symbols-outlined text-2xl text-outline">no_photography</span>
+              <span class="font-bold text-xs text-on-surface">No Photo Uploaded by Citizen</span>
+              <span class="text-[10px] text-on-surface-variant">Substantiated via electronic telemetry, route checkpoints &amp; multiple reporting nodes.</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-[10px] text-on-surface-variant px-0.5">
+            <span id="camReporterPhone">📱 Complainant Mobile: +91 98*** *3210</span>
+            <span id="camZoomHint">Tap image to zoom full screen</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Flying Squad Dispatch Menu (पोलीस फिरते पथक तैनात करा) -->
+      <div id="camDispatchSection" class="p-3.5 rounded-xl bg-primary/5 border-2 border-primary/30 space-y-3">
+        <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-bold px-2 py-0.5 rounded font-mono text-primary bg-primary-fixed" id="camDocketId">#SOS-9041</span>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-red-100 text-red-800" id="camPriorityBadge">High Priority</span>
-            <span class="text-[11px] text-on-surface-variant" id="camTimeAgo">4m ago</span>
+            <div class="w-7 h-7 rounded-lg bg-primary text-on-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-[17px]">local_police</span>
+            </div>
+            <div>
+              <h4 class="font-headline font-bold text-xs sm:text-sm text-on-surface">Deploy Flying Squad (पोलीस पथक नियुक्ती)</h4>
+              <span class="text-[10px] text-on-surface-variant">Immediate on-site interception &amp; meter enforcement</span>
+            </div>
           </div>
-          <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface leading-snug" id="camTitle">Organized Auto Fare Extortion</h3>
+          <span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold font-mono">QRT Active</span>
         </div>
-        <button type="button" onclick="closePoliceCaseActionModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors shrink-0 cursor-pointer">
-          <span class="material-symbols-outlined text-[20px]">close</span>
+
+        <div class="space-y-2 text-xs">
+          <div>
+            <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Select Flying Squad / Patrol Unit</label>
+            <select id="camDispatchSquadSelect" class="w-full bg-surface-container-lowest border border-outline-variant/50 rounded-lg px-2.5 py-2 text-xs text-on-surface font-semibold focus:outline-none focus:ring-2 focus:ring-primary shadow-2xs">
+              <option value="Sector 2 Flying Squad Alpha (MH-15-POL-048)">Sector 2 Flying Squad Alpha (MH-15-POL-048) • ETA 2m</option>
+              <option value="Sector 2 Beat Patrol QRT Bravo (Motorcycle 12)">Sector 2 Beat Patrol QRT Bravo (Motorcycle 12) • ETA 1m</option>
+              <option value="Rapid Action Interceptor Unit 03">Rapid Action Interceptor Unit 03 • ETA 4m</option>
+              <option value="Riverfront Ghat Police Patrol Boat 02">Riverfront Ghat Police Patrol Boat 02 • Riverway</option>
+              <option value="Traffic Enforcement Flying Squad Delta">Traffic Enforcement Flying Squad Delta • Outer Ring</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-[11px] font-semibold text-on-surface-variant block mb-1">Dispatch Priority Level</label>
+            <div class="grid grid-cols-3 gap-1.5" id="dispatchPrioritySelector">
+              <button type="button" onclick="setSquadPriority('critical')" id="prio-critical" class="py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-red-600 bg-red-50 text-red-700">🚨 Critical</button>
+              <button type="button" onclick="setSquadPriority('high')" id="prio-high" class="py-1.5 px-2 rounded-lg text-xs font-bold border border-outline-variant/40 bg-surface-container-high text-on-surface">⚡ High</button>
+              <button type="button" onclick="setSquadPriority('standard')" id="prio-standard" class="py-1.5 px-2 rounded-lg text-xs font-bold border border-outline-variant/40 bg-surface-container-high text-on-surface">Standard</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-[11px] font-semibold text-on-surface-variant">Tactical Directive / Field Instructions</label>
+              <span class="text-[10px] text-primary cursor-pointer hover:underline" onclick="const td = document.getElementById('camTacticalDirective') || document.getElementById('dispatchTacticalDirective'); if (td) td.value='Intercept vehicle at bay, inspect fare meter, ensure immediate restitution to pilgrim.'">Quick Fill</span>
+            </div>
+            <textarea id="camTacticalDirective" rows="2" placeholder="e.g. Intercept vehicle at Bay 4, conduct fare meter inspection, ensure immediate restitution to pilgrim." class="w-full bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-2 text-xs text-on-surface focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-on-surface-variant/50 resize-none shadow-2xs"></textarea>
+            
+            <!-- Quick Directive Suggestion Pills -->
+            <div class="flex flex-wrap gap-1 mt-1">
+              <button type="button" onclick="applyTacticalDirective('Inspect fare meter and enforce gazetted tariff.')" class="px-2 py-0.5 bg-surface-container hover:bg-surface-container-high rounded text-[10px] text-on-surface-variant cursor-pointer transition-colors">+ Meter Audit</button>
+              <button type="button" onclick="applyTacticalDirective('Direct immediate cash restitution to pilgrim on-site.')" class="px-2 py-0.5 bg-surface-container hover:bg-surface-container-high rounded text-[10px] text-on-surface-variant cursor-pointer transition-colors">+ Pilgrim Refund</button>
+              <button type="button" onclick="applyTacticalDirective('Issue statutory spot penalty challan under Motor Vehicles Act.')" class="px-2 py-0.5 bg-surface-container hover:bg-surface-container-high rounded text-[10px] text-on-surface-variant cursor-pointer transition-colors">+ Spot Challan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Deploy Action Button -->
+        <button type="button" id="camConfirmDispatchBtn" class="w-full h-12 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-98 cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">local_police</span>
+          <span>Deploy Flying Squad Now (Squad रवाना करा)</span>
         </button>
       </div>
 
-      <!-- Case Details Dossier Bento -->
-      <div class="flex flex-col gap-2 bg-surface-container-low p-3 rounded-xl border border-outline-variant/20 text-xs">
-        <div class="flex items-center gap-1.5 text-on-surface font-semibold">
-          <span class="material-symbols-outlined text-primary text-[16px]">location_on</span>
-          <span id="camLocation">Sai Auto Stand (Bay 4) • Panchavati Ghat to CBS Central</span>
-        </div>
-        <div class="p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/20 text-on-surface flex items-start gap-2">
-          <span class="material-symbols-outlined text-secondary text-[16px] shrink-0 mt-0.5">report_problem</span>
-          <div class="flex flex-col min-w-0">
-            <span class="font-bold text-[11px] text-secondary uppercase">Reported Infraction &amp; Evidence</span>
-            <p class="text-on-surface-variant text-[11px] mt-0.5" id="camEvidence">Demanding ₹180 vs estimated ₹110 (+63% over gazetted ceiling). 3 corroborating Yatri digital receipts attached.</p>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="p-2 rounded-lg bg-surface-container-lowest flex items-center gap-1.5 border border-outline-variant/20">
-            <span class="material-symbols-outlined text-blue-600 text-[16px]">local_police</span>
-            <div class="min-w-0">
-              <span class="text-on-surface-variant block text-[10px]">Nearest Patrol Squad</span>
-              <span class="font-bold text-on-surface truncate block" id="camSquad">Unit Alpha-2 (ETA 2m)</span>
-            </div>
-          </div>
-          <div class="p-2 rounded-lg bg-surface-container-lowest flex items-center gap-1.5 border border-outline-variant/20">
-            <span class="material-symbols-outlined text-emerald-600 text-[16px]">verified</span>
-            <div class="min-w-0">
-              <span class="text-on-surface-variant block text-[10px]">Enforcement Status</span>
-              <span class="font-bold text-emerald-700 truncate block" id="camStatus">Under Review</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Relevant Enforcement Actions Menu -->
-      <div class="flex flex-col gap-2">
-        <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Relevant Case Enforcement Actions</span>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <!-- Section 3: Alternative Enforcement Actions -->
+      <div class="space-y-1.5 pt-1 border-t border-outline-variant/20">
+        <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">Additional Enforcement Actions</span>
+        <div class="grid grid-cols-3 gap-2">
           <!-- Action 1: Acknowledge -->
-          <button type="button" id="camBtnAck" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-left flex items-center gap-2 cursor-pointer transition-colors active:scale-98">
-            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-[18px]">verified</span>
-            </div>
-            <div class="min-w-0">
-              <span class="font-bold text-xs block text-on-surface">Acknowledge Case</span>
-              <span class="text-[10px] text-on-surface-variant block truncate">Assign to Insp. Patil</span>
-            </div>
+          <button type="button" id="camBtnAck" class="p-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-center flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors active:scale-98">
+            <span class="material-symbols-outlined text-[18px] text-emerald-700">verified</span>
+            <span class="font-bold text-[11px] text-on-surface leading-tight">Acknowledge</span>
+            <span class="text-[9px] text-on-surface-variant">Assign Officer</span>
           </button>
 
-          <!-- Action 2: Deploy Squad -->
-          <button type="button" id="camBtnDeploy" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-left flex items-center gap-2 cursor-pointer transition-colors active:scale-98">
-            <div class="w-8 h-8 rounded-lg bg-red-100 text-red-800 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-[18px]">directions_run</span>
-            </div>
-            <div class="min-w-0">
-              <span class="font-bold text-xs block text-on-surface">Deploy Flying Squad</span>
-              <span class="text-[10px] text-on-surface-variant block truncate">Dispatch Alpha / Bravo</span>
-            </div>
+          <!-- Action 2: Schedule Field Audit -->
+          <button type="button" id="camBtnSchedule" class="p-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-center flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors active:scale-98">
+            <span class="material-symbols-outlined text-[18px] text-amber-700">assignment_turned_in</span>
+            <span class="font-bold text-[11px] text-on-surface leading-tight">Schedule Audit</span>
+            <span class="text-[9px] text-on-surface-variant">Assign Kumbhveer</span>
           </button>
 
-          <!-- Action 3: Schedule Verification -->
-          <button type="button" id="camBtnSchedule" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-left flex items-center gap-2 cursor-pointer transition-colors active:scale-98">
-            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-[18px]">assignment_turned_in</span>
-            </div>
-            <div class="min-w-0">
-              <span class="font-bold text-xs block text-on-surface">Schedule Field Audit</span>
-              <span class="text-[10px] text-on-surface-variant block truncate">Assign Kumbhveer</span>
-            </div>
-          </button>
-
-          <!-- Action 4: Instant Spot Resolve -->
-          <button type="button" id="camBtnResolve" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-left flex items-center gap-2 cursor-pointer transition-colors active:scale-98">
-            <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-[18px]">gavel</span>
-            </div>
-            <div class="min-w-0">
-              <span class="font-bold text-xs block text-on-surface">Mark Resolved</span>
-              <span class="text-[10px] text-on-surface-variant block truncate">Compound spot penalty</span>
-            </div>
+          <!-- Action 3: Instant Spot Resolve -->
+          <button type="button" id="camBtnResolve" class="p-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-center flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors active:scale-98">
+            <span class="material-symbols-outlined text-[18px] text-primary">gavel</span>
+            <span class="font-bold text-[11px] text-on-surface leading-tight">Spot Resolve</span>
+            <span class="text-[9px] text-on-surface-variant">Levy Penalty</span>
           </button>
         </div>
 
-        <!-- Action 5: Deep Dive into Full Case Dossier -->
-        <button type="button" id="camBtnDossier" class="w-full mt-1 py-2.5 px-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all cursor-pointer">
-          <span class="material-symbols-outlined text-[18px]">quick_reference</span>
-          <span>Open Full Case Dossier &amp; Timeline (Case Detail)</span>
+        <!-- Full Dossier Link Button -->
+        <button type="button" id="camBtnDossier" class="w-full mt-1 py-2 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs active:scale-98 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-[16px] text-primary">quick_reference</span>
+          <span>Open Full Legal Case Dossier &amp; Timeline</span>
         </button>
       </div>
+
+    </div>
+  </div>
+
+  <!-- Fullscreen Image Zoom Lightbox Modal -->
+  <div id="imageZoomModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-60 hidden items-center justify-center p-3 cursor-zoom-out" onclick="closeFullImageZoom()">
+    <div class="relative max-w-4xl max-h-[90vh] flex flex-col items-center">
+      <img id="zoomImage" src="" alt="Enlarged Evidence" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/20"/>
+      <span class="text-white text-xs mt-2 bg-black/60 px-3 py-1 rounded-full font-mono">Tap anywhere to close</span>
     </div>
   </div>
 
@@ -1768,12 +1843,66 @@
       }
     };
 
-    window.openPoliceCaseActionModal = function(card, sosId) {
+    window.applyTacticalDirective = function(text) {
+      const el = document.getElementById('camTacticalDirective');
+      if (el) {
+        el.value = text;
+        el.focus();
+      }
+    };
+
+    window.openFullImageZoom = function(src, caption) {
+      let modal = document.getElementById('fullImageZoomModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'fullImageZoomModal';
+        modal.className = 'fixed inset-0 z-60 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-4 animate-in fade-in duration-200';
+        modal.innerHTML = `
+          <div class="relative max-w-4xl w-full flex flex-col items-center">
+            <button type="button" onclick="closeFullImageZoom()" class="absolute -top-12 right-0 text-white hover:text-red-400 p-2 text-sm font-bold flex items-center gap-1 cursor-pointer">
+              <span class="material-symbols-outlined text-[24px]">close</span> Close [ESC]
+            </button>
+            <img id="fullZoomImg" src="" alt="Evidence" class="max-h-[80vh] w-auto rounded-xl object-contain shadow-2xl border border-white/20" />
+            <div id="fullZoomCaption" class="mt-3 text-xs text-white/80 font-mono text-center"></div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeFullImageZoom();
+        });
+      }
+      const img = document.getElementById('fullZoomImg');
+      const cap = document.getElementById('fullZoomCaption');
+      if (img) img.src = src;
+      if (cap) cap.textContent = caption || 'High-Resolution Geotagged Field Evidence Snapshot';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    };
+
+    window.closeFullImageZoom = function() {
+      const modal = document.getElementById('fullImageZoomModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    };
+
+    window.openPoliceCaseActionModal = function(card, sosId, options = {}) {
       activeActionCase = { card, sosId };
+      activeTarget.card = card;
+      activeTarget.sosId = sosId;
+
+      const itemData = card._itemData || {};
       const titleEl = card.querySelector('h2, h3');
-      const title = titleEl ? titleEl.textContent.trim() : 'Incident #' + sosId;
-      const locEl = card.querySelector('.truncate');
-      const loc = locEl ? locEl.textContent.trim() : 'Panchavati Precinct';
+      const title = itemData.listing_name || (titleEl ? titleEl.textContent.trim() : 'Incident #' + sosId);
+      
+      let loc = itemData.location || '';
+      if (!loc) {
+        const locEl = card.querySelector('.truncate') || card.querySelector('[data-loc]');
+        loc = locEl ? locEl.textContent.trim() : 'Ramkund Precinct, Nashik';
+      }
+      activeTarget.title = title;
+      activeTarget.location = loc;
 
       let priorityText = 'High Priority';
       let priorityClass = 'bg-red-100 text-red-800';
@@ -1788,10 +1917,42 @@
         priorityClass = 'bg-purple-100 text-purple-900';
       }
 
-      const timeText = card.textContent.includes('ago') ? (card.textContent.match(/(\d+[mh]\s*ago)/) || ['','4m ago'])[1] : 'Just now';
-      const evidenceP = card.querySelector('.pl-2 p, .pl-2 .text-xs, .truncate');
-      const evidenceText = evidenceP ? evidenceP.textContent.trim() : 'Digital grievances and citizen receipts logged in sector telemetry.';
+      const timeText = itemData.time_ago || (card.textContent.includes('ago') ? (card.textContent.match(/(\d+[mh]\s*ago)/) || ['','4m ago'])[1] : 'Just now');
+      
+      // Citizen Notes / Grievance extraction
+      let notesText = itemData.notes || '';
+      if (!notesText) {
+        const pTag = card.querySelector('.p-2\\.5 p, .pl-2 p, .pl-2 .text-xs');
+        notesText = pTag ? pTag.textContent.replace(/^"|"$/g, '').trim() : 'Citizen flagged extortionate pricing exceeding statutory civic caps during Kumbh.';
+      }
 
+      // Demanded Price & Cap extraction
+      let demandedText = itemData.demanded || '';
+      if (!demandedText) {
+        const cardText = card.textContent;
+        const demMatch = cardText.match(/Demanded:\s*([^<\n\r]+)/i);
+        if (demMatch && demMatch[1]) demandedText = demMatch[1].trim();
+      }
+      if (!demandedText) demandedText = '₹350 (Excess Tariff)';
+
+      let capText = '₹60 - ₹80 (Standard Civic Cap)';
+      if (title.toLowerCase().includes('auto') || title.toLowerCase().includes('rickshaw')) {
+        capText = '₹60 (Nashik RTO Max Cap)';
+      } else if (title.toLowerCase().includes('pedha') || title.toLowerCase().includes('sweet')) {
+        capText = '₹380/kg (Civic MRP Cap)';
+      } else if (title.toLowerCase().includes('pooja') || title.toLowerCase().includes('flower')) {
+        capText = '₹50/garland (Statutory Cap)';
+      } else if (title.toLowerCase().includes('hotel') || title.toLowerCase().includes('lodge')) {
+        capText = '₹1,500/night (Regulated Tariff)';
+      }
+
+      // Complainant phone
+      const phoneVal = itemData.complainant_phone || '+91 98231 44521';
+
+      // Category extraction
+      const catText = itemData.category || itemData.issues || (title.toLowerCase().includes('auto') ? 'Auto Rickshaw Overcharging' : 'Price Watchdog');
+
+      // Populate Modal Fields
       const docIdEl = document.getElementById('camDocketId');
       if (docIdEl) docIdEl.textContent = '#' + sosId;
       const titleTarget = document.getElementById('camTitle');
@@ -1801,6 +1962,9 @@
       const timeTarget = document.getElementById('camTimeAgo');
       if (timeTarget) timeTarget.textContent = timeText;
 
+      const catChip = document.getElementById('camCategoryChip');
+      if (catChip) catChip.textContent = catText;
+
       const prioBadge = document.getElementById('camPriorityBadge');
       if (prioBadge) {
         prioBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ' + priorityClass;
@@ -1808,29 +1972,148 @@
       }
 
       const evEl = document.getElementById('camEvidence');
-      if (evEl) evEl.textContent = evidenceText;
+      if (evEl) evEl.textContent = notesText;
+
+      const demEl = document.getElementById('camDemandedPrice');
+      if (demEl) demEl.textContent = demandedText;
+
+      const capEl = document.getElementById('camCapPrice');
+      if (capEl) capEl.textContent = capText;
+
+      const phoneLink = document.getElementById('camPhone');
+      if (phoneLink) {
+        phoneLink.textContent = phoneVal;
+        phoneLink.href = 'tel:' + phoneVal.replace(/\s+/g, '');
+      }
+
+      // Photo Evidence Handling
+      const photoBox = document.getElementById('camEvidencePhotoContainer');
+      const photoImg = document.getElementById('camEvidencePhoto');
+      const zoomBtn = document.getElementById('camPhotoZoomBtn');
+      const photoSrc = itemData.photo_url || (card.querySelector('img') ? card.querySelector('img').src : '');
+
+      if (photoSrc && photoSrc.startsWith('http') || photoSrc.startsWith('data:image')) {
+        if (photoImg) photoImg.src = photoSrc;
+        if (photoBox) photoBox.classList.remove('hidden');
+        if (zoomBtn) {
+          zoomBtn.onclick = () => openFullImageZoom(photoSrc, `${title} - Docket #${sosId}`);
+        }
+      } else {
+        // Fallback placeholder with official stamp
+        if (photoImg) photoImg.src = 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=600&auto=format&fit=crop&q=80';
+        if (photoBox) photoBox.classList.remove('hidden');
+        if (zoomBtn) {
+          zoomBtn.onclick = () => openFullImageZoom(photoImg.src, `${title} - Geotagged Field Snapshot`);
+        }
+      }
 
       const isAcked = !!card.querySelector('.ack-badge-slot span');
       const statusEl = document.getElementById('camStatus');
       if (statusEl) statusEl.textContent = isAcked ? 'Acknowledged (Under Review)' : 'Active Case';
 
-      // Setup actions
+      // ── Actions Setup ──
+
+      // 1. Acknowledge Action
       const btnAck = document.getElementById('camBtnAck');
       if (btnAck) {
-        btnAck.onclick = () => {
+        btnAck.onclick = async () => {
+          btnAck.disabled = true;
+          btnAck.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">sync</span><span>Acking...</span>';
+          try {
+            await fetch(`${API_BASE}/api/v1/police/action`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                incident_id: sosId,
+                action: 'acknowledge',
+                officer_name: 'Insp. Vikram Patil',
+                officer_badge: 'MH-15-POLICE-0482',
+                notes: notesText
+              })
+            });
+            const ackSlot = card.querySelector('.ack-badge-slot');
+            if (ackSlot) {
+              ackSlot.innerHTML = `<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Acked (Patil)</span>`;
+            }
+            const ackBtn = card.querySelector('.ack-btn');
+            if (ackBtn) {
+              ackBtn.className = 'ack-btn flex-1 py-1.5 sm:py-2 rounded-lg bg-emerald-700 text-white text-xs font-bold shadow-xs flex items-center justify-center gap-1 cursor-default';
+              ackBtn.innerHTML = '<span class="material-symbols-outlined text-[15px]">verified</span><span>Acknowledged</span>';
+              ackBtn.disabled = true;
+            }
+            const toast = document.getElementById('dispatchToast');
+            const toastMsg = document.getElementById('toastMessage');
+            if (toast && toastMsg) {
+              toastMsg.textContent = `🚨 Escalation #${sosId} acknowledged & locked to Insp. Patil`;
+              toast.classList.remove('translate-y-32', 'pointer-events-none');
+              setTimeout(() => toast.classList.add('translate-y-32', 'pointer-events-none'), 3500);
+            }
+          } catch (e) {
+            console.warn('Acknowledge error:', e);
+          }
+          btnAck.disabled = false;
+          btnAck.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span><span>Acknowledge</span>';
           closePoliceCaseActionModal();
-          openAckModal(card, sosId, title);
         };
       }
 
-      const btnDeploy = document.getElementById('camBtnDeploy');
-      if (btnDeploy) {
-        btnDeploy.onclick = () => {
+      // 2. Direct Squad Dispatch Button inside Action Center
+      const confirmDispatchBtn = document.getElementById('camConfirmDispatchBtn');
+      if (confirmDispatchBtn) {
+        confirmDispatchBtn.onclick = async () => {
+          const unit = document.getElementById('camDispatchSquadSelect').value;
+          const directive = (document.getElementById('camTacticalDirective').value || '').trim() || 'Rapid patrol interception and tariff verification';
+          
+          confirmDispatchBtn.disabled = true;
+          confirmDispatchBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Deploying Squad...</span>';
+
+          try {
+            await fetch(`${API_BASE}/api/v1/police/action`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                incident_id: sosId,
+                action: 'dispatch',
+                unit_name: unit,
+                severity: 'critical',
+                directive: directive,
+                officer_name: 'Insp. Vikram Patil',
+                notes: directive
+              })
+            });
+
+            // Update card UI
+            const assignBtn = card.querySelector('.assign-btn');
+            if (assignBtn) {
+              assignBtn.classList.remove('bg-surface-container', 'text-on-surface', 'bg-secondary', 'text-on-secondary');
+              assignBtn.classList.add('bg-primary', 'text-on-primary');
+              const shortUnit = unit.split(' ')[0] || 'Patrol';
+              assignBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">local_police</span><span>Dispatched (${shortUnit})</span>`;
+            }
+
+            const ackSlot = card.querySelector('.ack-badge-slot');
+            if (ackSlot) {
+              ackSlot.innerHTML = `<span class="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold border border-primary/40 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">local_police</span>Dispatched</span>`;
+            }
+
+            const toast = document.getElementById('dispatchToast');
+            const toastMsg = document.getElementById('toastMessage');
+            if (toast && toastMsg) {
+              toastMsg.textContent = `⚡ ${unit} deployed to ${loc} for #${sosId}`;
+              toast.classList.remove('translate-y-32', 'pointer-events-none');
+              setTimeout(() => toast.classList.add('translate-y-32', 'pointer-events-none'), 3500);
+            }
+          } catch(e) {
+            console.warn('Dispatch failed:', e);
+          }
+
+          confirmDispatchBtn.disabled = false;
+          confirmDispatchBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">send</span><span>Dispatch Patrol Squad</span>';
           closePoliceCaseActionModal();
-          openDispatchSquadModal(card, sosId, title, loc);
         };
       }
 
+      // 3. Schedule Kumbhveer Field Verification
       const btnSchedule = document.getElementById('camBtnSchedule');
       if (btnSchedule) {
         btnSchedule.onclick = () => {
@@ -1839,6 +2122,7 @@
         };
       }
 
+      // 4. Resolve Docket
       const btnResolve = document.getElementById('camBtnResolve');
       if (btnResolve) {
         btnResolve.onclick = async () => {
@@ -1876,6 +2160,7 @@
         };
       }
 
+      // 5. Full Case Detail
       const btnDossier = document.getElementById('camBtnDossier');
       if (btnDossier) {
         btnDossier.onclick = () => {
@@ -1883,10 +2168,22 @@
         };
       }
 
+      // Show Modal
       const modal = document.getElementById('policeCaseActionModal');
       if (modal) {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+
+        if (options.focusDispatch) {
+          setTimeout(() => {
+            const dispatchSec = document.getElementById('camDispatchSection');
+            if (dispatchSec) {
+              dispatchSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              dispatchSec.classList.add('ring-2', 'ring-primary');
+              setTimeout(() => dispatchSec.classList.remove('ring-2', 'ring-primary'), 1500);
+            }
+          }, 100);
+        }
       }
     };
 

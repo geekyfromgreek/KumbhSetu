@@ -1,6 +1,10 @@
 /**
  * Kumbh Setu — Supabase & Core API Initializer
  * Enables Supabase Auth, Cloud PostgreSQL, and dynamic API base endpoint for PC & Mobile APK
+ *
+ * Exposes window._supabaseReady — a Promise that resolves to the supabaseClient
+ * once the CDN is loaded and the client is created. Other scripts (e.g. supabase_realtime.js)
+ * should await this promise instead of checking window.supabaseClient synchronously.
  */
 (function() {
   const SUPABASE_URL = "https://asparwhkzpnnittnhsic.supabase.co";
@@ -20,6 +24,16 @@
   }
   window.API_BASE = window.API_BASE_URL;
 
+  // Safe universal URL resolver
+  window.getApiUrl = function(endpointPath) {
+    const base = (window.API_BASE_URL || '').replace(/\/+$/, '');
+    const cleanPath = endpointPath.startsWith('/') ? endpointPath : '/' + endpointPath;
+    if (base.endsWith('/api') && cleanPath.startsWith('/api/')) {
+      return base + cleanPath.slice(4);
+    }
+    return base + cleanPath;
+  };
+
   // Register Service Worker for Mobile PWA
   if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
     window.addEventListener('load', () => {
@@ -27,17 +41,37 @@
     });
   }
 
+  // ── Supabase Client Initialization (Promise-based, race-condition-safe) ───
+  function createClient() {
+    if (!window.supabase) return null;
+    try {
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      window.supabaseClient = client;
+      console.log("Kumbh Setu Supabase Client & API Initialized:", window.API_BASE_URL);
+      return client;
+    } catch (e) {
+      console.warn("[KumbhSetu] Supabase client creation error:", e);
+      return null;
+    }
+  }
+
+  // If CDN was loaded before this script (e.g. via explicit <script> tag in HTML), init immediately
   if (window.supabase) {
-    window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const client = createClient();
+    window._supabaseReady = Promise.resolve(client);
   } else {
-    const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
-    script.onload = function() {
-      if (window.supabase) {
-        window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log("Kumbh Setu Supabase Client & API Initialized:", window.API_BASE_URL);
-      }
-    };
-    document.head.appendChild(script);
+    // Load CDN dynamically and expose a Promise that resolves when client is ready
+    window._supabaseReady = new Promise(function(resolve) {
+      var script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+      script.onload = function() {
+        resolve(createClient());
+      };
+      script.onerror = function() {
+        console.warn("[KumbhSetu] Failed to load Supabase CDN — running in API-only mode");
+        resolve(null);
+      };
+      document.head.appendChild(script);
+    });
   }
 })();
