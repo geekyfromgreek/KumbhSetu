@@ -70,9 +70,9 @@
         <span class="material-symbols-outlined text-[18px]">storefront</span>
         <span>Vendor</span>
       </button>
-      <button type="button" onclick="selectRole('kumbhveer')" id="role-btn-kumbhveer" class="role-btn py-2 px-0.5 rounded-lg bg-transparent text-on-surface-variant font-label-sm text-[10px] sm:text-[11px] font-semibold flex flex-col items-center gap-1 transition-all hover:bg-surface-container-high">
-        <span class="material-symbols-outlined text-[18px]">school</span>
-        <span>Kumbhveer</span>
+      <button type="button" onclick="selectRole('volunteers')" id="role-btn-volunteers" class="role-btn py-2 px-0.5 rounded-lg bg-transparent text-on-surface-variant font-label-sm text-[10px] sm:text-[11px] font-semibold flex flex-col items-center gap-1 transition-all hover:bg-surface-container-high">
+        <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
+        <span>Volunteers</span>
       </button>
       <button type="button" onclick="selectRole('nashikkar')" id="role-btn-nashikkar" class="role-btn py-2 px-0.5 rounded-lg bg-transparent text-on-surface-variant font-label-sm text-[10px] sm:text-[11px] font-semibold flex flex-col items-center gap-1 transition-all hover:bg-surface-container-high">
         <span class="material-symbols-outlined text-[18px]">location_city</span>
@@ -138,6 +138,14 @@
       <span id="login-btn-txt">Login with Supabase</span>
       <span class="material-symbols-outlined text-lg">arrow_forward</span>
     </button>
+
+    <div class="text-center text-xs text-on-surface-variant pt-2 flex items-center justify-center gap-1">
+      <span>Are you an NCC/Student Volunteer?</span>
+      <a href="kumbhveer_portal.html" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5">
+        <span>Go to Kumbhveer Student Portal</span>
+        <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+      </a>
+    </div>
   </div>
 
   <!-- ==================== FORM 2: NEW REGISTRATION (Email + Password + Biometric) ==================== -->
@@ -375,7 +383,8 @@
     const roleMap = { 
       guide: 'Local Guide', 
       vendor: 'Civic Vendor', 
-      kumbhveer: 'Kumbhveer Volunteer', 
+      volunteers: 'Volunteer Coordinator',
+      kumbhveer: 'Volunteer Coordinator',
       nashikkar: 'Nashik Resident'
     };
     if (roleIndicator) roleIndicator.textContent = roleMap[role] || role;
@@ -422,8 +431,8 @@
       window.location.href = 'bookings_queue.html?role=guide';
     } else if (currentRole === 'vendor') {
       window.location.href = 'marketplace_management.html';
-    } else if (currentRole === 'kumbhveer') {
-      window.location.href = 'kumbhveer_portal.html';
+    } else if (currentRole === 'volunteers' || currentRole === 'kumbhveer') {
+      window.location.href = 'nashikkar_volunteers.html';
     } else {
       window.location.href = 'nashikkar_overview.html';
     }
@@ -501,8 +510,8 @@
         window.location.href = 'bookings_queue.html?role=guide';
       } else if (currentRole === 'vendor') {
         window.location.href = 'marketplace_management.html';
-      } else if (currentRole === 'kumbhveer') {
-        window.location.href = 'kumbhveer_portal.html';
+      } else if (currentRole === 'volunteers' || currentRole === 'kumbhveer') {
+        window.location.href = 'nashikkar_volunteers.html';
       } else {
         window.location.href = 'nashikkar_overview.html';
       }
@@ -970,7 +979,7 @@
     localStorage.setItem('kumbhsetu_jwt', 'jwt-session-' + Date.now());
 
     // 2. Non-blocking background API sync with 2.5s safety timeout
-    const apiBase = window.API_BASE_URL || 'https://kumbhsetu-api.onrender.com';
+    const apiBase = window.API_BASE_URL || '/api';
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2500);
 
@@ -1038,8 +1047,8 @@
           window.location.href = 'bookings_queue.html?role=guide';
         } else if (currentRole === 'vendor') {
           window.location.href = 'marketplace_management.html';
-        } else if (currentRole === 'kumbhveer') {
-          window.location.href = 'kumbhveer_portal.html';
+        } else if (currentRole === 'volunteers' || currentRole === 'kumbhveer') {
+          window.location.href = 'nashikkar_volunteers.html';
         } else {
           window.location.href = 'nashikkar_overview.html';
         }
@@ -1063,8 +1072,8 @@
 
   // Initialize from URL param or default to guide
   const urlRole = new URLSearchParams(window.location.search).get('role');
-  if (urlRole && ['guide', 'vendor', 'kumbhveer', 'nashikkar', 'admin'].includes(urlRole)) {
-    selectRole(urlRole);
+  if (urlRole && ['guide', 'vendor', 'volunteers', 'kumbhveer', 'nashikkar', 'admin'].includes(urlRole)) {
+    selectRole(urlRole === 'kumbhveer' ? 'volunteers' : urlRole);
   } else {
     selectRole('guide');
   }

@@ -3,7 +3,7 @@
  * Dynamically resolves backend API base URL across:
  * - Localhost (laptop / dev)
  * - Smartphone browser accessing via LAN IP (e.g. 192.168.x.x, 10.x.x.x, 172.x.x.x)
- * - Production cloud domains
+ * - Production cloud domains (Vercel proxies /api/* to Render backend, so base URL is '')
  * - WebView / Cordova / Capacitor APKs
  */
 (function() {
@@ -14,7 +14,7 @@
 
     // When deployed on Vercel or cloud production domain
     if (host.includes('vercel.app') || host.includes('render.com') || (protocol === 'https:' && !host.match(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.)/))) {
-      return '/api';
+      return '';
     }
 
     // When accessed from a phone via LAN IP, connect to laptop's port 8000
