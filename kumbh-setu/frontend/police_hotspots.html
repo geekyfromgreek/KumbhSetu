@@ -396,7 +396,7 @@
     <span id="toast-txt">Action completed</span>
   </div>
 
-  <script src="supabase.js"></script>
+  <script src="supabase.js"></script><script src="supabase_realtime.js"></script>
   <script src="i18n.js"></script>
   <script>
     let map = null;
@@ -410,7 +410,7 @@
     let selectedCluster = null;
 
     function getResolvedApiBase() {
-      if (window.API_BASE_URL && window.API_BASE_URL !== '') {
+      if (typeof window.API_BASE_URL !== 'undefined') {
         return window.API_BASE_URL.replace(/\/$/, '');
       }
       const host = window.location.hostname;
@@ -418,7 +418,7 @@
       if (host && host !== 'localhost' && host !== '127.0.0.1') {
         return `${proto}//${host}:8000`;
       }
-      return 'http://localhost:8000';
+      return '';
     }
     const API_BASE = getResolvedApiBase();
 

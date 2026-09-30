@@ -3,7 +3,7 @@
  * Dynamically resolves backend API base URL across:
  * - Localhost (laptop / dev)
  * - Smartphone browser accessing via LAN IP (e.g. 192.168.x.x, 10.x.x.x, 172.x.x.x)
- * - Production cloud domains
+ * - Production cloud domains (Vercel proxies /api/* to Render backend, so base URL is '')
  * - WebView / Cordova / Capacitor APKs
  */
 (function() {
