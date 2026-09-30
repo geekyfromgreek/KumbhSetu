@@ -1,23 +1,17 @@
 {
-  "version": 2,
-  "buildCommand": "",
   "outputDirectory": "kumbh-setu/frontend",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://kumbhsetu-api.onrender.com/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://kumbhsetu-api.onrender.com/api/:path*"
     },
     {
-      "src": "/docs",
-      "dest": "https://kumbhsetu-api.onrender.com/docs"
+      "source": "/docs",
+      "destination": "https://kumbhsetu-api.onrender.com/docs"
     },
     {
-      "src": "/openapi.json",
-      "dest": "https://kumbhsetu-api.onrender.com/openapi.json"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/openapi.json",
+      "destination": "https://kumbhsetu-api.onrender.com/openapi.json"
     }
   ],
   "headers": [
