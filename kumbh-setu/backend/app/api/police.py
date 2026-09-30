@@ -436,6 +436,112 @@ def get_case_dossier(incident_id: str):
 # 2. Existing Police Escalations, Case Dossier & Logs
 # ─────────────────────────────────────────────────────────────
 
+class EscalationCreateRequest(BaseModel):
+    id: Optional[str] = None
+    report_id: str
+    category: Optional[str] = "Citizen Escalation"
+    listing_name: Optional[str] = "Nashik Sector"
+    issue_type: Optional[str] = "Grievance"
+    description: Optional[str] = None
+    priority: Optional[str] = "High"
+    status: Optional[str] = "New"
+    escalated_by: Optional[str] = "Kumbhveer Field Volunteer"
+    notes: Optional[str] = None
+
+
+@router.post("/escalations")
+async def create_escalation(payload: EscalationCreateRequest):
+    """
+    Create or register a direct escalation from Kumbhveer field volunteers or citizen watchdog.
+    Persists to SQLite and mirrors to Supabase.
+    """
+    conn = get_connection()
+    now = now_iso()
+    esc_id = payload.id or f"esc-{payload.report_id}"
+
+    # Ensure report exists in SQLite reports table
+    existing_rep = conn.execute("SELECT id FROM reports WHERE id = ?", (payload.report_id,)).fetchone()
+    if not existing_rep:
+        conn.execute("""
+            INSERT INTO reports (
+                id, category, listing_name, issue_type, description, status,
+                created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, 'Escalated to Police', ?, ?)
+        """, (
+            payload.report_id, payload.category or "Civic",
+            payload.listing_name or "Nashik Sector", payload.issue_type or "Grievance",
+            payload.description or "Citizen grievance escalated by Kumbhveer squad",
+            now, now
+        ))
+    else:
+        conn.execute(
+            "UPDATE reports SET status = 'Escalated to Police', updated_at = ? WHERE id = ?",
+            (now, payload.report_id)
+        )
+
+    # Insert or replace escalation
+    conn.execute("""
+        INSERT OR REPLACE INTO escalations (
+            id, report_id, category, listing_name, issue_type,
+            description, priority, status, escalated_by, notes,
+            escalated_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        esc_id, payload.report_id, payload.category or "Citizen Escalation",
+        payload.listing_name or "Nashik Sector", payload.issue_type or "Grievance",
+        payload.description or "Escalated by Kumbhveer field squad",
+        payload.priority or "High", payload.status or "New",
+        payload.escalated_by or "Kumbhveer Field Volunteer",
+        payload.notes or "", now, now
+    ))
+    conn.commit()
+
+    row = dict(conn.execute("SELECT * FROM escalations WHERE id = ?", (esc_id,)).fetchone())
+    row["time_since_escalation"] = "just now"
+
+    # Async mirror to Supabase if configured
+    if SUPABASE_SERVICE_ROLE_KEY:
+        try:
+            async with httpx.AsyncClient() as client:
+                await client.post(
+                    f"{SUPABASE_URL}/rest/v1/escalations",
+                    headers={
+                        "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                        "Content-Type": "application/json",
+                        "Prefer": "resolution=merge-duplicates"
+                    },
+                    json={
+                        "id": esc_id,
+                        "report_id": payload.report_id,
+                        "category": payload.category or "Citizen Escalation",
+                        "listing_name": payload.listing_name or "Nashik Sector",
+                        "issue_type": payload.issue_type or "Grievance",
+                        "description": payload.description,
+                        "priority": payload.priority or "High",
+                        "status": payload.status or "New",
+                        "escalated_by": payload.escalated_by or "Kumbhveer Field Volunteer",
+                        "escalated_at": now,
+                        "updated_at": now
+                    },
+                    timeout=1.5
+                )
+                await client.patch(
+                    f"{SUPABASE_URL}/rest/v1/reports?id=eq.{payload.report_id}",
+                    headers={
+                        "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    json={"status": "Escalated to Police", "updated_at": now},
+                    timeout=1.5
+                )
+        except Exception as e:
+            print(f"[SupabaseEscalationSync] Warning: {e}")
+
+    return {"message": "Escalation created", "escalation": row}
+
+
 @router.get("/escalations")
 async def get_escalations(
     status: Optional[CaseStatus] = None,
@@ -445,6 +551,33 @@ async def get_escalations(
 ):
     """Get escalations feed."""
     conn = get_connection()
+
+    # Auto-seed any missing escalations from escalated reports
+    try:
+        escalated_reps = conn.execute("""
+            SELECT r.* FROM reports r
+            LEFT JOIN escalations e ON r.id = e.report_id
+            WHERE (r.status = 'Escalated to Police' OR r.status = 'escalated')
+            AND e.id IS NULL
+        """).fetchall()
+        for er in escalated_reps:
+            now = now_iso()
+            conn.execute("""
+                INSERT OR IGNORE INTO escalations (
+                    id, report_id, category, listing_name, issue_type,
+                    description, priority, status, escalated_by, notes,
+                    escalated_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, 'High', 'New', 'Kumbhveer Field Volunteer', '', ?, ?)
+            """, (
+                f"esc-{er['id']}", er['id'], er['category'] or "Civic",
+                er['listing_name'] or "Nashik Sector", er['issue_type'] or "Grievance",
+                er['description'], er['created_at'] or now, now
+            ))
+        if escalated_reps:
+            conn.commit()
+    except Exception as e:
+        print(f"[PoliceEscalationsAutoSync] Error: {e}")
+
     conditions = []
     params = []
 

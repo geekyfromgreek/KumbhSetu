@@ -13,7 +13,17 @@
   'use strict';
 
   const POLL_INTERVAL_MS = 8000; // Fallback polling interval if Supabase realtime unavailable
-  const MAX_WAIT_MS = 3000;      // Max time to wait for supabaseClient init
+  const MAX_WAIT_MS = 1500;      // Max time to wait for supabaseClient init
+  const _bc = (typeof BroadcastChannel !== 'undefined') ? new BroadcastChannel('kumbhsetu_realtime_channel') : null;
+
+  // ── Fast Timeout Wrapper ───────────────────────────────────────────────────
+  function withTimeout(promise, ms, fallbackVal = null) {
+    if (!promise || typeof promise.then !== 'function') return Promise.resolve(fallbackVal);
+    return Promise.race([
+      promise,
+      new Promise((resolve) => setTimeout(() => resolve(fallbackVal), ms))
+    ]);
+  }
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
   function apiBase() {
@@ -32,7 +42,7 @@
       const iv = setInterval(() => {
         if (getClient()) { clearInterval(iv); resolve(getClient()); }
         else if (Date.now() - start > MAX_WAIT_MS) { clearInterval(iv); resolve(null); }
-      }, 100);
+      }, 50);
     });
   }
 
@@ -46,16 +56,18 @@
 
   const KumbhRealtime = {
 
-    /** Wait for Supabase client to be ready. Returns true if available, false for fallback mode. */
+    /** Wait for Supabase client to be ready with fast non-blocking timeout. */
     async ready() {
-      const client = await waitForClient();
+      const client = await withTimeout(waitForClient(), 1000, null);
       KumbhRealtime._client = client;
       KumbhRealtime._mode = client ? 'supabase' : 'fallback';
       console.log(`[KumbhRealtime] Mode: ${KumbhRealtime._mode}`);
 
       if (client && client.auth) {
         try {
-          const { data } = await client.auth.getSession();
+          const sessionPromise = client.auth.getSession();
+          const sessionRes = await withTimeout(sessionPromise, 800, null);
+          const data = sessionRes?.data;
           if (!data?.session) {
             const role = localStorage.getItem('kumbhsetu_nashikkar_role') || 'resident';
             const emailMap = {
@@ -67,12 +79,13 @@
               nashikkar: 'resident.panchavati@kumbhsetu.in'
             };
             const email = emailMap[role] || 'resident.panchavati@kumbhsetu.in';
-            const { data: authData } = await client.auth.signInWithPassword({
+            const authPromise = client.auth.signInWithPassword({
               email: email,
               password: 'KumbhSetu@2027'
             });
-            if (authData?.session) {
-              localStorage.setItem('kumbhsetu_jwt', authData.session.access_token);
+            const authRes = await withTimeout(authPromise, 1000, null);
+            if (authRes?.data?.session) {
+              localStorage.setItem('kumbhsetu_jwt', authRes.data.session.access_token);
               console.log('[KumbhRealtime] Active auth session verified for:', email);
             }
           } else {
@@ -172,7 +185,7 @@
         reports: '/api/v1/reports/',
         vendors: '/api/v1/vendors/register',
         listings: '/api/v1/marketplace/listings',
-        escalations: '/api/v1/police/escalate'
+        escalations: '/api/v1/police/escalations'
       };
       const endpoint = apiMap[table];
       if (!endpoint) return { data: null, source: 'none', error: 'No endpoint' };
@@ -185,11 +198,156 @@
         });
         const json = await res.json();
         console.log(`[KumbhRealtime] Inserted into ${table} via FastAPI`, json);
-        return { data: json, source: 'fastapi' };
-      } catch (e) {
-        console.error(`[KumbhRealtime] FastAPI insert also failed for ${table}`, e);
-        return { data: null, source: 'error', error: e.message };
+        return { data: json.escalation || json.report || json || data, source: 'fastapi' };
+      } catch (err) {
+        console.warn(`[KumbhRealtime] FastAPI insert failed for ${table}:`, err);
+        return { data: data, source: 'offline' };
       }
+    },
+
+    /** Instant multi-tab and cross-window real-time broadcast */
+    broadcast(type, payload) {
+      try {
+        if (_bc) {
+          _bc.postMessage({ type, payload, timestamp: Date.now() });
+        }
+      } catch (e) {}
+      try {
+        localStorage.setItem('kumbhsetu_rt_pulse', JSON.stringify({ type, payload, time: Date.now() }));
+      } catch (e) {}
+    },
+
+    /** Listen for real-time broadcasts */
+    onBroadcast(type, cb) {
+      if (_bc) {
+        _bc.addEventListener('message', (ev) => {
+          if (ev.data && (ev.data.type === type || type === '*')) {
+            cb(ev.data.payload, ev.data.type);
+          }
+        });
+      }
+      window.addEventListener('storage', (ev) => {
+        if (ev.key === 'kumbhsetu_rt_pulse' && ev.newValue) {
+          try {
+            const parsed = JSON.parse(ev.newValue);
+            if (parsed && (parsed.type === type || type === '*')) {
+              cb(parsed.payload, parsed.type);
+            }
+          } catch (e) {}
+        }
+      });
+    },
+
+    /** Dedicated helper: Escalate report to Police across FastAPI backend, Supabase, and Realtime */
+    async escalateReport(reportId, reportData = {}) {
+      const now = new Date().toISOString();
+      const escId = 'esc-' + (reportId || Date.now());
+
+      // 1. Synchronize to FastAPI backend first (persistent SQLite storage)
+      try {
+        const token = localStorage.getItem('kumbhsetu_jwt') || 'demo-kumbhveer-token';
+        await fetch(apiBase() + '/api/v1/police/escalations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            id: escId,
+            report_id: String(reportId),
+            category: reportData.category || 'Citizen Escalation',
+            listing_name: reportData.listing_name || 'Nashik Sector',
+            issue_type: reportData.issue_type || 'Grievance',
+            description: reportData.description || 'Escalated by Kumbhveer squad',
+            priority: 'High',
+            status: 'New',
+            escalated_by: 'Kumbhveer Field Volunteer'
+          })
+        });
+
+        await fetch(apiBase() + '/api/v1/reports/' + encodeURIComponent(reportId) + '/status', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            status: 'Escalated to Police',
+            notes: 'Escalated to Police Command Hub by Kumbhveer'
+          })
+        });
+      } catch (err) {
+        console.warn('[KumbhRealtime] Backend escalate sync note:', err);
+      }
+
+      // 2. Synchronize to Supabase if connected
+      const client = KumbhRealtime._client;
+      if (client && KumbhRealtime._mode === 'supabase') {
+        try {
+          await withTimeout(client.from('reports').update({ status: 'Escalated to Police', updated_at: now }).eq('id', reportId), 1000);
+          await withTimeout(client.from('escalations').insert([{
+            id: escId,
+            report_id: String(reportId),
+            category: reportData.category || 'Citizen Escalation',
+            listing_name: reportData.listing_name || 'Nashik Sector',
+            issue_type: reportData.issue_type || 'Grievance',
+            description: reportData.description || 'Escalated by Kumbhveer squad',
+            priority: 'High',
+            status: 'New',
+            escalated_by: 'Kumbhveer Field Volunteer',
+            escalated_at: now,
+            updated_at: now
+          }]), 1000);
+        } catch (sbErr) {
+          console.warn('[KumbhRealtime] Supabase escalate note:', sbErr?.message);
+        }
+      }
+
+      // 3. LocalStorage persistence & refresh-proof marker
+      try {
+        const localEsc = JSON.parse(localStorage.getItem('kumbhsetu_live_escalations') || '[]');
+        if (!localEsc.some(e => String(e.id) === String(reportId) || String(e.report_id) === String(reportId))) {
+          localEsc.unshift({
+            id: reportId,
+            case_number: 'ESC-' + (reportId ? String(reportId).slice(-4).toUpperCase() : '9021'),
+            listing_name: reportData.listing_name || 'Nashik Sector',
+            category: reportData.category || 'Citizen Escalation',
+            issues: reportData.issue_type || 'Grievance',
+            notes: reportData.description || 'Escalated to Police',
+            demanded: reportData.demandedPrice || '',
+            status: 'Escalated to Police',
+            escalated_by: 'Kumbhveer Field Squad (Sector 4)',
+            time_ago: 'Just now'
+          });
+          localStorage.setItem('kumbhsetu_live_escalations', JSON.stringify(localEsc.slice(0, 30)));
+        }
+
+        const escIds = JSON.parse(localStorage.getItem('kumbhsetu_escalated_report_ids') || '[]');
+        if (!escIds.includes(String(reportId))) {
+          escIds.push(String(reportId));
+          localStorage.setItem('kumbhsetu_escalated_report_ids', JSON.stringify(escIds));
+        }
+      } catch (lsErr) {}
+
+      // 4. Real-time multi-tab & cross-window broadcast
+      KumbhRealtime.broadcast('ESCALATION_CREATED', {
+        id: escId,
+        report_id: reportId,
+        listing_name: reportData.listing_name,
+        category: reportData.category,
+        issue_type: reportData.issue_type,
+        description: reportData.description,
+        status: 'Escalated to Police',
+        escalated_by: 'Kumbhveer Field Volunteer'
+      });
+
+      _dispatch('reports', 'UPDATE', {
+        new: { id: reportId, status: 'Escalated to Police', updated_at: now },
+        eventType: 'UPDATE',
+        table: 'reports'
+      });
+
+      return true;
     },
 
     /** Update a row in a table (Supabase first + FastAPI sync) */
@@ -334,15 +492,15 @@
     /** Dedicated helper: fetch reports from Supabase (or FastAPI fallback) */
     async getReports(options = {}) {
       const client = KumbhRealtime._client;
-      if (client) {
+      if (client && KumbhRealtime._mode === 'supabase') {
         try {
           let q = client.from('reports').select('*');
           if (options.status) q = q.eq('status', options.status);
           q = q.order('created_at', { ascending: false });
           if (options.limit) q = q.limit(options.limit);
-          const { data, error } = await q;
-          if (!error && data && data.length > 0) {
-            return data;
+          const res = await withTimeout(q, 1000, null);
+          if (res && !res.error && Array.isArray(res.data) && res.data.length > 0) {
+            return res.data;
           }
         } catch (e) { /* fallback */ }
       }
@@ -352,14 +510,20 @@
         const token = localStorage.getItem('kumbhsetu_jwt') || 'demo-nashikkar-token';
         let url = apiBase() + '/api/v1/reports/?page_size=' + (options.limit || 50);
         if (options.status) url += '&status=' + encodeURIComponent(options.status);
-        const res = await fetch(url, {
+        const res = await withTimeout(fetch(url, {
           headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.ok) {
+        }), 1200, null);
+        if (res && res.ok) {
           const json = await res.json();
           return json.reports || json || [];
         }
       } catch (e) { /* offline */ }
+
+      // Offline LocalStorage fallback
+      try {
+        const local = JSON.parse(localStorage.getItem('kumbhsetu_local_reports') || '[]');
+        if (Array.isArray(local) && local.length > 0) return local;
+      } catch (e) {}
 
       return [];
     },

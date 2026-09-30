@@ -866,6 +866,24 @@
     }
 
     try {
+      // 0. Instant multi-tab and cross-window real-time broadcast (0 milliseconds!)
+      const liveReportData = {
+        ...reportPayload,
+        status: 'New',
+        created_at: now,
+        updated_at: now,
+        typeCategory: (finalIssueType.toLowerCase().includes('misbehave') ? 'misbehavior' : (finalIssueType.toLowerCase().includes('scam') ? 'scam' : (finalIssueType.toLowerCase().includes('rumor') ? 'rumor' : 'price')))
+      };
+      if (window.KumbhRealtime && typeof KumbhRealtime.broadcast === 'function') {
+        KumbhRealtime.broadcast('NEW_REPORT', liveReportData);
+      } else if (typeof BroadcastChannel !== 'undefined') {
+        const bc = new BroadcastChannel('kumbhsetu_realtime_channel');
+        bc.postMessage({ type: 'NEW_REPORT', payload: liveReportData, timestamp: Date.now() });
+      }
+      try {
+        localStorage.setItem('kumbhsetu_rt_pulse', JSON.stringify({ type: 'NEW_REPORT', payload: liveReportData, time: Date.now() }));
+      } catch (e) {}
+
       // Initialize real-time engine if not already
       if (window.KumbhRealtime) await KumbhRealtime.ready();
 

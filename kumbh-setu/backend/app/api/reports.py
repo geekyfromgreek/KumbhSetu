@@ -168,7 +168,7 @@ async def get_reports(
                         "apikey": SUPABASE_SERVICE_ROLE_KEY,
                         "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}"
                     },
-                    timeout=5.0
+                    timeout=1.0
                 )
                 if sb_res.status_code == 200:
                     for item in sb_res.json():
