@@ -12,7 +12,13 @@
     const host = loc.hostname || 'localhost';
     const protocol = loc.protocol === 'https:' ? 'https:' : 'http:';
 
-    // When accessed from a phone via LAN IP or hostname, connect to laptop's port 8000
+    // When deployed on Vercel or cloud production domain
+    // Must return empty string '' so `${window.API_BASE_URL}/api/v1/...` resolves to `/api/v1/...`
+    if (host.includes('vercel.app') || host.includes('render.com') || (protocol === 'https:' && !host.match(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.)/))) {
+      return '';
+    }
+
+    // When accessed from a phone via LAN IP, connect to laptop's port 8000
     if (host && host !== 'localhost' && host !== '127.0.0.1') {
       return `${protocol}//${host}:8000`;
     }
