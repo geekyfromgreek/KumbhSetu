@@ -110,66 +110,27 @@ export const VolunteerSupabaseService = {
         let status: IncidentStatus = 'PENDING_VERIFICATION';
         if (row.status === 'IN_PROGRESS' || row.status === 'ASSIGNED') {
           status = 'EN_ROUTE';
-        } else if (row.status === 'ESCALATED_POLICE') {
-          status = 'ESCALATED_POLICE';
         } else if (row.status === 'RESOLVED') {
           status = 'RESOLVED_OFFLINE';
         } else if (row.status === 'REJECTED') {
           status = 'DISMISSED';
         }
 
-        const sev: 'LOW' | 'MED' | 'HIGH' =
-          row.priority === 'HIGH' ? 'HIGH' : row.priority === 'LOW' ? 'LOW' : 'MED';
-
-        let lat = row.latitude ? Number(row.latitude) : undefined;
-        let lng = row.longitude ? Number(row.longitude) : undefined;
-        if ((!lat || !lng) && row.location_details) {
-          const gpsMatch = row.location_details.match(/\[GPS:\s*([0-9.-]+),\s*([0-9.-]+)\]/i);
-          if (gpsMatch) {
-            lat = parseFloat(gpsMatch[1]);
-            lng = parseFloat(gpsMatch[2]);
-          }
-        }
-
-        const isEscalated =
-          row.status === 'ESCALATED_POLICE' ||
-          (row.resolution_notes && row.resolution_notes.includes('[ESCALATED_POLICE]'));
-
-        const rawImg = row.photo_url || row.image_url;
-        let validImg = rawImg && (rawImg.startsWith('http') || rawImg.startsWith('data:')) ? rawImg : undefined;
-        if (!validImg) {
-          const c = `${row.category || ''} ${row.title || ''}`.toLowerCase();
-          if (c.includes('auto') || c.includes('taxi') || c.includes('transit') || c.includes('vehicle')) {
-            validImg = 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=800&auto=format&fit=crop&q=80';
-          } else if (c.includes('food') || c.includes('sweet') || c.includes('stall') || c.includes('eatery')) {
-            validImg = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80';
-          } else if (c.includes('puja') || c.includes('samagri') || c.includes('temple') || c.includes('prasad')) {
-            validImg = 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=800&auto=format&fit=crop&q=80';
-          } else {
-            validImg = 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&auto=format&fit=crop&q=80';
-          }
-        }
-
         return {
           id: row.id,
           token: `CASE-G-${row.id.substring(0, 5).toUpperCase()}`,
           category: row.category || 'Overcharging',
-          location: `${row.sector || ''} ${row.location_details || ''}`.trim() || 'Nashik Mela Ground',
+          location: `${row.sector} - ${row.location_details}`,
           sectorId: (row.sector || 'sector_ramkund').toLowerCase().replace(/[^a-z0-9]/g, '_'),
           description: row.description || row.title,
-          latitude: lat,
-          longitude: lng,
-          imageUrl: validImg,
-          severity: sev,
           pilgrimName: row.reporter_name || 'Pilgrim',
           pilgrimPhone: row.reporter_phone || '',
           offenderNameOrVehicle: row.title,
-          status: isEscalated ? 'ESCALATED_POLICE' : status,
+          status,
           assignedVolunteerId: row.assigned_volunteer_id,
           volunteerNotes: row.resolution_notes,
           timestamp: new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           resolutionTimestamp: row.resolved_at ? new Date(row.resolved_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : undefined,
-          escalatedToPolice: isEscalated,
         };
       });
     } catch (e) {
@@ -184,34 +145,6 @@ export const VolunteerSupabaseService = {
         .from('incidents_and_grievances')
         .update({
           status: 'IN_PROGRESS',
-          assigned_volunteer_name: volunteerName,
-        })
-        .eq('id', id);
-
-      return !error;
-    } catch (e) {
-      return false;
-    }
-  },
-
-  // Verify and Set Severity / Escalate to Police
-  async verifyAndSetSeverity(
-    id: string,
-    severity: 'LOW' | 'MED' | 'HIGH',
-    volunteerName: string,
-    notes: string = ''
-  ): Promise<boolean> {
-    try {
-      const priority = severity === 'HIGH' ? 'HIGH' : severity === 'LOW' ? 'LOW' : 'MEDIUM';
-      const isPoliceEscalation = severity === 'MED' || severity === 'HIGH';
-      const status = isPoliceEscalation ? 'ESCALATED_POLICE' : 'IN_PROGRESS';
-
-      const { error } = await supabase
-        .from('incidents_and_grievances')
-        .update({
-          priority,
-          status,
-          resolution_notes: notes || `Ground verified by KumbhVeer ${volunteerName} as ${severity} severity`,
           assigned_volunteer_name: volunteerName,
         })
         .eq('id', id);
@@ -325,8 +258,6 @@ export const VolunteerSupabaseService = {
       .channel('public:kumbhveer_channel')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'incidents_and_grievances' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'fact_checks_and_rumors' }, callback)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'volunteers' }, callback)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'snan_muhurats' }, callback)
       .subscribe();
   },
 };

@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { safeStorage } from '@/lib/safeStorage';
 import { TRANSLATIONS, TranslationDictionary, SUPPORTED_LANGUAGES, LanguageMeta } from '@/constants/languages';
 import { INITIAL_RUMORS, RumorFactCheck, UserComplaint } from '@/data/complaintsAndRumorsData';
@@ -63,17 +62,7 @@ interface AppContextType {
 
   // Complaints / Grievances
   complaints: UserComplaint[];
-  addComplaint: (
-    category: string,
-    vehicleOrShop: string,
-    location: string,
-    standardAmt: string,
-    chargedAmt: string,
-    imageUrl?: string,
-    coords?: { latitude: number; longitude: number },
-    severity?: 'LOW' | 'MED' | 'HIGH'
-  ) => Promise<UserComplaint>;
-  deleteComplaint: (id: string) => Promise<void>;
+  addComplaint: (category: string, vehicleOrShop: string, location: string, standardAmt: string, chargedAmt: string) => Promise<UserComplaint>;
 
   // Fact checks & rumors
   rumors: RumorFactCheck[];
@@ -168,10 +157,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     initialize();
 
-    // 1. Subscribe to realtime changes via Supabase Channels
-    const allSub = SupabaseService.subscribeToAllPublicUpdates(() => {
-      fetchLiveSupabaseData();
-    });
+    // Subscribe to realtime updates
     const tariffSub = SupabaseService.subscribeToTariffs(() => {
       fetchLiveTariffs();
     });
@@ -185,26 +171,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       fetchLiveSnanMuhurats();
     });
 
-    // 2. Periodic Live Sync Heartbeat (every 4 seconds) for 100% reliable real-time updates
-    const liveSyncInterval = setInterval(() => {
-      fetchLiveSupabaseData();
-    }, 4000);
-
-    // 3. Re-fetch immediately whenever app comes to foreground
-    const appStateSub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
-      if (nextState === 'active') {
-        fetchLiveSupabaseData();
-      }
-    });
-
     return () => {
-      if (allSub?.unsubscribe) allSub.unsubscribe();
-      if (tariffSub?.unsubscribe) tariffSub.unsubscribe();
-      if (rumorSub?.unsubscribe) rumorSub.unsubscribe();
-      if (merchantSub?.unsubscribe) merchantSub.unsubscribe();
-      if (snanSub?.unsubscribe) snanSub.unsubscribe();
-      clearInterval(liveSyncInterval);
-      appStateSub.remove();
+      tariffSub.unsubscribe();
+      rumorSub.unsubscribe();
+      merchantSub.unsubscribe();
+      snanSub.unsubscribe();
     };
   }, []);
 
@@ -344,10 +315,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     vehicleOrShop: string,
     location: string,
     standardAmt: string,
-    chargedAmt: string,
-    imageUrl?: string,
-    coords?: { latitude: number; longitude: number },
-    severity?: 'LOW' | 'MED' | 'HIGH'
+    chargedAmt: string
   ): Promise<UserComplaint> => {
     const token = `KS-RTO-${Math.floor(100000 + Math.random() * 900000)}`;
     const newComplaint: UserComplaint = {
@@ -355,10 +323,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       category,
       vehicleOrShop,
       location,
-      latitude: coords?.latitude,
-      longitude: coords?.longitude,
-      imageUrl,
-      severity: severity,
       standardAmt,
       chargedAmt,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -370,50 +334,18 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setComplaints(updated);
     await safeStorage.setItem(STORAGE_KEYS.COMPLAINTS, JSON.stringify(updated));
 
-    // Also sync to Supabase backend
-    try {
-      const serverId = await SupabaseService.submitGrievance({
-        category,
-        vehicleOrShop,
-        location,
-        standardAmt,
-        chargedAmt,
-        latitude: coords?.latitude,
-        longitude: coords?.longitude,
-        imageUrl,
-        severity: severity || 'MED',
-        reporterName: user?.name,
-        reporterPhone: user?.phone,
-      });
-
-      if (serverId) {
-        newComplaint.supabaseId = serverId;
-        const synced = [newComplaint, ...complaints];
-        setComplaints(synced);
-        safeStorage.setItem(STORAGE_KEYS.COMPLAINTS, JSON.stringify(synced));
-      }
-    } catch (e) {
-      console.warn('Supabase submitGrievance sync error:', e);
-    }
+    // Also sync to Supabase backend in background
+    SupabaseService.submitGrievance({
+      category,
+      vehicleOrShop,
+      location,
+      standardAmt,
+      chargedAmt,
+      reporterName: user?.name,
+      reporterPhone: user?.phone,
+    });
 
     return newComplaint;
-  };
-
-  const deleteComplaint = async (id: string) => {
-    const target = complaints.find((c) => c.id === id);
-    const updated = complaints.filter((c) => c.id !== id);
-    setComplaints(updated);
-    await safeStorage.setItem(STORAGE_KEYS.COMPLAINTS, JSON.stringify(updated));
-
-    try {
-      if (target?.supabaseId) {
-        await SupabaseService.deleteGrievance(target.supabaseId);
-      } else if (target?.vehicleOrShop) {
-        await SupabaseService.deleteGrievance(target.vehicleOrShop);
-      }
-    } catch (err) {
-      console.warn('Error deleting complaint from Supabase:', err);
-    }
   };
 
   const submitRumorForCheck = (claimText: string) => {
@@ -509,7 +441,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         resetStandardPricesToDefault,
         complaints,
         addComplaint,
-        deleteComplaint,
         rumors,
         submitRumorForCheck,
         marketplaceItems,

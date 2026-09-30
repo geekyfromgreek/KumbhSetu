@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,6 @@ import {
   Linking,
   Platform,
   KeyboardAvoidingView,
-  Image,
-  ActivityIndicator,
-  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -25,8 +22,6 @@ import {
   UserComplaint,
 } from '@/data/complaintsAndRumorsData';
 import { KumbhColors } from '@/constants/colors';
-import { getCurrentPilgrimLocation, LocationCoords } from '@/utils/locationHelper';
-import { takePhotoWithCamera, pickImageFromGallery } from '@/utils/imagePickerHelper';
 
 export const ComplaintsAndSafetyTab: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -35,7 +30,6 @@ export const ComplaintsAndSafetyTab: React.FC = () => {
     t,
     complaints,
     addComplaint,
-    deleteComplaint,
     rumors,
     submitRumorForCheck,
   } = useApp();
@@ -47,44 +41,8 @@ export const ComplaintsAndSafetyTab: React.FC = () => {
   const [locationPlace, setLocationPlace] = useState<string>('');
   const [standardAmt, setStandardAmt] = useState<string>('');
   const [chargedAmt, setChargedAmt] = useState<string>('');
-  const [evidenceImage, setEvidenceImage] = useState<string | null>(null);
-  const [gpsCoords, setGpsCoords] = useState<LocationCoords | null>(null);
-  const [isLocating, setIsLocating] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [complaintSuccessToken, setComplaintSuccessToken] = useState<string | null>(null);
   const [complaintError, setComplaintError] = useState<string>('');
-
-  // Fetch initial GPS location on mount
-  useEffect(() => {
-    fetchCurrentGps();
-  }, []);
-
-  const fetchCurrentGps = async () => {
-    setIsLocating(true);
-    try {
-      const loc = await getCurrentPilgrimLocation();
-      if (loc) {
-        setGpsCoords(loc);
-        if (!locationPlace && loc.locationName) {
-          setLocationPlace(loc.locationName);
-        }
-      }
-    } catch (e) {
-      console.warn('GPS location fetch error:', e);
-    } finally {
-      setIsLocating(false);
-    }
-  };
-
-  const handlePickCamera = async () => {
-    const uri = await takePhotoWithCamera();
-    if (uri) setEvidenceImage(uri);
-  };
-
-  const handlePickGallery = async () => {
-    const uri = await pickImageFromGallery();
-    if (uri) setEvidenceImage(uri);
-  };
 
   const [rumorText, setRumorText] = useState<string>('');
   const [rumorReportedSuccess, setRumorReportedSuccess] = useState<boolean>(false);
@@ -100,32 +58,23 @@ export const ComplaintsAndSafetyTab: React.FC = () => {
     }
 
     setComplaintError('');
-    setIsSubmitting(true);
-    try {
-      const newComp = await addComplaint(
-        complaintCategory,
-        vendorOrVehicle,
-        locationPlace,
-        standardAmt || 'Approved Rate',
-        chargedAmt,
-        evidenceImage || undefined,
-        gpsCoords ? { latitude: gpsCoords.latitude, longitude: gpsCoords.longitude } : undefined
-      );
+    const newComp = await addComplaint(
+      complaintCategory,
+      vendorOrVehicle,
+      locationPlace,
+      standardAmt || 'Approved Rate',
+      chargedAmt
+    );
 
-      setComplaintSuccessToken(newComp.token);
-      setVendorOrVehicle('');
-      setEvidenceImage(null);
-      setStandardAmt('');
-      setChargedAmt('');
+    setComplaintSuccessToken(newComp.token);
+    setVendorOrVehicle('');
+    setLocationPlace('');
+    setStandardAmt('');
+    setChargedAmt('');
 
-      setTimeout(() => {
-        setComplaintSuccessToken(null);
-      }, 7000);
-    } catch (err: any) {
-      setComplaintError(err?.message || 'Failed to submit complaint');
-    } finally {
-      setIsSubmitting(false);
-    }
+    setTimeout(() => {
+      setComplaintSuccessToken(null);
+    }, 6000);
   };
 
   const handleReportRumor = () => {
@@ -292,100 +241,27 @@ export const ComplaintsAndSafetyTab: React.FC = () => {
             </View>
 
             {/* Vehicle / Shop Name */}
-            <Text style={styles.inputLabel}>{t.vehicleOrShop}: *</Text>
+            <Text style={styles.inputLabel}>{t.vehicleOrShop}:</Text>
             <TextInput
               style={styles.formInput}
-              placeholder="e.g. Shop Name, Counter No., Auto/Taxi Plate"
+              placeholder="MH-15 AB 1234 or Shop Name"
               placeholderTextColor={KumbhColors.textMuted}
               value={vendorOrVehicle}
               onChangeText={setVendorOrVehicle}
             />
 
-            {/* Location & GPS Capture Card */}
-            <View style={styles.locationHeaderRow}>
-              <Text style={styles.inputLabel}>{t.locationPlace}: *</Text>
-              <TouchableOpacity
-                style={styles.gpsRefreshBtn}
-                onPress={fetchCurrentGps}
-                activeOpacity={0.7}>
-                {isLocating ? (
-                  <ActivityIndicator size="small" color={KumbhColors.primaryDark} />
-                ) : (
-                  <>
-                    <Ionicons name="navigate-circle" size={14} color={KumbhColors.primaryDark} />
-                    <Text style={styles.gpsRefreshText}>Auto-Locate GPS</Text>
-                  </>
-                )}
-              </TouchableOpacity>
-            </View>
-
+            {/* Location */}
+            <Text style={styles.inputLabel}>{t.locationPlace}:</Text>
             <TextInput
               style={styles.formInput}
-              placeholder="e.g. Ramkund Gate 3, Sadhugram Sector 4"
+              placeholder="e.g. Station Stand, Ramkund"
               placeholderTextColor={KumbhColors.textMuted}
               value={locationPlace}
               onChangeText={setLocationPlace}
             />
 
-            {gpsCoords && (
-              <View style={styles.gpsCoordsBadge}>
-                <Ionicons name="location" size={13} color="#059669" />
-                <Text style={styles.gpsCoordsText}>
-                  GPS Captured: {gpsCoords.latitude.toFixed(5)}, {gpsCoords.longitude.toFixed(5)}
-                  {gpsCoords.locationName ? ` • ${gpsCoords.locationName}` : ''}
-                </Text>
-              </View>
-            )}
-
-            {/* Evidence Image Upload */}
-            <Text style={styles.inputLabel}>Upload Evidence Photo (Shop / Board / Vehicle / Bill):</Text>
-            {evidenceImage ? (
-              <View style={styles.imagePreviewContainer}>
-                <Image source={{ uri: evidenceImage }} style={styles.evidenceThumbnail} />
-                <TouchableOpacity
-                  style={styles.removeImageBtn}
-                  onPress={() => setEvidenceImage(null)}>
-                  <Ionicons name="close-circle" size={20} color="#DC2626" />
-                </TouchableOpacity>
-                <View style={styles.imageAttachedTag}>
-                  <Ionicons name="checkmark-circle" size={12} color="#059669" />
-                  <Text style={styles.imageAttachedText}>Photo Attached</Text>
-                </View>
-              </View>
-            ) : (
-              <View style={styles.photoPickerRow}>
-                <TouchableOpacity
-                  style={styles.photoPickerBtn}
-                  onPress={handlePickCamera}
-                  activeOpacity={0.8}>
-                  <Ionicons name="camera" size={18} color={KumbhColors.primaryDark} />
-                  <Text style={styles.photoPickerBtnText}>Take Photo</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.photoPickerBtn, styles.galleryBtn]}
-                  onPress={handlePickGallery}
-                  activeOpacity={0.8}>
-                  <Ionicons name="image" size={18} color={KumbhColors.textSecondary} />
-                  <Text style={styles.photoPickerBtnText}>Upload from Gallery</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-
-            {/* Ground Volunteer Verification Notice */}
-            <View style={styles.volunteerVerificationNotice}>
-              <View style={styles.noticeIconCircle}>
-                <Ionicons name="shield-checkmark" size={16} color="#D97706" />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.volunteerNoticeTitle}>KumbhVeer Ground Verification</Text>
-                <Text style={styles.volunteerNoticeSub}>
-                  Your uploaded photo & GPS location will be dispatched to on-duty KumbhVeer volunteers to physically inspect the spot and verify severity (Low, Med, High) for administrative or Police action.
-                </Text>
-              </View>
-            </View>
-
             {/* Price Difference Row */}
-            <View style={[styles.priceDiffRow, { marginTop: 10 }]}>
+            <View style={styles.priceDiffRow}>
               <View style={styles.priceDiffCol}>
                 <Text style={styles.inputLabel}>{t.standardAmt}:</Text>
                 <TextInput
@@ -415,18 +291,11 @@ export const ComplaintsAndSafetyTab: React.FC = () => {
 
             {/* Submit Button */}
             <TouchableOpacity
-              style={[styles.submitCompBtn, isSubmitting && { opacity: 0.7 }]}
+              style={styles.submitCompBtn}
               onPress={handleSubmitComplaint}
-              disabled={isSubmitting}
               activeOpacity={0.85}>
-              {isSubmitting ? (
-                <ActivityIndicator size="small" color="#FFFFFF" />
-              ) : (
-                <>
-                  <Ionicons name="send-outline" size={16} color="#FFFFFF" />
-                  <Text style={styles.submitCompText}>{t.submitComplaint}</Text>
-                </>
-              )}
+              <Ionicons name="send-outline" size={16} color="#FFFFFF" />
+              <Text style={styles.submitCompText}>{t.submitComplaint}</Text>
             </TouchableOpacity>
 
             {/* Previous Complaints Submitted by User */}
@@ -437,68 +306,16 @@ export const ComplaintsAndSafetyTab: React.FC = () => {
                   <View key={c.id} style={styles.complaintItemCard}>
                     <View style={styles.complaintItemTop}>
                       <Text style={styles.complaintToken}>{c.token}</Text>
-                      <View style={styles.statusBadgesRow}>
-                        {c.severity ? (
-                          <View
-                            style={[
-                              styles.severityBadge,
-                              c.severity === 'HIGH'
-                                ? styles.sevHigh
-                                : c.severity === 'MED'
-                                ? styles.sevMed
-                                : styles.sevLow,
-                            ]}>
-                            <Text style={styles.sevBadgeText}>Veer: {c.severity}</Text>
-                          </View>
-                        ) : (
-                          <View style={styles.pendingVerifyBadge}>
-                            <Text style={styles.pendingVerifyText}>Veer Pending</Text>
-                          </View>
-                        )}
-                        <View style={styles.statusBadge}>
-                          <Text style={styles.statusBadgeText}>{c.status}</Text>
-                        </View>
-                        <TouchableOpacity
-                          style={styles.deleteComplaintBtn}
-                          onPress={() => {
-                            Alert.alert(
-                              'Withdraw Report',
-                              'Are you sure you want to delete this incident report?',
-                              [
-                                { text: 'Cancel', style: 'cancel' },
-                                {
-                                  text: 'Delete',
-                                  style: 'destructive',
-                                  onPress: () => deleteComplaint(c.id),
-                                },
-                              ]
-                            );
-                          }}
-                          activeOpacity={0.7}
-                        >
-                          <Ionicons name="trash-outline" size={13} color="#DC2626" />
-                        </TouchableOpacity>
+                      <View style={styles.statusBadge}>
+                        <Text style={styles.statusBadgeText}>{c.status}</Text>
                       </View>
                     </View>
-
-                    <View style={styles.complaintContentRow}>
-                      {c.imageUrl && (
-                        <Image source={{ uri: c.imageUrl }} style={styles.complaintListThumb} />
-                      )}
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.complaintDetailText}>
-                          {c.location} • {c.vehicleOrShop}
-                        </Text>
-                        <Text style={styles.complaintPriceDiff}>
-                          Charged: <Text style={{ color: KumbhColors.danger, fontFamily: 'Poppins_600SemiBold' }}>₹{c.chargedAmt}</Text> (Std: ₹{c.standardAmt})
-                        </Text>
-                        {c.latitude && c.longitude && (
-                          <Text style={styles.complaintGpsTag}>
-                            📍 GPS: {c.latitude.toFixed(4)}, {c.longitude.toFixed(4)}
-                          </Text>
-                        )}
-                      </View>
-                    </View>
+                    <Text style={styles.complaintDetailText}>
+                      {c.location} • {c.vehicleOrShop}
+                    </Text>
+                    <Text style={styles.complaintPriceDiff}>
+                      Charged: <Text style={{ color: KumbhColors.danger, fontFamily: 'Poppins_600SemiBold' }}>INR {c.chargedAmt}</Text> (Standard: INR {c.standardAmt})
+                    </Text>
                   </View>
                 ))}
               </View>
@@ -868,151 +685,6 @@ const styles = StyleSheet.create({
     color: KumbhColors.textPrimary,
     marginBottom: 10,
   },
-  locationHeaderRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  gpsRefreshBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: '#EEF2FF',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#C7D2FE',
-  },
-  gpsRefreshText: {
-    fontSize: 10,
-    fontFamily: 'Poppins_600SemiBold',
-    color: KumbhColors.primaryDark,
-  },
-  gpsCoordsBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    backgroundColor: '#ECFDF5',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#A7F3D0',
-    marginBottom: 10,
-  },
-  gpsCoordsText: {
-    fontSize: 10,
-    fontFamily: 'Poppins_500Medium',
-    color: '#065F46',
-  },
-  photoPickerRow: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 10,
-  },
-  photoPickerBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    backgroundColor: '#EFF6FF',
-    borderWidth: 1,
-    borderColor: '#BFDBFE',
-    borderRadius: 8,
-    paddingVertical: 8,
-  },
-  galleryBtn: {
-    backgroundColor: '#F8FAFC',
-    borderColor: '#E2E8F0',
-  },
-  photoPickerBtnText: {
-    fontSize: 11,
-    fontFamily: 'Poppins_600SemiBold',
-    color: KumbhColors.textPrimary,
-  },
-  imagePreviewContainer: {
-    position: 'relative',
-    marginBottom: 10,
-    alignSelf: 'flex-start',
-  },
-  evidenceThumbnail: {
-    width: 120,
-    height: 90,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: KumbhColors.primary,
-  },
-  removeImageBtn: {
-    position: 'absolute',
-    top: -6,
-    right: -6,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-  },
-  imageAttachedTag: {
-    position: 'absolute',
-    bottom: 4,
-    left: 4,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    borderRadius: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 3,
-  },
-  imageAttachedText: {
-    color: '#FFFFFF',
-    fontSize: 9,
-    fontFamily: 'Poppins_500Medium',
-  },
-  volunteerVerificationNotice: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 10,
-    backgroundColor: '#FFFBEB',
-    padding: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#FDE68A',
-    marginBottom: 10,
-  },
-  noticeIconCircle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#FEF3C7',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  volunteerNoticeTitle: {
-    fontSize: 11.5,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#92400E',
-  },
-  volunteerNoticeSub: {
-    fontSize: 10,
-    fontFamily: 'Poppins_400Regular',
-    color: '#B45309',
-    marginTop: 2,
-    lineHeight: 14,
-  },
-  pendingVerifyBadge: {
-    backgroundColor: '#F3F4F6',
-    paddingVertical: 1,
-    paddingHorizontal: 5,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-  },
-  pendingVerifyText: {
-    fontSize: 9,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#6B7280',
-  },
   priceDiffRow: {
     flexDirection: 'row',
     gap: 10,
@@ -1058,54 +730,18 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: KumbhColors.border,
-    marginBottom: 8,
+    marginBottom: 6,
   },
   complaintItemTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 3,
   },
   complaintToken: {
     fontSize: 11,
     fontFamily: 'Poppins_600SemiBold',
     color: KumbhColors.primaryDark,
-  },
-  statusBadgesRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  deleteComplaintBtn: {
-    padding: 3,
-    backgroundColor: '#FEF2F2',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#FECACA',
-    marginLeft: 2,
-  },
-  severityBadge: {
-    paddingVertical: 1,
-    paddingHorizontal: 5,
-    borderRadius: 4,
-    borderWidth: 1,
-  },
-  sevHigh: {
-    backgroundColor: '#FEE2E2',
-    borderColor: '#EF4444',
-  },
-  sevMed: {
-    backgroundColor: '#FEF3C7',
-    borderColor: '#F59E0B',
-  },
-  sevLow: {
-    backgroundColor: '#ECFDF5',
-    borderColor: '#10B981',
-  },
-  sevBadgeText: {
-    fontSize: 9,
-    fontFamily: 'Poppins_700Bold',
-    color: '#1F2937',
   },
   statusBadge: {
     backgroundColor: KumbhColors.secondarySoft,
@@ -1118,18 +754,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_600SemiBold',
     color: KumbhColors.secondaryDark,
   },
-  complaintContentRow: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-  },
-  complaintListThumb: {
-    width: 44,
-    height: 44,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-  },
   complaintDetailText: {
     fontSize: 11,
     color: KumbhColors.textPrimary,
@@ -1137,14 +761,8 @@ const styles = StyleSheet.create({
   },
   complaintPriceDiff: {
     fontSize: 11,
-    color: KumbhColors.textSecondary,
+    color: KumbhColors.textMuted,
     fontFamily: 'Poppins_400Regular',
-    marginTop: 1,
-  },
-  complaintGpsTag: {
-    fontSize: 9,
-    fontFamily: 'Poppins_500Medium',
-    color: '#059669',
     marginTop: 2,
   },
   reportRumorCard: {

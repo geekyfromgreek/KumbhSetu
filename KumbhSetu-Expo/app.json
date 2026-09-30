@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "KumbhSetu Yatri",
+    "name": "KumbhSetu-Expo",
     "slug": "KumbhSetu-Expo",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,13 +12,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#FCF8EF",
+        "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false,
-      "package": "com.gauruu.KumbhSetuExpo"
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
@@ -29,9 +28,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#FCF8EF",
+          "backgroundColor": "#208AEF",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 120
+          "imageWidth": 76
         }
       ]
     ],

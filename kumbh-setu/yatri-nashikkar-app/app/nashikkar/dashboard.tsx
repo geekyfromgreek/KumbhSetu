@@ -207,24 +207,6 @@ export default function NashikkarDashboard() {
             </View>
             <Ionicons name="chevron-forward" size={20} color="#A1887F" />
           </TouchableOpacity>
-
-          {/* Action 5: Volunteer Field Oversight */}
-          <TouchableOpacity
-            style={styles.actionCard}
-            onPress={() => router.push('/nashikkar/volunteers')}
-            activeOpacity={0.85}
-          >
-            <View style={[styles.actionIconBox, { backgroundColor: '#ECFDF5' }]}>
-              <Ionicons name="people" size={26} color="#059669" />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.actionTitle}>Volunteer Field Oversight</Text>
-              <Text style={styles.actionDesc}>
-                Dispatch price audits, verify statutory ₹40 Thali displays, and monitor Kumbhveers.
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#A1887F" />
-          </TouchableOpacity>
         </View>
 
         {/* Live Kumbh Updates */}

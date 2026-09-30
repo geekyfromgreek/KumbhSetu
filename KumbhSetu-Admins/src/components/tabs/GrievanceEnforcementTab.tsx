@@ -8,11 +8,8 @@ import {
   TextInput,
   Modal,
   Alert,
-  Image,
-  Linking,
-  Platform,
 } from 'react-native';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { AdminColors } from '@/constants/colors';
 import { useAdmin } from '@/context/AdminContext';
 import { AdminGrievanceTicket } from '@/types/admin';
@@ -22,10 +19,7 @@ export const GrievanceEnforcementTab: React.FC = () => {
     tickets,
     addTicket,
     updateTicketStatus,
-    deleteTicket,
-    clearAllTickets,
     currentOfficer,
-    refreshAll,
   } = useAdmin();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,10 +32,6 @@ export const GrievanceEnforcementTab: React.FC = () => {
   const [actionPenaltyAmount, setActionPenaltyAmount] = useState('');
   const [actionNewStatus, setActionNewStatus] = useState<AdminGrievanceTicket['status']>('FINE_ISSUED');
 
-  // Photo & GPS Modal State
-  const [photoModalVisible, setPhotoModalVisible] = useState(false);
-  const [viewPhotoUrl, setViewPhotoUrl] = useState<string | null>(null);
-
   // Modal State for Manual Ticket Log
   const [logModalVisible, setLogModalVisible] = useState(false);
   const [category, setCategory] = useState('Transit Auto Extortion');
@@ -49,35 +39,6 @@ export const GrievanceEnforcementTab: React.FC = () => {
   const [location, setLocation] = useState('');
   const [standardAmt, setStandardAmt] = useState('');
   const [chargedAmt, setChargedAmt] = useState('');
-
-  const handleOpenPhoto = (url?: string) => {
-    if (!url) return;
-    setViewPhotoUrl(url);
-    setPhotoModalVisible(true);
-  };
-
-  const handleOpenGpsMap = (latitude?: number, longitude?: number, locationText?: string) => {
-    if (latitude && longitude) {
-      const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-      if (Platform.OS === 'web') {
-        window.open(url, '_blank');
-      } else {
-        Linking.openURL(url);
-      }
-    } else if (locationText) {
-      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Nashik ' + locationText)}`;
-      if (Platform.OS === 'web') {
-        window.open(url, '_blank');
-      } else {
-        Linking.openURL(url);
-      }
-    }
-  };
-
-  const handleCallReporter = (phone?: string) => {
-    if (!phone) return;
-    Linking.openURL(`tel:${phone}`);
-  };
 
   const openActionModal = (ticket: AdminGrievanceTicket) => {
     setSelectedTicket(ticket);
@@ -140,44 +101,39 @@ export const GrievanceEnforcementTab: React.FC = () => {
     switch (status) {
       case 'REGISTERED':
         return {
-          bg: '#FEE2E2',
-          border: '#FECACA',
-          color: '#DC2626',
+          bg: AdminColors.crimson + '20',
+          border: AdminColors.crimson + '50',
+          color: AdminColors.crimson,
           label: 'OPEN INCIDENT',
           icon: 'alert-circle' as const,
         };
       case 'SQUAD_DISPATCHED':
         return {
-          bg: '#FEF3C7',
-          border: '#FDE68A',
-          color: '#D97706',
+          bg: AdminColors.gold + '20',
+          border: AdminColors.gold + '50',
+          color: AdminColors.gold,
           label: 'SQUAD DISPATCHED',
           icon: 'bicycle' as const,
         };
       case 'FINE_ISSUED':
         return {
-          bg: '#D1FAE5',
-          border: '#A7F3D0',
-          color: '#059669',
+          bg: AdminColors.emerald + '20',
+          border: AdminColors.emerald + '50',
+          color: AdminColors.emerald,
           label: 'FINE LEVIED',
           icon: 'receipt' as const,
         };
       case 'RESOLVED':
       default:
         return {
-          bg: '#EFF6FF',
-          border: '#BAE6FD',
-          color: '#0284C7',
+          bg: AdminColors.skyBlue + '20',
+          border: AdminColors.skyBlue + '50',
+          color: AdminColors.skyBlue,
           label: 'RESOLVED',
           icon: 'checkmark-done-circle' as const,
         };
     }
   };
-
-  const openCount = tickets.filter((t) => t.status === 'REGISTERED').length;
-  const dispatchedCount = tickets.filter((t) => t.status === 'SQUAD_DISPATCHED').length;
-  const fineCount = tickets.filter((t) => t.status === 'FINE_ISSUED').length;
-  const resolvedCount = tickets.filter((t) => t.status === 'RESOLVED').length;
 
   return (
     <View style={styles.container}>
@@ -187,7 +143,7 @@ export const GrievanceEnforcementTab: React.FC = () => {
           <Ionicons name="search" size={16} color={AdminColors.textMuted} />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search ticket, vendor, vehicle..."
+            placeholder="Search ticket token, vehicle, stall..."
             placeholderTextColor={AdminColors.textMuted}
             value={searchQuery}
             onChangeText={setSearchQuery}
@@ -199,81 +155,61 @@ export const GrievanceEnforcementTab: React.FC = () => {
           )}
         </View>
 
-        <TouchableOpacity style={styles.logBtn} onPress={() => setLogModalVisible(true)} activeOpacity={0.8}>
-          <Ionicons name="add" size={18} color={AdminColors.white} />
-          <Text style={styles.logBtnText}>+ Log Incident</Text>
+        <TouchableOpacity style={styles.addBtn} onPress={() => setLogModalVisible(true)}>
+          <Ionicons name="add" size={20} color={AdminColors.white} />
+          <Text style={styles.addBtnText}>Log Complaint</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Filter Tabs - Constrained to 44px height */}
-      <View style={styles.filterScrollWrapper}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.filterScrollView}
-          contentContainerStyle={styles.filterScroll}
+      {/* Filter Tabs */}
+      <View style={styles.filterRow}>
+        <TouchableOpacity
+          style={[styles.filterBtn, filterStatus === 'all' && styles.filterBtnActive]}
+          onPress={() => setFilterStatus('all')}
         >
-          <TouchableOpacity
-            style={[styles.filterChip, filterStatus === 'all' && styles.filterChipActive]}
-            onPress={() => setFilterStatus('all')}
-          >
-            <Text style={[styles.filterChipText, filterStatus === 'all' && styles.filterChipTextActive]}>
-              All ({tickets.length})
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.filterChip, filterStatus === 'REGISTERED' && styles.filterChipActiveRegistered]}
-            onPress={() => setFilterStatus('REGISTERED')}
-          >
-            <Text style={[styles.filterChipText, filterStatus === 'REGISTERED' && styles.filterChipTextActiveRegistered]}>
-              🚨 Urgent ({openCount})
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.filterChip, filterStatus === 'SQUAD_DISPATCHED' && styles.filterChipActiveDispatched]}
-            onPress={() => setFilterStatus('SQUAD_DISPATCHED')}
-          >
-            <Text style={[styles.filterChipText, filterStatus === 'SQUAD_DISPATCHED' && styles.filterChipTextActiveDispatched]}>
-              ⏳ Dispatched ({dispatchedCount})
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.filterChip, filterStatus === 'FINE_ISSUED' && styles.filterChipActiveFine]}
-            onPress={() => setFilterStatus('FINE_ISSUED')}
-          >
-            <Text style={[styles.filterChipText, filterStatus === 'FINE_ISSUED' && styles.filterChipTextActiveFine]}>
-              💵 Fined ({fineCount})
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.filterChip, filterStatus === 'RESOLVED' && styles.filterChipActiveResolved]}
-            onPress={() => setFilterStatus('RESOLVED')}
-          >
-            <Text style={[styles.filterChipText, filterStatus === 'RESOLVED' && styles.filterChipTextActiveResolved]}>
-              ✅ Resolved ({resolvedCount})
-            </Text>
-          </TouchableOpacity>
-        </ScrollView>
+          <Text style={[styles.filterBtnText, filterStatus === 'all' && styles.filterBtnTextActive]}>
+            All ({tickets.length})
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.filterBtn, filterStatus === 'REGISTERED' && styles.filterBtnActive]}
+          onPress={() => setFilterStatus('REGISTERED')}
+        >
+          <Ionicons name="alert-circle" size={13} color={AdminColors.crimson} />
+          <Text style={[styles.filterBtnText, filterStatus === 'REGISTERED' && styles.filterBtnTextActive]}>
+            Urgent
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.filterBtn, filterStatus === 'SQUAD_DISPATCHED' && styles.filterBtnActive]}
+          onPress={() => setFilterStatus('SQUAD_DISPATCHED')}
+        >
+          <Ionicons name="time" size={13} color={AdminColors.gold} />
+          <Text style={[styles.filterBtnText, filterStatus === 'SQUAD_DISPATCHED' && styles.filterBtnTextActive]}>
+            En Route
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.filterBtn, filterStatus === 'FINE_ISSUED' && styles.filterBtnActive]}
+          onPress={() => setFilterStatus('FINE_ISSUED')}
+        >
+          <Ionicons name="checkmark-done" size={13} color={AdminColors.emerald} />
+          <Text style={[styles.filterBtnText, filterStatus === 'FINE_ISSUED' && styles.filterBtnTextActive]}>
+            Fined
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {/* Main List */}
-      <ScrollView
-        style={styles.scrollArea}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.scrollArea} contentContainerStyle={styles.scrollContent}>
         {filteredTickets.length === 0 ? (
           <View style={styles.emptyState}>
-            <Ionicons name="shield-checkmark-outline" size={48} color="#059669" />
-            <Text style={styles.emptyStateTitle}>All Clear & Compliant</Text>
+            <Ionicons name="receipt-outline" size={48} color={AdminColors.textMuted} />
+            <Text style={styles.emptyStateTitle}>No Complaints Logged</Text>
             <Text style={styles.emptyStateDesc}>
               {searchQuery
                 ? 'No grievances match the search filter.'
-                : 'No active incident reports in this section. New reports filed by Yatris or Volunteers will stream here in real-time.'}
+                : 'Tap "+ Log Complaint" to register complaints from pilgrims, dispatch squad units, and penalize violators for extortion or overcharging.'}
             </Text>
           </View>
         ) : (
@@ -285,18 +221,9 @@ export const GrievanceEnforcementTab: React.FC = () => {
                   <View style={{ flex: 1 }}>
                     <View style={styles.ticketTopRow}>
                       <Text style={styles.ticketNumberText}>{ticket.token}</Text>
-                      <View style={styles.headerRightActions}>
-                        <View style={[styles.statusBadge, { backgroundColor: badge.bg, borderColor: badge.border }]}>
-                          <Ionicons name={badge.icon} size={11} color={badge.color} />
-                          <Text style={[styles.statusBadgeText, { color: badge.color }]}>{badge.label}</Text>
-                        </View>
-                        <TouchableOpacity
-                          style={styles.deleteTicketBtn}
-                          onPress={() => deleteTicket(ticket.id)}
-                          activeOpacity={0.7}
-                        >
-                          <Ionicons name="trash-outline" size={14} color="#DC2626" />
-                        </TouchableOpacity>
+                      <View style={[styles.statusBadge, { backgroundColor: badge.bg, borderColor: badge.border }]}>
+                        <Ionicons name={badge.icon} size={12} color={badge.color} />
+                        <Text style={[styles.statusBadgeText, { color: badge.color }]}>{badge.label}</Text>
                       </View>
                     </View>
 
@@ -308,25 +235,6 @@ export const GrievanceEnforcementTab: React.FC = () => {
                     </Text>
                   </View>
                 </View>
-
-                {/* Prominent Evidence Image Banner */}
-                {ticket.imageUrl ? (
-                  <TouchableOpacity
-                    style={styles.evidenceBannerWrapper}
-                    onPress={() => handleOpenPhoto(ticket.imageUrl)}
-                    activeOpacity={0.88}
-                  >
-                    <Image
-                      source={{ uri: ticket.imageUrl }}
-                      style={styles.evidenceBannerImage}
-                      resizeMode="cover"
-                    />
-                    <View style={styles.evidenceOverlayBadge}>
-                      <Ionicons name="expand" size={13} color="#FFFFFF" />
-                      <Text style={styles.evidenceOverlayText}>📷 Evidence Photo (Tap to Enlarge)</Text>
-                    </View>
-                  </TouchableOpacity>
-                ) : null}
 
                 {/* Overcharge Metrics Bar */}
                 <View style={styles.metricsBar}>
@@ -343,43 +251,16 @@ export const GrievanceEnforcementTab: React.FC = () => {
                     </Text>
                   </View>
                   <View style={styles.metricItem}>
-                    <Text style={styles.metricLabel}>Assigned Unit</Text>
-                    <Text style={[styles.metricVal, { color: AdminColors.gold, fontSize: 11 }]} numberOfLines={1}>
+                    <Text style={styles.metricLabel}>Assigned Officer</Text>
+                    <Text style={[styles.metricVal, { color: AdminColors.gold, fontSize: 12 }]}>
                       {ticket.assignedOfficer}
                     </Text>
                   </View>
                 </View>
 
-                {/* Location & GPS Row */}
-                <View style={styles.locationBar}>
-                  <Ionicons name="location" size={14} color={AdminColors.saffron} style={{ marginTop: 2 }} />
-                  <Text style={styles.locationText} numberOfLines={2}>{ticket.location}</Text>
-                </View>
-
-                <View style={styles.actionLinksRow}>
-                  <TouchableOpacity
-                    style={styles.gpsNavBtn}
-                    onPress={() => handleOpenGpsMap(ticket.latitude, ticket.longitude, ticket.location)}
-                    activeOpacity={0.7}
-                  >
-                    <Ionicons name="navigate-circle" size={14} color="#0284C7" />
-                    <Text style={styles.gpsNavBtnText}>
-                      {ticket.latitude && ticket.longitude
-                        ? `GPS: ${ticket.latitude.toFixed(4)}, ${ticket.longitude.toFixed(4)}`
-                        : 'Google Maps Navigation'}
-                    </Text>
-                  </TouchableOpacity>
-
-                  {ticket.reporterPhone ? (
-                    <TouchableOpacity
-                      style={styles.callReporterBtn}
-                      onPress={() => handleCallReporter(ticket.reporterPhone)}
-                      activeOpacity={0.7}
-                    >
-                      <Ionicons name="call" size={12} color="#059669" />
-                      <Text style={styles.callReporterText}>Call Pilgrim</Text>
-                    </TouchableOpacity>
-                  ) : null}
+                <View style={styles.locationRow}>
+                  <Ionicons name="location" size={14} color={AdminColors.saffron} />
+                  <Text style={styles.locationText}>{ticket.location}</Text>
                 </View>
 
                 {/* Enforcement Summary if any */}
@@ -402,7 +283,6 @@ export const GrievanceEnforcementTab: React.FC = () => {
                 <TouchableOpacity
                   style={styles.takeActionBtn}
                   onPress={() => openActionModal(ticket)}
-                  activeOpacity={0.8}
                 >
                   <Ionicons name="shield-checkmark" size={16} color={AdminColors.white} />
                   <Text style={styles.takeActionBtnText}>
@@ -429,7 +309,7 @@ export const GrievanceEnforcementTab: React.FC = () => {
             </View>
 
             {selectedTicket && (
-              <ScrollView style={{ maxHeight: 420 }}>
+              <ScrollView style={{ maxHeight: 400 }}>
                 <View style={styles.ticketSummaryBox}>
                   <Text style={styles.summaryTitle}>
                     Ticket: {selectedTicket.token} • {selectedTicket.vehicleOrShop}
@@ -437,15 +317,6 @@ export const GrievanceEnforcementTab: React.FC = () => {
                   <Text style={styles.summarySub}>
                     Charge: {selectedTicket.chargedAmt} vs {selectedTicket.standardAmt} at {selectedTicket.location}
                   </Text>
-                  {selectedTicket.imageUrl ? (
-                    <TouchableOpacity
-                      style={styles.modalPhotoRow}
-                      onPress={() => handleOpenPhoto(selectedTicket.imageUrl)}
-                    >
-                      <Image source={{ uri: selectedTicket.imageUrl }} style={styles.modalPhotoThumb} />
-                      <Text style={styles.modalPhotoText}>View Uploaded Evidence Photo</Text>
-                    </TouchableOpacity>
-                  ) : null}
                 </View>
 
                 <Text style={styles.inputLabel}>Investigation Status</Text>
@@ -588,18 +459,6 @@ export const GrievanceEnforcementTab: React.FC = () => {
           </View>
         </View>
       </Modal>
-
-      {/* High-Res Evidence Photo Modal */}
-      <Modal visible={photoModalVisible} transparent animationType="fade">
-        <View style={styles.fullPhotoOverlay}>
-          <TouchableOpacity style={styles.fullPhotoCloseBtn} onPress={() => setPhotoModalVisible(false)}>
-            <Ionicons name="close" size={24} color="#FFFFFF" />
-          </TouchableOpacity>
-          {viewPhotoUrl ? (
-            <Image source={{ uri: viewPhotoUrl }} style={styles.fullPhotoImage} resizeMode="contain" />
-          ) : null}
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -607,7 +466,7 @@ export const GrievanceEnforcementTab: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AdminColors.background,
+    backgroundColor: AdminColors.darkNavy,
   },
   topBar: {
     flexDirection: 'row',
@@ -621,332 +480,201 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: AdminColors.inputBackground,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    height: 40,
+    backgroundColor: AdminColors.navyCard,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    height: 42,
     borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
+    borderColor: AdminColors.navyBorder,
+    gap: 8,
   },
   searchInput: {
     flex: 1,
-    marginLeft: 8,
-    color: AdminColors.textPrimary,
+    color: AdminColors.textLight,
     fontSize: 13,
-    fontFamily: 'Poppins_400Regular',
   },
-  logBtn: {
+  addBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
     backgroundColor: AdminColors.saffron,
-    paddingHorizontal: 12,
-    paddingVertical: 9,
-    borderRadius: 8,
+    paddingHorizontal: 14,
+    height: 42,
+    borderRadius: 10,
+    gap: 4,
   },
-  logBtnText: {
+  addBtnText: {
     color: AdminColors.white,
-    fontSize: 12,
-    fontFamily: 'Poppins_700Bold',
+    fontSize: 13,
+    fontWeight: '700',
   },
-  filterScrollWrapper: {
-    maxHeight: 46,
-    marginBottom: 4,
-  },
-  filterScrollView: {
-    maxHeight: 44,
-  },
-  filterScroll: {
+  filterRow: {
+    flexDirection: 'row',
     paddingHorizontal: 16,
-    paddingVertical: 4,
+    paddingVertical: 6,
     gap: 6,
+  },
+  filterBtn: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-  },
-  filterChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 8,
-    backgroundColor: AdminColors.cardBackground,
-    borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
-    height: 32,
     justifyContent: 'center',
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: AdminColors.navyCard,
+    borderWidth: 1,
+    borderColor: AdminColors.navyBorder,
+    gap: 4,
   },
-  filterChipActive: {
-    backgroundColor: AdminColors.saffron,
+  filterBtnActive: {
     borderColor: AdminColors.saffron,
+    backgroundColor: AdminColors.saffron + '20',
   },
-  filterChipActiveRegistered: {
-    backgroundColor: '#DC2626',
-    borderColor: '#DC2626',
-  },
-  filterChipActiveDispatched: {
-    backgroundColor: '#D97706',
-    borderColor: '#D97706',
-  },
-  filterChipActiveFine: {
-    backgroundColor: '#059669',
-    borderColor: '#059669',
-  },
-  filterChipActiveResolved: {
-    backgroundColor: '#0284C7',
-    borderColor: '#0284C7',
-  },
-  filterChipText: {
+  filterBtnText: {
+    color: AdminColors.textMuted,
     fontSize: 11,
-    color: AdminColors.textSecondary,
-    fontFamily: 'Poppins_500Medium',
+    fontWeight: '600',
   },
-  filterChipTextActive: {
-    color: AdminColors.white,
-    fontFamily: 'Poppins_700Bold',
-  },
-  filterChipTextActiveRegistered: {
-    color: '#FFFFFF',
-    fontFamily: 'Poppins_700Bold',
-  },
-  filterChipTextActiveDispatched: {
-    color: '#FFFFFF',
-    fontFamily: 'Poppins_700Bold',
-  },
-  filterChipTextActiveFine: {
-    color: '#FFFFFF',
-    fontFamily: 'Poppins_700Bold',
-  },
-  filterChipTextActiveResolved: {
-    color: '#FFFFFF',
-    fontFamily: 'Poppins_700Bold',
+  filterBtnTextActive: {
+    color: AdminColors.saffron,
+    fontWeight: '700',
   },
   scrollArea: {
     flex: 1,
   },
   scrollContent: {
     padding: 16,
-    paddingBottom: 130,
+    paddingBottom: 40,
     gap: 12,
   },
   emptyState: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 36,
-    backgroundColor: AdminColors.cardBackground,
-    borderRadius: 14,
+    paddingVertical: 60,
+    paddingHorizontal: 24,
+    backgroundColor: AdminColors.navyCard,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
-    marginTop: 10,
+    borderColor: AdminColors.navyBorder,
   },
   emptyStateTitle: {
-    fontSize: 15,
-    fontFamily: 'Poppins_700Bold',
-    color: AdminColors.textPrimary,
-    marginTop: 10,
+    color: AdminColors.textLight,
+    fontSize: 17,
+    fontWeight: '700',
+    marginTop: 12,
   },
   emptyStateDesc: {
-    fontSize: 11.5,
-    fontFamily: 'Poppins_400Regular',
     color: AdminColors.textMuted,
+    fontSize: 13,
     textAlign: 'center',
-    marginTop: 4,
-    maxWidth: 380,
+    marginTop: 6,
     lineHeight: 18,
   },
   card: {
-    backgroundColor: AdminColors.cardBackground,
+    backgroundColor: AdminColors.navyCard,
     borderRadius: 14,
-    padding: 14,
     borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 2,
+    borderColor: AdminColors.navyBorder,
+    padding: 14,
   },
   cardHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 6,
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   ticketTopRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 8,
     marginBottom: 4,
   },
   ticketNumberText: {
-    fontSize: 12.5,
-    fontFamily: 'Poppins_700Bold',
-    color: AdminColors.textPrimary,
-  },
-  headerRightActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  deleteTicketBtn: {
-    padding: 4,
-    backgroundColor: '#FEF2F2',
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#FECACA',
+    color: AdminColors.textMuted,
+    fontSize: 12,
+    fontWeight: '700',
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 7,
-    paddingVertical: 2.5,
-    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
     borderWidth: 1,
+    gap: 4,
   },
   statusBadgeText: {
-    fontSize: 9.5,
-    fontFamily: 'Poppins_700Bold',
+    fontSize: 10,
+    fontWeight: '800',
   },
   offenderText: {
-    fontSize: 14,
-    fontFamily: 'Poppins_700Bold',
-    color: AdminColors.textPrimary,
+    color: AdminColors.textLight,
+    fontSize: 15,
+    fontWeight: '700',
     marginTop: 2,
   },
   pilgrimText: {
-    fontSize: 11,
-    fontFamily: 'Poppins_400Regular',
     color: AdminColors.textMuted,
-    marginTop: 1,
-  },
-  evidenceBannerWrapper: {
-    width: '100%',
-    height: 150,
-    borderRadius: 10,
-    overflow: 'hidden',
-    backgroundColor: '#F3F4F6',
-    marginVertical: 8,
-    position: 'relative',
-    borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
-  },
-  evidenceBannerImage: {
-    width: '100%',
-    height: '100%',
-  },
-  evidenceOverlayBadge: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-    backgroundColor: 'rgba(15, 23, 42, 0.82)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  evidenceOverlayText: {
-    color: '#FFFFFF',
-    fontSize: 10,
-    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 12,
+    marginTop: 2,
   },
   metricsBar: {
     flexDirection: 'row',
-    backgroundColor: AdminColors.inputBackground,
+    backgroundColor: AdminColors.navySurface,
     borderRadius: 8,
-    padding: 8,
-    marginVertical: 6,
+    padding: 10,
+    marginVertical: 10,
+    justifyContent: 'space-around',
     borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
+    borderColor: AdminColors.navyBorder,
   },
   metricItem: {
-    flex: 1,
     alignItems: 'center',
   },
   metricLabel: {
-    fontSize: 9.5,
-    fontFamily: 'Poppins_500Medium',
     color: AdminColors.textMuted,
+    fontSize: 10,
+    fontWeight: '600',
+    marginBottom: 2,
   },
   metricVal: {
-    fontSize: 12.5,
-    fontFamily: 'Poppins_700Bold',
-    marginTop: 2,
+    fontSize: 15,
+    fontWeight: '800',
   },
-  locationBar: {
+  locationRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 6,
-    marginTop: 4,
+    marginBottom: 6,
   },
   locationText: {
-    fontSize: 11.5,
-    fontFamily: 'Poppins_500Medium',
-    color: AdminColors.textSecondary,
-    flex: 1,
-    lineHeight: 16,
-  },
-  actionLinksRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 8,
-    flexWrap: 'wrap',
-  },
-  gpsNavBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: '#F0F9FF',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#BAE6FD',
-  },
-  gpsNavBtnText: {
-    fontSize: 10.5,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#0284C7',
-  },
-  callReporterBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: '#ECFDF5',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#A7F3D0',
-  },
-  callReporterText: {
-    fontSize: 10.5,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#059669',
+    color: AdminColors.gold,
+    fontSize: 12,
+    fontWeight: '600',
   },
   officerNotesBox: {
     flexDirection: 'row',
-    gap: 8,
-    backgroundColor: '#F0F9FF',
-    padding: 8,
+    backgroundColor: AdminColors.navySurface,
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#BAE6FD',
-    marginTop: 8,
+    padding: 10,
+    marginTop: 10,
+    gap: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: AdminColors.skyBlue,
   },
   officerNotesTitle: {
+    color: AdminColors.skyBlue,
     fontSize: 11,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#0284C7',
+    fontWeight: '700',
   },
   officerNotesBody: {
-    fontSize: 11,
-    fontFamily: 'Poppins_400Regular',
-    color: AdminColors.textPrimary,
+    color: AdminColors.textLight,
+    fontSize: 12,
     marginTop: 2,
+    lineHeight: 16,
   },
   fineNotice: {
-    fontSize: 10.5,
-    fontFamily: 'Poppins_700Bold',
-    color: '#059669',
+    color: AdminColors.emerald,
+    fontSize: 11,
+    fontWeight: '700',
     marginTop: 4,
   },
   takeActionBtn: {
@@ -956,26 +684,26 @@ const styles = StyleSheet.create({
     backgroundColor: AdminColors.saffron,
     paddingVertical: 10,
     borderRadius: 8,
-    marginTop: 8,
+    marginTop: 12,
     gap: 6,
   },
   takeActionBtnText: {
     color: AdminColors.white,
-    fontSize: 12,
-    fontFamily: 'Poppins_700Bold',
+    fontSize: 13,
+    fontWeight: '700',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.65)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
     padding: 16,
   },
   modalCard: {
-    backgroundColor: AdminColors.cardBackground,
+    backgroundColor: AdminColors.navyCard,
     borderRadius: 16,
     padding: 18,
     borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
+    borderColor: AdminColors.navyBorder,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -984,68 +712,47 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     paddingBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: AdminColors.cardBorder,
+    borderBottomColor: AdminColors.navyBorder,
   },
   modalTitle: {
-    color: AdminColors.textPrimary,
-    fontSize: 15,
-    fontFamily: 'Poppins_700Bold',
+    color: AdminColors.textLight,
+    fontSize: 16,
+    fontWeight: '700',
   },
   ticketSummaryBox: {
-    backgroundColor: AdminColors.inputBackground,
+    backgroundColor: AdminColors.navySurface,
     padding: 10,
     borderRadius: 8,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
+    borderColor: AdminColors.navyBorder,
   },
   summaryTitle: {
-    color: AdminColors.textPrimary,
+    color: AdminColors.textLight,
     fontSize: 13,
-    fontFamily: 'Poppins_700Bold',
+    fontWeight: '700',
   },
   summarySub: {
     color: AdminColors.saffron,
-    fontSize: 11.5,
-    fontFamily: 'Poppins_500Medium',
+    fontSize: 12,
     marginTop: 2,
   },
-  modalPhotoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 8,
-    backgroundColor: '#EFF6FF',
-    padding: 6,
-    borderRadius: 8,
-  },
-  modalPhotoThumb: {
-    width: 36,
-    height: 36,
-    borderRadius: 6,
-  },
-  modalPhotoText: {
-    fontSize: 11,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#0284C7',
-  },
   inputLabel: {
-    color: AdminColors.textPrimary,
-    fontSize: 11.5,
-    fontFamily: 'Poppins_600SemiBold',
+    color: AdminColors.textLight,
+    fontSize: 12,
+    fontWeight: '600',
     marginTop: 10,
     marginBottom: 4,
   },
   modalInput: {
-    backgroundColor: AdminColors.inputBackground,
+    backgroundColor: AdminColors.navySurface,
     borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
+    borderColor: AdminColors.navyBorder,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    color: AdminColors.textPrimary,
-    fontSize: 12.5,
-    fontFamily: 'Poppins_400Regular',
+    color: AdminColors.textLight,
+    fontSize: 13,
   },
   statusPillRow: {
     flexDirection: 'row',
@@ -1057,9 +764,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
-    backgroundColor: AdminColors.inputBackground,
+    backgroundColor: AdminColors.navySurface,
     borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
+    borderColor: AdminColors.navyBorder,
   },
   statusPillActive: {
     borderColor: AdminColors.gold,
@@ -1068,11 +775,12 @@ const styles = StyleSheet.create({
   statusPillText: {
     color: AdminColors.textMuted,
     fontSize: 11,
-    fontFamily: 'Poppins_600SemiBold',
+    fontWeight: '600',
+    textTransform: 'capitalize',
   },
   statusPillTextActive: {
     color: AdminColors.white,
-    fontFamily: 'Poppins_700Bold',
+    fontWeight: '700',
   },
   inputGrid: {
     flexDirection: 'row',
@@ -1084,7 +792,7 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: AdminColors.cardBorder,
+    borderTopColor: AdminColors.navyBorder,
   },
   cancelBtn: {
     paddingVertical: 10,
@@ -1093,8 +801,8 @@ const styles = StyleSheet.create({
   },
   cancelBtnText: {
     color: AdminColors.textMuted,
-    fontSize: 12.5,
-    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 13,
+    fontWeight: '600',
   },
   saveBtn: {
     backgroundColor: AdminColors.saffron,
@@ -1104,26 +812,7 @@ const styles = StyleSheet.create({
   },
   saveBtnText: {
     color: AdminColors.white,
-    fontSize: 12.5,
-    fontFamily: 'Poppins_700Bold',
-  },
-  fullPhotoOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.92)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-  },
-  fullPhotoCloseBtn: {
-    position: 'absolute',
-    top: 30,
-    right: 20,
-    zIndex: 10,
-    padding: 8,
-  },
-  fullPhotoImage: {
-    width: '100%',
-    height: '80%',
+    fontSize: 13,
+    fontWeight: '700',
   },
 });
-

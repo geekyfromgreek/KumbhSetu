@@ -11,10 +11,17 @@ import { TariffManagementTab } from '@/components/tabs/TariffManagementTab';
 import { BazaarManagementTab } from '@/components/tabs/BazaarManagementTab';
 import { FactCheckDispatchTab } from '@/components/tabs/FactCheckDispatchTab';
 import { GrievanceEnforcementTab } from '@/components/tabs/GrievanceEnforcementTab';
-import { PoliceDashboardTab } from '@/components/tabs/PoliceDashboardTab';
 
 export default function AdminMainScreen() {
-  const { activeTab, isAuthenticated } = useAdmin();
+  const { activeTab, isAuthenticated, isLoading } = useAdmin();
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={AdminColors.saffron} />
+      </SafeAreaView>
+    );
+  }
 
   // If not logged in, enforce the Admin Login Gate
   if (!isAuthenticated) {
@@ -25,8 +32,6 @@ export default function AdminMainScreen() {
     switch (activeTab) {
       case 'dashboard':
         return <DashboardOverviewTab />;
-      case 'police':
-        return <PoliceDashboardTab />;
       case 'tariffs':
         return <TariffManagementTab />;
       case 'bazaar':

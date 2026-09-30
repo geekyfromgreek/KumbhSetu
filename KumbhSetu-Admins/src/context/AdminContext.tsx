@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
 import { safeStorage } from '@/lib/safeStorage';
 import {
   AdminRouteFare,
@@ -23,8 +22,8 @@ interface AdminContextType {
   logout: () => Promise<void>;
 
   // Navigation
-  activeTab: 'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances' | 'police';
-  setActiveTab: (tab: 'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances' | 'police') => void;
+  activeTab: 'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances';
+  setActiveTab: (tab: 'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances') => void;
 
   // Transit Routes Management
   routes: AdminRouteFare[];
@@ -59,15 +58,6 @@ interface AdminContextType {
     actionSummary?: string,
     penalty?: number
   ) => Promise<void>;
-  deleteTicket: (id: string) => Promise<void>;
-  clearAllTickets: () => Promise<void>;
-  policeEnforceAction: (params: {
-    id: string;
-    status: 'RESOLVED' | 'UNRESOLVED' | 'SQUAD_DISPATCHED';
-    punishmentType?: AdminGrievanceTicket['punishmentType'];
-    penaltyAmount?: number;
-    notes?: string;
-  }) => Promise<void>;
 
   // Shahi Snan & Muhurat Schedule
   snanMuhurats: AdminSnanMuhurat[];
@@ -80,7 +70,6 @@ interface AdminContextType {
   stats: {
     activeRoutesCount: number;
     pendingGrievancesCount: number;
-    escalatedPoliceCount: number;
     openRumorsCount: number;
     approvedShopsCount: number;
     totalPenaltiesCollected: number;
@@ -103,8 +92,8 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<DBAAdminAccount | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances' | 'police'>('dashboard');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'tariffs' | 'bazaar' | 'factcheck' | 'grievances'>('dashboard');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [routes, setRoutes] = useState<AdminRouteFare[]>([]);
   const [commodities, setCommodities] = useState<AdminCommodityPrice[]>([]);
@@ -136,72 +125,36 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         ]);
 
         if (savedAuth) {
-          try {
-            const parsed = JSON.parse(savedAuth);
-            setCurrentUser(parsed);
-            setIsAuthenticated(true);
-            if (parsed.officerId === 'Police123' || parsed.role === 'POLICE_CONTROL_ROOM') {
-              setActiveTab('police');
-            }
-          } catch (_) {}
+          const parsed = JSON.parse(savedAuth);
+          setCurrentUser(parsed);
+          setIsAuthenticated(true);
         }
-        if (savedRoutes) {
-          try { setRoutes(JSON.parse(savedRoutes)); } catch (_) {}
-        }
-        if (savedComm) {
-          try { setCommodities(JSON.parse(savedComm)); } catch (_) {}
-        }
-        if (savedShops) {
-          try { setShops(JSON.parse(savedShops)); } catch (_) {}
-        }
-        if (savedFC) {
-          try { setFactChecks(JSON.parse(savedFC)); } catch (_) {}
-        }
-        if (savedTickets) {
-          try { setTickets(JSON.parse(savedTickets)); } catch (_) {}
-        }
-        if (savedSnan) {
-          try { setSnanMuhurats(JSON.parse(savedSnan)); } catch (_) {}
-        }
+        if (savedRoutes) setRoutes(JSON.parse(savedRoutes));
+        if (savedComm) setCommodities(JSON.parse(savedComm));
+        if (savedShops) setShops(JSON.parse(savedShops));
+        if (savedFC) setFactChecks(JSON.parse(savedFC));
+        if (savedTickets) setTickets(JSON.parse(savedTickets));
+        if (savedSnan) setSnanMuhurats(JSON.parse(savedSnan));
+
+        // Fetch live data from Supabase
+        await fetchLiveAdminData();
       } catch (err) {
         console.warn('Error loading AdminContext state:', err);
       } finally {
         setIsLoading(false);
       }
-
-      // Fetch live data from Supabase in background
-      fetchLiveAdminData();
     };
 
     loadState();
 
-    // Safety timeout: ensure loading spinner never hangs
-    const safetyTimer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
 
-    // 1. Subscribe to realtime changes
+    // Subscribe to realtime changes
     const sub = AdminSupabaseService.subscribeToAll(() => {
       fetchLiveAdminData();
     });
 
-    // 2. Periodic Live Sync Heartbeat (every 4 seconds)
-    const liveSyncInterval = setInterval(() => {
-      fetchLiveAdminData();
-    }, 4000);
-
-    // 3. Re-fetch immediately when app comes to foreground
-    const appStateSub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
-      if (nextState === 'active') {
-        fetchLiveAdminData();
-      }
-    });
-
     return () => {
-      clearTimeout(safetyTimer);
-      if (sub?.unsubscribe) sub.unsubscribe();
-      clearInterval(liveSyncInterval);
-      appStateSub.remove();
+      sub.unsubscribe();
     };
   }, []);
 
@@ -240,13 +193,13 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         setSnanMuhurats(liveSnan);
         safeStorage.setItem(STORAGE_KEYS.SNAN_MUHURATS, JSON.stringify(liveSnan));
       }
-    } catch (err) {
-      console.warn('Error syncing Admin live data:', err);
+    } catch (e) {
+      console.warn('Admin fetchLiveAdminData error:', e);
     }
   };
 
 
-  // LOGIN AUTHENTICATION (e.g. Gaurang/pass123 or Police123/pols123)
+  // LOGIN AUTHENTICATION (Username: Gaurang, Password: pass123)
   const login = (usernameOrEmail: string, pass: string): { success: boolean; message?: string } => {
     const cleanUser = usernameOrEmail.trim().toLowerCase();
     const cleanPass = pass.trim();
@@ -260,11 +213,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     if (matched) {
       setCurrentUser(matched);
       setIsAuthenticated(true);
-      if (matched.officerId.toLowerCase() === 'police123' || matched.role === 'POLICE_CONTROL_ROOM') {
-        setActiveTab('police');
-      } else {
-        setActiveTab('dashboard');
-      }
       safeStorage.setItem(STORAGE_KEYS.AUTH_USER, JSON.stringify(matched));
       return { success: true };
     }
@@ -476,50 +424,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     await safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(updated));
   };
 
-  const deleteTicket = async (id: string) => {
-    await AdminSupabaseService.deleteGrievance(id);
-    const updated = tickets.filter((t) => t.id !== id);
-    setTickets(updated);
-    await safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(updated));
-  };
-
-  const clearAllTickets = async () => {
-    await AdminSupabaseService.clearAllGrievances();
-    setTickets([]);
-    await safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify([]));
-  };
-
-  const policeEnforceAction = async (params: {
-    id: string;
-    status: 'RESOLVED' | 'UNRESOLVED' | 'SQUAD_DISPATCHED';
-    punishmentType?: AdminGrievanceTicket['punishmentType'];
-    penaltyAmount?: number;
-    notes?: string;
-  }) => {
-    const officerName = currentUser ? currentUser.name : 'Inspector Vijay Rathore (Nashik Police)';
-    await AdminSupabaseService.policeEnforceAction({
-      ...params,
-      officerName,
-    });
-
-    const updated = tickets.map((t: AdminGrievanceTicket) => {
-      if (t.id === params.id) {
-        return {
-          ...t,
-          status: params.status,
-          assignedOfficer: officerName,
-          punishmentType: params.punishmentType,
-          penaltyAmount: params.penaltyAmount !== undefined ? params.penaltyAmount : t.penaltyAmount,
-          actionSummary: params.notes || t.actionSummary,
-          resolutionNotes: params.notes || t.resolutionNotes,
-        };
-      }
-      return t;
-    });
-    setTickets(updated);
-    await safeStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(updated));
-  };
-
   // SHAHI SNAN & MUHURAT SCHEDULE CRUD
   const addSnanMuhurat = async (snan: Omit<AdminSnanMuhurat, 'id' | 'updatedAt'>) => {
     const serverId = await AdminSupabaseService.insertSnanMuhurat(snan);
@@ -556,9 +460,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     activeRoutesCount: routes.filter((r: AdminRouteFare) => r.status === 'ACTIVE').length,
     pendingGrievancesCount: tickets.filter(
       (t: AdminGrievanceTicket) => t.status === 'REGISTERED' || t.status === 'SQUAD_DISPATCHED'
-    ).length,
-    escalatedPoliceCount: tickets.filter(
-      (t: AdminGrievanceTicket) => (t.severity === 'MED' || t.severity === 'HIGH') && t.status !== 'RESOLVED'
     ).length,
     openRumorsCount: factChecks.filter((f: AdminFactCheck) => f.status === 'under_review').length,
     approvedShopsCount: shops.filter((s: AdminBazaarShop) => s.status === 'APPROVED').length,
@@ -599,9 +500,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         tickets,
         addTicket,
         updateTicketStatus,
-        deleteTicket,
-        clearAllTickets,
-        policeEnforceAction,
         snanMuhurats,
         addSnanMuhurat,
         updateSnanMuhurat,

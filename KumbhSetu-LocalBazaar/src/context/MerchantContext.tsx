@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
 import { safeStorage } from '@/lib/safeStorage';
 import {
   MerchantProfile,
@@ -54,34 +53,10 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [activeTab, setActiveTab] = useState<'catalog' | 'profile' | 'preview' | 'inquiries'>('catalog');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchLiveMerchantData = async (merchantId: string) => {
-    try {
-      if (!merchantId) return;
-      const [liveProfile, liveItems, liveInq] = await Promise.all([
-        MerchantSupabaseService.fetchMerchantByPhone(profile?.phone || ''),
-        MerchantSupabaseService.fetchCatalogItems(merchantId),
-        MerchantSupabaseService.fetchInquiries(merchantId),
-      ]);
-
-      if (liveProfile) {
-        setProfile((prev) => (prev ? { ...prev, ...liveProfile } : liveProfile));
-        safeStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(liveProfile));
-      }
-      if (liveItems) {
-        setCatalogItems(liveItems);
-        safeStorage.setItem(STORAGE_KEYS.CATALOG, JSON.stringify(liveItems));
-      }
-      if (liveInq) {
-        setInquiries(liveInq);
-        safeStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(liveInq));
-      }
-    } catch (e) {
-      console.warn('Merchant fetchLiveMerchantData error:', e);
-    }
-  };
-
   // Load persisted merchant data on launch
   useEffect(() => {
+    let sub: any = null;
+
     const loadData = async () => {
       try {
         const [savedProfile, savedCatalog, savedInquiries] = await Promise.all([
@@ -105,7 +80,28 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
         }
 
         if (parsedProfile?.id) {
-          fetchLiveMerchantData(parsedProfile.id);
+          // Fetch live catalog and inquiries
+          const [liveItems, liveInq] = await Promise.all([
+            MerchantSupabaseService.fetchCatalogItems(parsedProfile.id),
+            MerchantSupabaseService.fetchInquiries(parsedProfile.id),
+          ]);
+          if (liveItems) {
+            setCatalogItems(liveItems);
+            safeStorage.setItem(STORAGE_KEYS.CATALOG, JSON.stringify(liveItems));
+          }
+          if (liveInq) {
+            setInquiries(liveInq);
+            safeStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(liveInq));
+          }
+
+          // Realtime subscription for inquiries
+          sub = MerchantSupabaseService.subscribeToInquiries(parsedProfile.id, async () => {
+            const updatedInq = await MerchantSupabaseService.fetchInquiries(parsedProfile!.id);
+            if (updatedInq) {
+              setInquiries(updatedInq);
+              safeStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(updatedInq));
+            }
+          });
         }
       } catch (err) {
         console.warn('Error loading merchant storage:', err);
@@ -115,35 +111,11 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
 
     loadData();
-  }, []);
-
-  // Realtime subscription and heartbeat sync for active merchant profile
-  useEffect(() => {
-    if (!profile?.id) return;
-
-    // 1. Subscribe to Supabase Realtime channel
-    const sub = MerchantSupabaseService.subscribeToMerchantUpdates(profile.id, () => {
-      fetchLiveMerchantData(profile.id);
-    });
-
-    // 2. Periodic Live Sync Heartbeat (every 4 seconds)
-    const interval = setInterval(() => {
-      fetchLiveMerchantData(profile.id);
-    }, 4000);
-
-    // 3. AppState listener
-    const appStateSub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
-      if (nextState === 'active') {
-        fetchLiveMerchantData(profile.id);
-      }
-    });
 
     return () => {
       if (sub?.unsubscribe) sub.unsubscribe();
-      clearInterval(interval);
-      appStateSub.remove();
     };
-  }, [profile?.id]);
+  }, []);
 
   // Register Merchant
   const registerMerchant = async (data: Omit<MerchantProfile, 'id' | 'registeredDate'>) => {

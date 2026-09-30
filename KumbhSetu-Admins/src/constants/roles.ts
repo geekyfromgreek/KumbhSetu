@@ -22,18 +22,6 @@ export const DBA_PROVISIONED_ACCOUNTS: DBAAdminAccount[] = [
     department: 'Kumbh Administration & Command',
     avatarIcon: 'user-shield',
   },
-  {
-    id: 'admin_police_123',
-    officerId: 'Police123',
-    securityPin: 'pols123',
-    email: 'police.flyingsquad@nashikpolice.gov.in',
-    name: 'Inspector Vijay Rathore',
-    role: 'POLICE_CONTROL_ROOM',
-    roleTitle: 'Mela Police Flying Squad (Rapid Enforcement)',
-    badgeNumber: 'MH-POL-108',
-    department: 'Nashik City Police & Flying Enforcement Wing',
-    avatarIcon: 'shield-alt',
-  },
 ];
 
 export const ADMIN_OFFICERS = DBA_PROVISIONED_ACCOUNTS;

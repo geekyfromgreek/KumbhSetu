@@ -80,20 +80,20 @@ async def create_booking(booking: BookingCreate):
 
 @router.get("/")
 async def get_bookings(
-    status: Optional[str] = None,
+    status: Optional[BookingStatus] = None,
     category: Optional[str] = None,
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
-    user: Optional[CurrentUser] = Depends(verify_jwt)
+    user: CurrentUser = Depends(require_nashikkar)
 ):
-    """Get all bookings — accessible for Nashikkar & Local Guide dashboards."""
+    """Get all bookings — Nashikkar only."""
     conn = get_connection()
     conditions = []
     params = []
 
     if status:
-        conditions.append("status LIKE ?")
-        params.append(f"%{status}%")
+        conditions.append("status = ?")
+        params.append(status.value)
 
     if category:
         conditions.append("category = ?")
@@ -118,9 +118,9 @@ async def get_bookings(
 async def update_booking_status(
     booking_id: str,
     update: BookingStatusUpdate,
-    user: Optional[CurrentUser] = Depends(verify_jwt)
+    user: CurrentUser = Depends(require_nashikkar)
 ):
-    """Accept or decline a booking."""
+    """Accept or decline a booking — Nashikkar only."""
     conn = get_connection()
     row = conn.execute("SELECT * FROM bookings WHERE id = ?", (booking_id,)).fetchone()
     if not row:
@@ -132,40 +132,7 @@ async def update_booking_status(
         (update.status.value, update.notes, now, booking_id)
     )
     conn.commit()
-    return {"message": f"Booking {update.status.value}", "id": booking_id, "status": update.status.value}
-
-
-@router.patch("/{booking_id}/status")
-async def patch_booking_status(
-    booking_id: str,
-    data: dict,
-    user: Optional[CurrentUser] = Depends(verify_jwt)
-):
-    """Accept, confirm, or decline a tour booking (Local Guide & Nashikkar action)."""
-    conn = get_connection()
-    row = conn.execute("SELECT * FROM bookings WHERE id = ? OR listing_id = ?", (booking_id, booking_id)).fetchone()
-    if not row:
-        # Check if booking exists in localStorage format or insert as tracked
-        now = now_iso()
-        st = data.get("status", "Confirmed")
-        conn.execute("""
-            INSERT OR REPLACE INTO bookings (id, listing_id, listing_name, category, guest_name, guest_phone, status, created_at, updated_at)
-            VALUES (?, ?, ?, 'guide', ?, ?, ?, ?, ?)
-        """, (booking_id, booking_id, data.get("tour_title", "Local Guide Tour"), data.get("guest_name", "Pilgrim"), data.get("guest_phone", "+919829012344"), st, now, now))
-        conn.commit()
-        return {"status": "created_and_updated", "id": booking_id, "booking_status": st}
-
-    now = now_iso()
-    new_status = data.get("status") or "Confirmed"
-    notes = data.get("notes")
-    bid = row["id"]
-    conn.execute(
-        "UPDATE bookings SET status = ?, notes = coalesce(?, notes), updated_at = ? WHERE id = ?",
-        (new_status, notes, now, bid)
-    )
-    conn.commit()
-    return {"status": "updated", "id": bid, "booking_status": new_status, "updated_at": now}
-
+    return {"message": f"Booking {update.status.value}", "id": booking_id}
 
 
 @router.get("/stats")

@@ -2,47 +2,22 @@
 
 <html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="api_config.js"></script><script src="supabase.js"></script><script src="supabase_realtime.js"></script><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "inverse-primary": "#ffb597", "on-secondary": "#ffffff", "on-surface": "#1b1b20", "on-surface-variant": "#584239", "primary-container": "#c64f0e", "surface-dim": "#dbd9e0", "on-primary-container": "#fffbff", "surface-variant": "#e4e1e8", "error": "#ba1a1a", "secondary-fixed": "#ffdad8", "tertiary-fixed": "#ffddb5", "secondary-container": "#fd8a88", "tertiary-container": "#976c31", "on-secondary-fixed": "#410007", "surface-container-lowest": "#ffffff", "on-tertiary-container": "#fffbff", "background": "#fbf8ff", "on-primary": "#ffffff", "secondary-fixed-dim": "#ffb3b0", "on-primary-fixed-variant": "#7d2d00", "tertiary-fixed-dim": "#f1bd79", "surface-bright": "#fbf8ff", "outline": "#8c7167", "on-tertiary": "#ffffff", "surface": "#fbf8ff", "surface-container-low": "#f5f2f9", "surface-container-high": "#eae7ee", "on-secondary-container": "#752125", "on-error": "#ffffff", "secondary": "#9e4041", "on-secondary-fixed-variant": "#7f292b", "on-tertiary-fixed-variant": "#633f04", "surface-tint": "#a43d00", "inverse-surface": "#303035", "tertiary": "#7b541a", "on-primary-fixed": "#360f00", "surface-container-highest": "#e4e1e8", "primary-fixed-dim": "#ffb597", "on-error-container": "#93000a", "error-container": "#ffdad6", "primary-fixed": "#ffdbcd", "outline-variant": "#e0c0b4", "primary": "#a03b00", "on-background": "#1b1b20", "surface-container": "#f0edf4", "on-tertiary-fixed": "#2a1800", "inverse-on-surface": "#f2eff6" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-md": "1rem", "space-2xl": "3rem", "layout-max-width": "75rem", "layout-margin-mobile": "1rem", "space-sm": "0.75rem", "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "space-3xl": "4rem", "space-lg": "1.5rem", "layout-margin-tablet": "2rem", "space-2xs": "0.25rem", "layout-margin-desktop": "3rem", "gutter-mobile": "0.75rem", "space-xl": "2rem" }, fontFamily: { "body-md": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-lg": ["Inter"], "headline-md": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "display-lg-mobile": ["Plus Jakarta Sans"], "label-md": ["Inter"], "body-sm": ["Inter"] }, fontSize: { "body-md": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "400" }], "headline-xl": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }], "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "0em", fontWeight: "600" }], "display-lg": ["44px", { lineHeight: "52px", letterSpacing: "-0.02em", fontWeight: "700" }], "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.005em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "600" }], "body-lg": ["18px", { lineHeight: "28px", letterSpacing: "-0.005em", fontWeight: "400" }], "headline-xl-mobile": ["26px", { lineHeight: "34px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-sm": ["11px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "600" }], "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.015em", fontWeight: "700" }], "label-md": ["13px", { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "600" }], "body-sm": ["14px", { lineHeight: "20px", letterSpacing: "0.005em", fontWeight: "400" }] } } } };</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/></head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-layout-margin-mobile flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs min-w-0 flex-1"><a href="police_escalations.html" class="p-1 -ml-1 text-on-surface hover:text-primary transition-colors flex items-center justify-center rounded-full hover:bg-surface-container-high shrink-0 cursor-pointer" title="Back to Escalations / मागे जा"><span class="material-symbols-outlined text-[22px]">arrow_back</span></a><img alt="Kumbh Setu Logo" class="h-8 w-auto object-contain" src="logo.png" onerror="this.src=\'kumbhsetu-logo.jpg\'"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-secondary text-[16px]">shield</span><span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold truncate">Nashik 2027 • Police Unit</span></div><span class="font-headline-sm text-headline-sm text-on-surface truncate font-bold">Case Detail</span></div></div><div class="flex items-center gap-space-2xs shrink-0"><span class="inline-flex items-center px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed rounded font-label-sm text-label-sm font-bold tracking-tight">SEC-04</span><button aria-label="Language Toggle" class="min-h-[44px] min-w-[44px] flex items-center justify-center text-on-surface-variant font-label-md text-label-md font-bold hover:text-on-surface transition-colors" type="button"><span class="px-space-2xs py-0.5 bg-surface-container-high rounded text-on-surface">मरा / EN</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-layout-margin-mobile gap-space-md py-space-sm">
-<!-- Case Docket Switcher Bar (10+ Diverse Cases) -->
-<div class="bg-surface-container-lowest rounded-xl shadow-sm p-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2 border border-outline-variant/30">
-  <div class="flex items-center gap-2">
-    <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-      <span class="material-symbols-outlined text-[20px]">folder_managed</span>
-    </div>
-    <div class="flex flex-col">
-      <span class="text-xs font-bold text-on-surface">Select Police Case Docket</span>
-      <span class="text-[10px] text-on-surface-variant">Switch active case dossier &amp; enforcement status</span>
-    </div>
-  </div>
-  <select id="caseSelectorSelect" class="bg-surface-container-low text-on-surface font-semibold text-xs py-2 px-3 rounded-lg border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer w-full sm:w-auto">
-    <option value="SOS-9041">#SOS-9041 • Auto Fare Extortion (CBS Central)</option>
-    <option value="SOS-9088">#SOS-9088 • Ghat Locker Tout Ring (Ramkund Steps)</option>
-    <option value="POL-NSK-2027-0482">#POL-NSK-2027-0482 • Surge Tariff &amp; Driver Defiance</option>
-    <option value="SOS-8912">#SOS-8912 • Overcharging at Prasad Stall #18</option>
-    <option value="SOS-8820">#SOS-8820 • Unauthorized Purohit Operation (Kalaram Gate)</option>
-    <option value="SOS-8755">#SOS-8755 • Pilgrimage Shelter Scalping (Tapovan)</option>
-    <option value="SOS-8690">#SOS-8690 • Counterfeit Holy Ganga Jal Vial Syndicate</option>
-    <option value="SOS-8611">#SOS-8611 • VIP Fast Track Darshan Scam (Kapaleshwar)</option>
-    <option value="SOS-8540">#SOS-8540 • Inflated Cloakroom Baggage Fee (Railway Outpost)</option>
-    <option value="SOS-8422">#SOS-8422 • Unlicensed Boat Ride Extortion (Gandhi Pier)</option>
-  </select>
-</div>
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/></head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-layout-margin-mobile flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs min-w-0 flex-1"><img alt="Kumbh Setu Emblem Wordmark" class="h-8 w-auto object-contain" src="icon-192.png"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-secondary text-[16px]">shield</span><span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold truncate">Nashik 2027 • Police Unit</span></div><span class="font-headline-sm text-headline-sm text-on-surface truncate font-bold">Case Detail</span></div></div><div class="flex items-center gap-space-2xs shrink-0"><span class="inline-flex items-center px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed rounded font-label-sm text-label-sm font-bold tracking-tight">SEC-04</span><button aria-label="Language Toggle" class="min-h-[44px] min-w-[44px] flex items-center justify-center text-on-surface-variant font-label-md text-label-md font-bold hover:text-on-surface transition-colors" type="button"><span class="px-space-2xs py-0.5 bg-surface-container-high rounded text-on-surface">मरा / EN</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-layout-margin-mobile gap-space-md py-space-sm">
 <!-- Case Docket & Urgent Alert Header Banner -->
 <div class="bg-surface-container-lowest rounded-xl shadow-sm p-space-md flex flex-col gap-space-xs">
 <div class="flex items-center justify-between gap-space-2xs">
 <div class="flex items-center gap-space-2xs">
-<span id="casePriorityPill" class="px-space-xs py-space-2xs bg-secondary-container text-on-secondary-container rounded font-label-sm text-label-sm font-bold tracking-wide uppercase">Priority 2 • Field Surge</span>
-<span id="caseDocketIdTag" class="px-space-xs py-space-2xs bg-surface-container text-on-surface-variant rounded font-label-sm text-label-sm font-semibold">#POL-NSK-2027-0482</span>
+<span class="px-space-xs py-space-2xs bg-secondary-container text-on-secondary-container rounded font-label-sm text-label-sm font-bold tracking-wide uppercase">Priority 2 • Field Surge</span>
+<span class="px-space-xs py-space-2xs bg-surface-container text-on-surface-variant rounded font-label-sm text-label-sm font-semibold">#POL-NSK-2027-0482</span>
 </div>
-<div id="caseLiveBadge" class="flex items-center gap-1 text-primary">
+<div class="flex items-center gap-1 text-primary">
 <span class="material-symbols-outlined text-[18px] animate-pulse">radio_button_checked</span>
 <span class="font-label-sm text-label-sm font-bold uppercase">Live Case</span>
 </div>
 </div>
 <div class="flex flex-col mt-space-2xs">
 <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-snug">Case Detail: Illegal Surge Tariff & Driver Defiance</h2>
-<p id="casePrecinctSub" class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Godavari Riverfront Precinct • Sector 2 Rapid Intervention Zone</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Godavari Riverfront Precinct • Sector 2 Rapid Intervention Zone</p>
 </div>
 </div>
 <!-- Discrete Status Pipeline Visual -->
@@ -93,29 +68,29 @@
 <div class="bg-surface-container-lowest rounded-xl shadow-sm p-space-md flex flex-col gap-space-xs">
 <div class="flex items-center justify-between">
 <span class="font-label-md text-label-md text-secondary font-bold uppercase tracking-wider">Tariff Violation Check</span>
-<span id="excessPctTag" class="px-space-xs py-0.5 bg-error-container text-on-error-container rounded font-label-sm text-label-sm font-bold">+63.6% Overcharge</span>
+<span class="px-space-xs py-0.5 bg-error-container text-on-error-container rounded font-label-sm text-label-sm font-bold">+63.6% Overcharge</span>
 </div>
 <div class="grid grid-cols-2 gap-space-xs mt-space-2xs">
 <div class="bg-surface-container-low rounded-lg p-space-xs flex flex-col">
 <span class="font-label-sm text-label-sm text-on-surface-variant">Official Gazetted Cap</span>
 <div class="flex items-baseline gap-1 mt-1">
-<span id="gazettedCapVal" class="font-headline-lg text-headline-lg text-on-surface font-bold">₹110</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">₹110</span>
 <span class="font-label-sm text-label-sm text-on-surface-variant">INR</span>
 </div>
 <div class="flex items-center gap-1 mt-1 text-tertiary">
 <span class="material-symbols-outlined text-[14px]">verified</span>
-<span id="gazetteBadgeText" class="font-label-sm text-label-sm font-semibold">Gazette Sec-02</span>
+<span class="font-label-sm text-label-sm font-semibold">Gazette Sec-02</span>
 </div>
 </div>
 <div class="bg-secondary-fixed text-on-secondary-fixed rounded-lg p-space-xs flex flex-col">
 <span class="font-label-sm text-label-sm text-on-secondary-fixed-variant">Demanded Fare (Meter)</span>
 <div class="flex items-baseline gap-1 mt-1">
-<span id="demandedFareVal" class="font-headline-lg text-headline-lg text-on-secondary-fixed font-bold">₹180</span>
+<span class="font-headline-lg text-headline-lg text-on-secondary-fixed font-bold">₹180</span>
 <span class="font-label-sm text-label-sm text-on-secondary-fixed-variant">INR</span>
 </div>
 <div class="flex items-center gap-1 mt-1 text-on-secondary-fixed font-bold">
 <span class="material-symbols-outlined text-[14px]">warning</span>
-<span id="excessSurgeNote" class="font-label-sm text-label-sm font-bold">₹70 Surge Demanded</span>
+<span class="font-label-sm text-label-sm font-bold">₹70 Surge Demanded</span>
 </div>
 </div>
 </div>
@@ -182,8 +157,8 @@
 </div>
 <div class="flex items-center justify-between pt-space-2xs">
 <div>
-<p id="complainantNameEl" class="font-headline-sm text-headline-sm text-on-surface font-bold">Suresh M.</p>
-<p id="complainantSubEl" class="font-body-sm text-body-sm text-on-surface-variant">+91 98210 44192 • Yatri Transit Pass #7721</p>
+<p class="font-headline-sm text-headline-sm text-on-surface font-bold">Suresh M.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+91 98210 44192 • Yatri Transit Pass #7721</p>
 </div>
 <button class="w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors" type="button">
 <span class="material-symbols-outlined text-[20px]">call</span>
@@ -200,8 +175,8 @@
 </div>
 <div class="flex items-center justify-between pt-space-2xs">
 <div>
-<p id="accusedEntityEl" class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-wide">MH-15-TC-4902</p>
-<p id="accusedSubEl" class="font-body-sm text-body-sm text-on-surface-variant">Balaji Auto Rickshaw Union • Permit #BK-918</p>
+<p class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-wide">MH-15-TC-4902</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Balaji Auto Rickshaw Union • Permit #BK-918</p>
 </div>
 <button class="px-space-xs py-1.5 bg-surface-container text-on-surface rounded font-label-sm text-label-sm font-bold hover:bg-surface-container-high transition-colors" type="button">
           Vahan Record
@@ -307,348 +282,40 @@
 </div>
 </div>
 </div>
-<!-- Interactive Centered Overlay: Add Officer Note -->
-<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="noteModal">
-  <div class="bg-surface rounded-2xl p-space-md flex flex-col gap-space-sm max-w-lg w-full shadow-2xl border border-outline-variant/30">
-    <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
-      <div class="flex items-center gap-space-2xs">
-        <span class="material-symbols-outlined text-primary">edit_note</span>
-        <span class="font-headline-sm text-headline-sm text-on-surface font-bold">Add Officer Field Observation</span>
-      </div>
-      <button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" id="btnCloseNoteModal" type="button">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </div>
-    <div class="flex flex-col gap-1">
-      <label class="font-label-sm text-label-sm text-on-surface-variant" for="officerNoteInput">Log Details &amp; Witness Disclosures</label>
-      <textarea class="w-full p-space-xs bg-surface-container-high rounded-xl font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary resize-none" id="officerNoteInput" placeholder="e.g., Driver apprehended at Bay 4 kiosk. Overcharge refunded to yatri..." rows="3"></textarea>
-    </div>
-    <div class="flex items-center gap-space-xs justify-end pt-space-2xs">
-      <button class="px-space-md py-2.5 bg-surface-container-high text-on-surface font-label-md text-label-md rounded-xl font-semibold hover:bg-surface-container transition-colors" id="btnCancelNote" type="button">
-        Cancel
-      </button>
-      <button class="px-space-md py-2.5 bg-primary text-on-primary font-label-md text-label-md rounded-xl font-bold hover:bg-primary-container transition-colors shadow-sm" id="btnSaveNote" type="button">
-        Submit to Dossier
-      </button>
-    </div>
-  </div>
+<!-- Interactive Slide-Up Overlay: Add Officer Note (Vanilla JS powered) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 flex flex-col justify-end hidden" id="noteModal">
+<div class="bg-surface rounded-t-2xl p-space-md flex flex-col gap-space-sm max-w-lg mx-auto w-full shadow-2xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-primary">edit_note</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Add Officer Field Observation</span>
 </div>
-
-<!-- Interactive Centered Overlay: Resolve / Impound Modal -->
-<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="resolveCaseModal">
-  <div class="bg-surface rounded-2xl p-space-md flex flex-col gap-space-sm max-w-lg w-full shadow-2xl border border-outline-variant/30">
-    <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
-      <div class="flex items-center gap-2">
-        <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
-          <span class="material-symbols-outlined text-[20px]">gavel</span>
-        </span>
-        <div>
-          <span class="font-headline-sm text-sm sm:text-base text-on-surface font-bold">Execute Case Resolution &amp; Enforcement</span>
-          <p class="text-[11px] text-on-surface-variant font-mono">Docket #POL-NSK-2027-0482</p>
-        </div>
-      </div>
-      <button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="closeResolveModal()" type="button">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </div>
-
-    <div class="flex flex-col gap-2.5">
-      <div>
-        <label class="font-label-sm text-[11px] text-on-surface-variant font-semibold block mb-1">Enforcement Action Type</label>
-        <select id="resolveActionType" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-xl px-3 py-2 text-xs font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
-          <option value="Impound Vehicle & Levied Compound Penalty">Impound Vehicle &amp; Impose Compound Penalty</option>
-          <option value="On-Site Restitution to Pilgrim & Official Written Warning">On-Site Restitution to Pilgrim &amp; Official Written Warning</option>
-          <option value="Auto Permit Suspended for 7 Days">Auto Permit Suspended for 7 Days</option>
-          <option value="Amicable Mutual Settlement with Full Fare Refund">Amicable Mutual Settlement with Full Fare Refund</option>
-        </select>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <div>
-          <label class="font-label-sm text-[11px] text-on-surface-variant font-semibold block mb-1">Compound Penalty (₹ INR)</label>
-          <input type="number" id="resolvePenaltyAmount" value="5000" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-xl px-3 py-2 text-xs font-bold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary font-mono" />
-        </div>
-        <div>
-          <label class="font-label-sm text-[11px] text-on-surface-variant font-semibold block mb-1">Enforcing Officer</label>
-          <input type="text" id="resolveOfficerName" value="Insp. Vikram Patil" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-xl px-3 py-2 text-xs font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" />
-        </div>
-      </div>
-
-      <div>
-        <label class="font-label-sm text-[11px] text-on-surface-variant font-semibold block mb-1">Final Investigation Summary / Ground Verdict</label>
-        <textarea id="resolveSummaryNote" rows="2" class="w-full p-2.5 bg-surface-container-high border border-outline-variant/40 rounded-xl text-xs text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary resize-none">Vehicle MH-15-TC-4902 impounded at Sector 2 Depot. Overcharge refunded to yatri Suresh M. Compound fine of ₹5,000 imposed under Motor Vehicles Act.</textarea>
-      </div>
-    </div>
-
-    <div class="flex items-center gap-space-xs justify-end pt-2 border-t border-outline-variant/20">
-      <button class="px-space-md py-2.5 bg-surface-container-high text-on-surface font-label-md text-xs font-semibold rounded-xl hover:bg-surface-container transition-colors" onclick="closeResolveModal()" type="button">
-        Cancel
-      </button>
-      <button class="px-space-md py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-label-md text-xs font-bold rounded-xl shadow-md transition-all active:scale-98 flex items-center gap-1" id="confirmResolveBtn" onclick="confirmResolveCase()" type="button">
-        <span class="material-symbols-outlined text-[16px]">task_alt</span>
-        <span>Confirm &amp; Resolve Case</span>
-      </button>
-    </div>
-  </div>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="btnCloseNoteModal" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
 </div>
-
-<!-- Interactive Centered Overlay: Forward to Fact-Check Modal -->
-<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="forwardCaseModal">
-  <div class="bg-surface rounded-2xl p-space-md flex flex-col gap-space-sm max-w-lg w-full shadow-2xl border border-outline-variant/30">
-    <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
-      <div class="flex items-center gap-2">
-        <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center">
-          <span class="material-symbols-outlined text-[20px]">verified_user</span>
-        </span>
-        <div>
-          <span class="font-headline-sm text-sm sm:text-base text-on-surface font-bold">Forward to Intelligence &amp; Fact-Check Desk</span>
-          <p class="text-[11px] text-on-surface-variant font-mono">Docket #POL-NSK-2027-0482</p>
-        </div>
-      </div>
-      <button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="closeForwardModal()" type="button">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </div>
-
-    <div class="flex flex-col gap-2.5">
-      <div>
-        <label class="font-label-sm text-[11px] text-on-surface-variant font-semibold block mb-1">Referral Authority / Desk</label>
-        <select id="forwardAuthorityDesk" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-xl px-3 py-2 text-xs font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
-          <option value="PIB Fact-Check & Media Intelligence Unit">PIB Fact-Check &amp; Media Intelligence Unit</option>
-          <option value="District Apex Police Cyber Cell">District Apex Police Cyber Cell</option>
-          <option value="Nashik Municipal Vigilance & Quality Squad">Nashik Municipal Vigilance &amp; Quality Squad</option>
-          <option value="Regional Transport Office (RTO) Licensing Cell">Regional Transport Office (RTO) Licensing Cell</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="font-label-sm text-[11px] text-on-surface-variant font-semibold block mb-1">Referral Urgency</label>
-        <select id="forwardUrgency" class="w-full bg-surface-container-high border border-outline-variant/40 rounded-xl px-3 py-2 text-xs font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
-          <option value="High Priority - Active Syndicate Suspected">High Priority — Active Syndicate Suspected</option>
-          <option value="Urgent - Media Misinformation Risk">Urgent — Media Misinformation Risk</option>
-          <option value="Routine Regulatory Verification">Routine Regulatory Verification</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="font-label-sm text-[11px] text-on-surface-variant font-semibold block mb-1">Formal Referral Directives / Context</label>
-        <textarea id="forwardDirectiveMemo" rows="2" class="w-full p-2.5 bg-surface-container-high border border-outline-variant/40 rounded-xl text-xs text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary resize-none">Escalating suspected recurring tariff tampering syndicate operating along Godavari riverfront. Corroborating transit slips attached for database cross-verification.</textarea>
-      </div>
-    </div>
-
-    <div class="flex items-center gap-space-xs justify-end pt-2 border-t border-outline-variant/20">
-      <button class="px-space-md py-2.5 bg-surface-container-high text-on-surface font-label-md text-xs font-semibold rounded-xl hover:bg-surface-container transition-colors" onclick="closeForwardModal()" type="button">
-        Cancel
-      </button>
-      <button class="px-space-md py-2.5 bg-primary hover:bg-primary-container text-on-primary font-label-md text-xs font-bold rounded-xl shadow-md transition-all active:scale-98 flex items-center gap-1" id="confirmForwardBtn" onclick="confirmForwardCase()" type="button">
-        <span class="material-symbols-outlined text-[16px]">send</span>
-        <span>Confirm &amp; Forward</span>
-      </button>
-    </div>
-  </div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant" for="officerNoteInput">Log Details & Witness Disclosures</label>
+<textarea class="w-full p-space-xs bg-surface-container rounded font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary" id="officerNoteInput" placeholder="e.g., Driver apprehended at Bay 4 kiosk. Overcharge refunded to yatri..." rows="3"></textarea>
 </div>
-
+<div class="flex items-center gap-space-xs justify-end pt-space-2xs">
+<button class="px-space-md py-2.5 bg-surface-container text-on-surface font-label-md text-label-md rounded font-semibold" id="btnCancelNote" type="button">
+          Cancel
+        </button>
+<button class="px-space-md py-2.5 bg-primary text-on-primary font-label-md text-label-md rounded font-bold" id="btnSaveNote" type="button">
+          Submit to Dossier
+        </button>
+</div>
+</div>
+</div>
 <!-- Feedback Toast Notification -->
 <div class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-inverse-surface text-inverse-on-surface px-space-md py-space-xs rounded-full shadow-xl font-label-md text-label-md flex items-center gap-space-xs transition-opacity duration-300 opacity-0 pointer-events-none" id="actionToast">
-  <span class="material-symbols-outlined text-inverse-primary text-[18px]">verified</span>
-  <span id="toastMessage">Case status successfully updated.</span>
+<span class="material-symbols-outlined text-inverse-primary text-[18px]">verified</span>
+<span id="toastMessage">Case status successfully updated.</span>
 </div>
-
+</div>
 <script>
-  // Case Metadata Dictionary for 10 Realistic Diverse Kumbh Mela Cases
-  const CASE_METADATA = {
-    'SOS-9041': {
-      priority: 'Priority 1 • High Extortion',
-      priorityClass: 'bg-red-100 text-red-800 border border-red-300',
-      title: 'Case Detail: Organized Auto Fare Extortion (+63% over estimated price)',
-      precinct: 'Panchavati Central • Sector 2 Rapid Intervention Zone',
-      gazettedCap: '₹110',
-      demandedFare: '₹180',
-      excessPct: '+63.6% Overcharge',
-      excessSurge: '₹70 Surge Demanded',
-      gazetteRef: 'Gazette Sec-02 Auto Meter',
-      locationTitle: 'Sai Auto Stand (Bay 4)',
-      locationSub: 'Panchavati Ghat to CBS Central (1.4 km Radius)',
-      complainantName: 'Suresh M.',
-      complainantSub: '+91 98210 44192 • Yatri Transit Pass #7721',
-      accusedEntity: 'Balaji Auto Rickshaw Union • MH-15-TC-4902',
-      accusedSub: 'Permit #BK-918 • Spot Show-Cause Pending',
-      officer: 'Insp. Vikram Patil'
-    },
-    'SOS-9088': {
-      priority: 'Priority 1 • Tout Ring',
-      priorityClass: 'bg-red-100 text-red-800 border border-red-300',
-      title: 'Case Detail: Illegal Ghat Locker Tout Ring & Bather Harassment',
-      precinct: 'Ramkund Steps (South Bank) • Sanctum Waterway Precinct',
-      gazettedCap: '₹0 (Free)',
-      demandedFare: '₹200',
-      excessPct: '+100% Illegal Levy',
-      excessSurge: '₹200 Extortion Deposit',
-      gazetteRef: 'Municipal Free Bathing Locker Mandate',
-      locationTitle: 'Ramkund Ghat Steps (South Bank)',
-      locationSub: 'Changing cubicles walkway • Sector 2 Outpost',
-      complainantName: 'Sunita & Ramesh Sharma',
-      complainantSub: '+91 94231 88921 • Registered Pilgrim Family (4 Yatris)',
-      accusedEntity: 'Unlicensed Ghat Bucket Depository Tout',
-      accusedSub: 'Gang of 3 operating near changing rooms without badge',
-      officer: 'PSI S. More'
-    },
-    'POL-NSK-2027-0482': {
-      priority: 'Priority 2 • Field Surge',
-      priorityClass: 'bg-secondary-container text-on-secondary-container',
-      title: 'Case Detail: Illegal Surge Tariff & Driver Defiance',
-      precinct: 'Godavari Riverfront Precinct • Sector 2 Rapid Intervention Zone',
-      gazettedCap: '₹110',
-      demandedFare: '₹180',
-      excessPct: '+63.6% Overcharge',
-      excessSurge: '₹70 Surge Demanded',
-      gazetteRef: 'Gazette Sec-02',
-      locationTitle: 'Ramkund West Bay #4',
-      locationSub: 'Ramkund West Bay #4 • Sector 2 Outpost',
-      complainantName: 'Suresh M.',
-      complainantSub: '+91 98210 44192 • Yatri Transit Pass #7721',
-      accusedEntity: 'MH-15-TC-4902',
-      accusedSub: 'Balaji Auto Rickshaw Union • Permit #BK-918',
-      officer: 'Insp. Vikram Patil'
-    },
-    'SOS-8912': {
-      priority: 'Priority 2 • Price Gouging',
-      priorityClass: 'bg-amber-100 text-amber-900 border border-amber-300',
-      title: 'Case Detail: Overcharging at Prasad Stall #18',
-      precinct: 'Ramkund North Gate • Food Safety Zone 3',
-      gazettedCap: '₹40',
-      demandedFare: '₹80',
-      excessPct: '+100% Gouge',
-      excessSurge: '₹40 Excess Demanded',
-      gazetteRef: 'Gazette ₹40 Thali & Prasad Ordinance',
-      locationTitle: 'Prasad Stall #18 (Ramkund North)',
-      locationSub: 'Holy Bathing Ghat Approach Lane',
-      complainantName: 'Kailashnath Tiwari',
-      complainantSub: '+91 91520 33819 • Pilgrim ID #KMB-994',
-      accusedEntity: 'Ganga Prasad Bhandar (Stall #18)',
-      accusedSub: 'Municipal Trade License #PR-2024-81',
-      officer: 'ASI K. Shinde'
-    },
-    'SOS-8820': {
-      priority: 'Priority 2 • Fake Credentials',
-      priorityClass: 'bg-amber-100 text-amber-900 border border-amber-300',
-      title: 'Case Detail: Unauthorized Purohit Operation & Aggressive Dakshina Demand',
-      precinct: 'Kalaram Temple East Gate • Heritage Temple Zone',
-      gazettedCap: '₹101 (Standard)',
-      demandedFare: '₹1,100',
-      excessPct: '+989% Extortion',
-      excessSurge: '₹999 Coerced Dakshina',
-      gazetteRef: 'Temple Trust Gazetted Dakshina Card',
-      locationTitle: 'Kalaram Temple East Gate Entry',
-      locationSub: 'Outer Pradakshina Path',
-      complainantName: 'Devendra Joshi',
-      complainantSub: '+91 98330 11204 • Yatri Token #4820',
-      accusedEntity: 'Fake Purohit (No QR Badge)',
-      accusedSub: 'Impersonating Certified Municipal Archak',
-      officer: 'Insp. V. Patil'
-    },
-    'SOS-8755': {
-      priority: 'Priority 1 • Shelter Scalping',
-      priorityClass: 'bg-red-100 text-red-800 border border-red-300',
-      title: 'Case Detail: Pilgrimage Shelter Black Marketing & Surge Lodging',
-      precinct: 'Tapovan Sector 3 • Pilgrim Rest Camp Area',
-      gazettedCap: '₹300 / night',
-      demandedFare: '₹1,500',
-      excessPct: '+400% Gouge',
-      excessSurge: '₹1,200 Surge Demanded',
-      gazetteRef: 'Kumbh Mela Fair Rent Control Act',
-      locationTitle: 'Tapovan Dormitory Shed #4',
-      locationSub: 'Sector 3 Transit Camp',
-      complainantName: 'Anita Deshpande',
-      complainantSub: '+91 98224 55910 • Senior Yatri Group (6 Members)',
-      accusedEntity: 'Private Lodging Middleman Syndicate',
-      accusedSub: 'Unregistered agent operating outside municipal counters',
-      officer: 'Insp. R. Jadhav'
-    },
-    'SOS-8690': {
-      priority: 'Priority 2 • Counterfeit Goods',
-      priorityClass: 'bg-amber-100 text-amber-900 border border-amber-300',
-      title: 'Case Detail: Counterfeit Holy Ganga Jal Vial Syndicate',
-      precinct: 'Godavari Sangam Promenade • Sector 4 Market',
-      gazettedCap: '₹15 (NMC Sealing)',
-      demandedFare: '₹60',
-      excessPct: '+300% Gouge',
-      excessSurge: '₹45 Tap Water Scam',
-      gazetteRef: 'NMC Sealed Jal Quality Standard',
-      locationTitle: 'Sangam Steps Walkway Kiosk #9',
-      locationSub: 'Godavari Promenade Footpath',
-      complainantName: 'Mahesh Verma',
-      complainantSub: '+91 97110 44021 • Yatri Pass #3911',
-      accusedEntity: 'Street Vendor Syndicate (3 Baskets Seized)',
-      accusedSub: 'Uncertified plastic bottles with fake hologram seals',
-      officer: 'ASI K. Shinde'
-    },
-    'SOS-8611': {
-      priority: 'Priority 1 • Temple Scam',
-      priorityClass: 'bg-red-100 text-red-800 border border-red-300',
-      title: 'Case Detail: VIP Fast Track Darshan Scam & Line Jumping Tout',
-      precinct: 'Kapaleshwar Temple Outer Gate • Core Sacred Precinct',
-      gazettedCap: '₹0 (Free Darshan)',
-      demandedFare: '₹500 / person',
-      excessPct: '+100% Illegal Tout',
-      excessSurge: '₹500 Coerced Entry Fee',
-      gazetteRef: 'Temple Trust Equal Darshan Directive',
-      locationTitle: 'Kapaleshwar Temple Gate 2',
-      locationSub: 'North Entry Queue Enclosure',
-      complainantName: 'Girish Kadam',
-      complainantSub: '+91 98201 99281 • Pilgrim Transit Pass #904',
-      accusedEntity: 'Local Tout operating private side-gate access',
-      accusedSub: 'Accomplice security guard under departmental inquiry',
-      officer: 'Insp. R. Jadhav'
-    },
-    'SOS-8540': {
-      priority: 'Priority 2 • Station Amenities',
-      priorityClass: 'bg-amber-100 text-amber-900 border border-amber-300',
-      title: 'Case Detail: Inflated Cloakroom Baggage Fee at Railway Outpost',
-      precinct: 'Nashik Road Railway Station Outpost',
-      gazettedCap: '₹20 / 24 hrs',
-      demandedFare: '₹100 / bag',
-      excessPct: '+400% Overcharge',
-      excessSurge: '₹80 Surcharge Demanded',
-      gazetteRef: 'IRCTC & Kumbh Gazetted Cloakroom Tariff',
-      locationTitle: 'Platform 1 Cloakroom Kiosk',
-      locationSub: 'Station Outpost Zone',
-      complainantName: 'Pooja Agarwal',
-      complainantSub: '+91 93100 88219 • Yatri Token #6601',
-      accusedEntity: 'Station Private Locker Lessee',
-      accusedSub: 'Notice served to Station Commercial Supervisor',
-      officer: 'Const. Deshmukh'
-    },
-    'SOS-8422': {
-      priority: 'Priority 2 • Maritime Safety',
-      priorityClass: 'bg-amber-100 text-amber-900 border border-amber-300',
-      title: 'Case Detail: Unlicensed Boat Ride Extortion & Missing Life Jackets',
-      precinct: 'Gandhi Smarak Pier • Maritime Ghat Waterways',
-      gazettedCap: '₹50 / ride',
-      demandedFare: '₹150 / ride',
-      excessPct: '+200% Gouge',
-      excessSurge: '₹100 Excess + Safety Defect',
-      gazetteRef: 'Maritime Riverfront Safety Cap',
-      locationTitle: 'Gandhi Smarak Ghat Pier',
-      locationSub: 'Boat Jetty #2',
-      complainantName: 'Subhash Chandra & Family',
-      complainantSub: '+91 94110 55192 • Yatri Family Pass #1204',
-      accusedEntity: 'Boat #NSK-BOAT-22',
-      accusedSub: 'Boat union representative summoned to police chowki',
-      officer: 'Insp. V. Patil'
-    }
-  };
-
-  // Read URL query params
-  const urlParams = new URLSearchParams(window.location.search);
-  let currentCaseId = urlParams.get('id') || 'SOS-9041';
-  if (!CASE_METADATA[currentCaseId]) {
-    // If passed another ID (e.g. from case log), find closest or default
-    currentCaseId = 'SOS-9041';
-  }
-
   // DOM Elements
-  const caseSelector = document.getElementById('caseSelectorSelect');
   const noteModal = document.getElementById('noteModal');
   const btnOpenNoteModal = document.getElementById('btnOpenNoteModal');
   const btnCloseNoteModal = document.getElementById('btnCloseNoteModal');
@@ -659,66 +326,8 @@
 
   const btnUpdateStatus = document.getElementById('btnUpdateStatus');
   const btnForwardPIB = document.getElementById('btnForwardPIB');
-  const resolveCaseModal = document.getElementById('resolveCaseModal');
-  const forwardCaseModal = document.getElementById('forwardCaseModal');
   const actionToast = document.getElementById('actionToast');
   const toastMessage = document.getElementById('toastMessage');
-
-  // Populate UI with selected case metadata
-  function applyCaseMetadata(caseId) {
-    const meta = CASE_METADATA[caseId] || CASE_METADATA['SOS-9041'];
-    currentCaseId = caseId;
-
-    if (caseSelector) caseSelector.value = caseId;
-
-    const elPrio = document.getElementById('casePriorityPill');
-    if (elPrio) {
-      elPrio.textContent = meta.priority;
-      elPrio.className = 'px-space-xs py-space-2xs rounded font-label-sm text-label-sm font-bold tracking-wide uppercase ' + meta.priorityClass;
-    }
-
-    const elId = document.getElementById('caseDocketIdTag');
-    if (elId) elId.textContent = '#' + caseId;
-
-    const elTitle = document.getElementById('caseTitleHeading');
-    if (elTitle) elTitle.textContent = meta.title;
-
-    const elPrecinct = document.getElementById('casePrecinctSub');
-    if (elPrecinct) elPrecinct.textContent = meta.precinct;
-
-    const elGazCap = document.getElementById('gazettedCapVal');
-    if (elGazCap) elGazCap.textContent = meta.gazettedCap;
-
-    const elDemFare = document.getElementById('demandedFareVal');
-    if (elDemFare) elDemFare.textContent = meta.demandedFare;
-
-    const elExcessPct = document.getElementById('excessPctTag');
-    if (elExcessPct) elExcessPct.textContent = meta.excessPct;
-
-    const elExcessSurge = document.getElementById('excessSurgeNote');
-    if (elExcessSurge) elExcessSurge.textContent = meta.excessSurge;
-
-    const elGazRef = document.getElementById('gazetteBadgeText');
-    if (elGazRef) elGazRef.textContent = meta.gazetteRef;
-
-    const elLocTitle = document.getElementById('caseTargetLocationTitle');
-    if (elLocTitle) elLocTitle.textContent = meta.locationTitle;
-
-    const elLocSub = document.getElementById('caseTargetLocationSub');
-    if (elLocSub) elLocSub.textContent = meta.locationSub;
-
-    const elCompName = document.getElementById('complainantNameEl');
-    if (elCompName) elCompName.textContent = meta.complainantName;
-
-    const elCompSub = document.getElementById('complainantSubEl');
-    if (elCompSub) elCompSub.textContent = meta.complainantSub;
-
-    const elAccEntity = document.getElementById('accusedEntityEl');
-    if (elAccEntity) elAccEntity.textContent = meta.accusedEntity;
-
-    const elAccSub = document.getElementById('accusedSubEl');
-    if (elAccSub) elAccSub.textContent = meta.accusedSub;
-  }
 
   // Toast Trigger Helper
   function showToast(text) {
@@ -732,368 +341,89 @@
     }, 2800);
   }
 
-  // --- Modal Helpers ---
-  function openNoteModal() {
-    if (noteModal) {
+  // Open & Close Modal
+  if (btnOpenNoteModal && noteModal) {
+    btnOpenNoteModal.addEventListener('click', () => {
       noteModal.classList.remove('hidden');
-      noteModal.classList.add('flex');
       if (officerNoteInput) officerNoteInput.focus();
-    }
-  }
-
-  function hideNoteModal() {
-    if (noteModal) {
-      noteModal.classList.add('hidden');
-      noteModal.classList.remove('flex');
-    }
-    if (officerNoteInput) officerNoteInput.value = '';
-  }
-
-  function openResolveModal() {
-    if (resolveCaseModal) {
-      resolveCaseModal.classList.remove('hidden');
-      resolveCaseModal.classList.add('flex');
-    }
-  }
-
-  function closeResolveModal() {
-    if (resolveCaseModal) {
-      resolveCaseModal.classList.add('hidden');
-      resolveCaseModal.classList.remove('flex');
-    }
-  }
-
-  function openForwardModal() {
-    if (forwardCaseModal) {
-      forwardCaseModal.classList.remove('hidden');
-      forwardCaseModal.classList.add('flex');
-    }
-  }
-
-  function closeForwardModal() {
-    if (forwardCaseModal) {
-      forwardCaseModal.classList.add('hidden');
-      forwardCaseModal.classList.remove('flex');
-    }
-  }
-
-  if (btnOpenNoteModal) btnOpenNoteModal.addEventListener('click', openNoteModal);
-  if (btnCloseNoteModal) btnCloseNoteModal.addEventListener('click', hideNoteModal);
-  if (btnCancelNote) btnCancelNote.addEventListener('click', hideNoteModal);
-
-  if (btnUpdateStatus) btnUpdateStatus.addEventListener('click', openResolveModal);
-  if (btnForwardPIB) btnForwardPIB.addEventListener('click', openForwardModal);
-
-  // Case Selector dropdown change
-  if (caseSelector) {
-    caseSelector.addEventListener('change', function() {
-      const selectedId = this.value;
-      if (window.history && window.history.replaceState) {
-        window.history.replaceState(null, '', `?id=${encodeURIComponent(selectedId)}`);
-      }
-      applyCaseMetadata(selectedId);
-      resetPipelineToDefault();
-      loadCaseState();
     });
   }
 
-  function resetPipelineToDefault() {
-    // Reset Stepper
-    const step3 = document.querySelector('.grid-cols-4 > div:nth-child(3)');
-    const step4 = document.querySelector('.grid-cols-4 > div:nth-child(4)');
-    if (step3) {
-      step3.className = 'flex flex-col items-center text-center gap-1 opacity-50';
-      const bar = step3.querySelector('.rounded-full');
-      if (bar) bar.className = 'w-full h-1.5 rounded-full bg-surface-container-high';
-    }
-    if (step4) {
-      step4.className = 'flex flex-col items-center text-center gap-1 opacity-50';
-      const bar = step4.querySelector('.rounded-full');
-      if (bar) bar.className = 'w-full h-1.5 rounded-full bg-surface-container-high';
-      const txt = step4.querySelector('.flex.items-center');
-      if (txt) txt.className = 'flex items-center gap-0.5 mt-1 text-on-surface-variant';
-    }
-    const phaseTitle = document.querySelector('.bg-surface-container-lowest .font-label-sm.text-primary.font-bold');
-    if (phaseTitle) phaseTitle.textContent = 'Phase 2 of 4 Active';
-
-    const liveBadge = document.getElementById('caseLiveBadge');
-    if (liveBadge) {
-      liveBadge.className = 'flex items-center gap-1 text-primary';
-      liveBadge.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-pulse">radio_button_checked</span><span class="font-label-sm text-label-sm font-bold uppercase">Live Case</span>';
-    }
-
-    if (btnUpdateStatus) {
-      btnUpdateStatus.disabled = false;
-      btnUpdateStatus.className = 'flex-1 py-2.5 px-space-xs rounded-xl bg-secondary text-on-secondary font-label-md text-xs font-bold shadow-md flex items-center justify-center gap-1 active:scale-98 transition-all hover:bg-secondary/90 cursor-pointer';
-      btnUpdateStatus.innerHTML = '<span class="material-symbols-outlined text-[16px]">task_alt</span><span>Confirm &amp; Resolve Case</span>';
-    }
-
-    if (btnForwardPIB) {
-      btnForwardPIB.disabled = false;
-      btnForwardPIB.classList.remove('opacity-80');
-      btnForwardPIB.innerHTML = '<span class="material-symbols-outlined text-[16px]">send</span><span>Forward</span>';
-    }
+  function hideModal() {
+    if (noteModal) noteModal.classList.add('hidden');
+    if (officerNoteInput) officerNoteInput.value = '';
   }
 
-  // --- Pipeline Stepper UI Updater ---
-  function applyPipelineStatus(status) {
-    const isResolved = (status === 'Resolved' || (status || '').toLowerCase().includes('resolve'));
-    const isForwarded = (status === 'Forwarded to Fact-Check' || (status || '').toLowerCase().includes('forward'));
+  if (btnCloseNoteModal) btnCloseNoteModal.addEventListener('click', hideModal);
+  if (btnCancelNote) btnCancelNote.addEventListener('click', hideModal);
 
-    const step3 = document.querySelector('.grid-cols-4 > div:nth-child(3)');
-    const step4 = document.querySelector('.grid-cols-4 > div:nth-child(4)');
-
-    if (isResolved) {
-      if (step4) {
-        step4.classList.remove('opacity-50');
-        const bar = step4.querySelector('.rounded-full');
-        if (bar) bar.className = 'w-full h-1.5 rounded-full bg-emerald-600';
-        const txt = step4.querySelector('.flex.items-center');
-        if (txt) txt.className = 'flex items-center gap-0.5 mt-1 text-emerald-700 font-bold';
-      }
-      if (step3) {
-        step3.classList.remove('opacity-50');
-        const bar = step3.querySelector('.rounded-full');
-        if (bar) bar.className = 'w-full h-1.5 rounded-full bg-primary-container';
-      }
-      const phaseTitle = document.querySelector('.bg-surface-container-lowest .font-label-sm.text-primary.font-bold');
-      if (phaseTitle) phaseTitle.textContent = 'Phase 4 of 4 • Case Resolved';
-
-      const liveBadge = document.getElementById('caseLiveBadge');
-      if (liveBadge) {
-        liveBadge.className = 'flex items-center gap-1 text-emerald-700';
-        liveBadge.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span><span class="font-label-sm text-label-sm font-bold uppercase">Resolved &amp; Closed</span>';
-      }
-
-      if (btnUpdateStatus) {
-        btnUpdateStatus.disabled = true;
-        btnUpdateStatus.className = 'flex-1 py-2.5 px-space-xs rounded-xl bg-emerald-800 text-white font-label-md text-xs font-bold shadow-md flex items-center justify-center gap-1 opacity-90 cursor-default';
-        btnUpdateStatus.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span><span>Case Solved</span>';
-      }
-    } else if (isForwarded) {
-      if (step3) {
-        step3.classList.remove('opacity-50');
-        const bar = step3.querySelector('.rounded-full');
-        if (bar) bar.className = 'w-full h-1.5 rounded-full bg-amber-500 animate-pulse';
-        const txt = step3.querySelector('.flex.items-center');
-        if (txt) txt.className = 'flex items-center gap-0.5 mt-1 text-amber-800 font-bold';
-      }
-      const phaseTitle = document.querySelector('.bg-surface-container-lowest .font-label-sm.text-primary.font-bold');
-      if (phaseTitle) phaseTitle.textContent = 'Phase 3 of 4 • Forwarded to Fact-Check';
-
-      if (btnForwardPIB) {
-        btnForwardPIB.disabled = true;
-        btnForwardPIB.classList.add('opacity-80');
-        btnForwardPIB.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified_user</span><span>Forwarded</span>';
-      }
-    }
-  }
-
-  // --- Add Timeline Entry to Chronology ---
-  function addTimelineEntry(title, desc, colorClass = 'bg-primary') {
-    if (!dynamicNotesContainer) return;
-    const entry = document.createElement('div');
-    entry.className = 'flex items-start gap-space-xs';
-    entry.innerHTML = `
-      <div class="w-2 h-2 rounded-full ${colorClass} mt-2 shrink-0"></div>
-      <div class="flex-1 bg-surface-container-low rounded-lg p-space-xs border border-outline-variant/20">
-        <div class="flex items-center justify-between">
-          <span class="font-label-sm text-label-sm text-on-surface font-bold">${title}</span>
-          <span class="font-label-sm text-[10px] text-primary font-bold px-1.5 py-0.2 bg-primary/10 rounded">Recorded</span>
-        </div>
-        <p class="font-body-sm text-body-sm text-on-surface mt-1">${desc}</p>
-      </div>
-    `;
-    dynamicNotesContainer.prepend(entry);
-  }
-
-  // --- Save Officer Note ---
-  if (btnSaveNote && officerNoteInput) {
-    btnSaveNote.addEventListener('click', async () => {
+  // Save Note Interaction
+  if (btnSaveNote && officerNoteInput && dynamicNotesContainer) {
+    btnSaveNote.addEventListener('click', () => {
       const text = officerNoteInput.value.trim();
       if (!text) {
         showToast('Please type an observation note.');
         return;
       }
 
-      btnSaveNote.disabled = true;
-      btnSaveNote.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">sync</span><span>Saving...</span>';
-
-      try {
-        await fetch(`${API_BASE}/api/v1/police/action`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            incident_id: currentCaseId,
-            action: 'note',
-            notes: text,
-            officer_name: 'Insp. Vikram Patil'
-          })
-        });
-      } catch (e) {
-        console.warn('Backend note error:', e);
-      }
-
-      btnSaveNote.disabled = false;
-      btnSaveNote.textContent = 'Submit to Dossier';
-
       const now = new Date();
       const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) + ' IST';
-      addTimelineEntry(`${timeString} • Officer Field Note`, text, 'bg-tertiary-container');
-      hideNoteModal();
+
+      const entry = document.createElement('div');
+      entry.className = 'flex items-start gap-space-xs';
+      entry.innerHTML = `
+        <div class="w-2 h-2 rounded-full bg-tertiary-container mt-2 shrink-0"></div>
+        <div class="flex-1 bg-surface-container rounded-lg p-space-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm text-label-sm text-on-surface font-bold">${timeString} • Officer Field Note</span>
+            <span class="font-label-sm text-label-sm text-primary font-bold">New</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface mt-1">${text}</p>
+        </div>
+      `;
+
+      dynamicNotesContainer.prepend(entry);
+      hideModal();
       showToast('Field note added to official docket.');
     });
   }
 
-  // --- Confirm Resolve Case ---
-  async function confirmResolveCase() {
-    const actionType = document.getElementById('resolveActionType').value;
-    const penalty = parseFloat(document.getElementById('resolvePenaltyAmount').value) || 500;
-    const summary = document.getElementById('resolveSummaryNote').value.trim() || actionType;
-    const officer = document.getElementById('resolveOfficerName').value.trim() || 'Insp. Vikram Patil';
-
-    const btnConfirm = document.getElementById('confirmResolveBtn');
-    if (btnConfirm) {
-      btnConfirm.disabled = true;
-      btnConfirm.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">sync</span><span>Resolving...</span>';
-    }
-
-    try {
-      await fetch(`${API_BASE}/api/v1/police/action`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          incident_id: currentCaseId,
-          action: 'resolve',
-          resolution: summary,
-          penalty_amount: penalty,
-          officer_name: officer,
-          notes: `${actionType} — Penalty: ₹${penalty}. ${summary}`
-        })
-      });
-
-      // Dual-write locally so refresh is guaranteed
-      localStorage.setItem('police_case_status_' + currentCaseId, 'Resolved');
-
-      if (window.KumbhRealtime) {
-        try {
-          await KumbhRealtime.resolveReport('baff66f3-a097-4c13-8531-bb368d7b8a89', `⚖️ ${actionType} (₹${penalty}). ${summary}`);
-        } catch (sbE) { /* ok */ }
+  // Quick Action: Update Status (Resolve / Impound)
+  if (btnUpdateStatus) {
+    btnUpdateStatus.addEventListener('click', async () => {
+      btnUpdateStatus.disabled = true;
+      btnUpdateStatus.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Resolving...</span>`;
+      try {
+        if (window.KumbhRealtime) {
+          await KumbhRealtime.resolveReport('baff66f3-a097-4c13-8531-bb368d7b8a89', '⚖️ Compound penalty of ₹5,000 executed. Impounded & Resolved by Police Officer.');
+        }
+      } catch (e) {
+        console.warn('Police case resolve note:', e);
       }
-    } catch (e) {
-      console.warn('Resolve error:', e);
-      localStorage.setItem('police_case_status_' + currentCaseId, 'Resolved');
-    }
-
-    closeResolveModal();
-    if (btnConfirm) {
-      btnConfirm.disabled = false;
-      btnConfirm.innerHTML = '<span class="material-symbols-outlined text-[16px]">task_alt</span><span>Confirm &amp; Resolve Case</span>';
-    }
-
-    applyPipelineStatus('Resolved');
-    const now = new Date();
-    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) + ' IST';
-    addTimelineEntry(`${timeString} • Case Resolved & Penalty Levied`, `${actionType} of ₹${penalty} executed. ${summary}`, 'bg-emerald-600');
-    showToast(`⚖️ Case resolved! Compound penalty of ₹${penalty} executed.`);
+      showToast('⚖️ Compound penalty of ₹5,000 executed. Marked as Resolved.');
+      setTimeout(() => {
+        window.location.href = 'police_escalations.html';
+      }, 900);
+    });
   }
 
-  // --- Confirm Forward Case ---
-  async function confirmForwardCase() {
-    const desk = document.getElementById('forwardAuthorityDesk').value;
-    const urgency = document.getElementById('forwardUrgency').value;
-    const memo = document.getElementById('forwardDirectiveMemo').value.trim();
-
-    const btnConfirm = document.getElementById('confirmForwardBtn');
-    if (btnConfirm) {
-      btnConfirm.disabled = true;
-      btnConfirm.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">sync</span><span>Forwarding...</span>';
-    }
-
-    try {
-      await fetch(`${API_BASE}/api/v1/police/action`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          incident_id: currentCaseId,
-          action: 'forward',
-          forward_to: desk,
-          severity: urgency,
-          notes: `[${urgency}] Referred to ${desk}. Directives: ${memo}`
-        })
-      });
-      localStorage.setItem('police_case_status_' + currentCaseId, 'Forwarded');
-    } catch (e) {
-      console.warn('Forward error:', e);
-      localStorage.setItem('police_case_status_' + currentCaseId, 'Forwarded');
-    }
-
-    closeForwardModal();
-    if (btnConfirm) {
-      btnConfirm.disabled = false;
-      btnConfirm.innerHTML = '<span class="material-symbols-outlined text-[16px]">send</span><span>Confirm &amp; Forward</span>';
-    }
-
-    applyPipelineStatus('Forwarded to Fact-Check');
-    const now = new Date();
-    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) + ' IST';
-    addTimelineEntry(`${timeString} • Forwarded to ${desk}`, `[${urgency}] ${memo}`, 'bg-amber-600');
-    showToast(`📡 Case forwarded to ${desk}.`);
+  // Quick Action: Forward to Fact Check
+  if (btnForwardPIB) {
+    btnForwardPIB.addEventListener('click', () => {
+      showToast('Case forwarded to PIB Fact-Check verification desk.');
+    });
   }
 
-  // --- Load Case State & Chronology from Backend (Persistent across refreshes) ---
-  async function loadCaseState() {
-    // 1. Check local persistent storage first for instant response
-    const savedStatus = localStorage.getItem('police_case_status_' + currentCaseId);
-    if (savedStatus) {
-      applyPipelineStatus(savedStatus);
-    }
-
-    // 2. Query SQLite / FastAPI backend
-    try {
-      const res = await fetch(`${API_BASE}/api/v1/police/case/${encodeURIComponent(currentCaseId)}`);
-      if (!res.ok) return;
-      const data = await res.json();
-      if (!data) return;
-
-      if (data.case_status) {
-        applyPipelineStatus(data.case_status);
-        localStorage.setItem('police_case_status_' + currentCaseId, data.case_status);
-      }
-
-      // Render logged activity history from backend
-      if (Array.isArray(data.activities) && data.activities.length > 0) {
-        data.activities.forEach(act => {
-          const actTime = act.created_at ? act.created_at.slice(11, 16) + ' IST' : 'IST';
-          let title = `${actTime} • ${act.action_type.toUpperCase()}`;
-          let color = 'bg-primary';
-          if (act.action_type === 'resolve') {
-            title = `${actTime} • Case Resolved & Enforcement Executed`;
-            color = 'bg-emerald-600';
-          } else if (act.action_type === 'forward') {
-            title = `${actTime} • Forwarded to Intelligence`;
-            color = 'bg-amber-600';
-          } else if (act.action_type === 'note') {
-            title = `${actTime} • Officer Field Observation`;
-            color = 'bg-tertiary-container';
-          } else if (act.action_type === 'dispatch') {
-            title = `${actTime} • Flying Squad Dispatched (${act.unit_name || 'Squad'})`;
-            color = 'bg-blue-600';
-          }
-
-          addTimelineEntry(title, act.notes || 'Official enforcement log registered in police terminal.', color);
-        });
-      }
-    } catch (e) {
-      console.warn('[loadCaseState] Warning:', e);
+  // Lightbox Zoom Micro-interaction
+  function toggleZoom(container) {
+    const img = container.querySelector('img');
+    if (img) {
+      img.classList.toggle('scale-125');
+      setTimeout(() => {
+        img.classList.remove('scale-125');
+      }, 1500);
     }
   }
-
-  // Initialize on load
-  window.addEventListener('load', () => {
-    applyCaseMetadata(currentCaseId);
-    loadCaseState();
-  });
 </script></main>
 <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)] border-t border-outline-variant/20" data-active-classes="text-primary font-bold">
   <div class="flex justify-around items-center h-14 sm:h-15 px-1 max-w-5xl mx-auto">

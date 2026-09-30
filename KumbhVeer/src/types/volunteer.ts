@@ -2,7 +2,6 @@ export type IncidentStatus =
   | 'PENDING_VERIFICATION' // Reported from main app, waiting for volunteer
   | 'EN_ROUTE'              // Volunteer claimed and is physically traveling to spot
   | 'GROUND_VERIFIED'       // Volunteer arrived & inspected
-  | 'ESCALATED_POLICE'      // Escalated to Police enforcement (Med/High severity)
   | 'RESOLVED_OFFLINE'      // Swiped to confirm, issue solved offline
   | 'DISMISSED';            // False alarm / unlocatable
 
@@ -35,10 +34,6 @@ export interface GroundIncident {
   location: string;
   sectorId: string;
   description: string;
-  latitude?: number;
-  longitude?: number;
-  imageUrl?: string;
-  severity?: 'LOW' | 'MED' | 'HIGH';
   pilgrimName?: string;
   pilgrimPhone?: string;
   offenderNameOrVehicle?: string;
@@ -49,7 +44,6 @@ export interface GroundIncident {
   volunteerNotes?: string;
   timestamp: string;
   resolutionTimestamp?: string;
-  escalatedToPolice?: boolean;
 }
 
 export interface GroundFactCheck {

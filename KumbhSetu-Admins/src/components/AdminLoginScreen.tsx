@@ -19,29 +19,13 @@ export const AdminLoginScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { login } = useAdmin();
 
-  const [selectedRoleTab, setSelectedRoleTab] = useState<'police' | 'collector'>('police');
-  const [username, setUsername] = useState('Police123');
-  const [password, setPassword] = useState('pols123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSelectRole = (role: 'police' | 'collector') => {
-    setSelectedRoleTab(role);
-    if (role === 'police') {
-      setUsername('Police123');
-      setPassword('pols123');
-    } else {
-      setUsername('Gaurang');
-      setPassword('pass123');
-    }
-    setErrorMessage('');
-  };
-
-  const handleLogin = (customUser?: string, customPass?: string) => {
-    const userToUse = customUser !== undefined ? customUser : username;
-    const passToUse = customPass !== undefined ? customPass : password;
-
-    if (!userToUse.trim() || !passToUse.trim()) {
+  const handleLogin = () => {
+    if (!username.trim() || !password.trim()) {
       setErrorMessage('Please enter both Username and Password.');
       return;
     }
@@ -49,7 +33,7 @@ export const AdminLoginScreen: React.FC = () => {
     setIsSubmitting(true);
     setErrorMessage('');
 
-    const res = login(userToUse, passToUse);
+    const res = login(username, password);
     if (!res.success) {
       setErrorMessage(res.message || 'Invalid Username or Password.');
       setIsSubmitting(false);
@@ -65,14 +49,14 @@ export const AdminLoginScreen: React.FC = () => {
         style={styles.container}
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: Math.max(insets.top + 20, 40), paddingBottom: Math.max(insets.bottom + 20, 40) },
+          { paddingTop: Math.max(insets.top + 30, 50), paddingBottom: Math.max(insets.bottom + 20, 40) },
         ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Emblem & Branding Header */}
         <View style={styles.brandHeader}>
           <View style={styles.emblemCircle}>
-            <FontAwesome5 name="shield-alt" size={30} color={AdminColors.white} />
+            <FontAwesome5 name="shield-alt" size={32} color={AdminColors.white} />
           </View>
           <View style={styles.titleRow}>
             <Text style={styles.brandKumbh}>Kumbh</Text>
@@ -93,64 +77,9 @@ export const AdminLoginScreen: React.FC = () => {
 
         {/* Login Form Card */}
         <View style={styles.card}>
-          {/* Quick Role Selection Tabs */}
-          <View style={styles.roleTabsContainer}>
-            <TouchableOpacity
-              style={[
-                styles.roleTabBtn,
-                selectedRoleTab === 'police' && styles.roleTabBtnPoliceActive,
-              ]}
-              onPress={() => handleSelectRole('police')}
-              activeOpacity={0.8}
-            >
-              <FontAwesome5
-                name="shield-alt"
-                size={14}
-                color={selectedRoleTab === 'police' ? '#FFFFFF' : '#0284C7'}
-              />
-              <Text
-                style={[
-                  styles.roleTabText,
-                  selectedRoleTab === 'police' && styles.roleTabTextActive,
-                ]}
-              >
-                Police Squad
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.roleTabBtn,
-                selectedRoleTab === 'collector' && styles.roleTabBtnAdminActive,
-              ]}
-              onPress={() => handleSelectRole('collector')}
-              activeOpacity={0.8}
-            >
-              <FontAwesome5
-                name="user-shield"
-                size={14}
-                color={selectedRoleTab === 'collector' ? '#FFFFFF' : AdminColors.saffron}
-              />
-              <Text
-                style={[
-                  styles.roleTabText,
-                  selectedRoleTab === 'collector' && styles.roleTabTextActive,
-                ]}
-              >
-                Administrator
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.formTitle}>
-            {selectedRoleTab === 'police'
-              ? 'Police Rapid Enforcement Login'
-              : 'Super Administrator Login'}
-          </Text>
+          <Text style={styles.formTitle}>Admin Login</Text>
           <Text style={styles.formSub}>
-            {selectedRoleTab === 'police'
-              ? 'Sign in to access Tactical Radar, Violations & Spot Fine Desk'
-              : 'Sign in with Collector / Master Administrator credentials'}
+            Sign in with your administrator credentials
           </Text>
 
           {errorMessage ? (
@@ -162,7 +91,7 @@ export const AdminLoginScreen: React.FC = () => {
 
           {/* Username Input */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Username / Badge ID</Text>
+            <Text style={styles.inputLabel}>Username</Text>
             <View style={styles.inputBox}>
               <FontAwesome5 name="user" size={14} color={AdminColors.textMuted} />
               <TextInput
@@ -181,7 +110,7 @@ export const AdminLoginScreen: React.FC = () => {
 
           {/* Password Input */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Security Password</Text>
+            <Text style={styles.inputLabel}>Password</Text>
             <View style={styles.inputBox}>
               <FontAwesome5 name="lock" size={14} color={AdminColors.textMuted} />
               <TextInput
@@ -200,79 +129,16 @@ export const AdminLoginScreen: React.FC = () => {
 
           {/* Sign In Button */}
           <TouchableOpacity
-            style={[
-              styles.loginBtn,
-              selectedRoleTab === 'police' && { backgroundColor: '#0284C7' },
-              isSubmitting && { opacity: 0.7 },
-            ]}
-            onPress={() => handleLogin()}
+            style={[styles.loginBtn, isSubmitting && { opacity: 0.7 }]}
+            onPress={handleLogin}
             activeOpacity={0.8}
             disabled={isSubmitting}
           >
             <FontAwesome5 name="shield-alt" size={15} color={AdminColors.white} />
             <Text style={styles.loginBtnText}>
-              {isSubmitting
-                ? 'Authenticating...'
-                : selectedRoleTab === 'police'
-                ? 'Sign In as Police Flying Squad'
-                : 'Sign In to Command Portal'}
+              {isSubmitting ? 'Authenticating...' : 'Sign In to Command Portal'}
             </Text>
           </TouchableOpacity>
-
-          {/* 1-Tap Quick Fill Cards */}
-          <View style={styles.quickAccountsSection}>
-            <Text style={styles.quickAccountsTitle}>1-Click Quick Authorizations:</Text>
-
-            <TouchableOpacity
-              style={[
-                styles.quickAccountCard,
-                selectedRoleTab === 'police' && { borderColor: '#0284C7', backgroundColor: '#F0F9FF' },
-              ]}
-              onPress={() => {
-                handleSelectRole('police');
-                handleLogin('Police123', 'pols123');
-              }}
-              activeOpacity={0.8}
-            >
-              <View style={[styles.quickAccIconWrap, { backgroundColor: '#DBEAFE' }]}>
-                <FontAwesome5 name="shield-alt" size={14} color="#1E3A8A" />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.quickAccName}>Police Flying Squad (Rapid Enforcement)</Text>
-                <Text style={styles.quickAccCreds}>
-                  ID: <Text style={{ fontFamily: 'Poppins_700Bold' }}>Police123</Text> • PIN: <Text style={{ fontFamily: 'Poppins_700Bold' }}>pols123</Text>
-                </Text>
-              </View>
-              <View style={styles.quickLoginPill}>
-                <Text style={styles.quickLoginPillText}>Auto Login</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.quickAccountCard,
-                selectedRoleTab === 'collector' && { borderColor: AdminColors.saffron, backgroundColor: '#FFF7ED' },
-              ]}
-              onPress={() => {
-                handleSelectRole('collector');
-                handleLogin('Gaurang', 'pass123');
-              }}
-              activeOpacity={0.8}
-            >
-              <View style={[styles.quickAccIconWrap, { backgroundColor: '#FEF3C7' }]}>
-                <FontAwesome5 name="user-shield" size={14} color="#B45309" />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.quickAccName}>Super Administrator (District Collector)</Text>
-                <Text style={styles.quickAccCreds}>
-                  ID: <Text style={{ fontFamily: 'Poppins_700Bold' }}>Gaurang</Text> • PIN: <Text style={{ fontFamily: 'Poppins_700Bold' }}>pass123</Text>
-                </Text>
-              </View>
-              <View style={[styles.quickLoginPill, { backgroundColor: '#FEF3C7' }]}>
-                <Text style={[styles.quickLoginPillText, { color: '#B45309' }]}>Auto Login</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -441,99 +307,5 @@ const styles = StyleSheet.create({
     color: AdminColors.white,
     fontSize: 13.5,
     fontFamily: 'Poppins_700Bold',
-  },
-  quickAccountsSection: {
-    marginTop: 20,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: AdminColors.cardBorder,
-  },
-  quickAccountsTitle: {
-    fontSize: 11.5,
-    fontFamily: 'Poppins_600SemiBold',
-    color: AdminColors.textPrimary,
-    marginBottom: 10,
-  },
-  quickAccountCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    backgroundColor: AdminColors.inputBackground,
-    padding: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: AdminColors.cardBorder,
-    marginBottom: 8,
-  },
-  quickAccIconWrap: {
-    width: 32,
-    height: 32,
-    borderRadius: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  quickAccName: {
-    fontSize: 11.5,
-    fontFamily: 'Poppins_600SemiBold',
-    color: AdminColors.textPrimary,
-  },
-  quickAccCreds: {
-    fontSize: 10.5,
-    fontFamily: 'Poppins_400Regular',
-    color: AdminColors.textMuted,
-    marginTop: 1,
-  },
-  roleTabsContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#F1F5F9',
-    borderRadius: 10,
-    padding: 4,
-    marginBottom: 16,
-    gap: 6,
-  },
-  roleTabBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 9,
-    borderRadius: 8,
-  },
-  roleTabBtnPoliceActive: {
-    backgroundColor: '#0284C7',
-    shadowColor: '#0284C7',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  roleTabBtnAdminActive: {
-    backgroundColor: AdminColors.saffron,
-    shadowColor: AdminColors.saffron,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  roleTabText: {
-    fontSize: 12,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#64748B',
-  },
-  roleTabTextActive: {
-    color: '#FFFFFF',
-    fontFamily: 'Poppins_700Bold',
-  },
-  quickLoginPill: {
-    backgroundColor: '#DBEAFE',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  quickLoginPillText: {
-    fontSize: 10,
-    fontFamily: 'Poppins_700Bold',
-    color: '#1E3A8A',
   },
 });

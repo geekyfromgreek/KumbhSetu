@@ -119,18 +119,6 @@ export default function LandingScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Kumbhveer Quick Link */}
-      <TouchableOpacity
-        style={styles.volunteerLink}
-        onPress={() => router.push('/kumbhveer/login')}
-        activeOpacity={0.8}
-      >
-        <Ionicons name="school-outline" size={16} color="#059669" />
-        <Text style={styles.volunteerLinkText}>
-          Student / NCC Volunteer? <Text style={{ fontWeight: 'bold' }}>Enter Kumbhveer Portal →</Text>
-        </Text>
-      </TouchableOpacity>
-
       {/* Footer */}
       <Text style={styles.footer}>{t.kumbh}</Text>
     </View>
@@ -263,24 +251,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  volunteerLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 10,
-    marginTop: 8,
-  },
-  volunteerLinkText: {
-    fontSize: 12,
-    color: '#065F46',
-  },
   footer: {
     textAlign: 'center',
     fontSize: 12,
     color: '#A0845C',
     fontWeight: '500',
     letterSpacing: 0.5,
-    marginTop: 8,
+    marginTop: 16,
   },
 });

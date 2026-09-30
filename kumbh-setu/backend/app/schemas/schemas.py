@@ -15,7 +15,6 @@ class ListingCategory(str, Enum):
     HOTEL = "hotel"
     RICKSHAW_BUS = "rickshaw_bus"
     LOCAL_GUIDE = "local_guide"
-    GUIDE = "guide"
     BAZAAR = "bazaar"
     PUJA_SAMAGRI = "puja_samagri"
     GOODS = "goods"
