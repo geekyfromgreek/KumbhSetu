@@ -11,6 +11,7 @@ import os
 import math
 import logging
 import tempfile
+import numpy as np
 from typing import Union, Optional, List, Dict, Any
 
 logger = logging.getLogger("kumbhsetu.verification")
@@ -81,6 +82,8 @@ def compare_embeddings(
     """
     try:
         score = cosine_similarity(embedding_a, embedding_b)
+        # Face recognition distance threshold usually maps distance to similarity.
+        # DeepFace cosine distance threshold for Facenet is around 0.40 distance = 0.6 similarity.
         confirmed = bool(score >= threshold)
         return {
             "identity_confirmed": confirmed,
@@ -98,7 +101,7 @@ def compare_embeddings(
 def generate_embedding(image_path_or_bytes: Union[str, bytes]) -> Union[List[float], Dict[str, str]]:
     """
     Extract a normalized mathematical embedding vector from a selfie image.
-    Uses DeepFace.represent() with model_name="Facenet".
+    Uses face_recognition package (dlib based).
 
     Input: A temporary file path string or in-memory image bytes.
     Output: List of floats representing the embedding vector, or an error dictionary.
@@ -123,34 +126,30 @@ def generate_embedding(image_path_or_bytes: Union[str, bytes]) -> Union[List[flo
         else:
             return {"error": "invalid_input_type"}
 
-        # Attempt to extract embedding with DeepFace
+        # Attempt to extract embedding with face_recognition
         try:
-            from deepface import DeepFace  # type: ignore
+            import face_recognition
 
-            # Extract embeddings using Facenet model architecture
-            representations = DeepFace.represent(
-                img_path=temp_file_path,
-                model_name="Facenet",
-                enforce_detection=True,
-                align=True
-            )
+            # Load image
+            img = face_recognition.load_image_file(temp_file_path)
 
-            if not representations or len(representations) == 0:
+            # Find all face locations and encodings
+            face_encodings = face_recognition.face_encodings(img)
+
+            if not face_encodings or len(face_encodings) == 0:
                 return {"error": "no_face_detected"}
 
-            if len(representations) > 1:
+            if len(face_encodings) > 1:
                 # Registration/verification selfies must contain exactly one person
                 return {"error": "multiple_faces_detected"}
 
-            embedding = representations[0].get("embedding")
-            if not embedding:
-                return {"error": "no_face_detected"}
+            embedding = face_encodings[0].tolist()
 
             return [float(x) for x in embedding]
 
         except ImportError:
-            # Fallback for environments without heavy deepface/tensorflow binaries
-            logger.info("DeepFace binary not installed in environment; generating deterministic simulated embedding.")
+            # Fallback for environments without face_recognition binaries
+            logger.info("face_recognition binary not installed in environment; generating deterministic simulated embedding.")
             import hashlib
             seed_source = b""
             if isinstance(image_path_or_bytes, bytes):
@@ -174,7 +173,7 @@ def generate_embedding(image_path_or_bytes: Union[str, bytes]) -> Union[List[flo
             if "multiple" in err_msg:
                 return {"error": "multiple_faces_detected"}
             
-            logger.error(f"DeepFace inference error: {exc}")
+            logger.error(f"Face inference error: {exc}")
             return {"error": "inference_failed"}
 
     finally:
