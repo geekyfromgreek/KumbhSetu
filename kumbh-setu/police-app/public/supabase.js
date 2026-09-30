@@ -6,15 +6,17 @@
   const SUPABASE_URL = "https://asparwhkzpnnittnhsic.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzcGFyd2hrenBubml0dG5oc2ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2ODcyNTgsImV4cCI6MjEwNDI2MzI1OH0.toLmY3O-s1dwJg7yX9E4iAdPtzqG_Fj-UiU0Jb4R3Ik";
 
-  // Dynamic API Host detection: Works seamlessly on localhost, 192.168.x.x LAN mobile, or APK WebView
+  // Dynamic API Host detection: Works seamlessly on localhost, Vercel, LAN mobile, or APK WebView
   const host = window.location.hostname || "localhost";
   const proto = window.location.protocol === 'https:' ? 'https:' : 'http:';
-  if (host === "localhost" || host === "127.0.0.1") {
+  if (host.includes('vercel.app') || host.includes('render.com') || (proto === 'https:' && !host.match(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.)/))) {
+    window.API_BASE_URL = "";
+  } else if (host === "localhost" || host === "127.0.0.1") {
     window.API_BASE_URL = "http://localhost:8000";
   } else if (host) {
     window.API_BASE_URL = `${proto}//${host}:8000`;
   } else {
-    window.API_BASE_URL = "http://localhost:8000";
+    window.API_BASE_URL = "";
   }
   window.API_BASE = window.API_BASE_URL;
 
