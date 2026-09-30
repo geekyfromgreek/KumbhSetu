@@ -1249,7 +1249,6 @@ Live selfie verify at meeting point compares face landmarks with official Kumbhv
     }
 
     // Update bottom nav bar to Guide Portal navigation
-    const bottomNav = document.querySelector('nav.fixed.bottom-0');
     if (bottomNav) {
       bottomNav.innerHTML = `
         <div class="flex justify-around items-center h-16 px-space-2xs max-w-lg mx-auto">
@@ -1271,6 +1270,7 @@ Live selfie verify at meeting point compares face landmarks with official Kumbhv
           </a>
         </div>
       `;
+    }
     // Auto start webcam stream for live face verification
     setTimeout(() => {
       startHandshakeWebcam();
