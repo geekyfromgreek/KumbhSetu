@@ -409,7 +409,18 @@
     let isSimulating = true;
     let selectedCluster = null;
 
-    const API_BASE = window.API_BASE_URL || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? `http://${window.location.hostname}:8000` : (window.API_BASE_URL || (window.API_BASE_URL || 'http://localhost:8000') + ''));
+    function getResolvedApiBase() {
+      if (window.API_BASE_URL && window.API_BASE_URL !== '') {
+        return window.API_BASE_URL.replace(/\/$/, '');
+      }
+      const host = window.location.hostname;
+      const proto = window.location.protocol === 'https:' ? 'https:' : 'http:';
+      if (host && host !== 'localhost' && host !== '127.0.0.1') {
+        return `${proto}//${host}:8000`;
+      }
+      return 'http://localhost:8000';
+    }
+    const API_BASE = getResolvedApiBase();
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -449,7 +460,6 @@
 
     async function fetchHotspots() {
       try {
-        // Fetch active dispatches from backend for persistent state
         try {
           const dispRes = await fetch(`${API_BASE}/api/v1/police/patrol-dispatches`);
           const dispData = await dispRes.json();
@@ -464,19 +474,25 @@
         }
 
         const res = await fetch(`${API_BASE}/api/v1/police/hotspots`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        if (data.status === 'success' && data.hotspots) {
+        if (data.status === 'success' && data.hotspots && data.hotspots.length > 0) {
           allHotspots = data.hotspots;
-          document.getElementById('statHotspots').textContent = allHotspots.length;
-          if (allHotspots.length > 0) {
-            document.getElementById('statTopPriority').textContent = allHotspots[0].priority.toFixed(1);
-          }
-          renderHotspotsOnMap(allHotspots);
-          renderHotspotsList(allHotspots);
+        } else {
+          allHotspots = MOCK_FALLBACK_HOTSPOTS;
         }
       } catch (err) {
-        console.error('Error fetching hotspots:', err);
+        console.warn('Backend hotspots endpoint offline/fallback, using mock hotspots', err);
+        allHotspots = MOCK_FALLBACK_HOTSPOTS;
       }
+
+      document.getElementById('statHotspots').textContent = allHotspots.length;
+      if (allHotspots.length > 0) {
+        document.getElementById('statTopPriority').textContent = allHotspots[0].priority.toFixed(1);
+        if (document.getElementById('statTopZone')) document.getElementById('statTopZone').textContent = allHotspots[0].label;
+      }
+      renderHotspotsOnMap(allHotspots);
+      renderHotspotsList(allHotspots);
     }
 
     function getClusterColor(priority) {
@@ -729,14 +745,18 @@
     async function fetchSimulationEvents() {
       try {
         const res = await fetch(`${API_BASE}/api/v1/police/live-stream?limit=80`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        if (data.status === 'success' && data.events) {
+        if (data.status === 'success' && data.events && data.events.length > 0) {
           simEvents = data.events;
-          startSimulationFeed();
+        } else {
+          simEvents = MOCK_FALLBACK_EVENTS;
         }
       } catch (err) {
-        console.error('Error loading simulation stream:', err);
+        console.warn('Backend stream offline/fallback, using mock events', err);
+        simEvents = MOCK_FALLBACK_EVENTS;
       }
+      startSimulationFeed();
     }
 
     function startSimulationFeed() {
