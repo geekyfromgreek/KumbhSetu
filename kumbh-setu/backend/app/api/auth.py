@@ -333,3 +333,98 @@ async def get_profile(user: CurrentUser = Depends(require_auth)):
         email=user.email,
         phone=user.phone
     )
+
+
+class KumbhveerProfileUpdate(BaseModel):
+    volunteer_name: str
+    college_name: str
+    phone_number: Optional[str] = None
+    roll_number: Optional[str] = None
+
+
+@router.get("/kumbhveer/profile")
+async def get_kumbhveer_profile():
+    """Retrieve Kumbhveer volunteer profile."""
+    conn = get_connection()
+    row = conn.execute("SELECT * FROM kumbhveer_profiles ORDER BY updated_at DESC LIMIT 1").fetchone()
+    if row:
+        return dict(row)
+
+    # Fallback default
+    now = now_iso()
+    default_profile = {
+        "id": "kv-2027-nk",
+        "volunteer_name": "Nakul Karpe",
+        "college_name": "Sandip University Engineering",
+        "phone_number": "+91 98220 10291",
+        "roll_number": "KV-2027-NK",
+        "points": 480,
+        "tier": "Gold Kumbhveer Leader",
+        "updated_at": now
+    }
+    conn.execute("""
+        INSERT OR REPLACE INTO kumbhveer_profiles (
+            id, volunteer_name, college_name, phone_number, roll_number, points, tier, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        default_profile["id"], default_profile["volunteer_name"], default_profile["college_name"],
+        default_profile["phone_number"], default_profile["roll_number"], default_profile["points"],
+        default_profile["tier"], now
+    ))
+    conn.commit()
+    return default_profile
+
+
+@router.post("/kumbhveer/profile")
+async def update_kumbhveer_profile(req: KumbhveerProfileUpdate):
+    """
+    Update Kumbhveer volunteer profile (college name, volunteer name, phone).
+    Synchronizes across kumbhveer_profiles and volunteer_rewards leaderboard.
+    """
+    conn = get_connection()
+    now = now_iso()
+    v_name = req.volunteer_name.strip()
+    c_name = req.college_name.strip()
+    phone = (req.phone_number or "+91 98220 10291").strip()
+    roll = (req.roll_number or "KV-2027-NK").strip()
+
+    # Update or insert into kumbhveer_profiles
+    row = conn.execute("SELECT id FROM kumbhveer_profiles LIMIT 1").fetchone()
+    pid = row["id"] if row else "kv-2027-nk"
+
+    conn.execute("""
+        INSERT INTO kumbhveer_profiles (id, volunteer_name, college_name, phone_number, roll_number, points, tier, updated_at)
+        VALUES (?, ?, ?, ?, ?, 480, 'Gold Kumbhveer Leader', ?)
+        ON CONFLICT(id) DO UPDATE SET
+            volunteer_name = excluded.volunteer_name,
+            college_name = excluded.college_name,
+            phone_number = excluded.phone_number,
+            roll_number = excluded.roll_number,
+            updated_at = excluded.updated_at
+    """, (pid, v_name, c_name, phone, roll, now))
+
+    # Synchronize with volunteer_rewards table (top leader #1)
+    try:
+        conn.execute("""
+            UPDATE volunteer_rewards
+            SET volunteer_name = ?, college_name = ?, phone_number = ?
+            WHERE id = 'vr-001' OR volunteer_name = 'Nakul Karpe'
+        """, (v_name, c_name, phone))
+    except Exception:
+        pass
+
+    conn.commit()
+
+    return {
+        "status": "success",
+        "message": "Kumbhveer profile updated and synchronized with Civic Leaderboard",
+        "profile": {
+            "id": pid,
+            "volunteer_name": v_name,
+            "college_name": c_name,
+            "phone_number": phone,
+            "roll_number": roll,
+            "updated_at": now
+        }
+    }
+

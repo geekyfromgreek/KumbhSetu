@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>KumbhSetu | App Features, Uses & Requirements</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#a03b00',
+            secondary: '#9e4041',
+            volunteer: '#059669',
+            police: '#0f172a'
+          },
+          fontFamily: {
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+            body: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-[#FBFBFB] text-slate-900 font-body antialiased min-h-screen">
+
+  <div class="max-w-4xl mx-auto px-4 py-8 md:py-12">
+
+    <!-- Header with Official Logo -->
+    <header class="flex flex-col items-center text-center pb-8 border-b border-slate-200">
+      <img src="kumbhsetu-logo.jpg" alt="KumbhSetu Logo" class="w-24 h-24 md:w-28 md:h-28 rounded-2xl shadow-sm object-cover mb-4 border border-slate-200" />
+      
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 mb-2 rounded-full bg-orange-50 text-primary border border-orange-200 text-xs font-semibold">
+        <span class="material-symbols-outlined text-[15px]">verified</span>
+        <span>Simhastha Kumbh Mela 2027 • Nashik</span>
+      </div>
+
+      <h1 class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">
+        KumbhSetu Applications
+      </h1>
+      <p class="text-sm text-slate-600 max-w-lg mt-1">
+        Detailed guide to the features, uses, and requirements for each application in the system.
+      </p>
+
+      <!-- Navigation Link -->
+      <div class="mt-4">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+          <span>Back to Downloads</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- 4 Applications Details -->
+    <main class="mt-8 flex flex-col gap-8">
+
+      <!-- ================= 1. KUMBHSETU-EXPO (YATRI APP) ================= -->
+      <section class="bg-white rounded-xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-orange-50 text-primary border border-orange-200 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-[22px]">hiking</span>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-primary">KumbhSetu-Expo</span>
+              <h2 class="font-heading text-xl font-bold text-slate-900">Yatri App (Pilgrim)</h2>
+            </div>
+          </div>
+          <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-medium">For Pilgrims & Visitors</span>
+        </div>
+
+        <div class="space-y-4 text-xs md:text-sm text-slate-700">
+          
+          <!-- What is it used for? -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-primary">help_outline</span>
+              What is it used for?
+            </h3>
+            <p class="text-slate-600 leading-relaxed">
+              This app helps pilgrims visiting Nashik and Trimbakeshwar travel safely and avoid being overcharged. Yatris use it to check government-approved auto and cab rates, find holy bath timings, find free food centers, and report any problems directly with a photo.
+            </p>
+          </div>
+
+          <!-- Key Features -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-primary">featured_play_list</span>
+              Key Features
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-600">
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">check_circle</span>
+                <span><strong>Official Transit Fare Board:</strong> Calculates approved rates for 50+ routes across Nashik, CBS, Railway Station, and Trimbakeshwar.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">check_circle</span>
+                <span><strong>Live Ghat Status & Snan Timings:</strong> Real-time crowd levels and auspicious bath hours for Ramkund and other Ghats.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">check_circle</span>
+                <span><strong>Report Issue & SOS:</strong> Allows pilgrims to report overcharging, lost items, or medical emergencies with a photo.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">check_circle</span>
+                <span><strong>Annakshetra Locator:</strong> Map and list of free food distribution centers, water points, and verified stalls.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">check_circle</span>
+                <span><strong>Rumor Buster Feed:</strong> Official alerts and verified information published directly by the Police.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">check_circle</span>
+                <span><strong>Multi-Language Support:</strong> Available in English, Hindi, and Marathi.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Requirements -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-primary">devices</span>
+              App Requirements
+            </h3>
+            <div class="bg-orange-50/50 rounded-lg p-3 border border-orange-100 text-slate-600 space-y-1">
+              <div><strong>Target Users:</strong> All pilgrims, tourists, and Nashik visitors.</div>
+              <div><strong>Supported Devices:</strong> Android phone (Android 7.0 or newer) or standard mobile web browser.</div>
+              <div><strong>Internet:</strong> Works online; offline support for saved route fare cards.</div>
+              <div><strong>Permissions:</strong> Location (to show nearby Ghats) and Camera (optional, only needed when uploading photo evidence).</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= 2. KUMBHVEER ================= -->
+      <section class="bg-white rounded-xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-volunteer border border-emerald-200 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-[22px]">handshake</span>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-volunteer">KumbhVeer</span>
+              <h2 class="font-heading text-xl font-bold text-slate-900">KumbhVeer (Volunteer App)</h2>
+            </div>
+          </div>
+          <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-medium">For On-Ground Volunteers</span>
+        </div>
+
+        <div class="space-y-4 text-xs md:text-sm text-slate-700">
+          
+          <!-- What is it used for? -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-volunteer">help_outline</span>
+              What is it used for?
+            </h3>
+            <p class="text-slate-600 leading-relaxed">
+              This app is used by on-ground student volunteers, NCC cadets, and NSS team members to review citizen reports, verify if overcharging or rumors are true, assist lost pilgrims, and escalate serious issues to the Police.
+            </p>
+          </div>
+
+          <!-- Key Features -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-volunteer">featured_play_list</span>
+              Key Features
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-600">
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-volunteer mt-0.5">check_circle</span>
+                <span><strong>Live Incident Queue:</strong> Shows pending pilgrim complaints nearby with full details and locations.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-volunteer mt-0.5">check_circle</span>
+                <span><strong>Severity Tagging:</strong> Mark issues as Normal, Urgent, or Critical to prioritize emergency cases.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-volunteer mt-0.5">check_circle</span>
+                <span><strong>On-Site Photo Proof:</strong> Capture and attach ground photos to verify or resolve an issue.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-volunteer mt-0.5">check_circle</span>
+                <span><strong>One-Tap Police Escalation:</strong> Instantly sends unresolvable or dangerous incidents to the Police Command desk.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Requirements -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-volunteer">devices</span>
+              App Requirements
+            </h3>
+            <div class="bg-emerald-50/50 rounded-lg p-3 border border-emerald-100 text-slate-600 space-y-1">
+              <div><strong>Target Users:</strong> Registered volunteers, student teams, NCC cadets, and coordinators.</div>
+              <div><strong>Supported Devices:</strong> Android smartphone (Android 8.0 or newer).</div>
+              <div><strong>Internet:</strong> Active mobile data connection (4G / 5G / Wi-Fi).</div>
+              <div><strong>Permissions:</strong> Camera (for photo verification) and GPS Location.</div>
+              <div><strong>Access:</strong> Assigned Volunteer Badge / ID.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= 3. KUMBHSETU-LOCALBAZAAR ================= -->
+      <section class="bg-white rounded-xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-red-50 text-secondary border border-red-200 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-[22px]">storefront</span>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-secondary">KumbhSetu-LocalBazaar</span>
+              <h2 class="font-heading text-xl font-bold text-slate-900">LocalBazaar (Nashikkar / Merchant)</h2>
+            </div>
+          </div>
+          <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-medium">For Local Merchants & Stalls</span>
+        </div>
+
+        <div class="space-y-4 text-xs md:text-sm text-slate-700">
+          
+          <!-- What is it used for? -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-secondary">help_outline</span>
+              What is it used for?
+            </h3>
+            <p class="text-slate-600 leading-relaxed">
+              This app is used by local Nashik shopkeepers, food stall owners, pooja item vendors, and dharamshalas to register their business, list their products at government-capped prices, show verified licenses, and connect directly with pilgrims.
+            </p>
+          </div>
+
+          <!-- Key Features -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-secondary">featured_play_list</span>
+              Key Features
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-600">
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-secondary mt-0.5">check_circle</span>
+                <span><strong>Stall & Business Profile:</strong> Register shop location, sector/zone, operating hours, and contact information.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-secondary mt-0.5">check_circle</span>
+                <span><strong>Price-Capped Item Catalog:</strong> List essential goods (food, water, pooja items) within authorized price limits.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-secondary mt-0.5">check_circle</span>
+                <span><strong>Trust & License Badges:</strong> Display FSSAI food hygiene registration and municipal vendor permits.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-secondary mt-0.5">check_circle</span>
+                <span><strong>Customer Contact Management:</strong> Receive direct phone or message inquiries from pilgrims.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Requirements -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-secondary">devices</span>
+              App Requirements
+            </h3>
+            <div class="bg-red-50/50 rounded-lg p-3 border border-red-100 text-slate-600 space-y-1">
+              <div><strong>Target Users:</strong> Nashik merchants, food stalls, pooja stores, and accommodation providers.</div>
+              <div><strong>Supported Devices:</strong> Android smartphone (Android 7.0 or newer).</div>
+              <div><strong>Internet:</strong> Active mobile data or Wi-Fi.</div>
+              <div><strong>Permissions:</strong> Camera / Storage (for stall photos and license documents).</div>
+              <div><strong>Required Details:</strong> Shop name, owner name, mobile number, stall zone, and price list.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= 4. KUMBHSETU-ADMINS ================= -->
+      <section class="bg-white rounded-xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-slate-100 text-police border border-slate-300 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-[22px]">local_police</span>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">KumbhSetu-Admins</span>
+              <h2 class="font-heading text-xl font-bold text-slate-900">Admin & Police Command</h2>
+            </div>
+          </div>
+          <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-medium">For Police & Administration</span>
+        </div>
+
+        <div class="space-y-4 text-xs md:text-sm text-slate-700">
+          
+          <!-- What is it used for? -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-police">help_outline</span>
+              What is it used for?
+            </h3>
+            <p class="text-slate-600 leading-relaxed">
+              This software is used by the Police Commissionerate, Traffic Police, District Administration, and Municipal Officers to monitor incidents in real-time, dispatch field units, publish verified facts to stop panic, and set official fare and price ceilings.
+            </p>
+          </div>
+
+          <!-- Key Features -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-police">featured_play_list</span>
+              Key Features
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-600">
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-police mt-0.5">check_circle</span>
+                <span><strong>Incident Radar & Hotspot Map:</strong> View real-time complaints with severity levels and exact sector locations.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-police mt-0.5">check_circle</span>
+                <span><strong>Rumor Buster Fact-Checker:</strong> Quickly tag and debunk false rumors, broadcasting official notices to all Yatri phones.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-police mt-0.5">check_circle</span>
+                <span><strong>Route & Fare Tariff Control:</strong> Configure official per-kilometer and fixed route rates for autos, taxis, and buses.</span>
+              </li>
+              <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="material-symbols-outlined text-[16px] text-police mt-0.5">check_circle</span>
+                <span><strong>Bazaar Price Ceiling Registry:</strong> Maintain maximum authorized retail prices for food, water, and pooja materials.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Requirements -->
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-police">devices</span>
+              App Requirements
+            </h3>
+            <div class="bg-slate-100 rounded-lg p-3 border border-slate-200 text-slate-600 space-y-1">
+              <div><strong>Target Users:</strong> Police Control Room, District Administration, and Municipal Officers.</div>
+              <div><strong>Supported Devices:</strong> Windows Desktop / Laptop (Windows 10 / 11) or Android Tablet / Phone.</div>
+              <div><strong>Internet:</strong> Stable broadband or high-speed mobile network.</div>
+              <div><strong>Access:</strong> Official Admin / Police credentials.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="mt-12 pt-6 text-center text-xs text-slate-500 border-t border-slate-200">
+      <div>KumbhSetu Platform • Simhastha Kumbh Mela 2027 (Nashik–Trimbakeshwar)</div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

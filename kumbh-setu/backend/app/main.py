@@ -49,6 +49,13 @@ async def lifespan(app: FastAPI):
     else:
         print(f"Database already has {count} listings.")
 
+    # Warmup DeepFace Facenet model for live selfie identity verification (2-3s latency)
+    try:
+        from .services.deepface_service import warmup_models
+        warmup_models()
+    except Exception as exc:
+        print(f"Model warmup info: {exc}")
+
     yield
 
     # Shutdown

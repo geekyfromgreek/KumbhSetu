@@ -303,13 +303,32 @@ export const MerchantSupabaseService = {
     }
   },
 
-  // Realtime subscription for incoming pilgrim inquiries
+  // Realtime subscription for incoming pilgrim inquiries, catalog updates & profile changes
   subscribeToInquiries(merchantId: string, callback: () => void) {
+    return this.subscribeToMerchantUpdates(merchantId, callback);
+  },
+
+  subscribeToMerchantUpdates(merchantId: string, callback: () => void) {
     return supabase
-      .channel(`public:inquiries_${merchantId}`)
+      .channel(`public:merchant_live_${merchantId}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'pilgrim_inquiries', filter: `merchant_id=eq.${merchantId}` },
+        callback
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'catalog_items', filter: `merchant_id=eq.${merchantId}` },
+        callback
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'merchants', filter: `id=eq.${merchantId}` },
+        callback
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'shop_reviews', filter: `merchant_id=eq.${merchantId}` },
         callback
       )
       .subscribe();

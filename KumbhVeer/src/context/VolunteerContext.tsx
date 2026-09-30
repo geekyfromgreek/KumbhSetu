@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { AppState, AppStateStatus } from 'react-native';
 import { safeStorage } from '@/lib/safeStorage';
 import {
   VolunteerProfile,
@@ -28,6 +29,7 @@ interface VolunteerContextType {
   // Incident Actions
   incidents: GroundIncident[];
   claimIncident: (id: string) => Promise<void>;
+  verifyAndSetSeverity: (id: string, severity: 'LOW' | 'MED' | 'HIGH', notes?: string) => Promise<void>;
   resolveIncidentOffline: (id: string, notes: string) => Promise<void>;
   dismissIncident: (id: string, reason: string) => Promise<void>;
   addMockIncidentAlert: (incident: Omit<GroundIncident, 'id' | 'token' | 'timestamp' | 'status'>) => Promise<void>;
@@ -108,13 +110,27 @@ export const VolunteerProvider: React.FC<{ children: ReactNode }> = ({ children 
 
     loadStorage();
 
-    // Subscribe to realtime changes in incidents & fact checks
+    // 1. Subscribe to realtime changes in incidents, fact checks, and volunteer roster
     const sub = VolunteerSupabaseService.subscribeToUpdates(() => {
       fetchLiveVolunteerData();
     });
 
+    // 2. Periodic Live Sync Heartbeat (every 4 seconds)
+    const liveSyncInterval = setInterval(() => {
+      fetchLiveVolunteerData();
+    }, 4000);
+
+    // 3. Re-fetch immediately when app comes to foreground
+    const appStateSub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
+      if (nextState === 'active') {
+        fetchLiveVolunteerData();
+      }
+    });
+
     return () => {
-      sub.unsubscribe();
+      if (sub?.unsubscribe) sub.unsubscribe();
+      clearInterval(liveSyncInterval);
+      appStateSub.remove();
     };
   }, []);
 
@@ -267,6 +283,33 @@ export const VolunteerProvider: React.FC<{ children: ReactNode }> = ({ children 
     VolunteerSupabaseService.claimIncident(id, profile.id, profile.name);
   };
 
+  const verifyAndSetSeverity = async (
+    id: string,
+    severity: 'LOW' | 'MED' | 'HIGH',
+    notes: string = ''
+  ) => {
+    if (!profile) return;
+    const isPolice = severity === 'MED' || severity === 'HIGH';
+    const newStatus: IncidentStatus = isPolice ? 'ESCALATED_POLICE' : 'EN_ROUTE';
+
+    const updated = incidents.map((inc) =>
+      inc.id === id
+        ? {
+            ...inc,
+            severity,
+            status: newStatus,
+            escalatedToPolice: isPolice,
+            volunteerNotes: notes || `Severity set to ${severity} by ${profile.name}`,
+          }
+        : inc
+    );
+
+    setIncidents(updated);
+    await safeStorage.setItem(STORAGE_KEYS.INCIDENTS, JSON.stringify(updated));
+
+    VolunteerSupabaseService.verifyAndSetSeverity(id, severity, profile.name, notes);
+  };
+
   const resolveIncidentOffline = async (id: string, notes: string) => {
     if (!profile) return;
     const nowTime = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
@@ -405,6 +448,7 @@ export const VolunteerProvider: React.FC<{ children: ReactNode }> = ({ children 
         updateAssignedSector,
         incidents,
         claimIncident,
+        verifyAndSetSeverity,
         resolveIncidentOffline,
         dismissIncident,
         addMockIncidentAlert,

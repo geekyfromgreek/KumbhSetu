@@ -39,6 +39,31 @@ Civic Trust & Fair Pricing Platform for Kumbh Mela 2027, Nashik
   - **Report Issue (`report_issue.html`)**: Connected to backend `POST /api/v1/reports/`, generates real tracked ticket IDs (e.g., `#KS-XXXXX`), records grievance into SQLite, and provides direct link to the Police Escalations dashboard.
   - **Emergency SOS (`emergency_sos.html`)**: Dynamically fetches from the 2,165 infrastructure points (47 Police Stations & Outposts, 495 Hospitals & Clinics, 79 Ambulances, 10 Fire Stations) with exact distance calculation, 1-tap dialer (`tel:`), and Google Maps navigation.
 
+## 5-Phase Execution Plan (Routing, Supabase & Selfie Identity Verification)
+- [x] **Phase 1: Route Audit & Navigation Isolation**
+  - [x] Create `/kumbhveer/` layout, login, and portal in `yatri-nashikkar-app/app/kumbhveer/`
+  - [x] Add `/nashikkar/volunteers.tsx` in `yatri-nashikkar-app/app/nashikkar/`
+  - [x] Local Guide Navigation Isolation: Removed Market section from Local Guide portal (`bookings_queue.html`, `guide_detail.html`, `reports_analytics.html`, `nashikkar_overview.html`) establishing 4 dedicated tabs (Overview, Bookings, Guide ID, Reports), and added `role=guide` route guard on `marketplace.html` to prevent accidental redirection to Yatri screens.
+  - [x] Update Web HTML navigation links (Yatri reports to `report_issue.html`; Nashikkar volunteers to `nashikkar_volunteers.html`)
+  - [x] Verify complete route isolation between Yatri, Nashikkar, Kumbhveer, and Police
+- [x] **Phase 2: Supabase Schema Migration (9 Tables + pgvector)**
+  - [x] Create `backend/supabase/migrations/20260928_full_kumbh_schema.sql`
+  - [x] Deploy tables: `profiles`, `listings`, `local_guides`, `bookings`, `reports`, `escalations`, `price_flags`, `volunteer_records`, `verification_logs`
+  - [x] Define `match_guide_selfie_embedding` vector cosine RPC
+  - [x] Configure Row Level Security (RLS) policies
+- [x] **Phase 3: Supabase Realtime Synchronization Matrix**
+  - [x] Wire realtime listeners in `frontend/supabase_realtime.js`
+  - [x] Wire realtime listeners in `yatri-nashikkar-app/utils/supabase.ts`
+  - [x] Test cross-client real-time synchronization on reports, escalations, and bookings
+- [x] **Phase 4: Selfie Identity Verification Backend & DeepFace Pipeline**
+  - [x] Add lifespan warmup in `backend/app/main.py` (Facenet + OpenCV/YuNet)
+  - [x] Enforce anti-spoofing and ephemeral image destruction in `finally:`
+  - [x] Conform API to `{ identity_confirmed: bool, checked_at: str }`
+- [x] **Phase 5: Cross-Platform SelfieCapture.tsx Component & Badge**
+  - [x] Implement `SelfieCapture.tsx` supporting `expo-camera` and web `getUserMedia`
+  - [x] Oval face alignment guide with 3-second liveness check
+  - [x] Realtime badge reflection: "Identity Confirmed via Selfie"
+
 ## Ready for Evaluation
 - Frontend UI (Stitch Pixel-Perfect): Running on `http://localhost:3000/` and `http://localhost:8000/`
 - Backend API: Running on `http://localhost:8000` (`http://localhost:8000/docs`)

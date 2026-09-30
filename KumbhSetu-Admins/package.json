@@ -3,6 +3,11 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "build:web": "expo export -p web",
+    "electron:start": "electron electron-main.js",
+    "electron:dev": "npm run build:web && electron electron-main.js",
+    "electron:dist": "npm run build:web && electron-builder --win",
+    "electron:pack": "npm run build:web && electron-builder --dir",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -31,7 +36,46 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "electron": "^44.2.0",
+    "electron-builder": "^26.15.3",
     "typescript": "~6.0.3"
   },
-  "private": true
+  "build": {
+    "appId": "com.gauruu.kumbhsetuadmins",
+    "productName": "KumbhSetu Admins",
+    "extraMetadata": {
+      "main": "electron-main.js"
+    },
+    "asar": true,
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "electron-main.js",
+      "dist/**/*",
+      "assets/**/*",
+      "!node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/images/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "KumbhSetu Admins"
+    },
+    "nodeGypRebuild": false,
+    "npmRebuild": false
+  },
+  "private": true,
+  "description": "This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

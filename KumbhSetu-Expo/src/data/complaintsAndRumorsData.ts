@@ -20,14 +20,22 @@ export interface EmergencyContact {
 
 export interface UserComplaint {
   id: string;
+  supabaseId?: string;
   category: string;
   vehicleOrShop: string;
   location: string;
+  latitude?: number;
+  longitude?: number;
+  imageUrl?: string;
+  severity?: 'LOW' | 'MED' | 'HIGH';
   standardAmt: string;
   chargedAmt: string;
   timestamp: string;
-  status: 'REGISTERED' | 'ACTION_TAKEN' | 'INVESTIGATING';
+  status: 'REGISTERED' | 'ACTION_TAKEN' | 'INVESTIGATING' | 'SQUAD_DISPATCHED' | 'RESOLVED';
   token: string;
+  assignedOfficer?: string;
+  actionSummary?: string;
+  penaltyAmount?: number;
 }
 
 export const INITIAL_RUMORS: RumorFactCheck[] = [];
