@@ -1,12 +1,31 @@
 # 🕉️ KumbhSetu (कुंभसेतु) • Simhastha Maha Kumbh Mela Ecosystem 2027
 
-> **A Unified Civic Trust, Fair-Pricing, and Verified Pilgrim Safety Ecosystem engineered for the Simhastha Maha Kumbh Mela (Nashik–Trimbakeshwar).**
+> 🏆 **1st Prize Winner — KIM Ignite 2026 Hackathon (Nashik Edition)**  
+> Organized by **Kirloskar Institute of Management (KIM)** at **Kirloskar Oil Engines Ltd (KOEL), Ambad, Nashik**.  
+> *Recognized as the winning technological innovation to make the upcoming Simhastha Kumbh Mela 2027 (Nashik–Trimbakeshwar) safer, smoother, smarter, and more sustainable for 12+ Crore pilgrims.*
 
+[![KIM Ignite 2026 Winner](https://img.shields.io/badge/🏆_KIM_Ignite_2026-1st_Prize_Winner-gold?style=for-the-badge&labelColor=1a1a1a)](https://kim.edu.in)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111.0-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL%20%2B%20pgvector-3ECF8E.svg?style=flat&logo=supabase)](https://supabase.com)
 [![Expo](https://img.shields.io/badge/Expo-SDK%2052%20%2B%20Router-000020.svg?style=flat&logo=expo)](https://expo.dev)
 [![DeepFace](https://img.shields.io/badge/DeepFace-Facenet%20Embeddings-FF6F00.svg?style=flat)](https://github.com/serengil/deepface)
 [![Languages](https://img.shields.io/badge/Languages-English%20%7C%20%E0%A4%AE%E0%A4%B0%E0%A4%BE%E0%A4%A0%E0%A5%80%20%7C%20%E0%A4%B9%E0%A4%BF%E0%A4%82%E0%A4%A6%E0%A5%80-E65100.svg?style=flat)](#trilingual-engine)
+
+---
+
+## 🏆 KIM Ignite 2026 Hackathon — 1st Prize Winner
+
+**KumbhSetu was awarded 1st Prize at KIM Ignite 2026**, the premier innovation hackathon organized by the **Kirloskar Institute of Management (KIM)**, held on-site at **Kirloskar Oil Engines Ltd (KOEL) in Ambad, Nashik**.
+
+### 📍 Event & Challenge Context:
+- **The Mega-Pilgrimage Scale**: The upcoming **Simhastha Kumbh Mela 2027 in Nashik–Trimbakeshwar** will witness over **12 Crore (120 Million) pilgrims**, with peak-day footfalls crossing **2 Crore**. Managing crowd safety, transport logistics, fair commerce, and emergency accessibility at this scale presents unprecedented civic challenges.
+- **The Core Hackathon Mandate**: KIM Ignite 2026 challenged participants to identify real-world friction points and engineer breakthrough, deployable solutions to make the Kumbh journey **"safer, smoother, smarter, more sustainable, and economically stronger"** for Yatris, local citizens, merchants, and law enforcement alike.
+- **Why KumbhSetu Clinched 1st Prize**:
+  - 🪔 **Zero-Barrier Pilgrim Access**: Instant, trilingual (**English, मराठी, हिंदी**) progressive web & mobile apps enabling 12+ crore pilgrims to discover verified fair-rate stalls, crowd densities, free annakshetras, and 1-tap SOS without compulsory logins.
+  - ⚖️ **Civic Price Integrity & Anti-Surge**: Real-time algorithmic benchmarking, merchant compliance pledges, and verified bazaar catalogs to prevent predatory surge pricing.
+  - 🔒 **Privacy-Preserving Selfie Verification**: Zero-raw-photo identity confirmation for registered guides and local service providers powered by 128-dimensional mathematical vector embeddings in PostgreSQL `pgvector`.
+  - 🛡️ **DBSCAN Spatial Hotspot Radar & Police Terminal**: Real-time spatio-temporal incident clustering and immediate squad dispatch for Nashik City Police beat officers.
+  - 🤝 **Kumbhveer Student Field Audits**: Ground verification mechanism empowering local youth volunteers with verified audits and karma rewards.
 
 ---
 
@@ -460,6 +479,8 @@ Press `w` to run on Web, `a` for Android Emulator, or scan the QR code with **Ex
 
 ---
 
-## 📜 Civic Licensing & Copyright
+## 📜 Civic Licensing & Accolades
 
-Developed for the **Simhastha Kumbh Mela 2027 Nashik-Trimbakeshwar**.All rights reserved © 2026-2027.
+- **🏆 1st Prize Winner**: KIM Ignite 2026 Hackathon (Nashik Edition), organized by Kirloskar Institute of Management (KIM) at Kirloskar Oil Engines Ltd (KOEL), Ambad, Nashik.
+- **Ecosystem Focus**: Developed for the **Simhastha Kumbh Mela 2027 Nashik-Trimbakeshwar**, built under the guidance of the Kumbhathon Innovation Foundation and District Administration.
+- All rights reserved © 2026-2027.

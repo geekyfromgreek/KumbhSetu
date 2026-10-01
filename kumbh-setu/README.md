@@ -1,6 +1,10 @@
 # 🕉️ KumbhSetu • Full-Stack Platform Documentation (`kumbh-setu/`)
 
+> 🏆 **1st Prize Winner — KIM Ignite 2026 Hackathon (Nashik Edition)**  
+> Organized by **Kirloskar Institute of Management (KIM)** at **Kirloskar Oil Engines Ltd (KOEL), Ambad, Nashik**.  
 > **Unified Civic Trust, Fair Pricing, and Verified Pilgrim Safety Ecosystem engineered for the Simhastha Maha Kumbh Mela (Nashik–Trimbakeshwar 2027).**
+
+[![KIM Ignite 2026 Winner](https://img.shields.io/badge/🏆_KIM_Ignite_2026-1st_Prize_Winner-gold?style=for-the-badge&labelColor=1a1a1a)](https://kim.edu.in)
 
 ---
 
