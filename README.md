@@ -462,5 +462,4 @@ Press `w` to run on Web, `a` for Android Emulator, or scan the QR code with **Ex
 
 ## 📜 Civic Licensing & Copyright
 
-Developed for the **Simhastha Kumbh Mela 2027 Nashik-Trimbakeshwar**. Built under the guidance of the Kumbhathon Innovation Foundation and District Administration.
-All rights reserved © 2026-2027.
+Developed for the **Simhastha Kumbh Mela 2027 Nashik-Trimbakeshwar**.All rights reserved © 2026-2027.
